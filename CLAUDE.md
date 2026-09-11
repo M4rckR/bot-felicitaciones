@@ -288,9 +288,9 @@ Events push onto `window.digitalData` (created as an array if absent) via `pushP
 `experimentCode: "TC0080"`. Tracked: bot open, final-response view, feedback click
 (`position: "<nodeId> - <1|0>"`), discover-card CTA view/click, rating view/click, close view/click.
 
-**In `adobe-target/piloto/bot.html` the tagging plan is Marco's spec of 2026-09-11 and it is closed**: exactly these
-seven events, no more. Anything else that existed was deleted — do not re-add an event because the home bot
-has it.
+**In `adobe-target/piloto/bot.html` the tagging plan is Marco's spec of 2026-09-11 and it is closed**: exactly
+these **six** events, no more. Anything else that existed was deleted — do not re-add an event because the
+home bot has it.
 
 | Method | name (after `Felicitaciones - Cards - Bot - `) | creative | position | Fires when |
 | --- | --- | --- | --- | --- |
@@ -298,9 +298,24 @@ has it.
 | `trackOpenBotClick` | `Inicio - TC0091 - P` | Button | `Modal` | panel opened |
 | `trackFinalResponseView` | `Arbol - TC0091 - P` | Modal | `1 - 1.1` … `3 - 3.3` | every **respuesta** node |
 | `trackElegirTarjetaView` | `Arbol - TC - TC0091 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
-| `trackElegirTarjetaClick` | `Arbol - TC - TC0091 - P` | Button | `Elegir Tarjeta` | click on `[data-card-cta]` / `[data-rec-cta]` |
 | `trackCloseView` | `TC0091 - P` | Button | `Cerrar` | node has an `isClose` option |
 | `trackCloseClick` | `TC0091 - P` | Button | `Cerrar` | `[data-close]` clicked |
+
+**The bot does not tag the "Elegir tarjeta" click** (Marco, 2026-09-11). Pressing the page's own button
+makes the page emit three events by itself, and those are the base — a seventh event of ours would count
+the same click twice:
+
+```json
+{ "event": "trackAction", "action": { "category": "Opciones Tarjeta", "group": "Cards",
+                                      "label": "Quiero esta Tarjeta", "name": "Click" } }
+{ "event": "trackMetadataList", "metadataList": [ { "key": "TarjetaSeleccionada", "value": "…" },
+                                                  { "key": "Flujo", "value": "Flujo Normal" } ] }
+{ "event": "trackPopup", "popup": { "name": "Cards - Edita tu linea de credito" } }
+```
+
+The **View** stays, because only the bot knows it offered the card. What is lost is attribution on the
+click: none of the three says it came from the bot — `Flujo` reports `"Flujo Normal"` either way. Pairing a
+click with the bot means correlating it with the `Arbol - TC` View that precedes it. See *Still open*.
 
 Three traps worth keeping:
 
@@ -314,7 +329,8 @@ Three traps worth keeping:
   screens are delivered with and that the mockups and `docs/correcciones-wording.md` use. The `qNN` id
   never leaves the snippet. It derives from the digits, so a third level would read `1.1.1` on its own.
 - **`Elegir Tarjeta` is one View per screen, not per button.** A perfilador screen shows up to 4 CTAs and
-  the `position` is a fixed literal, so four identical events would only inflate the count.
+  the `position` is a fixed literal, so four identical events would only inflate the count. It reads the
+  *resolved* message, so a hidden recommendation emits no View either.
 
 **Deleted on 2026-09-11, per Marco:** the `Arbol - Utilidad` feedback event (`trackFeedbackClick`,
 `getFeedbackScore`), and `trackDiscoverCardView/Click` + `isDiscoverCardCtaOption`, which keyed off
@@ -1005,8 +1021,10 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 
 **Lower-stakes, unconfirmed**
 
-- **`Flujo` always reports `"Flujo Normal"`.** The page's own `trackMetadataList` cannot tell a
-  bot-driven card choice from a direct one. Whether that value can change is BCP's call — ask them.
+- **`Flujo` always reports `"Flujo Normal"`, and that is now the only gap in the funnel.** Since the bot
+  stopped tagging the "Elegir tarjeta" click, the page's three native events are the sole record of it, and
+  none of them says the click came from the bot. Attribution rests on correlating with the `Arbol - TC`
+  View. Whether `Flujo` can carry something like `"Flujo Tarjetín"` is BCP's call — ask them.
 - Comparison tables are at `font-size: 13px`. Marco's mockup was rendered wider than the real 374px panel,
   where 14px would wrap long card names onto three lines. Also, his mockup's vertical column divider is
   inset from the row edges; ours is a full-height `border-left`.

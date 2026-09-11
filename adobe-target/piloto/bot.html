@@ -2855,8 +2855,10 @@
 
         // Click en "Elegir tarjeta". Cierra el bot y le pasa el control a la pagina.
         Bot.prototype.elegirTarjeta = function (codigo) {
-            this.trackElegirTarjetaClick();
-
+            // Sin tageo propio (Marco, 2026-09-11): al accionar el boton nativo la
+            // pagina emite sus tres eventos -trackAction "Quiero esta Tarjeta",
+            // trackMetadataList con TarjetaSeleccionada y trackPopup- y esos son la
+            // base. Agregar uno del bot seria contar el mismo click dos veces.
             var boton = this.getNativeCardButton(codigo);
 
             if (!boton) {
@@ -3452,14 +3454,6 @@
 
         Bot.prototype.trackElegirTarjetaView = function () {
             this.trackPromotionView({
-                name: "Felicitaciones - Cards - Bot - Arbol - TC - " + this.getExperimentCode() + " - P",
-                creative: "Button",
-                position: "Elegir Tarjeta",
-            });
-        };
-
-        Bot.prototype.trackElegirTarjetaClick = function () {
-            this.trackPromotionClick({
                 name: "Felicitaciones - Cards - Bot - Arbol - TC - " + this.getExperimentCode() + " - P",
                 creative: "Button",
                 position: "Elegir Tarjeta",
