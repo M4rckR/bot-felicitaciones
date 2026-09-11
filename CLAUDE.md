@@ -296,7 +296,7 @@ has it.
 | --- | --- | --- | --- | --- |
 | `trackLauncherView` | `Inicio - TC0091 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `Bot.launcherViewSent` |
 | `trackOpenBotClick` | `Inicio - TC0091 - P` | Button | `Modal` | panel opened |
-| `trackFinalResponseView` | `Arbol - TC0091 - P` | Modal | `<flow> - <nodeId>` | every **respuesta** node |
+| `trackFinalResponseView` | `Arbol - TC0091 - P` | Modal | `1 - 1.1` … `3 - 3.3` | every **respuesta** node |
 | `trackElegirTarjetaView` | `Arbol - TC - TC0091 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
 | `trackElegirTarjetaClick` | `Arbol - TC - TC0091 - P` | Button | `Elegir Tarjeta` | click on `[data-card-cta]` / `[data-rec-cta]` |
 | `trackCloseView` | `TC0091 - P` | Button | `Cerrar` | node has an `isClose` option |
@@ -309,13 +309,33 @@ Three traps worth keeping:
 - **`isRespuestaNode` decides what counts as a respuesta**: `id.length > 2`, which excludes the four menus
   (`q0`–`q3`) and includes the eleven answer screens. The old gate was `node.feedbackText`, which no node
   has, so **the whole Arbol funnel was silently dead** until 2026-09-11.
+- **`position` uses the tree's own numbering, not the internal id** (Marco, 2026-09-11):
+  `getPositionArbol` turns `q11` into `"1 - 1.1"` and `q33` into `"3 - 3.3"` — the same numbering the
+  screens are delivered with and that the mockups and `docs/correcciones-wording.md` use. The `qNN` id
+  never leaves the snippet. It derives from the digits, so a third level would read `1.1.1` on its own.
 - **`Elegir Tarjeta` is one View per screen, not per button.** A perfilador screen shows up to 4 CTAs and
   the `position` is a fixed literal, so four identical events would only inflate the count.
 
 **Deleted on 2026-09-11, per Marco:** the `Arbol - Utilidad` feedback event (`trackFeedbackClick`,
 `getFeedbackScore`), and `trackDiscoverCardView/Click` + `isDiscoverCardCtaOption`, which keyed off
-`option.isCta` — a shape no node in this bot uses. The thumbs-up/down **UI** (CSS, `renderBotItem` branch,
-`[data-response-idx]` handler) was left in place but now emits nothing; see *Still open*.
+`option.isCta` — a shape no node in this bot uses.
+
+**And then the whole feedback/response machinery went with it** (Marco: "bórralo"), **15.3 KB**, taking
+`adobe-target/piloto/bot.html` from 233.7 KB to 218.4 KB:
+
+| Where | What |
+| --- | --- |
+| CSS | the 21 `.tc0091-response-*` rules, `.tc0091-chat-item--response`, `.tc0091-response-content` |
+| Render | the `if (responseActions.length)` block in `renderBotItem` — label, divider, footer, both thumb SVGs in selected and unselected variants — and the `nodeType === "response"` branch |
+| Handlers | the whole `[data-response-idx]` block |
+| State | `responseActions` and `selectedResponseActionIdx` on both chatLog builders, `feedbackText` |
+| Markup | `data-feedback-node`, `data-feedback-anchor` |
+| Scroll | `scrollToLatestFeedbackStart` plus the `currentIsFeedback` / `followsFeedbackNode` branch in `adjustChatScroll`, which now always falls to `scrollBodyToBottom` |
+
+Nothing was reachable: no node in this bot is `type: "response"` or carries `feedbackText`/`actions`. The
+two post-removal checks were re-run and both come back clean — **zero orphan prototype methods** (out of
+93) and **zero unused `.tc0091-*` classes**. If the thumbs ever come back, they come back from
+`referencia/bot-actual.html`.
 
 **`adobe-target/control/control.html` is the other half of the experiment.** The control group gets a page with no bot, so
 none of the seven can fire there. That file is a standalone `<script>` that pushes the single `- C` event
@@ -392,6 +412,83 @@ Express Clásica LATAM Pass, Visa Clásica LATAM Pass, Visa Clásica Qore, Visa 
 terms, TEA/TCEA, seguro de desgravamen, and disposición de efectivo. So the new bot answers "which of *my*
 approved cards do I choose, and what do these conditions mean?", not the home bot's "which card should I
 apply for?".
+
+### "Elegir tarjeta" does not navigate (2026-09-11)
+
+**The page's own button is not a link.** Each `<xt21-card-option>` closes with a
+`<bcp-button type="button" name="QA_Congratulations_BtnSeleccionar_<CODE>">` wrapping a plain `<button>` —
+an Angular component that runs the SPA's own logic. There is no `href` anywhere in it, so there was no
+destination to copy into the bot. Marco's call: **do the same thing the page does.**
+
+So the CTA clicks the real button. `getNativeCardButton(codigo)` walks `xt21-card-option`, matches on the
+code through the existing `getCardCodeFromNode`, and returns the inner `<button>` (falling back to the
+`[name^="QA_Congratulations_BtnSeleccionar_"]` host if Angular has not hydrated yet). `elegirTarjeta` then
+tracks the click, closes the panel and calls `.click()` on it.
+
+**Verified against certi on 2026-09-11** (Marco ran the click in the console): the programmatic `.click()`
+**does** drive the page. It opens `<xt21-modify-credit-line-modal>` — "Ahora puedes editar tu línea de
+crédito", with the card name, the range and a *Cerrar* / *Continuar* pair. So choosing a card is **not** a
+straight navigation to step 2: there is a credit-line modal in between. Anything that assumes the bot's CTA
+navigates away is wrong.
+
+**That modal is out of scope** (Marco, 2026-09-11): it is the page's own base behaviour on selecting a card.
+The bot's job ends at pressing the button. Do not style it, intercept it, or try to carry state into it.
+
+**The click does fire the page's own event, and the bot must not add it.** Measured in certi on
+2026-09-11 (Marco):
+
+```json
+{ "event": "trackPopup", "popup": { "name": "Cards - Edita tu linea de credito" } }
+```
+
+It comes from the `analytic="" tag="tagPopup"` on the modal, fires on its own when the button is pressed,
+and **a synthetic click fires it just the same**. So the page's funnel stays intact and the bot must not
+emit anything resembling it — pressing the real button is the whole job.
+
+> An earlier reading here said the button emitted nothing, based on `digitalData.slice(n)` returning `[]`.
+> That was wrong: the push is asynchronous and the check ran in the same tick. If you re-measure, wait.
+
+**A second event carries the card**, fired in the same tick:
+
+```json
+{ "event": "trackMetadataList",
+  "metadataList": [
+    { "key": "TarjetaSeleccionada", "value": "American Express Platinum BCP LATAM Pass" },
+    { "key": "Flujo", "value": "Flujo Normal" } ] }
+```
+
+So the page already records which card was chosen. **The bot must not duplicate it**: `position` stays the
+fixed `"Elegir Tarjeta"` Marco specified. (An earlier note here proposed appending the code — dropped, the
+data exists and is better sourced at the page.)
+
+> ⚠️ **`Flujo` is the open question for the experiment.** The field exists, which means the page already
+> contemplates more than one flow — but a selection made through the bot still reports **`"Flujo Normal"`**.
+> As it stands, nothing on the page's side tells a bot-driven choice apart from a direct one. Whether that
+> value can become something like `"Flujo Tarjetín"` is BCP's call, not ours. Failing that, attribution
+> means time-correlating their `trackMetadataList` with the bot's `Arbol - TC` click. Raised 2026-09-11.
+
+**A fourth spelling of the card names.** That event says "American Express Platinum **BCP** LATAM Pass",
+where the DOM says "American Express Platinum LATAM Pass" and the bot now matches the DOM. One more reason
+the crosswalk rule is *cross by code, never by name* — see `contenido/tarjetas-catalogo.json`.
+
+**Choosing a card closes the bot for good** (Marco, 2026-09-11). `elegirTarjeta` calls `cerrarDefinitivo()`,
+not `close()`: panel, mask, welcome bubble **and launcher** all go, with no way back — the flow continues on
+the page. This is also what keeps the launcher from floating over the credit-line modal, whose backdrop is
+`z-index: 7001` against the launcher's `9999`. Do not swap it back to `close()`, which deliberately
+*restores* the launcher.
+
+Consequences worth knowing:
+
+- **Both CTAs are `<button type="button">` now, not `<a href>`.** `href`, `target` and `rel` are gone from
+  `createRecommendationMarkup` and `createCardBoxMarkup`; what travels instead is `data-codigo`. The
+  `cta` field is down to `{label}` — a `href` there would do nothing.
+- **The four `q21`–`q24` recommendation blocks carry `codigo: "TCRORL"`**, which they needed to know which
+  button to press. That makes the unfiltered-recommendation problem concrete rather than theoretical: for a
+  user without the Visa Oro there is no native button to click, so **the CTA does nothing** and logs
+  `ELEGIR_TARJETA_SIN_BOTON`. The panel is deliberately *not* closed in that case — closing it with nothing
+  happening would read as the bot breaking. See *Still open*.
+- **The harness fabricates the inner `<button>` too**, and logs the click to its console panel, so the whole
+  path is testable locally. Without it there would be nothing to click in the preview.
 
 ### Lead detection (which cards a user actually has)
 
@@ -872,7 +969,10 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 
 **Blocked on Marco**
 
-- **URLs for the "Elegir tarjeta" CTA.** All four recommendation cards are wired `href: "#"`.
+- **The hardcoded recommendation now has a visible failure mode.** Since the CTA clicks the page's own
+  button, a user without `TCRORL` gets a "Elegir tarjeta" that does nothing at all (logged as
+  `ELEGIR_TARJETA_SIN_BOTON`). Filtering the recommendation by lead — or hiding the CTA when the button is
+  absent — would fix it; Marco has been asked twice and has not decided. Do not change it unprompted.
 - **The recommended card is hardcoded and Priority Pass contradicts itself.** All four comparison screens
   recommend *Visa Oro LATAM Pass*, but that card shows **"No"** in `q24`'s own Priority Pass table, so the
   screen recommends a card without the benefit it is comparing. Marco knows, asked to leave it **static as
@@ -895,15 +995,8 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 
 **Lower-stakes, unconfirmed**
 
-- **`{Flujo} - {Respuesta}` is implemented as the technical id** (`"1 - q11"`), the same shape TC0080
-  already emits on the home. Marco has not confirmed whether analytics wants the screen title instead;
-  it is a one-line change in `trackFinalResponseView`.
-- **The `Elegir Tarjeta` click does not say which card was chosen.** The `position` Marco specified is a
-  fixed literal, so picking the Visa Oro and picking the American Express Black land identically. Raised,
-  not answered.
-- **The thumbs-up/down UI is now dead weight.** Its event was deleted on 2026-09-11 but the CSS, the
-  `renderBotItem` branch and the `[data-response-idx]` handler stayed. No node uses them, so nothing
-  renders. Marco has not said whether to remove them.
+- **`Flujo` always reports `"Flujo Normal"`.** The page's own `trackMetadataList` cannot tell a
+  bot-driven card choice from a direct one. Whether that value can change is BCP's call — ask them.
 - Comparison tables are at `font-size: 13px`. Marco's mockup was rendered wider than the real 374px panel,
   where 14px would wrap long card names onto three lines. Also, his mockup's vertical column divider is
   inset from the row edges; ours is a full-height `border-left`.

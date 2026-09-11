@@ -101,7 +101,6 @@
         ],
         "cta": {
           "label": "Elegir tarjeta",
-          "href": "#",
           "pendiente": "URL real sin definir"
         }
       },
@@ -119,7 +118,7 @@
       ],
       "pendientes": [
         "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
-        "URL del CTA 'Elegir tarjeta': cableado como href '#'.",
+        "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir.",
         "El CTA de la recomendacion no emite analytics: isDiscoverCardCtaOption solo matchea el label literal 'Descubrir si accedo a una tarjeta' y solo mira options. Bloqueado por el prefijo de promotion.name."
       ],
       "notas": [

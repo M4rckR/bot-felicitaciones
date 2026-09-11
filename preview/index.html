@@ -617,12 +617,30 @@
                     doc.body.appendChild(cont);
                 }
 
+                // El <button> de adentro replica la estructura real: en la pagina el
+                // <bcp-button> de Angular envuelve un <button> nativo. Hace falta
+                // porque el CTA "Elegir tarjeta" del bot NO navega: le da click a ese
+                // boton. Sin el no habria forma de comprobar aqui que funciona.
                 cont.innerHTML = seleccion.map(function (codigo) {
                     return '<xt21-card-option>' +
                         '<img alt="" src="/assets/images/congratulations/img/' + codigo + '.svg">' +
-                        '<bcp-button name="QA_Congratulations_BtnSeleccionar_' + codigo + '"></bcp-button>' +
+                        '<bcp-button name="QA_Congratulations_BtnSeleccionar_' + codigo + '">' +
+                        '<button type="button" data-codigo-simulado="' + codigo + '"></button>' +
+                        '</bcp-button>' +
                         '</xt21-card-option>';
                 }).join("");
+
+                // La pagina real navegaria al paso "Donde recibirla". Aqui solo se
+                // deja constancia en el panel de consola.
+                cont.querySelectorAll("[data-codigo-simulado]").forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        pintarLog("info", [
+                            "[preview] click en el boton nativo de " +
+                            this.getAttribute("data-codigo-simulado") +
+                            " — en la pagina real esto avanzaria al siguiente paso"
+                        ]);
+                    });
+                });
             }
 
             // El listado de tarjetas sale del propio bot (config.perfilador), asi que

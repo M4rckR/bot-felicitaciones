@@ -100,7 +100,6 @@
         ],
         "cta": {
           "label": "Elegir tarjeta",
-          "href": "#",
           "pendiente": "URL real sin definir"
         }
       },
@@ -118,7 +117,7 @@
       ],
       "pendientes": [
         "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
-        "URL del CTA 'Elegir tarjeta': cableado como href '#'."
+        "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir."
       ],
       "notas": [
         "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.millas de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"millas\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",

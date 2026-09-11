@@ -279,7 +279,7 @@
         ]
       },
       "pendientes": [
-        "URL del CTA 'Elegir tarjeta' de las cuatro tarjetas: cableado como href '#'. Igual que en q21-q24.",
+        "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir.",
         "BLOQUEANTE PARA EL COMPORTAMIENTO REAL: Visa Infinite Sapphire (caso A, posicion 2), Visa Platinum Qore y Visa Clásica (caso B) no tienen codigo, asi que el bot NO PUEDE detectarlas y NUNCA se muestran, aunque el usuario las tenga aprobadas.",
         "PENDIENTE: que hacer si la deteccion no encuentra ninguna tarjeta. Hoy cae al caso A sin filtrar (config.perfilador.sinDeteccion).",
         "Los codigos de Visa Infinite Sapphire (caso A), Visa Platinum Qore y Visa Clásica (caso B) siguen sin conocerse.",

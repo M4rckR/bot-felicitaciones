@@ -31,69 +31,6 @@
       "2026-09-09: el punto de 'En linea' se queda VERDE (var(--state-success, #6AC90F)), decidido por Marco. El mockup de la primera pantalla lo muestra blanco y el bot de home lo tiene en blanco (bot-actual.html:1035): esa diferencia ya esta resuelta, no volver a levantarla."
     ]
   },
-  "motor": {
-    "descripcion": "Strings en duro dentro del JS. Cambiarlos exige editar el codigo, no config.nodes.",
-    "strings": [
-      {
-        "texto": "Pensando",
-        "linea": 2493,
-        "funcion": "getThinkingText",
-        "notas": "Es el fallback de config.thinking.text. Hoy no se ve nunca: config.thinking.showText esta en false, solo se muestra la animacion de puntos."
-      },
-      {
-        "texto": "Error en el envío",
-        "linea": 3360,
-        "funcion": "renderChat",
-        "notas": "Aparece sobre el ultimo mensaje del usuario cuando se reabre el panel con una transicion pendiente en sessionStorage."
-      },
-      {
-        "texto": "Reintentar",
-        "lineas": [
-          2887,
-          3361
-        ],
-        "funcion": "createMissingNextErrorMarkup / renderChat",
-        "notas": "Dos ocurrencias distintas; cambiar el wording obliga a tocar las dos."
-      },
-      {
-        "texto": "No pudimos continuar esta ruta en este momento.",
-        "linea": 2885,
-        "funcion": "createMissingNextErrorMarkup",
-        "notas": "Se muestra cuando un 'next' apunta a un nodo inexistente. Tras 3 intentos (missingNextNodeMaxRetries) el flujo se reinicia."
-      },
-      {
-        "texto": "Ir al inicio",
-        "lineas": [
-          1296,
-          2861
-        ],
-        "funcion": "config.menuText y fallback de createErrorComponentMarkup",
-        "notas": "Definido en config pero ningun nodo lo usa hoy."
-      },
-      {
-        "texto": "¿Resolví tu consulta?",
-        "linea": 3144,
-        "funcion": "renderChat",
-        "notas": "Fallback del feedbackText de un nodo (pulgar arriba/abajo). Ningun nodo de adobe-target/piloto/bot.html usa feedbackText todavia, asi que hoy no se ve."
-      },
-      {
-        "texto": "Ver la tarjeta anterior / Ver la tarjeta siguiente",
-        "funcion": "createCardsMarkup",
-        "notas": "aria-label de las dos flechas del carrusel de tarjetas del perfilador (2026-09-10). No se ven en pantalla: son solo para lectores de pantalla."
-      },
-      {
-        "texto": "Ir a la tarjeta {n} de {total}",
-        "funcion": "createCardsMarkup",
-        "notas": "aria-label de cada punto indicador del carrusel (2026-09-10). Tampoco se ve en pantalla."
-      },
-      {
-        "texto": "Tarjetas recomendadas",
-        "funcion": "createCardsMarkup",
-        "notas": "aria-label del grupo que envuelve el carrusel (2026-09-10). Solo para lectores de pantalla."
-      }
-    ],
-    "nota_codigo_muerto": "2026-09-10: Marco pidio limpiar el codigo muerto del rating y de type 'mixed', y se elimino por completo. Ya no existen createRating, createRatingReadonly, getRatingStarSvg, paintRatingStars, el handler data-rating, los eventos de analytics del rating, state.rating ni el CSS .tc0091-rating*. Por eso este archivo ya no lista los textos 'Rating', 'Rating seleccionado' ni '{n} estrellas': no estan en el bot. Si el rating vuelve, la referencia es bot-actual.html, no el historial de este archivo."
-  },
   "analytics": {
     "ubicacion": "config.analytics y pushPromotionEvent",
     "experimentCode": "TC0091",

@@ -100,7 +100,6 @@
         ],
         "cta": {
           "label": "Elegir tarjeta",
-          "href": "#",
           "pendiente": "URL real sin definir"
         }
       },
@@ -120,7 +119,7 @@
         "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
         "PROVISIONAL, asumido por Marco el 2026-09-09: la tarjeta recomendada es Visa Oro LATAM Pass, que en la tabla de esta misma pantalla figura como 'No' en Priority Pass. Marco conoce la contradiccion y pidio dejarlo estatico tal cual; mas adelante entregara las CONDICIONES para elegir la tarjeta segun el caso. No cambiarla por iniciativa propia.",
         "Los dos detalles de la tarjeta ('Membresia: S/170' y 'Exoneracion: S/1 mensual') hablan de membresia, no de Priority Pass. En las otras tres pantallas encajan; aqui quedan fuera de tema.",
-        "URL del CTA 'Elegir tarjeta': cableado como href '#'."
+        "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir."
       ],
       "notas": [
         "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.priorityPass de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"priorityPass\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",

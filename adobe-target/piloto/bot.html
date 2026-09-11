@@ -376,129 +376,6 @@
         width: 100%;
     }
 
-    #tc0091-scope .tc0091-chat-item--response {
-        padding: 0;
-        overflow: hidden;
-    }
-
-    #tc0091-scope .tc0091-response-content {
-        padding: 12px;
-    }
-
-    #tc0091-scope .tc0091-response-divider {
-        border-top: 1px solid #D8DFEA;
-    }
-
-    #tc0091-scope .tc0091-response-footer {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-    }
-
-    #tc0091-scope .tc0091-response-label {
-        font-size: 14px;
-        line-height: 20px;
-        color: #4a5568;
-        margin: 0;
-        white-space: nowrap;
-    }
-
-    #tc0091-scope .tc0091-response-actions {
-        display: inline-flex;
-        align-items: center;
-        gap: 14px;
-    }
-
-    #tc0091-scope .tc0091-response-btn {
-        width: 15px;
-        height: 15px;
-        border-radius: 20px;
-        border: 1px solid var(--onsurface-050, #EFF0F2);
-        background: var(--on-white, #FFF);
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        padding: 0;
-        line-height: 0;
-    }
-
-    #tc0091-scope .tc0091-response-btn:hover {
-        background: #F5F8FF;
-    }
-
-    #tc0091-scope .tc0091-response-btn:disabled {
-        opacity: 0.65;
-        cursor: default;
-    }
-
-    #tc0091-scope .tc0091-response-btn.is-selected {
-        background: #EAF1FF;
-    }
-
-    #tc0091-scope .tc0091-response-btn[data-icon-slot="up"].is-selected {
-        border-color: #6AC90F;
-    }
-
-    #tc0091-scope .tc0091-response-btn[data-icon-slot="down"].is-selected {
-        border-color: #CA4500;
-    }
-
-    #tc0091-scope .tc0091-response-btn:focus {
-        outline: none;
-    }
-
-    #tc0091-scope .tc0091-response-btn:focus-visible {
-        outline: 2px solid #0A47F0;
-        outline-offset: 2px;
-    }
-
-    #tc0091-scope .tc0091-response-icon-slot {
-        /* width: 16px; */
-        /* height: 16px; */
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        color: #5f6f8a;
-        font-size: 14px;
-        line-height: 20px;
-        font-weight: 600;
-        border-radius: 20px;
-        border: 1px solid var(--onsurface-050, #EFF0F2);
-        background: var(--on-white, #FFF);
-        padding: 4px;
-    }
-
-    #tc0091-scope .tc0091-response-icon-slot svg {
-        width: 16px;
-        height: 16px;
-    }
-
-    #tc0091-scope .tc0091-response-btn.is-selected .tc0091-response-icon-slot[data-icon-slot="up"] {
-        border: 1px solid var(--state-success, #6AC90F);
-    }
-
-    #tc0091-scope .tc0091-response-btn.is-selected .tc0091-response-icon-slot[data-icon-slot="down"] {
-        border: 1px solid var(--secondary-700, #CA4500);
-    }
-
-    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="up"] {
-        border: 1px solid var(--state-success, #6AC90F);
-    }
-
-    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="up"] svg path {
-        fill: #37A500 !important;
-    }
-
-    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="down"] {
-        border: 1px solid var(--secondary-700, #CA4500);
-    }
-
-    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="down"] svg path {
-        fill: #CA4500 !important;
-    }
-
     #tc0091-scope .tc0091-node-start .tc0091-chat-item-title {
         font-size: 16px;
     }
@@ -523,7 +400,7 @@
     /* Separacion entre parrafos por margin-bottom, no por <br>.
        Unico punto de ajuste del espaciado vertical del texto. */
     /* 16px entre parrafos y tambien despues del ultimo, que es lo que separa
-       el bloque de texto de lo que venga debajo (opciones, feedback, tarjetas).
+       el bloque de texto de lo que venga debajo (opciones, tarjetas).
        Antes eran 8px entre parrafos y 16px solo en el ultimo; Marco pidio la
        misma medida en los dos casos (2026-09-09). */
     #tc0091-scope .tc0091-text-line {
@@ -1654,10 +1531,9 @@
                     maxSinDestacada: 3,
                     maxTarjetas: 4,
                     // CTA comun a todas las tarjetas. Se define una sola vez en vez de
-                    // repetirlo en las 17. Si mas adelante cada tarjeta necesita su
-                    // propia URL, alcanza con darle un cta propio: el suyo gana.
-                    // [PENDIENTE] Marco tiene que dar el destino de "Elegir tarjeta".
-                    cta: { label: "Elegir tarjeta", href: "#" },
+                    // repetirlo en las 17. No lleva destino: el boton acciona el
+                    // "Seleccionar" nativo de la tarjeta, identificada por su codigo.
+                    cta: { label: "Elegir tarjeta" },
                     // [PENDIENTE] Que hacer si no se detecta ninguna tarjeta en el DOM.
                     // Hoy se cae al orden del caso A sin filtrar, que es lo menos malo:
                     // en la pagina real siempre hay al menos una aprobada, asi que una
@@ -2650,8 +2526,10 @@
                                 "Membresía: S/170",
                                 "Exoneración: S/1 mensual en consumo.",
                             ],
-                            // [PENDIENTE] Marco tiene que dar el destino de "Elegir tarjeta".
-                            cta: { label: "Elegir tarjeta", href: "#" },
+                            // TCRORL = Visa Oro LATAM Pass. El CTA no navega: le da
+                            // click al boton "Seleccionar" de esa tarjeta en la pagina.
+                            codigo: "TCRORL",
+                            cta: { label: "Elegir tarjeta" },
                         },
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2676,8 +2554,10 @@
                                 "Membresía: S/170",
                                 "Exoneración: S/1 mensual en consumo.",
                             ],
-                            // [PENDIENTE] Marco tiene que dar el destino de "Elegir tarjeta".
-                            cta: { label: "Elegir tarjeta", href: "#" },
+                            // TCRORL = Visa Oro LATAM Pass. El CTA no navega: le da
+                            // click al boton "Seleccionar" de esa tarjeta en la pagina.
+                            codigo: "TCRORL",
+                            cta: { label: "Elegir tarjeta" },
                         },
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2702,8 +2582,10 @@
                                 "Membresía: S/170",
                                 "Exoneración: S/1 mensual en consumo.",
                             ],
-                            // [PENDIENTE] Marco tiene que dar el destino de "Elegir tarjeta".
-                            cta: { label: "Elegir tarjeta", href: "#" },
+                            // TCRORL = Visa Oro LATAM Pass. El CTA no navega: le da
+                            // click al boton "Seleccionar" de esa tarjeta en la pagina.
+                            codigo: "TCRORL",
+                            cta: { label: "Elegir tarjeta" },
                         },
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2735,8 +2617,10 @@
                                 "Membresía: S/170",
                                 "Exoneración: S/1 mensual en consumo.",
                             ],
-                            // [PENDIENTE] Marco tiene que dar el destino de "Elegir tarjeta".
-                            cta: { label: "Elegir tarjeta", href: "#" },
+                            // TCRORL = Visa Oro LATAM Pass. El CTA no navega: le da
+                            // click al boton "Seleccionar" de esa tarjeta en la pagina.
+                            codigo: "TCRORL",
+                            cta: { label: "Elegir tarjeta" },
                         },
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2944,6 +2828,49 @@
             }
 
             return "";
+        };
+
+        // Devuelve el <button> nativo "Seleccionar" de la tarjeta con ese codigo.
+        //
+        // El boton de la pagina NO es un enlace: es un <bcp-button type="button">
+        // de Angular que ejecuta la logica del SPA (verificado en los snapshots de
+        // referencia/paginas/). No hay href que copiar, asi que el CTA del bot no
+        // navega a ningun lado: le da click al boton de verdad. Asi hace exactamente
+        // lo mismo que la pagina, sea lo que sea, y no hay una URL que mantener
+        // sincronizada si el flujo cambia.
+        Bot.prototype.getNativeCardButton = function (codigo) {
+            if (!codigo) return null;
+
+            var nodos = document.querySelectorAll("xt21-card-option");
+            for (var i = 0; i < nodos.length; i++) {
+                if (this.getCardCodeFromNode(nodos[i]) !== String(codigo).toUpperCase()) continue;
+                // El <button> real vive dentro del <bcp-button>; si el componente
+                // todavia no hidrato, se le da click al host, que reenvia.
+                return nodos[i].querySelector("button") ||
+                    nodos[i].querySelector('[name^="QA_Congratulations_BtnSeleccionar_"]');
+            }
+
+            return null;
+        };
+
+        // Click en "Elegir tarjeta". Cierra el bot y le pasa el control a la pagina.
+        Bot.prototype.elegirTarjeta = function (codigo) {
+            this.trackElegirTarjetaClick();
+
+            var boton = this.getNativeCardButton(codigo);
+
+            if (!boton) {
+                // Pasa si el usuario no es lead de esa tarjeta -hoy, la recomendacion
+                // fija de q21-q24 en quien no tenga la Visa Oro- o si el DOM cambio.
+                // No se cierra el panel: cerrarlo sin que ocurra nada pareceria que
+                // el bot se rompio.
+                this.debugError("ELEGIR_TARJETA_SIN_BOTON", { codigo: codigo || "" });
+                return;
+            }
+
+            // El bot se va del todo: elegida la tarjeta, el flujo sigue en la pagina.
+            this.cerrarDefinitivo();
+            boton.click();
         };
 
         Bot.prototype.getLeadCardCodes = function () {
@@ -3447,20 +3374,33 @@
             return String(node.id || "").length > 2;
         };
 
-        // [POR CONFIRMAR] position = "{Flujo} - {Respuesta}" con el id tecnico:
-        // "1 - q11", "2 - q23". Es el mismo formato que ya usa TC0080 en la home.
-        // Si analitica quiere el titulo de la pantalla en vez del id, se cambia aqui.
+        // position = "{Flujo} - {Respuesta}", con la numeracion de ESTE arbol
+        // (Marco, 2026-09-11), que es la misma con la que se entregan las pantallas
+        // y con la que estan escritos los mockups y correcciones-wording.md:
+        //
+        //   q11 -> "1 - 1.1"     q21 -> "2 - 2.1"     q31 -> "3 - 3.1"
+        //
+        // El id interno "qNN" no sale del snippet. Los ids codifican la profundidad,
+        // asi que la numeracion se deriva: primer digito = rama, el resto = pantalla.
+        Bot.prototype.getPositionArbol = function (nodeId) {
+            var digitos = String(nodeId || "").replace(/\D/g, "");
+            if (!digitos) return "";
+
+            var rama = digitos.charAt(0);
+            // Una hoja mas profunda que 1.1 se leeria "1.1.1"; hoy el arbol solo
+            // llega a dos niveles, pero la regla aguanta si se agrega uno mas.
+            var pantalla = digitos.split("").join(".");
+
+            return rama + " - " + pantalla;
+        };
+
         Bot.prototype.trackFinalResponseView = function (node) {
             if (!this.isRespuestaNode(node)) return;
-
-            var nodeId = String(node.id || "");
-            var firstDigitMatch = nodeId.match(/\d/);
-            var flow = firstDigitMatch ? firstDigitMatch[0] : "";
 
             this.trackPromotionView({
                 name: "Felicitaciones - Cards - Bot - Arbol - " + this.getExperimentCode() + " - P",
                 creative: "Modal",
-                position: flow + " - " + nodeId,
+                position: this.getPositionArbol(node.id),
             });
         };
 
@@ -3607,6 +3547,23 @@
                 this.el.launcher.style.display = "inline-flex";
             }
             this.toggleWelcome(true);
+            this.unlockPageScroll();
+        };
+
+        // Cierre definitivo: se va el panel Y el launcher (Marco, 2026-09-11).
+        // Se usa al elegir tarjeta, donde el bot ya cumplio su funcion y le pasa el
+        // control a la pagina. Es lo que ademas evita que la burbuja quede flotando
+        // sobre el modal de linea de credito, que va en z-index 7001 contra los
+        // 9999 del launcher. No hay vuelta atras: el flujo sigue en la pagina.
+        Bot.prototype.cerrarDefinitivo = function () {
+            this.cancelWaitingTransition();
+            this.clearPendingTransition();
+            this.hidePanel();
+            this.el.mask.style.display = "none";
+            if (this.el.launcher) {
+                this.el.launcher.style.display = "none";
+            }
+            this.toggleWelcome(false);
             this.unlockPageScroll();
         };
 
@@ -3867,64 +3824,15 @@
             });
         };
 
-        Bot.prototype.scrollToLatestFeedbackStart = function () {
-            var body = this.el.body;
-            if (!body) return;
-
-            var feedbackItems = body.querySelectorAll('[data-feedback-anchor="true"]');
-            if (!feedbackItems.length) {
-                this.scrollBodyToBottom();
-                return;
-            }
-
-            var target = feedbackItems[feedbackItems.length - 1];
-            var alignTop = function () {
-                var bodyRect = body.getBoundingClientRect();
-                var targetRect = target.getBoundingClientRect();
-                var delta = targetRect.top - bodyRect.top;
-                body.scrollTop = Math.max(0, body.scrollTop + delta);
-            };
-            var scrollFn = function () {
-                alignTop();
-            };
-
-            scrollFn();
-            requestAnimationFrame(scrollFn);
-            requestAnimationFrame(function () {
-                scrollFn();
-            });
-            setTimeout(scrollFn, 60);
-        };
-
         Bot.prototype.adjustChatScroll = function (node) {
-            // Preserve current viewport when the rerender comes from feedback action click.
             if (this.scrollState && this.scrollState.suppressAdjustOnce) {
                 this.scrollState.suppressAdjustOnce = false;
                 return;
             }
 
             // During waiting transitions, keep the latest UI (thinking + new action)
-            // pinned to the bottom to avoid jumping back to previous feedback blocks.
             if (this.isWaiting()) {
                 this.scrollBodyToBottom();
-                return;
-            }
-
-            var botEntries = (this.state.chatLog || []).filter(function (entry) {
-                return entry && entry.role === "bot";
-            });
-            var lastBot = botEntries.length ? botEntries[botEntries.length - 1] : null;
-            var prevBot = botEntries.length > 1 ? botEntries[botEntries.length - 2] : null;
-
-            var currentIsFeedback = !!(node && node.feedbackText);
-            var followsFeedbackNode =
-                !!lastBot &&
-                !!node &&
-                lastBot.nodeId === node.id &&
-                !!(prevBot && prevBot.feedbackText);
-
-            if (currentIsFeedback || followsFeedbackNode) {
-                this.scrollToLatestFeedbackStart();
                 return;
             }
 
@@ -3986,14 +3894,11 @@
                 role: "bot",
                 nodeId: node.id,
                 nodeType: "question-usage",
-                selectedResponseActionIdx: -1,
                 allowOptionsWhileLinked: false,
                 linkedQuestionMessageId: linkedQuestionMessageId,
                 bubbleClass: node.usageSupportClassName || "tc0091-node-usage-option",
                 title: "",
                 text: node.usageSupportText || "",
-                feedbackText: "",
-                responseActions: [],
                 options: [
                     {
                         label: node.usageMenuOption.label,
@@ -4061,7 +3966,6 @@
                 nodeId: node.id,
                 nodeType: node.type || "",
                 richText: !!node.richText || !!node.comparador,
-                selectedResponseActionIdx: -1,
                 allowOptionsWhileLinked: !!node.usageMenuOption,
                 linkedQuestionMessageId: null,
                 bubbleClass: node.className || "",
@@ -4074,15 +3978,6 @@
                 recommendation: node.recommendation || null,
                 aviso: node.aviso || "",
                 menuText: node.menuText || "",
-                feedbackText: node.feedbackText || "",
-                responseActions: (node.actions || []).map(function (a, idx) {
-                    return {
-                        idx: idx,
-                        label: a.label,
-                        next: a.next,
-                        iconSlot: a.iconSlot,
-                    };
-                }),
                 options: (node.options || []).map(function (o) {
                     return {
                         label: o.label,
@@ -4309,13 +4204,7 @@
 
         Bot.prototype.renderBotItem = function (item, isActiveQuestion, claseEntrada) {
             var self = this;
-            var responseActions = Array.isArray(item.responseActions)
-                ? item.responseActions
-                : [];
             var bubbleClass = item.bubbleClass ? " " + item.bubbleClass : "";
-            if (item.nodeType === "response" || responseActions.length > 0) {
-                bubbleClass += " tc0091-chat-item--response";
-            }
             bubbleClass += claseEntrada || "";
             var title = item.title ? this.escapeHtml(item.title) : "";
             var text = this.escapeHtml(item.text || "");
@@ -4325,25 +4214,17 @@
                 '<div class="tc0091-chat-item tc0091-chat-item--bot' +
                 bubbleClass +
                 '"' +
-                (item.feedbackText ? ' data-feedback-node="true"' : "") +
                 '>';
             if (title) {
                 messageHtml += '<span class="tc0091-chat-item-title">' + title + "</span>";
             }
-            if (item.nodeType === "response" || responseActions.length > 0) {
-                var responseTextHtml = useRichText
+            // richText aplica a cualquier tipo de nodo, tambien a los question.
+            // Antes solo se honraba en "auto" y las tablas salian como texto plano.
+            messageHtml += '<div class="tc0091-chat-item-text">' +
+                (useRichText
                     ? this.formatRichText(item.text || "")
-                    : this.formatPlainText(text);
-                messageHtml += '<div class="tc0091-response-content"><div class="tc0091-chat-item-text">' + responseTextHtml + "</div></div>";
-            } else {
-                // richText aplica a cualquier tipo de nodo, tambien a los question.
-                // Antes solo se honraba en "auto" y las tablas salian como texto plano.
-                messageHtml += '<div class="tc0091-chat-item-text">' +
-                    (useRichText
-                        ? this.formatRichText(item.text || "")
-                        : this.formatPlainText(text)) +
-                    "</div>";
-            }
+                    : this.formatPlainText(text)) +
+                "</div>";
             if (item.cards) {
                 // El id del carrusel es el del mensaje: cada burbuja del hilo
                 // recuerda su propia tarjeta visible entre re-renders.
@@ -4433,78 +4314,9 @@
                 messageHtml += "</div>";
             }
 
-            if (responseActions.length) {
-                messageHtml += '<div class="tc0091-response-divider"></div>';
-                messageHtml += '<div class="tc0091-response-footer">';
-                messageHtml += '<p class="tc0091-response-label">' + self.escapeHtml(item.feedbackText || "¿Resolví tu consulta?") + "</p>";
-                var responseActionsClass = Number(item.selectedResponseActionIdx) >= 0
-                    ? 'tc0091-response-actions tc0091-response-actions--has-selection'
-                    : 'tc0091-response-actions';
-                messageHtml += '<div class="' + responseActionsClass + '">';
-
-                responseActions.forEach(function (action) {
-                    var label = self.escapeHtml(action.label || "");
-                    var iconSlot = self.escapeHtml(action.iconSlot || "");
-                    var selectedClass = Number(item.selectedResponseActionIdx) === Number(action.idx)
-                        ? " is-selected"
-                        : "";
-                    var iconSvgContent = "";
-                    var isSelected = selectedClass.indexOf('is-selected') > -1;
-
-                    if (iconSlot === "up") {
-                        if (isSelected) {
-                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: block;">' +
-                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 13.9997C1.63197 13.9997 1.3335 13.7012 1.3335 13.333V7.99967C1.3335 7.63148 1.63197 7.33301 2.00016 7.33301H4.66683C6.00016 6.44412 6.66683 4.44412 6.66683 3.33301C6.66683 1.99967 7.66683 1.33301 8.66683 1.33301C9.66683 1.33301 10.6668 1.99967 10.6668 3.33301V5.99967H14.0002C14.3684 5.99967 14.6668 6.29815 14.6668 6.66634V13.9997C14.6668 14.3679 14.3684 14.6663 14.0002 14.6663H7.09353C7.03159 14.6663 6.96995 14.6577 6.91038 14.6407L4.66683 13.9997H2.00016ZM8.66683 2.66634C8.24552 2.66634 8.00016 2.88443 8.00016 3.33301C8.00016 4.74359 7.29589 6.97695 6.00016 8.01021V12.9939L7.1869 13.333H13.3335V7.33301H10.6668C9.93045 7.33301 9.3335 6.73605 9.3335 5.99967V3.33301C9.3335 2.88443 9.08814 2.66634 8.66683 2.66634Z" fill="#37A500"/>' +
-                                '</svg>';
-                        } else {
-                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20" fill="none" style="display: block;">' +
-                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 13.9997C1.63197 13.9997 1.3335 13.7012 1.3335 13.333V7.99967C1.3335 7.63148 1.63197 7.33301 2.00016 7.33301H4.66683C6.00016 6.44412 6.66683 4.44412 6.66683 3.33301C6.66683 1.99967 7.66683 1.33301 8.66683 1.33301C9.66683 1.33301 10.6668 1.99967 10.6668 3.33301V5.99967H14.0002C14.3684 5.99967 14.6668 6.29815 14.6668 6.66634V13.9997C14.6668 14.3679 14.3684 14.6663 14.0002 14.6663H7.09353C7.03159 14.6663 6.96995 14.6577 6.91038 14.6407L4.66683 13.9997H2.00016ZM8.66683 2.66634C8.24552 2.66634 8.00016 2.88443 8.00016 3.33301C8.00016 4.74359 7.29589 6.97695 6.00016 8.01021V12.9939L7.1869 13.333H13.3335V7.33301H10.6668C9.93045 7.33301 9.3335 6.73605 9.3335 5.99967V3.33301C9.3335 2.88443 9.08814 2.66634 8.66683 2.66634Z" fill="#4D5B70"/>' +
-                                '</svg>';
-                        }
-                    } else if (iconSlot === "down") {
-                        if (isSelected) {
-                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: block;">' +
-                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 2.00033C1.63197 2.00033 1.3335 2.2988 1.3335 2.66699V8.00033C1.3335 8.36852 1.63197 8.66699 2.00016 8.66699H4.66683C6.00016 9.55588 6.66683 11.5559 6.66683 12.667C6.66683 14.0003 7.66683 14.667 8.66683 14.667C9.66683 14.667 10.6668 14.0003 10.6668 12.667V10.0003H14.0002C14.3684 10.0003 14.6668 9.70185 14.6668 9.33366V2.00033C14.6668 1.63214 14.3684 1.33366 14.0002 1.33366H7.09353C7.03159 1.33366 6.96995 1.34229 6.91038 1.35931L4.66683 2.00033H2.00016ZM8.66683 13.3337C8.24552 13.3337 8.00016 13.1156 8.00016 12.667C8.00016 11.2564 7.29589 9.02305 6.00016 7.98979V3.00606L7.1869 2.66699H13.3335V8.66699H10.6668C9.93045 8.66699 9.3335 9.26395 9.3335 10.0003V12.667C9.3335 13.1156 9.08814 13.3337 8.66683 13.3337Z" fill="#CA4500"/>' +
-                                '</svg>';
-                        } else {
-                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20" fill="none" style="display: block;">' +
-                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 2.00033C1.63197 2.00033 1.3335 2.2988 1.3335 2.66699V8.00033C1.3335 8.36852 1.63197 8.66699 2.00016 8.66699H4.66683C6.00016 9.55588 6.66683 11.5559 6.66683 12.667C6.66683 14.0003 7.66683 14.667 8.66683 14.667C9.66683 14.667 10.6668 14.0003 10.6668 12.667V10.0003H14.0002C14.3684 10.0003 14.6668 9.70185 14.6668 9.33366V2.00033C14.6668 1.63214 14.3684 1.33366 14.0002 1.33366H7.09353C7.03159 1.33366 6.96995 1.34229 6.91038 1.35931L4.66683 2.00033H2.00016ZM8.66683 13.3337C8.24552 13.3337 8.00016 13.1156 8.00016 12.667C8.00016 11.2564 7.29589 9.02305 6.00016 7.98979V3.00606L7.1869 2.66699H13.3335V8.66699H10.6668C9.93045 8.66699 9.3335 9.26395 9.3335 10.0003V12.667C9.3335 13.1156 9.08814 13.3337 8.66683 13.3337Z" fill="#4D5B70"/>' +
-                                '</svg>';
-                        }
-                    }
-
-                    var disabled = Number(item.selectedResponseActionIdx) >= 0 ? " disabled" : "";
-
-                    messageHtml +=
-                        '<button class="tc0091-response-btn' +
-                        selectedClass +
-                        '" type="button" data-response-label="' +
-                        label +
-                        '" data-response-message-id="' +
-                        self.escapeHtml(item.messageId || "") +
-                        '" data-response-idx="' +
-                        action.idx +
-                        '" aria-label="' +
-                        label +
-                        '"' +
-                        disabled +
-                        '>' +
-                        '<span class="tc0091-response-icon-slot" data-icon-slot="' +
-                        iconSlot +
-                        '">' +
-                        iconSvgContent +
-                        '</span>' +
-                        "</button>";
-                });
-
-                messageHtml += "</div>";
-                messageHtml += "</div>";
-            }
-
             messageHtml += "</div>";
 
             var html = '<div class="tc0091-chat-bot-row"' +
-                (item.feedbackText ? ' data-feedback-anchor="true"' : "") +
                 '>' +
                 messageHtml +
                 "</div>";
@@ -4544,16 +4356,17 @@
 
             if (cfg.cta && cfg.cta.label) {
                 var label = this.escapeHtml(cfg.cta.label);
-                var href = this.escapeHtml(cfg.cta.href || "#");
-                var target = this.escapeHtml(cfg.cta.target || "");
-                var rel = target === "_blank" ? ' rel="noopener noreferrer"' : "";
+                // El codigo sale del bloque: es la tarjeta cuyo boton nativo hay que
+                // accionar. Ya no hay href ni target: el CTA no navega.
+                var codigoCta = this.escapeHtml(cfg.codigo || "");
 
                 html += '<div class="tc0091-rec-actions">';
                 if (isActiveQuestion) {
-                    html += '<a class="tc0091-rec-cta" href="' + href + '"' +
-                        (target ? ' target="' + target + '"' : "") +
-                        rel +
-                        ' data-rec-cta="true">' + label + "</a>";
+                    // <button>, no <a>: no navega, le da click al boton nativo de
+                    // la tarjeta. El codigo dice a cual.
+                    html += '<button class="tc0091-rec-cta" type="button"' +
+                        ' data-rec-cta="true" data-codigo="' + codigoCta + '">' +
+                        label + "</button>";
                 } else {
                     html += '<button class="tc0091-rec-cta" type="button" disabled>' + label + "</button>";
                 }
@@ -4653,16 +4466,13 @@
 
             if (cfg.cta && cfg.cta.label) {
                 var label = self.escapeHtml(cfg.cta.label);
-                var href = self.escapeHtml(cfg.cta.href || "#");
-                var target = self.escapeHtml(cfg.cta.target || "");
-                var rel = target === "_blank" ? ' rel="noopener noreferrer"' : "";
+                var codigoCta = self.escapeHtml(cfg.codigo || "");
 
                 html += '<div class="tc0091-card-actions">';
                 if (isActiveQuestion) {
-                    html += '<a class="tc0091-card-cta" href="' + href + '"' +
-                        (target ? ' target="' + target + '"' : "") +
-                        rel +
-                        ' data-card-cta="true">' + label + "</a>";
+                    html += '<button class="tc0091-card-cta" type="button"' +
+                        ' data-card-cta="true" data-codigo="' + codigoCta + '">' +
+                        label + "</button>";
                 } else {
                     html += '<button class="tc0091-card-cta" type="button" disabled>' + label + "</button>";
                 }
@@ -5037,13 +4847,13 @@
 
             // Los dos CTA "Elegir tarjeta" que existen: el de cada tarjeta del
             // perfilador (data-card-cta) y el del recuadro recomendado de q21-q24
-            // (data-rec-cta). Solo se enlazan mientras son <a>: al decaer a <button>
-            // deshabilitado el atributo ya no se emite.
+            // (data-rec-cta). Solo se enlazan mientras el mensaje es la pregunta
+            // activa: al decaer a <button disabled> el atributo ya no se emite.
             this.el.body
                 .querySelectorAll('[data-card-cta="true"], [data-rec-cta="true"]')
-                .forEach(function (link) {
-                    link.addEventListener("click", function () {
-                        self.trackElegirTarjetaClick();
+                .forEach(function (btn) {
+                    btn.addEventListener("click", function () {
+                        self.elegirTarjeta(this.getAttribute("data-codigo"));
                     });
                 });
 
@@ -5052,40 +4862,6 @@
                     self.trackCloseClick();
                     self.close();
                     self.restart();
-                });
-            });
-
-            this.el.body.querySelectorAll("[data-response-idx]").forEach(function (btn) {
-                btn.addEventListener("click", function () {
-                    var messageId = Number(this.getAttribute("data-response-message-id"));
-                    var selectedIdx = Number(this.getAttribute("data-response-idx"));
-
-                    // Actualiza solo el response clickeado, incluso si hay varios en historial.
-                    var updated = false;
-                    for (var i = self.state.chatLog.length - 1; i >= 0; i--) {
-                        var entry = self.state.chatLog[i];
-                        if (
-                            entry &&
-                            entry.role === "bot" &&
-                            Number(entry.messageId) === messageId
-                        ) {
-                            if (Number(entry.selectedResponseActionIdx) >= 0) {
-                                return;
-                            }
-                            // Sin tageo: el evento "Utilidad" se elimino el
-                            // 2026-09-11 por no estar en la lista de Marco.
-                            entry.selectedResponseActionIdx = selectedIdx;
-                            updated = true;
-                            break;
-                        }
-                    }
-
-                    if (updated) {
-                        if (self.scrollState) {
-                            self.scrollState.suppressAdjustOnce = true;
-                        }
-                        self.render();
-                    }
                 });
             });
 
