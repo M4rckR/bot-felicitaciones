@@ -314,6 +314,22 @@
             word-break: break-word;
         }
 
+        .ev--pagina {
+            border-left: 2px solid var(--ui-warn);
+            padding-left: 8px;
+        }
+
+        .ev .tag {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: .06em;
+            color: var(--ui-warn);
+            border: 1px solid var(--ui-warn);
+            border-radius: 3px;
+            padding: 0 4px;
+            margin-left: 4px;
+        }
+
         .ev .k {
             color: var(--ui-accent);
         }
@@ -562,15 +578,40 @@
                 return new Date().toLocaleTimeString("es-PE", { hour12: false });
             }
 
-            function pintarEvento(payload) {
-                var p = (payload && payload.promotion) || {};
+            // El panel muestra dos origenes y hay que poder distinguirlos de un
+            // vistazo: los del BOT, que son los seis que emite el snippet, y los de
+            // la PAGINA, que dispara /felicitaciones por su cuenta al accionar el
+            // boton nativo de una tarjeta. El bot no emite estos ultimos y no debe:
+            // contarian dos veces el mismo click.
+            function pintarEvento(payload, origen) {
+                var ev = (payload && payload.event) || "";
                 var div = document.createElement("div");
-                div.className = "ev";
+                div.className = "ev" + (origen === "pagina" ? " ev--pagina" : "");
+
+                var cuerpo = "";
+                if (payload && payload.promotion) {
+                    var p = payload.promotion;
+                    cuerpo = '<span class="n">' + esc(p.name) + '</span><br>' +
+                        '<span class="m">creative: ' + esc(p.creative) +
+                        ' · position: ' + esc(p.position) + '</span>';
+                } else if (payload && payload.action) {
+                    var a = payload.action;
+                    cuerpo = '<span class="n">' + esc(a.label) + '</span><br>' +
+                        '<span class="m">category: ' + esc(a.category) +
+                        ' · group: ' + esc(a.group) + ' · name: ' + esc(a.name) + '</span>';
+                } else if (payload && payload.metadataList) {
+                    cuerpo = '<span class="m">' + payload.metadataList.map(function (it) {
+                        return esc(it.key) + ": <span class=\"n\">" + esc(it.value) + "</span>";
+                    }).join("<br>") + '</span>';
+                } else if (payload && payload.popup) {
+                    cuerpo = '<span class="n">' + esc(payload.popup.name) + '</span>';
+                }
+
                 div.innerHTML =
                     '<span class="m">' + ahora() + '</span> ' +
-                    '<span class="k">' + esc(payload && payload.event) + '</span><br>' +
-                    '<span class="n">' + esc(p.name) + '</span><br>' +
-                    '<span class="m">creative: ' + esc(p.creative) + ' · position: ' + esc(p.position) + '</span>';
+                    '<span class="k">' + esc(ev) + '</span>' +
+                    (origen === "pagina" ? ' <span class="tag">página</span>' : "") +
+                    '<br>' + cuerpo;
                 elEventos.appendChild(div);
                 elEventos.scrollTop = elEventos.scrollHeight;
             }
@@ -630,17 +671,66 @@
                         '</xt21-card-option>';
                 }).join("");
 
-                // La pagina real navegaria al paso "Donde recibirla". Aqui solo se
-                // deja constancia en el panel de consola.
+                // Al accionar este boton, /felicitaciones emite TRES eventos por su
+                // cuenta (verificados en certi el 2026-09-11). Se replican aqui para
+                // que el panel muestre la secuencia completa que vera analytics, no
+                // solo la mitad que emite el bot.
+                //
+                // OJO: los emite la PAGINA, no el bot. El snippet no los empuja y no
+                // debe: contarian dos veces el mismo click. Por eso van marcados como
+                // "página" en el panel.
                 cont.querySelectorAll("[data-codigo-simulado]").forEach(function (btn) {
                     btn.addEventListener("click", function () {
+                        var codigo = this.getAttribute("data-codigo-simulado");
+
                         pintarLog("info", [
-                            "[preview] click en el boton nativo de " +
-                            this.getAttribute("data-codigo-simulado") +
-                            " — en la pagina real esto avanzaria al siguiente paso"
+                            "[preview] click en el boton nativo de " + codigo +
+                            " — en la pagina real esto abre el modal de linea de credito"
                         ]);
+
+                        eventosDeLaPagina(codigo).forEach(function (p) {
+                            pintarEvento(p, "pagina");
+                        });
                     });
                 });
+            }
+
+            // Los tres eventos tal cual los emite /felicitaciones. El nombre de la
+            // tarjeta sale del catalogo que declara el bot; en la pagina real lo pone
+            // su propio modelo de datos, que ademas intercala un "BCP" que no esta en
+            // el DOM ("Visa Platinum BCP LATAM Pass"). Nada del bot alimenta ese campo.
+            function eventosDeLaPagina(codigo) {
+                var ficha = null;
+                for (var i = 0; i < (catalogo.tarjetas || []).length; i++) {
+                    if (catalogo.tarjetas[i].codigo === codigo) {
+                        ficha = catalogo.tarjetas[i];
+                        break;
+                    }
+                }
+                var nombre = ficha ? String(ficha.nombre || "").replace(/^[^\w¡¿]+/, "").trim() : codigo;
+
+                return [
+                    {
+                        event: "trackAction",
+                        action: {
+                            category: "Opciones Tarjeta",
+                            group: "Cards",
+                            label: "Quiero esta Tarjeta",
+                            name: "Click"
+                        }
+                    },
+                    {
+                        event: "trackMetadataList",
+                        metadataList: [
+                            { key: "TarjetaSeleccionada", value: nombre },
+                            { key: "Flujo", value: "Flujo Normal" }
+                        ]
+                    },
+                    {
+                        event: "trackPopup",
+                        popup: { name: "Cards - Edita tu linea de credito" }
+                    }
+                ];
             }
 
             // El listado de tarjetas sale del propio bot (config.perfilador), asi que

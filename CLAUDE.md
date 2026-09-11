@@ -514,8 +514,11 @@ Consequences worth knowing:
   user without the Visa Oro there is no native button to click, so **the CTA does nothing** and logs
   `ELEGIR_TARJETA_SIN_BOTON`. The panel is deliberately *not* closed in that case — closing it with nothing
   happening would read as the bot breaking. See *Still open*.
-- **The harness fabricates the inner `<button>` too**, and logs the click to its console panel, so the whole
-  path is testable locally. Without it there would be nothing to click in the preview.
+- **The harness fabricates the inner `<button>` too**, so the whole path is testable locally — without it
+  there would be nothing to click in the preview. Since 2026-09-11 it also **replays the page's three
+  events** into the `digitalData` panel, marked `página` with an amber rule, so the panel shows the full
+  sequence analytics will see rather than only the bot's half. They are the harness imitating the page;
+  **the snippet does not emit them and must not**.
 
 ### Lead detection (which cards a user actually has)
 

@@ -59,7 +59,10 @@ ipconfig getifaddr en0               # te da la IP, p. ej. 192.168.1.40
   copia el contenido, así que el preview y la oferta no pueden quedar desincronizados.
 - **Panel de casuística**: simula qué tarjetas tiene aprobadas el cliente, fabricando el mismo DOM que
   publica la página real. Así se ejercita la detección de verdad, no una versión de mentira.
-- **Panel `digitalData`**: muestra cada evento de analítica que el bot empuja, en vivo.
+- **Panel `digitalData`**: muestra cada evento de analítica en vivo, de los dos orígenes. Los del **bot**
+  van en gris; los de la **página** —los tres que dispara `/felicitaciones` sola al elegir una tarjeta— van
+  marcados con una franja ámbar y la etiqueta `página`. El bot no los emite: se replican para que se vea la
+  secuencia completa que recibirá analítica.
 - **Panel de consola**: ahí aparecen los errores de `validateGraph`.
 - **Toggle Desktop / Móvil 390px** en pantalla ancha. En un celular no aparece, porque el ancho ya es real.
 - **La barra de controles no ocupa alto.** Está oculta: el bot se queda con la pantalla entera. Para
