@@ -149,8 +149,7 @@
       "Codigo de Visa Clasica (la pelada): sin el, el bot NO puede detectarla y no se muestra nunca, aunque el usuario la tenga. Marco decidio el 2026-09-10 dejarla asi de momento. Visa Infinite Sapphire (TCRBA7) y Visa Platinum Qore (TCRLY4) ya tienen codigo.",
       "Conflicto de nombre de AMXGRE: la lista de Marco dice 'Amex green', el DOM de certi dibuja 'American Express Black LATAM Pass'. Se mantiene la lectura del DOM.",
       "RESUELTO 2026-09-11: el CTA 'Elegir tarjeta' no navega, le da click al boton 'Seleccionar' nativo de esa tarjeta. Y el bot no tagea ese click: la pagina ya emite trackAction, trackMetadataList y trackPopup por su cuenta.",
-      "Erratas y contradicciones de datos del perfilador (ver docs/correcciones-wording.md, Parte 6)",
-      "Que el campo 'Flujo' de trackMetadataList siempre dice 'Flujo Normal', tambien cuando la tarjeta se eligio desde el bot. Es dato del BCP, no del bot: hay que preguntarles si puede distinguir el origen."
+      "Erratas y contradicciones de datos del perfilador (ver docs/correcciones-wording.md, Parte 6)"
     ]
   }
 }

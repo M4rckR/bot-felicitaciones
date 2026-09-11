@@ -313,9 +313,20 @@ the same click twice:
 { "event": "trackPopup", "popup": { "name": "Cards - Edita tu linea de credito" } }
 ```
 
-The **View** stays, because only the bot knows it offered the card. What is lost is attribution on the
-click: none of the three says it came from the bot — `Flujo` reports `"Flujo Normal"` either way. Pairing a
-click with the bot means correlating it with the `Arbol - TC` View that precedes it. See *Still open*.
+The **View** stays, because only the bot knows it offered the card.
+
+**Attribution is not a problem, and `Flujo` does not need to change** (Marco, 2026-09-11). Analytics already
+knows which session ran the experiment — the Inicio View stamps `- P` or `- C` at the start of it — so
+every later event in that session is attributable by segment. That is also the right unit for an A/B: the
+comparison is *sessions that saw the bot* against *sessions that did not*, not individual clicks. An
+earlier note here proposed asking BCP to add a `"Flujo Tarjetín"` value; dropped as redundant.
+
+**`TarjetaSeleccionada` comes from the page's own data model, not from the bot.** The bot only clicks; the
+page knows which card that button belongs to and names it itself. Worth knowing because it names it
+*differently from its own DOM*: the visible name is built from two `<h3>` ("Visa Platinum" + "LATAM Pass"),
+while the event says "Visa Platinum **BCP** LATAM Pass". That `BCP` appears nowhere in the markup. So
+nothing about the bot's copy can reach that field, and there is nothing to keep in sync — one more reason
+the crosswalk rule is *by code, never by name*.
 
 Three traps worth keeping:
 
@@ -1021,10 +1032,6 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 
 **Lower-stakes, unconfirmed**
 
-- **`Flujo` always reports `"Flujo Normal"`, and that is now the only gap in the funnel.** Since the bot
-  stopped tagging the "Elegir tarjeta" click, the page's three native events are the sole record of it, and
-  none of them says the click came from the bot. Attribution rests on correlating with the `Arbol - TC`
-  View. Whether `Flujo` can carry something like `"Flujo Tarjetín"` is BCP's call — ask them.
 - Comparison tables are at `font-size: 13px`. Marco's mockup was rendered wider than the real 374px panel,
   where 14px would wrap long card names onto three lines. Also, his mockup's vertical column divider is
   inset from the row edges; ours is a full-height `border-left`.
