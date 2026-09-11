@@ -322,11 +322,23 @@ comparison is *sessions that saw the bot* against *sessions that did not*, not i
 earlier note here proposed asking BCP to add a `"Flujo Tarjetín"` value; dropped as redundant.
 
 **`TarjetaSeleccionada` comes from the page's own data model, not from the bot.** The bot only clicks; the
-page knows which card that button belongs to and names it itself. Worth knowing because it names it
-*differently from its own DOM*: the visible name is built from two `<h3>` ("Visa Platinum" + "LATAM Pass"),
-while the event says "Visa Platinum **BCP** LATAM Pass". That `BCP` appears nowhere in the markup. So
-nothing about the bot's copy can reach that field, and there is nothing to keep in sync — one more reason
-the crosswalk rule is *by code, never by name*.
+page knows which card that button belongs to and names it itself, so nothing in the bot's copy can reach
+that field and there is nothing to keep in sync.
+
+**Marco delivered the official value list on 2026-09-11** — 15 names, now in `nombreEnTag` on each card in
+`contenido/tarjetas-catalogo.json` and in `NOMBRE_EN_TAG` in the harness. It is a **fourth spelling**, and
+the reason the crosswalk rule is *by code, never by name*: it inserts `BCP` **before the programme** and
+drops accents — `Visa Clasica BCP LATAM Pass`, `Visa Light BCP`, `American Express Clasica BCP LATAM Pass`.
+Reproduce verbatim; do not "fix" the accents.
+
+Two things fall out of that list, and both matter:
+
+- **It settles `AMXGRE`.** The list contains **American Express Black** and **no Green at all**. Combined
+  with the certi DOM rendering `AMXGRE` as *American Express Black LATAM Pass*, the "Amex green" in Marco's
+  code list is an internal offer label, not the product. The catalogue's reading was right.
+- **Two of the bot's cards are absent from it**: `TCRLY1` (Visa Infinite Qore) and the plain Visa Clásica,
+  which also still has no code. Whether that means they are not selectable on this page, or the list is
+  partial, is worth asking. The 15 that are there map one-to-one onto our codes with no leftovers.
 
 Three traps worth keeping:
 
@@ -1023,9 +1035,8 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
   exoneration scale. Marco re-sent the screen on 2026-09-09 with the same two values, so it is reproduced
   verbatim and still unanswered.
 - Which `cards-felicitaciones-*` mbox delivers the offer.
-- **`AMXGRE`: "Amex green" in Marco's list vs *American Express Black LATAM Pass* in the certi DOM.** Kept
-  as Black on the DOM's evidence. See the card-code bullet under *Facts worth not re-deriving* for what
-  breaks if that reading is wrong.
+- **The official tag list has no "Visa Infinite Qore" and no plain "Visa Clásica".** Every other card maps
+  one-to-one. Either they are not selectable on this page, or the list is partial — worth confirming.
 - **The code for Visa Clásica (plain).** The only card left at `"codigo": null`. Marco chose on 2026-09-10
   to leave it that way: it simply does not render, and it will start appearing on its own once a code
   exists. Nothing to build — just the code.
@@ -1081,13 +1092,11 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
   snapshot**, and **Visa Clásica (plain) as the only card still without a code**. **Absent ≠ nonexistent** —
   a card missing from both snapshots only means neither captured user was a lead for it.
 
-  **One conflict is still unresolved.** Marco's list writes `AMXGRE` as "Amex green", but the certi DOM
-  renders that same code as *American Express Black LATAM Pass* (verified in
-  `referencia/paginas/referencia-certi-con-exp.html`). The catalogue keeps the DOM's reading — `AMXGRE` = American Express Black
-  LATAM Pass — because it is direct evidence, and treats "green" as an internal offer label. If `AMXGRE` turned
-  out to really be an Amex Green, then the American Express Black would have no code and would silently
-  vanish from the three premium casuistries where it appears today (`viajar` case A, `beneficios` case A, `experiencias`
-  case A). Do not resolve this by guessing.
+  **The `AMXGRE` conflict is resolved** (2026-09-11). Marco's code list wrote it as "Amex green", while the
+  certi DOM renders that code as *American Express Black LATAM Pass*. The official `tarjetaseleccionada`
+  list settled it: it contains **American Express Black** and no Green at all. So "green" was an internal
+  offer label, and `AMXGRE` is the Black — which is what the catalogue had assumed from the DOM. The Amex
+  Black keeps its code and stays in the three premium casuistries.
 
   The page lists cards descending by tier (Infinite → Signature → Platinum → Oro → Clásica → Light), and the
   two environments agree on that order.

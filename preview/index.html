@@ -695,19 +695,36 @@
                 });
             }
 
-            // Los tres eventos tal cual los emite /felicitaciones. El nombre de la
-            // tarjeta sale del catalogo que declara el bot; en la pagina real lo pone
-            // su propio modelo de datos, que ademas intercala un "BCP" que no esta en
-            // el DOM ("Visa Platinum BCP LATAM Pass"). Nada del bot alimenta ese campo.
+            // Valores exactos del campo "tarjetaseleccionada", segun la lista oficial
+            // de tags que entrego Marco el 2026-09-11. NO derivan del catalogo del
+            // bot: los escribe el modelo de datos de la pagina, con el "BCP" metido
+            // antes del programa y sin tildes ("Clasica"). Verbatim, no normalizar.
+            //
+            // La lista trae 15 nombres. Faltan dos tarjetas del catalogo del bot:
+            // Visa Infinite Qore (TCRLY1) y la Visa Clasica pelada, que ademas sigue
+            // sin codigo. Si una de esas se elige, el preview cae al codigo.
+            var NOMBRE_EN_TAG = {
+                AMXGRE: "American Express Black BCP LATAM Pass",
+                AMXCLL: "American Express Clasica BCP LATAM Pass",
+                AMXGLL: "American Express Oro BCP LATAM Pass",
+                AMXPLL: "American Express Platinum BCP LATAM Pass",
+                TCRCLL: "Visa Clasica BCP LATAM Pass",
+                TCRLY5: "Visa Clasica BCP Qore",
+                TCRINF: "Visa Infinite Iridium BCP LATAM Pass",
+                TCRBA7: "Visa Infinite Sapphire BCP LATAM Pass",
+                TCRMIN: "Visa Light BCP",
+                TCRORL: "Visa Oro BCP LATAM Pass",
+                TCRLY3: "Visa Oro BCP Qore",
+                TCRPLL: "Visa Platinum BCP LATAM Pass",
+                TCRLY4: "Visa Platinum BCP Qore",
+                TCRPL1: "Visa Signature BCP LATAM Pass",
+                TCRLY2: "Visa Signature BCP Qore"
+            };
+
+            // Los tres eventos tal cual los emite /felicitaciones al accionar el boton
+            // nativo. El bot no los empuja: los imita el harness.
             function eventosDeLaPagina(codigo) {
-                var ficha = null;
-                for (var i = 0; i < (catalogo.tarjetas || []).length; i++) {
-                    if (catalogo.tarjetas[i].codigo === codigo) {
-                        ficha = catalogo.tarjetas[i];
-                        break;
-                    }
-                }
-                var nombre = ficha ? String(ficha.nombre || "").replace(/^[^\w¡¿]+/, "").trim() : codigo;
+                var nombre = NOMBRE_EN_TAG[codigo] || codigo;
 
                 return [
                     {

@@ -27,13 +27,14 @@
     "advertencia_cruce": "Cruzar SIEMPRE por codigo, nunca por nombre. Desde el 2026-09-11 el bot escribe la marca completa y con tildes, asi que nombreEnElBot coincide letra por letra con nombreDom en las seis tarjetas donde hay snapshot; la que sigue divergiendo es afinidad-tarjetas.json, que abrevia y va sin tildes ('Amex Clasica LATAM Pass' vs 'American Express Clásica LATAM Pass'). Esa coincidencia es de hoy y puede romperse con el proximo cambio de copy: no cruzar por nombre igual. Y hay una CUARTA grafia, verificada el 2026-09-11: el evento trackMetadataList que la pagina dispara al elegir tarjeta intercala un 'BCP': 'American Express Platinum BCP LATAM Pass', 'Visa Platinum BCP LATAM Pass'. Ese 'BCP' NO esta en el DOM: el nombre visible se arma con dos <h3> ('Visa Platinum' + 'LATAM Pass'), asi que el evento sale del modelo de datos interno de la pagina, no del markup. El bot no alimenta ese campo y no hay nada que sincronizar.",
     "pendiente_confirmar": [
       "Falta el codigo de UNA sola tarjeta: Visa Clasica (a secas). Sin codigo el bot no la detecta y no se muestra nunca, y Marco decidio el 2026-09-10 dejarla asi de momento: cuando le asignen codigo empezara a incluirse sola. Visa Platinum Qore ya tiene su codigo (TCRLY4), entregado ese mismo dia. La lista del 2026-09-10 trae 16 codigos y confirma TCRLY5 (Visa Clasica Qore), que hasta entonces se sostenia solo con la evidencia del snapshot de produccion.",
-      "CONFLICTO DE NOMBRE sin resolver: en la lista de Marco del 2026-09-10, AMXGRE figura como 'TC oferta: Amex green', pero el DOM de certi renderiza ese mismo codigo como 'American Express Black LATAM Pass' (verificado en referencia-certi-con-exp.html). El catalogo mantiene la lectura del DOM (AMXGRE = Amex Black LATAM Pass) porque es evidencia directa, y 'green' se interpreta como etiqueta interna de la oferta. Si resultara que AMXGRE es de verdad una Amex Green, entonces la Amex Black se queda sin codigo y desaparece de las tres casuisticas premium donde hoy figura (viajar casoA, beneficios casoA, experiencias casoA).",
       "Los cuatro criterios ya tienen su orden entregado e implementado (2026-09-09). Lo que sigue sin confirmar es que pasa en el caso A cuando el usuario NO tiene la Visa Oro: hoy se muestran 3 tarjetas y no se rellena con una cuarta.",
       "DATO DE CONTRASTE: la pagina escribe la membresia de Visa Light como 'S/ 0'; la tabla q22 la escribe como '0' pelado. Los montos de las otras tres tarjetas de produccion (AMXCLL, TCRCLL, TCRLY5) coinciden exactamente con los de Marco: S/80. Informativo, NO se corrige sin su aprobacion.",
       "DUDA DE DATO ya planteada a Marco y sin respuesta: la exoneracion de Visa Clasica Qore (S/80) y Visa Oro Qore (S/170) coincide con sus montos de MEMBRESIA, no con la escala de exoneracion que usan las demas Qore. Reproducido verbatim.",
       "Que significan data-lead-program ('LAN' en los dos entornos) y data-profit-type ('.' en produccion, 'GRUP20' en certi). Parecen segmentos, pero es una lectura de dos snapshots, no un dato confirmado.",
-      "De afinidad-tarjetas.json siguen abiertos: si el 5 es tope duro o solo orden relativo, y que significan las 12 tarjetas en negrita del original."
-    ]
+      "De afinidad-tarjetas.json siguen abiertos: si el 5 es tope duro o solo orden relativo, y que significan las 12 tarjetas en negrita del original.",
+      "La lista oficial de 'tarjetaseleccionada' (Marco, 2026-09-11) trae 15 nombres y NO incluye Visa Infinite Qore (TCRLY1) ni la Visa Clasica pelada. Las otras 15 mapean una a una con nuestros codigos. Falta confirmar si esas dos no son seleccionables en esta pagina o si la lista esta incompleta."
+    ],
+    "fuentes_de_nombre": "Cuatro grafias distintas del mismo producto, todas verificadas: nombreDom (lo que imprime la pagina), nombreEnElBot (lo que muestra el asistente), nombreEnAfinidad (la tabla que entrego Marco) y nombreEnTag (el valor del campo 'tarjetaseleccionada' en analytics, lista oficial del 2026-09-11: mete 'BCP' antes del programa y va sin tildes). Por eso el cruce SIEMPRE es por codigo."
   },
   "reglas": {
     "deteccionLead": "Si el codigo de la tarjeta esta presente en el DOM de /felicitaciones, el usuario es lead (candidato) de esa tarjeta. No hay que inferir nada mas.",
@@ -44,7 +45,8 @@
       "nombreEnElBot": "Visa Oro LATAM Pass",
       "ubicacion": "va en la lista de tarjetas (createCardsMarkup) con badge 'La más usada', que es lo que le pone el borde verde. No usa el bloque createRecommendationMarkup de q21-q24, aunque se vea igual.",
       "condicion": "solo se muestra si TCRORL esta presente en el DOM. Si el usuario no es lead de la Oro, no aparece.",
-      "evidencia": "TCRORL esta en los snapshots de certi pero NO en los de produccion: ese usuario no la tiene disponible. Es la casuistica exacta que describio Marco el 2026-09-09."
+      "evidencia": "TCRORL esta en los snapshots de certi pero NO en los de produccion: ese usuario no la tiene disponible. Es la casuistica exacta que describio Marco el 2026-09-09.",
+      "nombreEnTag": "Visa Oro BCP LATAM Pass"
     },
     "ordenDeSeleccion": "Lo entrega Marco pantalla por pantalla, como una lista ordenada. NO se calcula por afinidad ni por iniciativa propia. Ver casuisticasPorCriterio.",
     "fase": "Estatica primero: el contenido lo entrega Marco pantalla por pantalla con su mockup. La deteccion real de leads en runtime llega despues."
@@ -146,7 +148,8 @@
       "priorityPass": "Sí",
       "vistaEn": [
         "certi"
-      ]
+      ],
+      "nombreEnTag": "Visa Infinite Iridium BCP LATAM Pass"
     },
     {
       "codigo": "TCRLY1",
@@ -187,7 +190,8 @@
       "vistaEn": [
         "certi"
       ],
-      "nota": "Las cuatro tablas del bot la escriben sin el 'Pass' final que si llevan todas las demas. El DOM si lo incluye. Reproducido verbatim, planteado a Marco."
+      "nota": "Las cuatro tablas del bot la escriben sin el 'Pass' final que si llevan todas las demas. El DOM si lo incluye. Reproducido verbatim, planteado a Marco.",
+      "nombreEnTag": "American Express Black BCP LATAM Pass"
     },
     {
       "codigo": "TCRPL1",
@@ -207,7 +211,8 @@
       "priorityPass": "Sí",
       "vistaEn": [
         "certi"
-      ]
+      ],
+      "nombreEnTag": "Visa Signature BCP LATAM Pass"
     },
     {
       "codigo": "TCRLY2",
@@ -227,7 +232,8 @@
       "priorityPass": "Sí",
       "vistaEn": [
         "certi"
-      ]
+      ],
+      "nombreEnTag": "Visa Signature BCP Qore"
     },
     {
       "codigo": "AMXPLL",
@@ -247,7 +253,8 @@
       "priorityPass": "No",
       "vistaEn": [
         "certi"
-      ]
+      ],
+      "nombreEnTag": "American Express Platinum BCP LATAM Pass"
     },
     {
       "codigo": "TCRPLL",
@@ -267,7 +274,8 @@
       "priorityPass": "No",
       "vistaEn": [
         "certi"
-      ]
+      ],
+      "nombreEnTag": "Visa Platinum BCP LATAM Pass"
     },
     {
       "codigo": "AMXGLL",
@@ -287,7 +295,8 @@
       "priorityPass": "No",
       "vistaEn": [
         "certi"
-      ]
+      ],
+      "nombreEnTag": "American Express Oro BCP LATAM Pass"
     },
     {
       "codigo": "TCRORL",
@@ -308,7 +317,8 @@
       "vistaEn": [
         "certi"
       ],
-      "nota": "ES LA TARJETA DE LA REGLA: la cuarta del perfilador, siempre en el recuadro verde y solo si el usuario la tiene. Tambien es la que q21-q24 recomiendan de forma fija. NO esta en el snapshot de produccion. Su fila de millas escribe 'Milla' con mayuscula, verbatim de Marco."
+      "nota": "ES LA TARJETA DE LA REGLA: la cuarta del perfilador, siempre en el recuadro verde y solo si el usuario la tiene. Tambien es la que q21-q24 recomiendan de forma fija. NO esta en el snapshot de produccion. Su fila de millas escribe 'Milla' con mayuscula, verbatim de Marco.",
+      "nombreEnTag": "Visa Oro BCP LATAM Pass"
     },
     {
       "codigo": "TCRLY3",
@@ -329,7 +339,8 @@
       "vistaEn": [
         "certi"
       ],
-      "nota": "Su exoneracion (S/170) coincide con su membresia, no con la escala de exoneracion de las demas Qore. Duda de dato abierta con Marco, reproducida verbatim."
+      "nota": "Su exoneracion (S/170) coincide con su membresia, no con la escala de exoneracion de las demas Qore. Duda de dato abierta con Marco, reproducida verbatim.",
+      "nombreEnTag": "Visa Oro BCP Qore"
     },
     {
       "codigo": "AMXCLL",
@@ -351,7 +362,8 @@
         "produccion",
         "certi"
       ],
-      "nota": "Es la favorita (data-card-recomended) del usuario del snapshot de produccion. El DOM confirma su membresia de S/ 80 y su exoneracion con S/1 mensual."
+      "nota": "Es la favorita (data-card-recomended) del usuario del snapshot de produccion. El DOM confirma su membresia de S/ 80 y su exoneracion con S/1 mensual.",
+      "nombreEnTag": "American Express Clasica BCP LATAM Pass"
     },
     {
       "codigo": "TCRCLL",
@@ -372,7 +384,8 @@
       "vistaEn": [
         "produccion",
         "certi"
-      ]
+      ],
+      "nombreEnTag": "Visa Clasica BCP LATAM Pass"
     },
     {
       "codigo": "TCRLY5",
@@ -393,7 +406,8 @@
       "vistaEn": [
         "produccion"
       ],
-      "nota": "Unica tarjeta que aporta el snapshot de produccion y que certi no tiene. Su exoneracion (S/80) coincide con su membresia: misma duda de dato que Visa Oro Qore."
+      "nota": "Unica tarjeta que aporta el snapshot de produccion y que certi no tiene. Su exoneracion (S/80) coincide con su membresia: misma duda de dato que Visa Oro Qore.",
+      "nombreEnTag": "Visa Clasica BCP Qore"
     },
     {
       "codigo": "TCRMIN",
@@ -415,7 +429,8 @@
         "produccion",
         "certi"
       ],
-      "nota": "La tabla q22 escribe su membresia como '0' pelado, sin 'S/', a diferencia de todas las demas. El DOM la escribe 'S/ 0'. Verbatim, planteado a Marco."
+      "nota": "La tabla q22 escribe su membresia como '0' pelado, sin 'S/', a diferencia de todas las demas. El DOM la escribe 'S/ 0'. Verbatim, planteado a Marco.",
+      "nombreEnTag": "Visa Light BCP"
     },
     {
       "codigo": null,
@@ -453,7 +468,8 @@
       "millas": "Hasta 1.5 millas por $1",
       "priorityPass": "Sí",
       "vistaEn": [],
-      "nota": "Codigo entregado por Marco el 2026-09-09. NO aparece en ninguno de los cuatro snapshots, asi que su nombre en el DOM no esta verificado."
+      "nota": "Codigo entregado por Marco el 2026-09-09. NO aparece en ninguno de los cuatro snapshots, asi que su nombre en el DOM no esta verificado.",
+      "nombreEnTag": "Visa Infinite Sapphire BCP LATAM Pass"
     },
     {
       "codigo": "TCRLY4",
@@ -472,7 +488,8 @@
       "millas": "No Aplica",
       "priorityPass": "No",
       "vistaEn": [],
-      "nota": "Codigo entregado por Marco el 2026-09-10 ('TC oferta: Qore platinum'). NO aparece en ninguno de los cuatro snapshots, asi que su nombre en el DOM no esta verificado. Antes estaba en null y por eso nunca se mostraba."
+      "nota": "Codigo entregado por Marco el 2026-09-10 ('TC oferta: Qore platinum'). NO aparece en ninguno de los cuatro snapshots, asi que su nombre en el DOM no esta verificado. Antes estaba en null y por eso nunca se mostraba.",
+      "nombreEnTag": "Visa Platinum BCP Qore"
     }
   ],
   "casuisticasPorCriterio": {
