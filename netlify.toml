@@ -1,0 +1,63 @@
+# ============================================================================
+# Netlify - preview de Tarjetin (TC0091)
+# ============================================================================
+#
+# Este sitio existe para UNA cosa: que el preview del bot se pueda abrir desde
+# cualquier navegador, incluido un movil, sin levantar un servidor local.
+#
+# No hay build: son archivos estaticos. Netlify no tiene que instalar ni
+# compilar nada.
+#
+# >> LO QUE SE PUBLICA <<
+# Se publica la carpeta "publicado/", que el script de abajo arma copiando
+# UNICAMENTE lo que el preview necesita:
+#
+#     preview/               el harness
+#     adobe-target/piloto/   la oferta, que el harness lee por fetch
+#
+# >> LO QUE NO SE PUBLICA, Y POR QUE <<
+# referencia/paginas/*.html son capturas reales de /felicitaciones y contienen
+# DATOS DE CLIENTES REALES: nombre completo (data-client-name) y linea de
+# credito aprobada (data-credit-line). Publicarlas seria exponer datos
+# personales de clientes del BCP en una URL abierta. NO agregarlas al copiado
+# de abajo por ningun motivo, ni siquiera "temporalmente para probar algo".
+#
+# Tampoco se publican contenido/ ni docs/: son material de trabajo interno y
+# el bot no los lee nunca.
+# ============================================================================
+
+[build]
+  # Se arma un directorio limpio en vez de publicar la raiz: asi lo publicado
+  # es una lista blanca explicita y no algo de lo que haya que ir excluyendo
+  # archivos a medida que el repo crece.
+  command = """
+    rm -rf publicado &&
+    mkdir -p publicado/adobe-target/piloto &&
+    cp -R preview publicado/preview &&
+    cp adobe-target/piloto/bot.html publicado/adobe-target/piloto/bot.html
+  """
+  publish = "publicado"
+
+# La raiz del sitio abre el preview directamente.
+[[redirects]]
+  from = "/"
+  to = "/preview/"
+  status = 302
+
+# El harness pide la oferta con ?t=<timestamp> para saltarse la cache. Netlify
+# igual podria cachearla, asi que se le dice explicitamente que no.
+[[headers]]
+  for = "/adobe-target/piloto/bot.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/preview/index.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+# Este preview no es publico: no deberia aparecer en buscadores.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"

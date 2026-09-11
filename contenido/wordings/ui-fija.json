@@ -4,14 +4,14 @@
     "estado": "completo"
   },
   "launcher": {
-    "ubicacion": "markup, bot-nuevo.html lineas 1207-1233",
+    "ubicacion": "markup, adobe-target/piloto/bot.html lineas 1207-1233",
     "burbuja_bienvenida": {
       "lineas_de_texto": [
         "¡Hola! Soy Tarjetín. &#128075;",
         "¿En qué te puedo ayudar?"
       ],
       "notas": [
-        "Se emiten como dos <span class='tcxxxx-welcome-line'>, no con <br>: el motor no usa <br> en ninguna parte.",
+        "Se emiten como dos <span class='tc0091-welcome-line'>, no con <br>: el motor no usa <br> en ninguna parte.",
         "Aqui SI lleva '¡' de apertura, a diferencia del saludo de q0 ('Hola! 👋 Soy Tarjetín.'). Marco confirmo que la diferencia es intencional: q0 calca el mockup."
       ]
     },
@@ -19,7 +19,7 @@
     "aria_label_boton": "Abrir bot"
   },
   "panel": {
-    "ubicacion": "markup, bot-nuevo.html lineas 1235-1270",
+    "ubicacion": "markup, adobe-target/piloto/bot.html lineas 1235-1270",
     "aria_label": "Bot determinístico",
     "titulo_cabecera": "Asistente Virtual",
     "estado_cabecera": "En línea",
@@ -74,7 +74,7 @@
         "texto": "¿Resolví tu consulta?",
         "linea": 3144,
         "funcion": "renderChat",
-        "notas": "Fallback del feedbackText de un nodo (pulgar arriba/abajo). Ningun nodo de bot-nuevo.html usa feedbackText todavia, asi que hoy no se ve."
+        "notas": "Fallback del feedbackText de un nodo (pulgar arriba/abajo). Ningun nodo de adobe-target/piloto/bot.html usa feedbackText todavia, asi que hoy no se ve."
       },
       {
         "texto": "Ver la tarjeta anterior / Ver la tarjeta siguiente",
@@ -92,15 +92,15 @@
         "notas": "aria-label del grupo que envuelve el carrusel (2026-09-10). Solo para lectores de pantalla."
       }
     ],
-    "nota_codigo_muerto": "2026-09-10: Marco pidio limpiar el codigo muerto del rating y de type 'mixed', y se elimino por completo. Ya no existen createRating, createRatingReadonly, getRatingStarSvg, paintRatingStars, el handler data-rating, los eventos de analytics del rating, state.rating ni el CSS .tcxxxx-rating*. Por eso este archivo ya no lista los textos 'Rating', 'Rating seleccionado' ni '{n} estrellas': no estan en el bot. Si el rating vuelve, la referencia es bot-actual.html, no el historial de este archivo."
+    "nota_codigo_muerto": "2026-09-10: Marco pidio limpiar el codigo muerto del rating y de type 'mixed', y se elimino por completo. Ya no existen createRating, createRatingReadonly, getRatingStarSvg, paintRatingStars, el handler data-rating, los eventos de analytics del rating, state.rating ni el CSS .tc0091-rating*. Por eso este archivo ya no lista los textos 'Rating', 'Rating seleccionado' ni '{n} estrellas': no estan en el bot. Si el rating vuelve, la referencia es bot-actual.html, no el historial de este archivo."
   },
   "analytics": {
     "ubicacion": "config.analytics y pushPromotionEvent",
-    "experimentCode": "TCXXXX",
-    "prefijo_promotion_name": "[[PAGINA]] - Cards - Bot - ...",
+    "experimentCode": "TC0091",
+    "prefijo_promotion_name": "Felicitaciones - Cards - Bot - ...",
     "pendientes": [
       "El prefijo es un placeholder: la convencion real para una pagina que no es home tiene que darla Marco.",
-      "TCXXXX se reemplaza en un solo pase junto con el namespace tcxxxx-, #tcxxxx-scope, la clave tcxxxx_pending_transition y window.tcxxxxSetMode."
+      "TC0091 se reemplaza en un solo pase junto con el namespace tc0091-, #tc0091-scope, la clave tc0091_pending_transition y window.tc0091SetMode."
     ]
   },
   "pendientes_globales": [

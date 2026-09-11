@@ -1,6 +1,6 @@
 # Correcciones y decisiones — Tarjetín, bot de /felicitaciones
 
-**Última actualización:** 2026-09-09
+**Última actualización:** 2026-09-11
 
 ---
 
@@ -62,7 +62,7 @@ Cada corrección de la lista siguiente toca lo mínimo posible: en ningún caso 
 
 ## Parte 1 — Correcciones de redacción
 
-**11 correcciones sobre 10 pantallas.** Todas aprobadas. Son de redacción la 1-6 y la 8-10; la 7 y la 11 son unificaciones.
+**12 correcciones sobre 10 pantallas.** Todas aprobadas. Son de redacción la 1-6, la 8-10 y la 12; la 7 y la 11 son unificaciones.
 
 ### 1. Inicio — concordancia de número
 
@@ -194,26 +194,50 @@ Con esto **todo el bot cierra igual**: las cuatro de comparar y las tres de Reso
 | **Dice** | Visa **Infinite** Qore |
 | **Regla** | "Infinite" es parte del nombre de la tarjeta y en el resto del bot va con mayúscula. |
 
-### 11. Todo el bot — se unifica "Amex"
+### 11. Todo el bot — la marca se escribe "American Express"
 
 | | |
 | --- | --- |
 | **Decía** | **AMEX** Clásica LATAM Pass, **AMEX** Oro, **AMEX** Platinum, **AMEX** Black |
-| **Dice** | **Amex** Clásica LATAM Pass, **Amex** Oro, **Amex** Platinum, **Amex** Black |
-| **Motivo** | No es una errata: es una unificación. La marca se escribe con una sola grafía en todo el bot. |
+| **Dijo un tiempo** | **Amex** Clásica LATAM Pass, **Amex** Oro, **Amex** Platinum, **Amex** Black |
+| **Dice** | **American Express** Clásica LATAM Pass, **American Express** Oro, **American Express** Platinum, **American Express** Black |
+| **Motivo** | No es una errata: es una unificación. La marca va con su nombre completo en todo el bot, sin abreviar. |
 
-La pantalla 1.1 llegó con las dos formas mezcladas ("Amex Black" y "AMEX Platinum" en la misma lista). Se
-eligió **"Amex"** y se aplicó también a **las cuatro tablas de comparar**, que decían "AMEX". Son 16 filas
-ya aprobadas que cambian solo en esa palabra.
+Esto pasó en dos tiempos. La pantalla 1.1 llegó con las dos abreviaturas mezcladas ("Amex Black" y "AMEX
+Platinum" en la misma lista); el **2026-09-09** se eligió **"Amex"** y se aplicó también a las cuatro tablas
+de comparar, que decían "AMEX". El **2026-09-11** Marco pidió el **nombre completo, "American Express"**, y
+se reemplazaron todas: ninguna pantalla del bot dice ya "Amex" ni "AMEX".
 
-> **Lo que sigue sin resolver:** en el perfilador la tarjeta se llama "Amex Black LATAM **Pass**" y en las
-> cuatro tablas "Amex Black LATAM", sin el "Pass" final que sí llevan todas las demás. La unificación fue de
-> mayúsculas, no de nombres.
+Son **33 textos visibles**: las 16 filas de las cuatro tablas de comparar, los 16 nombres de tarjeta del
+perfilador (1.1–1.4) y una viñeta de la American Express Oro LATAM Pass que decía "beneficios AMEX".
+
+> **Conviene mirarlo en pantalla.** El nombre completo es ~10 caracteres más largo que "Amex". En las tablas
+> de comparar, que van a 13px dentro de un panel de 374px, "American Express Platinum LATAM Pass" es ahora la
+> fila más larga del bot y es probable que ocupe tres líneas.
 
 **Se aplicó el mismo criterio a dos grafías más, y esto sí conviene confirmarlo:** los textos de las
 pantallas 1.2, 1.3 y 1.4 escriben en algunos lugares **"Latam"** en vez de "LATAM", y **"Shapphire"** en vez
 de "Sapphire". Los nombres de tarjeta se dejaron con la grafía única que ya usa el resto del bot. Si alguna
 de esas formas era intencional, hay que decirlo.
+
+### 12. Las cuatro tablas de comparar — se completa el "Pass" que faltaba
+
+| | |
+| --- | --- |
+| **Decía** | American Express Black **LATAM** |
+| **Dice** | American Express Black **LATAM Pass** |
+| **Regla** | El nombre completo del producto lleva "Pass". Era la única fila de las cuatro tablas a la que le faltaba. |
+
+Esta tarjeta se llamaba distinto según la pantalla: en el perfilador (1.1) *"American Express Black LATAM
+**Pass**"* y en las cuatro tablas de comparar *"American Express Black LATAM"*, sin el final. Todas las demás
+filas LATAM Pass de esas tablas sí lo llevaban. Se completó el 2026-09-11 y **los dos nombres ya coinciden**.
+
+Son 4 filas, una por tabla. Las tarjetas Qore, la Visa Light y la Visa Clásica siguen sin "LATAM Pass"
+porque no son de ese programa: eso no es una falta, es el nombre correcto.
+
+*Efecto lateral que vale la pena saber:* con la marca completa y el "Pass" puesto, **los nombres que muestra
+el bot ahora coinciden letra por letra con los que imprime la propia página** en las tarjetas de las que
+tenemos captura. Antes no era así.
 
 ### Nota sobre la corrección 4
 
@@ -453,7 +477,7 @@ catálogo, **16 ya tienen código**.
 > ⚠️ **Un nombre por confirmar.** El código `AMXGRE` figura en la lista de códigos como "Amex green", pero
 > la página de /felicitaciones lo dibuja como **American Express Black LATAM Pass**. El bot se guía por lo
 > que dibuja la página, que es evidencia directa. Si resultara que `AMXGRE` es de verdad una Amex Green,
-> entonces la Amex Black se quedaría sin código y desaparecería de las tres pantallas del perfilador donde
+> entonces la American Express Black se quedaría sin código y desaparecería de las tres pantallas del perfilador donde
 > hoy figura (1.1, 1.3 y 1.4).
 
 ### Las tablas de comparar ahora muestran solo tus tarjetas
@@ -478,7 +502,7 @@ entregados el 2026-09-09.
 | 1.2, caso sin tarjetas de ahorro | Visa Infinite Qore: "Exoneración consumiendo **S/5,00** al mes" | Le falta un cero. La Iridium, en la misma lista y con la misma membresía de S/500, dice S/5,000. |
 | 1.3 | Visa Platinum Qore: "**Acumua** hasta 1.5 Puntos Qore" | Errata de tipeo: "Acumula". |
 | 1.4 | Visa Platinum Qore: "por cada $1 **e** consumo" | Falta la "d": "de consumo". |
-| 1.3, caso sin tarjetas de beneficios | Visa Clásica: "**Tarjeta premium para viajes y acumulación de millas**" | Se contradice con sus propias viñetas, que dicen "Tarjeta básica para compras y financiamiento". Además es exactamente la frase que describe a la AMEX Platinum en 1.2: parece un copiar-pegar. |
+| 1.3, caso sin tarjetas de beneficios | Visa Clásica: "**Tarjeta premium para viajes y acumulación de millas**" | Se contradice con sus propias viñetas, que dicen "Tarjeta básica para compras y financiamiento". Además es exactamente la frase que describe a la American Express Platinum en 1.2: parece un copiar-pegar. |
 
 **Dos tarjetas acumulan distinto según la pantalla:**
 
@@ -494,7 +518,7 @@ dos caminos distintos del bot.
 tiene una línea del tipo *"Ideal para quienes…"*, separada de las viñetas por un espacio en blanco. En
 siete casos ese espacio no venía, así que **todo el contenido entró como viñetas** y esas tarjetas no
 tienen frase de presentación: en 1.3 la Visa Clásica y la Visa Light; en 1.4 la Visa Clásica LATAM Pass, la
-AMEX Clásica LATAM Pass, la Visa Clásica Qore, la Visa Clásica y la Visa Light.
+American Express Clásica LATAM Pass, la Visa Clásica Qore, la Visa Clásica y la Visa Light.
 
 **Un emoji distinto:** en 1.3 la Visa Infinite Qore lleva 🥇 en vez del 💳 que llevan las otras 59
 tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mismo emoji.
@@ -503,7 +527,6 @@ tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mi
 
 | Qué | Detalle |
 | --- | --- |
-| Nombre de tarjeta | "AMEX Black LATAM" aparece sin el "Pass" final que sí llevan todas las demás, en las cuatro tablas. |
 | Orden de las tarjetas | Las tablas no listan las tarjetas en el mismo orden entre sí. Se respetó el orden de cada mockup sin unificarlos. |
 
 ### Decisiones de flujo pendientes
@@ -512,7 +535,7 @@ tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mi
 | --- | --- |
 | Las tres preguntas retiradas | ¿Salen del bot definitivamente o reaparecen en otra pantalla? |
 | Última burbuja del flujo | Dice "¿Qué deseas hacer ahora?" con un único botón "Cerrar", y por la regla de ancho ocupa el 100%, lo que la deja con mucho espacio vacío. Falta decidir si se deja pareja con los demás menús o se hace una excepción. |
-| **Priority Pass recomienda una tarjeta que no tiene Priority Pass** | Las cuatro pantallas de comparación recomiendan la misma tarjeta: **Visa Oro LATAM Pass**. En tres de ellas encaja. En Priority Pass **no**: esa tarjeta figura como "No" en la tabla de esa misma pantalla. Queda diciendo "estas son tus tarjetas que incluyen Priority Pass" y recomendando una que no lo incluye.<br><br>El bloque se agregó por pedido expreso, replicando el de las otras tres. **Es provisional y está asumido:** la tarjeta recomendada hoy está fija en las cuatro pantallas, y más adelante se van a definir las condiciones para que se elija según el caso. Cuando eso ocurra, esta pantalla debería recomendar alguna de las que sí tienen el beneficio (Visa Signature LATAM Pass, Visa Infinite Sapphire, Visa Infinite Iridium, AMEX Black LATAM, Visa Signature Qore o Visa Infinite Qore). |
+| **Priority Pass recomienda una tarjeta que no tiene Priority Pass** | Las cuatro pantallas de comparación recomiendan la misma tarjeta: **Visa Oro LATAM Pass**. En tres de ellas encaja. En Priority Pass **no**: esa tarjeta figura como "No" en la tabla de esa misma pantalla. Queda diciendo "estas son tus tarjetas que incluyen Priority Pass" y recomendando una que no lo incluye.<br><br>El bloque se agregó por pedido expreso, replicando el de las otras tres. **Es provisional y está asumido:** la tarjeta recomendada hoy está fija en las cuatro pantallas, y más adelante se van a definir las condiciones para que se elija según el caso. Cuando eso ocurra, esta pantalla debería recomendar alguna de las que sí tienen el beneficio (Visa Signature LATAM Pass, Visa Infinite Sapphire, Visa Infinite Iridium, American Express Black LATAM Pass, Visa Signature Qore o Visa Infinite Qore). |
 | Los datos de la tarjeta recomendada no aplican en Priority Pass | Los dos detalles del recuadro — "Membresía: S/170" y "Exoneración: S/1 mensual en consumo" — hablan de membresía. En las otras tres pantallas tienen sentido; en Priority Pass quedan fuera de tema. |
 | Priority Pass: el intro y la tabla no dicen lo mismo | El intro dice *"Estas son tus tarjetas aprobadas **que incluyen** el beneficio Priority Pass"*, lo que sugiere una lista filtrada, pero la tabla muestra las 17 tarjetas con Sí/No. Es menor, pero puede confundir. |
 
@@ -520,8 +543,8 @@ tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mi
 
 ## Resumen en una frase
 
-Se corrigieron **9 errores de redacción en 6 pantallas** (concordancias, una tilde, un signo de apertura y
-una preposición duplicada), sin reescribir ninguna frase. Se tomaron **2 unificaciones** (el botón de cierre y la grafía "Amex") y **5 decisiones de formato** que
+Se corrigieron **10 errores de redacción en 8 pantallas** (concordancias, una tilde, un signo de apertura,
+una preposición duplicada y un nombre de tarjeta incompleto), sin reescribir ninguna frase. Se tomaron **2 unificaciones** (el botón de cierre y la grafía de la marca) y **5 decisiones de formato** que
 afectan a todo el chat. Hay **4 diferencias deliberadas** con el Figma que no son errores. Ya **no queda
 ninguna frase escrita por desarrollo**: todo el texto del bot lo escribió el equipo de contenido.
 

@@ -1,0 +1,4 @@
+# Carpeta que arma el build de Netlify. Se regenera en cada deploy.
+publicado/
+
+.DS_Store

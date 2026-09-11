@@ -24,7 +24,7 @@
       "vistaEn": "En que snapshots de referencias/ se vio renderizada."
     },
     "relacion_con_afinidad_tarjetas_json": "afinidad-tarjetas.json queda intacto: es la evidencia de la tabla que entrego Marco. Este catalogo la copia, no la reemplaza. Si los puntajes cambian, mandan los de aquel archivo.",
-    "advertencia_cruce": "Cruzar SIEMPRE por codigo, nunca por nombre. Las tres fuentes escriben distinto: el DOM dice 'American Express Black LATAM Pass', las tablas del bot dicen 'Amex Black LATAM' y afinidad-tarjetas.json dice 'Amex Black LATAM Pass'.",
+    "advertencia_cruce": "Cruzar SIEMPRE por codigo, nunca por nombre. Desde el 2026-09-11 el bot escribe la marca completa y con tildes, asi que nombreEnElBot coincide letra por letra con nombreDom en las seis tarjetas donde hay snapshot; la que sigue divergiendo es afinidad-tarjetas.json, que abrevia y va sin tildes ('Amex Clasica LATAM Pass' vs 'American Express Clásica LATAM Pass'). Esa coincidencia es de hoy y puede romperse con el proximo cambio de copy: no cruzar por nombre igual.",
     "pendiente_confirmar": [
       "Falta el codigo de UNA sola tarjeta: Visa Clasica (a secas). Sin codigo el bot no la detecta y no se muestra nunca, y Marco decidio el 2026-09-10 dejarla asi de momento: cuando le asignen codigo empezara a incluirse sola. Visa Platinum Qore ya tiene su codigo (TCRLY4), entregado ese mismo dia. La lista del 2026-09-10 trae 16 codigos y confirma TCRLY5 (Visa Clasica Qore), que hasta entonces se sostenia solo con la evidencia del snapshot de produccion.",
       "CONFLICTO DE NOMBRE sin resolver: en la lista de Marco del 2026-09-10, AMXGRE figura como 'TC oferta: Amex green', pero el DOM de certi renderiza ese mismo codigo como 'American Express Black LATAM Pass' (verificado en referencia-certi-con-exp.html). El catalogo mantiene la lectura del DOM (AMXGRE = Amex Black LATAM Pass) porque es evidencia directa, y 'green' se interpreta como etiqueta interna de la oferta. Si resultara que AMXGRE es de verdad una Amex Green, entonces la Amex Black se queda sin codigo y desaparece de las tres casuisticas premium donde hoy figura (viajar casoA, beneficios casoA, experiencias casoA).",
@@ -172,7 +172,7 @@
       "codigo": "AMXGRE",
       "ordenEnLaPagina": 3,
       "nombreDom": "American Express Black LATAM Pass",
-      "nombreEnElBot": "Amex Black LATAM",
+      "nombreEnElBot": "American Express Black LATAM Pass",
       "nombreEnAfinidad": "Amex Black LATAM Pass",
       "afinidad": {
         "viajar": 5,
@@ -233,7 +233,7 @@
       "codigo": "AMXPLL",
       "ordenEnLaPagina": 6,
       "nombreDom": "American Express Platinum LATAM Pass",
-      "nombreEnElBot": "Amex Platinum LATAM Pass",
+      "nombreEnElBot": "American Express Platinum LATAM Pass",
       "nombreEnAfinidad": "Amex Platinum LATAM Pass",
       "afinidad": {
         "viajar": 5,
@@ -273,7 +273,7 @@
       "codigo": "AMXGLL",
       "ordenEnLaPagina": 8,
       "nombreDom": "American Express Oro LATAM Pass",
-      "nombreEnElBot": "Amex Oro LATAM Pass",
+      "nombreEnElBot": "American Express Oro LATAM Pass",
       "nombreEnAfinidad": "Amex Oro LATAM Pass",
       "afinidad": {
         "viajar": 4,
@@ -335,7 +335,7 @@
       "codigo": "AMXCLL",
       "ordenEnLaPagina": 11,
       "nombreDom": "American Express Clásica LATAM Pass",
-      "nombreEnElBot": "Amex Clásica LATAM Pass",
+      "nombreEnElBot": "American Express Clásica LATAM Pass",
       "nombreEnAfinidad": "Amex Clasica LATAM Pass",
       "afinidad": {
         "viajar": 3,
@@ -505,13 +505,13 @@
           {
             "pos": 4,
             "codigo": "AMXGRE",
-            "nombre": "Amex Black LATAM Pass",
-            "nota": "En 1.1 se llama 'Amex Black LATAM Pass'; en las cuatro tablas de comparar sigue siendo 'Amex Black LATAM', sin el 'Pass'. Esa diferencia sigue abierta."
+            "nombre": "American Express Black LATAM Pass",
+            "nota": "El 2026-09-11 Marco completo el 'Pass' final en las cuatro tablas de comparar: 1.1 y las tablas ya escriben el mismo nombre."
           },
           {
             "pos": 5,
             "codigo": "AMXPLL",
-            "nombre": "Amex Platinum LATAM Pass"
+            "nombre": "American Express Platinum LATAM Pass"
           },
           {
             "pos": 6,
@@ -527,7 +527,7 @@
           {
             "pos": 8,
             "codigo": "AMXGLL",
-            "nombre": "Amex Oro LATAM Pass"
+            "nombre": "American Express Oro LATAM Pass"
           },
           {
             "pos": 9,
@@ -537,7 +537,7 @@
           {
             "pos": 10,
             "codigo": "AMXCLL",
-            "nombre": "Amex Clásica LATAM Pass"
+            "nombre": "American Express Clásica LATAM Pass"
           }
         ]
       },
@@ -614,7 +614,7 @@
           {
             "pos": 4,
             "codigo": "AMXCLL",
-            "nombre": "Amex Clásica LATAM Pass"
+            "nombre": "American Express Clásica LATAM Pass"
           },
           {
             "pos": 5,
@@ -634,7 +634,7 @@
           {
             "pos": 8,
             "codigo": "AMXGLL",
-            "nombre": "Amex Oro LATAM Pass"
+            "nombre": "American Express Oro LATAM Pass"
           },
           {
             "pos": 9,
@@ -668,7 +668,7 @@
           {
             "pos": 3,
             "codigo": "AMXPLL",
-            "nombre": "Amex Platinum LATAM Pass"
+            "nombre": "American Express Platinum LATAM Pass"
           },
           {
             "pos": 4,
@@ -678,7 +678,7 @@
           {
             "pos": 5,
             "codigo": "AMXGRE",
-            "nombre": "Amex Black LATAM Pass"
+            "nombre": "American Express Black LATAM Pass"
           },
           {
             "pos": 6,
@@ -719,12 +719,12 @@
           {
             "pos": 4,
             "codigo": "AMXPLL",
-            "nombre": "Amex Platinum LATAM Pass"
+            "nombre": "American Express Platinum LATAM Pass"
           },
           {
             "pos": 5,
             "codigo": "AMXGRE",
-            "nombre": "Amex Black LATAM Pass"
+            "nombre": "American Express Black LATAM Pass"
           },
           {
             "pos": 6,
@@ -749,7 +749,7 @@
           {
             "pos": 10,
             "codigo": "AMXGLL",
-            "nombre": "Amex Oro LATAM Pass"
+            "nombre": "American Express Oro LATAM Pass"
           },
           {
             "pos": 11,
@@ -764,7 +764,7 @@
           {
             "pos": 13,
             "codigo": "AMXCLL",
-            "nombre": "Amex Clásica LATAM Pass"
+            "nombre": "American Express Clásica LATAM Pass"
           },
           {
             "pos": 14,
@@ -819,12 +819,12 @@
           {
             "pos": 3,
             "codigo": "AMXGRE",
-            "nombre": "Amex Black LATAM Pass"
+            "nombre": "American Express Black LATAM Pass"
           },
           {
             "pos": 4,
             "codigo": "AMXPLL",
-            "nombre": "Amex Platinum LATAM Pass"
+            "nombre": "American Express Platinum LATAM Pass"
           },
           {
             "pos": 5,
@@ -868,7 +868,7 @@
           {
             "pos": 2,
             "codigo": "AMXGLL",
-            "nombre": "Amex Oro LATAM Pass"
+            "nombre": "American Express Oro LATAM Pass"
           },
           {
             "pos": 3,
@@ -878,7 +878,7 @@
           {
             "pos": 4,
             "codigo": "AMXCLL",
-            "nombre": "Amex Clásica LATAM Pass"
+            "nombre": "American Express Clásica LATAM Pass"
           },
           {
             "pos": 5,

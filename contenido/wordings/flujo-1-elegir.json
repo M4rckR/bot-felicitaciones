@@ -9,7 +9,7 @@
       "lineas": "1336-1348",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "texto": {
         "parrafos": [
@@ -55,7 +55,7 @@
       "tipo": "question",
       "estado": "implementado",
       "_advertencia": "YA NO ES ESTATICO (2026-09-09). El nodo q11 no tiene texto ni tarjetas propias: lleva 'perfilador: viajar' y resolvePerfilador decide en runtime que caso y que tarjetas mostrar, leyendo del DOM cuales tiene aprobadas el usuario. El nodo q11b se elimino. Las 17 tarjetas de abajo estan COMPLETAS dentro del bot, en config.perfilador.criterios.viajar; este archivo es el espejo legible.",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "entregado": "2026-09-09, como texto plano. Sin captura todavia.",
       "ordenDeTarjetas": "tarjetas-catalogo.json -> casuisticasPorCriterio.viajar",
@@ -108,7 +108,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Black LATAM Pass",
+            "nombre": "&#128179; American Express Black LATAM Pass",
             "descripcion": "Ideal para disfrutar experiencias premium en los viajes.",
             "vinetas": [
               "6,000 Millas de bienvenida.",
@@ -118,10 +118,10 @@
               "Beneficios exclusivos en restaurantes."
             ],
             "cta": "Elegir tarjeta",
-            "nota": "El 2026-09-09 Marco unifico la grafia a 'Amex' en TODO el bot: las cuatro tablas de comparar tambien se cambiaron. Sigue abierto que aqui la tarjeta lleva 'Pass' final y en las tablas no ('Amex Black LATAM')."
+            "nota": "El 2026-09-11 Marco pidio el nombre completo 'American Express' en todo el bot, reemplazando la grafia 'Amex' que se habia unificado el 2026-09-09. El mismo dia completo el 'Pass' final en las cuatro tablas de comparar, que era la ultima diferencia con este nombre: ya coinciden."
           },
           {
-            "nombre": "&#128179; Amex Platinum LATAM Pass",
+            "nombre": "&#128179; American Express Platinum LATAM Pass",
             "descripcion": "Ideal para viajeros frecuentes que quieren beneficios premium.",
             "vinetas": [
               "3,000 Millas de bienvenida",
@@ -154,7 +154,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Oro LATAM Pass",
+            "nombre": "&#128179; American Express Oro LATAM Pass",
             "descripcion": "Ideal para quienes buscan acumular más millas para viajar.",
             "vinetas": [
               "2,000 Millas de bienvenida",
@@ -172,10 +172,10 @@
               "La forma más accesible de ingresar al programa LATAM Pass."
             ],
             "cta": "Elegir tarjeta",
-            "nota": "Comparte descripcion literal con AMEX Oro LATAM Pass."
+            "nota": "Comparte descripcion literal con American Express Oro LATAM Pass."
           },
           {
-            "nombre": "&#128179; Amex Clásica LATAM Pass",
+            "nombre": "&#128179; American Express Clásica LATAM Pass",
             "descripcion": "Ideal para quienes buscan acumular millas en sus compras diarias.",
             "vinetas": [
               "1,000 Millas de bienvenida",
@@ -292,7 +292,7 @@
         "2026-09-09: esta pantalla cierra con 'Finalizar', no con 'Cerrar'. Marco decidio que la diferencia aplica solo al perfilador: q21-q24 y q31-q33 siguen con 'Cerrar'.",
         "2026-09-09 IMPLEMENTADO: q11 pinta el caso A con 4 tarjetas (Iridium, Sapphire, Signature LATAM Pass y Visa Oro con badge), elegidas por Marco como 'las 3 primeras + la Oro'.",
         "2026-09-09: Marco pidio dejar de hacerlo estatico. Se implemento la deteccion real de leads (getLeadCardCodes lee los <xt21-card-option> del DOM) y q11b se elimino: los dos casos los resuelve el mismo nodo q11.",
-        "2026-09-09: tres erratas aprobadas y aplicadas: 'Shapphire'->'Sapphire', 'que quiere'->'que quieren', 'Visa infinite Qore'->'Visa Infinite Qore'. Y la grafia 'Amex' se unifico en todo el bot.",
+        "2026-09-09: tres erratas aprobadas y aplicadas: 'Shapphire'->'Sapphire', 'que quiere'->'que quieren', 'Visa infinite Qore'->'Visa Infinite Qore'. Y la grafia 'Amex' se unifico en todo el bot; el 2026-09-11 Marco la reemplazo por el nombre completo 'American Express'.",
         "2026-09-09: el asterisco de la viñeta de la Iridium se queda SIN nota al pie, confirmado por Marco.",
         "2026-09-09: confirmado que todos los emojis de tarjeta son el mismo (💳); el que llego roto era ese.",
         "2026-09-09: confirmado que 'Volver a las alternativas' vuelve a q1, los 4 criterios.",
@@ -305,11 +305,11 @@
       "lineas": "",
       "tipo": "question",
       "estado": "implementado-dinamico (casos A y B)",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "entregado": "2026-09-09 por Marco, como texto plano. Sin captura.",
       "flujoMarco": "1.2 Ahorrar en costos",
-      "_advertencia": "El nodo lleva 'perfilador: \"ahorrar\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.ahorrar dentro de bot-nuevo.html; esto es el espejo legible.",
+      "_advertencia": "El nodo lleva 'perfilador: \"ahorrar\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.ahorrar dentro de adobe-target/piloto/bot.html; esto es el espejo legible.",
       "reglaDeCantidad": "Caso A: hasta 3 del orden mas la Visa Oro al final, y solo si el usuario la tiene. Caso B: hasta 4.",
       "casoA": {
         "intro": "¡Buena elección! &#128522; Estas son las mejores tarjetas aprobadas que mejor se adaptan a ti.",
@@ -349,7 +349,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Clásica LATAM Pass",
+            "nombre": "&#128179; American Express Clásica LATAM Pass",
             "codigo": "AMXCLL",
             "descripcion": "Ideal para quienes buscan acumular millas con una membresía accesible.",
             "vinetas": [
@@ -399,7 +399,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Oro LATAM Pass",
+            "nombre": "&#128179; American Express Oro LATAM Pass",
             "codigo": "AMXGLL",
             "descripcion": "Ideal para quienes buscan acumular más millas con sus compras frecuentes.",
             "vinetas": [
@@ -475,7 +475,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Platinum LATAM Pass",
+            "nombre": "&#128179; American Express Platinum LATAM Pass",
             "codigo": "AMXPLL",
             "descripcion": "Tarjeta premium para viajes y acumulación de millas.",
             "vinetas": [
@@ -500,7 +500,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Black LATAM Pass",
+            "nombre": "&#128179; American Express Black LATAM Pass",
             "codigo": "AMXGRE",
             "descripcion": "Experiencia premium enfocada en viajeros frecuentes.",
             "vinetas": [
@@ -557,11 +557,11 @@
       "lineas": "",
       "tipo": "question",
       "estado": "implementado-dinamico (casos A y B)",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "entregado": "2026-09-09 por Marco, como texto plano. Sin captura.",
       "flujoMarco": "1.3 Obtener más beneficios",
-      "_advertencia": "El nodo lleva 'perfilador: \"beneficios\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.beneficios dentro de bot-nuevo.html; esto es el espejo legible.",
+      "_advertencia": "El nodo lleva 'perfilador: \"beneficios\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.beneficios dentro de adobe-target/piloto/bot.html; esto es el espejo legible.",
       "reglaDeCantidad": "Caso A: hasta 3 del orden mas la Visa Oro al final, y solo si el usuario la tiene. Caso B: hasta 4.",
       "casoA": {
         "intro": "¡Buena elección! &#128522; Estas son las mejores tarjetas aprobadas que mejor se adaptan a ti.",
@@ -611,7 +611,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Platinum LATAM Pass",
+            "nombre": "&#128179; American Express Platinum LATAM Pass",
             "codigo": "AMXPLL",
             "descripcion": "Obtén más beneficios por tus consumos frecuentes.",
             "vinetas": [
@@ -624,7 +624,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Black LATAM Pass",
+            "nombre": "&#128179; American Express Black LATAM Pass",
             "codigo": "AMXGRE",
             "descripcion": "Acumulación acelerada y beneficios premium.",
             "vinetas": [
@@ -691,7 +691,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Oro LATAM Pass",
+            "nombre": "&#128179; American Express Oro LATAM Pass",
             "codigo": "AMXGLL",
             "descripcion": "Para los que buscan viajar con más frecuencia.",
             "vinetas": [
@@ -727,7 +727,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Clásica LATAM Pass",
+            "nombre": "&#128179; American Express Clásica LATAM Pass",
             "codigo": "AMXCLL",
             "descripcion": "Acumula recompensas por tus compras diarias.",
             "vinetas": [
@@ -823,11 +823,11 @@
       "lineas": "",
       "tipo": "question",
       "estado": "implementado-dinamico (casos A y B)",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "entregado": "2026-09-09 por Marco, como texto plano. Sin captura.",
       "flujoMarco": "1.4 Experiencias exclusivas",
-      "_advertencia": "El nodo lleva 'perfilador: \"experiencias\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.experiencias dentro de bot-nuevo.html; esto es el espejo legible.",
+      "_advertencia": "El nodo lleva 'perfilador: \"experiencias\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.experiencias dentro de adobe-target/piloto/bot.html; esto es el espejo legible.",
       "reglaDeCantidad": "Caso A: hasta 3 del orden mas la Visa Oro al final, y solo si el usuario la tiene. Caso B: hasta 4.",
       "casoA": {
         "intro": "¡Buena elección! &#128522; Estas son las mejores tarjetas aprobadas que mejor se adaptan a ti.",
@@ -863,7 +863,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Black LATAM Pass",
+            "nombre": "&#128179; American Express Black LATAM Pass",
             "codigo": "AMXGRE",
             "descripcion": "Experiencia premium para viajeros frecuentes.",
             "vinetas": [
@@ -877,7 +877,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Platinum LATAM Pass",
+            "nombre": "&#128179; American Express Platinum LATAM Pass",
             "codigo": "AMXPLL",
             "descripcion": "Experiencia premium combinada con acumulación de millas.",
             "vinetas": [
@@ -993,14 +993,14 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Oro LATAM Pass",
+            "nombre": "&#128179; American Express Oro LATAM Pass",
             "codigo": "AMXGLL",
             "descripcion": "Mayor acumulación y beneficios respecto a una tarjeta clásica.",
             "vinetas": [
               "Acumula 1 Milla por cada $ 1.5 de consumo.",
               "Canjea millas por vuelos y experiencias LATAM.",
               "Seguros de viaje y equipaje.",
-              "Descuentos en Booking.com y beneficios AMEX.",
+              "Descuentos en Booking.com y beneficios American Express.",
               "50% de descuento en Cineplanet.",
               "Campañas exclusivas para acumular más millas."
             ],
@@ -1021,7 +1021,7 @@
             "cta": "Elegir tarjeta"
           },
           {
-            "nombre": "&#128179; Amex Clásica LATAM Pass",
+            "nombre": "&#128179; American Express Clásica LATAM Pass",
             "codigo": "AMXCLL",
             "_sin_descripcion": "El texto de Marco no dejaba linea en blanco tras el nombre: todo entro como viñeta.",
             "vinetas": [

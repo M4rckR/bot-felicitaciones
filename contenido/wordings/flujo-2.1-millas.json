@@ -8,7 +8,7 @@
       "lineas": "1410-1445",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "richText": true,
       "titulo": "",
       "texto": {
@@ -52,19 +52,19 @@
               "No Aplica"
             ],
             [
-              "Amex Clásica LATAM Pass",
+              "American Express Clásica LATAM Pass",
               "1 milla por cada $2"
             ],
             [
-              "Amex Oro LATAM Pass",
+              "American Express Oro LATAM Pass",
               "1 milla por cada $1.5"
             ],
             [
-              "Amex Platinum LATAM Pass",
+              "American Express Platinum LATAM Pass",
               "1 milla por $1"
             ],
             [
-              "Amex Black LATAM",
+              "American Express Black LATAM Pass",
               "1.5 millas por $1"
             ],
             [
@@ -121,11 +121,11 @@
         "URL del CTA 'Elegir tarjeta': cableado como href '#'."
       ],
       "notas": [
-        "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.millas de bot-nuevo.html como filas con codigo, y el nodo solo lleva 'comparador: \"millas\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
-        "Irregularidades reproducidas verbatim (no corregir sin Marco): 'Visa Oro LATAM Pass' escribe 'Milla' con mayuscula, la fila de Visa Infinite Iridium es la unica que termina en punto, y 'Amex Black LATAM' va sin el 'Pass' final que si tienen las demas.",
-        "Orden de tarjetas: Visa Light y Visa Clasica en posiciones 7-8, Amex Clasica en la 9. Coincide con 2.3 pero NO con 2.2.",
-        "2026-09-09: se quito la clase tcxxxx-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
-        "2026-09-09: corregido 'Estos son las millas' -> 'Estas son las millas'. Aprobado por Marco. Ver correcciones-wording.md.",
+        "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.millas de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"millas\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
+        "Irregularidades reproducidas verbatim (no corregir sin Marco): 'Visa Oro LATAM Pass' escribe 'Milla' con mayuscula, la fila de Visa Infinite Iridium es la unica que termina en punto. El 2026-09-11 Marco completo el 'Pass' final de 'American Express Black LATAM Pass', que antes era la unica fila sin el.",
+        "Orden de tarjetas: Visa Light y Visa Clasica en posiciones 7-8, American Express Clasica en la 9. Coincide con 2.3 pero NO con 2.2.",
+        "2026-09-09: se quito la clase tc0091-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
+        "2026-09-09: corregido 'Estos son las millas' -> 'Estas son las millas'. Aprobado por Marco. Ver docs/correcciones-wording.md.",
         "2026-09-09: Marco entrego la pantalla completa. Se agrego la tarjeta recomendada (identica a la de q22) y el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar'. OJO: q22, q23 y q24 todavia cierran con '✅ Elegir una tarjeta'; falta confirmar si tambien cambian.",
         "El intro se mantiene como 'Estas son las millas' (correccion 4 ya aprobada), aunque el texto que Marco reenvio el 2026-09-09 volvia a decir 'Estos'."
       ],

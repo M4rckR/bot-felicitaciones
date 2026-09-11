@@ -8,7 +8,7 @@
       "lineas": "1322-1333",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question tcxxxx-node-start",
+      "className": "tc0091-node-question tc0091-node-start",
       "titulo": "Hola! &#128075; Soy Tarjetín.",
       "texto": {
         "parrafos": [
@@ -41,6 +41,6 @@
     }
   ],
   "notas": [
-    "2026-09-09 DECIDIDO: la burbuja del usuario repite el boton completo. Los mockups la dibujan mas corta (ej. 'Comparar tarjetas' contra el boton 'Quiero comparar mis tarjetas'), pero se decidio no acortar ni el boton ni la burbuja. Regla general: manda el boton. Ver correcciones-wording.md."
+    "2026-09-09 DECIDIDO: la burbuja del usuario repite el boton completo. Los mockups la dibujan mas corta (ej. 'Comparar tarjetas' contra el boton 'Quiero comparar mis tarjetas'), pero se decidio no acortar ni el boton ni la burbuja. Regla general: manda el boton. Ver docs/correcciones-wording.md."
   ]
 }

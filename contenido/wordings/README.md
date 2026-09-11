@@ -1,8 +1,8 @@
-# wordings/
+# contenido/wordings/
 
-Espejo editable de toda la copy de `bot-nuevo.html`, partido por flujo.
+Espejo editable de toda la copy de `adobe-target/piloto/bot.html`, partido por flujo.
 
-> **`bot-nuevo.html` NUNCA lee estos archivos. Ni en producción, ni en el preview local, ni nunca.**
+> **`adobe-target/piloto/bot.html` NUNCA lee estos archivos. Ni en producción, ni en el preview local, ni nunca.**
 > No agregar un `fetch`, un `import`, ni ninguna otra forma de cargarlos desde el snippet.
 
 Son un artefacto de desarrollo puro: material de referencia para trabajar la copy sin tener que abrir el
@@ -20,10 +20,10 @@ HTML. El snippet se sigue pegando entero como oferta en Adobe Target y sigue sie
 
 ## Contrato: quién manda
 
-**`bot-nuevo.html` es la fuente de verdad.** Estos JSON son un espejo. El flujo correcto es:
+**`adobe-target/piloto/bot.html` es la fuente de verdad.** Estos JSON son un espejo. El flujo correcto es:
 
 ```
-editar wordings/*.json  →  aplicar el cambio a bot-nuevo.html  →  verificarlo en preview-local.html
+editar contenido/wordings/*.json  →  aplicar el cambio a adobe-target/piloto/bot.html  →  verificarlo en preview/index.html
 ```
 
 Los tres pasos, siempre.
@@ -45,12 +45,12 @@ Si se edita el HTML directo, hay que actualizar el JSON en el mismo paso. Si div
   motor no emite `<br>` en ninguna parte).
 - **`texto.tabla`** → cada fila se serializa como `"| celda | celda |"`. Después de la fila de encabezado
   va siempre la fila separadora `"| --- | --- |"`. El nodo necesita `richText: true` para que
-  `formatRichText` la parsee, y `tcxxxx-node-ancho` en el `className` para que la burbuja ocupe el 100 %
+  `formatRichText` la parsee, y `tc0091-node-ancho` en el `className` para que la burbuja ocupe el 100 %
   del panel.
 - **Emojis** → se guardan como entidad HTML (`&#128179;`), igual que en el snippet. Marco los manda como
   emoji literal; la conversión es parte del volcado, no del JSON.
-- **`lineas`** → es una pista para saltar directo en `bot-nuevo.html`. **Se desactualiza en cuanto se
-  agregan nodos.** Antes de editar, confirmar con `grep -n 'id: "q22"' bot-nuevo.html`.
+- **`lineas`** → es una pista para saltar directo en `adobe-target/piloto/bot.html`. **Se desactualiza en cuanto se
+  agregan nodos.** Antes de editar, confirmar con `grep -n 'id: "q22"' adobe-target/piloto/bot.html`.
 
 ## Esquema
 
@@ -62,7 +62,7 @@ Cada archivo de flujo:
 | `estado` | `completo` · `parcial` · `pendiente` |
 | `nodos[]` | Un objeto por nodo del grafo |
 | `nodos[].id` | Id en `config.nodes`. Es la llave de correspondencia con el HTML |
-| `nodos[].lineas` | Rango en `bot-nuevo.html` (pista, ver arriba) |
+| `nodos[].lineas` | Rango en `adobe-target/piloto/bot.html` (pista, ver arriba) |
 | `nodos[].tipo` | `question` · `auto` · `mixed` · `rating` |
 | `nodos[].titulo` | Campo `title` del nodo. `""` cuando la pantalla no lleva título |
 | `nodos[].texto` | La copy, desestructurada en `intro` / `parrafos` / `tabla` |

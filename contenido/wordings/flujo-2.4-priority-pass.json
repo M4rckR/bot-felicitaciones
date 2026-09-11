@@ -8,7 +8,7 @@
       "lineas": "1544-1584",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "richText": true,
       "titulo": "",
       "texto": {
@@ -52,19 +52,19 @@
               "No"
             ],
             [
-              "Amex Clásica LATAM Pass",
+              "American Express Clásica LATAM Pass",
               "No"
             ],
             [
-              "Amex Oro LATAM Pass",
+              "American Express Oro LATAM Pass",
               "No"
             ],
             [
-              "Amex Platinum LATAM Pass",
+              "American Express Platinum LATAM Pass",
               "No"
             ],
             [
-              "Amex Black LATAM",
+              "American Express Black LATAM Pass",
               "Sí"
             ],
             [
@@ -123,11 +123,11 @@
         "URL del CTA 'Elegir tarjeta': cableado como href '#'."
       ],
       "notas": [
-        "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.priorityPass de bot-nuevo.html como filas con codigo, y el nodo solo lleva 'comparador: \"priorityPass\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
+        "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.priorityPass de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"priorityPass\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
         "Unica tabla del set con valores booleanos ('Si'/'No') en vez de montos.",
-        "'Amex Black LATAM' va sin el 'Pass' final. Verbatim.",
-        "2026-09-09: se quito la clase tcxxxx-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
-        "2026-09-09: el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar', unificado en las cuatro pantallas de comparar. Correccion 7 en correcciones-wording.md. CONSECUENCIA: la cadena de calificacion (mixed1, rating, rating_number, rating_thanks_auto, mixed100) quedo huerfana.",
+        "El 2026-09-11 Marco completo el 'Pass' final: la fila dice 'American Express Black LATAM Pass', igual que en el perfilador.",
+        "2026-09-09: se quito la clase tc0091-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
+        "2026-09-09: el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar', unificado en las cuatro pantallas de comparar. Correccion 7 en docs/correcciones-wording.md. CONSECUENCIA: la cadena de calificacion (mixed1, rating, rating_number, rating_thanks_auto, mixed100) quedo huerfana.",
         "2026-09-09: Marco entrego el intro definitivo ('Estas son tus tarjetas aprobadas que incluyen el beneficio Priority Pass') y pidio agregar la tarjeta recomendada, que su texto no traia. Ya no queda copy escrita por desarrollo en el bot.",
         "El intro dice 'Estas son tus tarjetas... que incluyen el beneficio', pero la tabla lista las 17 con Si/No, no solo las que lo incluyen. Menor, planteado a Marco."
       ],

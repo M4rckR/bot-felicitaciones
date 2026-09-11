@@ -3,6 +3,9 @@
 
 <head>
     <meta charset="utf-8">
+    <!-- Sin esto un movil real renderiza el preview a 980px y lo escala: las media
+         queries de abajo no dispararian nunca. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Preview local · bot /felicitaciones</title>
     <style>
         :root {
@@ -90,25 +93,19 @@
             min-height: 0;
         }
 
-        #stage {
-            display: grid;
-            place-items: center;
-            padding: 16px;
-            overflow: auto;
-            /* Tablero neutro: NO se carga la pagina real de /felicitaciones,
-               eso dispararia los pixeles de tracking de BCP/Adobe/Meta. */
-            background:
-                repeating-conic-gradient(#f1f5f9 0% 25%, #e2e8f0 0% 50%) 50%/24px 24px;
-        }
-
+        /* El iframe va a ras, sin marco: ni damero, ni sombra, ni borde redondeado
+           (Marco, 2026-09-11). Se conserva el iframe porque es lo que le da al bot
+           un ancho propio -su matchMedia("(max-width: 768px)") reacciona al ancho
+           del iframe, no al de la ventana- y ademas lo aisla del CSS del preview.
+           NO se carga la pagina real de /felicitaciones: eso dispararia los pixeles
+           de tracking de BCP/Adobe/Meta. */
         #frame {
             border: 0;
             background: #fff;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, .45);
-            border-radius: 6px;
             width: 100%;
             height: 100%;
             transition: width .2s ease;
+            justify-self: center;
         }
 
         #frame.movil {
@@ -246,24 +243,128 @@
         .ln.debug {
             color: var(--ui-dim);
         }
+
+        /* El boton del panel y el backdrop solo existen en pantalla angosta. */
+        #btn-panel,
+        #backdrop {
+            display: none;
+        }
+
+        /* ====================================================================
+           Responsive. El corte es 900px porque abajo de eso el iframe se queda
+           con menos que los 390px que mide el bot en movil: la columna de 380px
+           del panel deja de caber al lado.
+           ==================================================================== */
+        @media (max-width: 900px) {
+            body {
+                /* 100dvh y no 100vh: en Safari/Chrome moviles la barra de
+                   direcciones se retrae y con 100vh el preview queda cortado. */
+                height: 100dvh;
+            }
+
+            header {
+                padding: 8px;
+                gap: 6px;
+            }
+
+            header .title {
+                /* El titulo cede primero: los botones son lo util. */
+                font-size: 11px;
+                order: 10;
+                flex-basis: 100%;
+                margin: 0;
+            }
+
+            .solo-ancho {
+                display: none;
+            }
+
+            #btn-panel {
+                display: inline-block;
+            }
+
+            #status {
+                font-size: 11px;
+            }
+
+            main {
+                /* Una sola columna: el iframe se queda con todo el alto. */
+                grid-template-columns: 1fr;
+            }
+
+            #frame {
+                /* En movil real el ancho ya es el real: el modo 390px no aplica. */
+                width: 100%;
+            }
+
+            /* El panel pasa a off-canvas sobre el contenido, oculto por defecto. */
+            #panel {
+                position: fixed;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                width: min(90vw, 380px);
+                z-index: 20;
+                transform: translateX(100%);
+                transition: transform .2s ease;
+                box-shadow: -8px 0 24px rgba(0, 0, 0, .5);
+                overflow: auto;
+                /* Sin 1fr: al scrollear, las filas se miden por su contenido. */
+                grid-template-rows: auto auto auto auto auto;
+            }
+
+            #panel.abierto {
+                transform: translateX(0);
+            }
+
+            #panel .log {
+                max-height: 40vh;
+            }
+
+            #backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                z-index: 19;
+                background: rgba(0, 0, 0, .5);
+            }
+
+            #backdrop[hidden] {
+                display: none;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+
+            #panel,
+            #frame {
+                transition: none;
+            }
+        }
     </style>
 </head>
 
 <body>
     <header>
+        <button id="btn-panel" aria-expanded="false" aria-controls="panel">☰ panel</button>
         <span class="title">preview · bot /felicitaciones</span>
         <button id="btn-reload">Reiniciar bot</button>
         <span class="sep"></span>
-        <button id="btn-desktop" aria-pressed="true">Desktop</button>
-        <button id="btn-movil" aria-pressed="false">Móvil 390px</button>
-        <span class="sep"></span>
+        <!-- El toggle de ancho solo tiene sentido en una ventana ancha: en un movil
+             real el ancho ya es el de verdad, asi que se oculta por media query. -->
+        <span class="solo-ancho">
+            <button id="btn-desktop" aria-pressed="true">Desktop</button>
+            <button id="btn-movil" aria-pressed="false">Móvil 390px</button>
+            <span class="sep"></span>
+        </span>
         <button id="btn-auto" aria-pressed="true">Auto-recarga</button>
         <span id="status">esperando…</span>
     </header>
+    <div id="backdrop" hidden></div>
 
     <main>
-        <div id="stage"><iframe id="frame" title="bot"></iframe></div>
-        <aside>
+        <iframe id="frame" title="bot"></iframe>
+        <aside id="panel">
             <h2>casuística · tarjetas del usuario</h2>
             <div id="casuisticas">
                 <select id="preset"></select>
@@ -282,8 +383,10 @@
             "use strict";
 
             // Unica fuente de verdad: el snippet se lee del archivo en cada carga.
-            // Este preview vive en local/, el snippet en la raiz del proyecto.
-            var ARCHIVO_BOT = "../bot-nuevo.html";
+            // El preview vive en preview/, la oferta del piloto en adobe-target/.
+            // La ruta es relativa a este archivo y funciona igual servida por
+            // python3 -m http.server que publicada en Netlify.
+            var ARCHIVO_BOT = "../adobe-target/piloto/bot.html";
             var INTERVALO_POLL = 1000;
 
             // Design tokens exactamente como los define /felicitaciones.
@@ -381,8 +484,9 @@
                     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
             }
 
-            // Busca el hook window.tcXXXXCatalogo sin depender del namespace, que hoy
-            // es placeholder (tcxxxx) y cambiara al asignarse el codigo real.
+            // Busca el hook window.tcXXXXCatalogo sin depender del namespace. Hoy es
+            // tc0091Catalogo (el codigo se asigno el 2026-09-11), pero la busqueda
+            // queda generica para que el harness sobreviva a un cambio de codigo.
             //
             // El harness ya no usa tcXXXXSetMode: el boton "Modo: chat / slides" se
             // quito el 2026-09-10 por pedido de Marco. El bot se entrega en modo chat
@@ -602,12 +706,41 @@
                 this.setAttribute("aria-pressed", String(autoRecarga));
             };
 
+            // Panel off-canvas (solo visible en pantalla angosta; en desktop el CSS
+            // ignora la clase y el panel es una columna fija).
+            var panel = document.getElementById("panel");
+            var backdrop = document.getElementById("backdrop");
+            var btnPanel = document.getElementById("btn-panel");
+
+            function togglePanel(abrir) {
+                panel.classList.toggle("abierto", abrir);
+                backdrop.hidden = !abrir;
+                btnPanel.setAttribute("aria-expanded", String(abrir));
+            }
+
+            btnPanel.onclick = function () {
+                togglePanel(!panel.classList.contains("abierto"));
+            };
+            backdrop.onclick = function () { togglePanel(false); };
+
+            document.addEventListener("keydown", function (e) {
+                if (e.key === "Escape" && panel.classList.contains("abierto")) {
+                    togglePanel(false);
+                }
+            });
+
+            // Al volver a pantalla ancha el panel es columna otra vez: se limpia el
+            // estado para que el backdrop no quede colgado encima del contenido.
+            window.matchMedia("(max-width: 900px)").addEventListener("change", function (e) {
+                if (!e.matches) togglePanel(false);
+            });
+
             if (location.protocol === "file:") {
                 document.body.innerHTML =
                     '<p style="padding:24px;font:14px/1.6 system-ui;color:#e2e8f0">' +
                     'Este preview necesita un servidor local (con <code>file://</code> el navegador bloquea el fetch).<br><br>' +
                     'Levántalo con:<br><code style="color:#38bdf8">python3 -m http.server 8000</code><br><br>' +
-                    'y abre <code style="color:#38bdf8">http://localhost:8000/preview-local.html</code></p>';
+                    'y abre <code style="color:#38bdf8">http://localhost:8000/preview/</code></p>';
                 return;
             }
 

@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "descripcion": "Indice de la copy de bot-nuevo.html mapeada por flujo. Artefacto de desarrollo: no se envia a Adobe Target ni se lee en runtime.",
-    "fuente_de_verdad": "bot-nuevo.html",
+    "descripcion": "Indice de la copy de adobe-target/piloto/bot.html mapeada por flujo. Artefacto de desarrollo: no se envia a Adobe Target ni se lee en runtime.",
+    "fuente_de_verdad": "adobe-target/piloto/bot.html",
     "generado": "2026-09-09",
-    "namespace_placeholder": "tcxxxx / TCXXXX",
+    "namespace_placeholder": "tc0091 / TC0091",
     "total_nodos": 15,
-    "advertencia_lineas": "Los rangos son una pista de salto y se desactualizan al agregar nodos. Confirmar con grep -n 'id: \"qNN\"' bot-nuevo.html.",
+    "advertencia_lineas": "Los rangos son una pista de salto y se desactualizan al agregar nodos. Confirmar con grep -n 'id: \"qNN\"' adobe-target/piloto/bot.html.",
     "nota_cierre": "2026-09-09: se elimino la cadena de cierre (mixed1, rating, rating_number, rating_thanks_auto, mixed100) y su archivo flujo-cierre.json. Decision de Marco tras quedar inalcanzable."
   },
   "flujos": [
@@ -148,9 +148,9 @@
       "Codigo de Visa Clasica (la pelada): sin el, el bot NO puede detectarla y no se muestra nunca, aunque el usuario la tenga. Marco decidio el 2026-09-10 dejarla asi de momento. Visa Infinite Sapphire (TCRBA7) y Visa Platinum Qore (TCRLY4) ya tienen codigo.",
       "Conflicto de nombre de AMXGRE: la lista de Marco dice 'Amex green', el DOM de certi dibuja 'American Express Black LATAM Pass'. Se mantiene la lectura del DOM.",
       "URL del CTA 'Elegir tarjeta' en todo el bot - hoy href '#'",
-      "Erratas y contradicciones de datos del perfilador (ver correcciones-wording.md, Parte 6)",
+      "Erratas y contradicciones de datos del perfilador (ver docs/correcciones-wording.md, Parte 6)",
       "Prefijo de promotion.name para analytics en pagina no-home, y que el perfilador no emite ningun evento",
-      "Codigo de experimento real que reemplaza TCXXXX"
+      "Codigo de experimento real que reemplaza TC0091"
     ]
   }
 }

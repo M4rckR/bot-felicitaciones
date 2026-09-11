@@ -10,73 +10,125 @@ delivered as an **Adobe Target HTML offer**. There is no build step, package man
 repo — the file is pasted whole into the experimentation tool and ships as one blob.
 
 **The active goal of this repo is to port the bot to `/felicitaciones` with different content.** The
-existing bot is the working reference; the `referencias/` snapshots describe the target page. See
+existing bot is the working reference; the `referencia/paginas/` snapshots describe the target page. See
 *Porting to /felicitaciones* below.
 
 ## Files
 
 | File | Role |
 | --- | --- |
-| `bot-nuevo.html` | **The file being built — this is what you edit.** The new `/felicitaciones` bot. Started as a byte-copy of `bot-actual.html`'s engine with the namespace swapped to the `tcxxxx` / `TCXXXX` placeholder and the home node tree replaced. See *State of bot-nuevo.html* below. |
-| `bot-actual.html` | **Read-only reference.** The live home snippet as authored: `<style>` (1–991), markup (993–1056), `<script>` IIFE (1058–4141). Do not edit — it is the working original we ported from. |
-| `bot-insertado.html` | Read-only snapshot of the **live home page in production with the bot inserted**. Shows the real injection context. Its `<style>` (5331–6321) and `<script>` (6397–9480) are byte-identical to `bot-actual.html` — only indentation and live-DOM attributes differ. Do not edit; it is evidence, not a build output. |
-| `local/` | **Editable.** Dev-only, never shipped: `preview-local.html` (the harness) and `fonts/` (Flexo webfonts). The harness must stay a faithful mirror of the offer — that is its whole job. |
-| `wordings/` | **Dev-only mirror of all the bot's copy, split one file per flow.** Read this instead of the HTML when the task is wording. Never loaded by the snippet — see *Working on copy* below. |
-| `pasos/` | Screen-by-screen mockups Marco supplies as the source of truth for content, e.g. `primera-pantalla.png`. |
-| `afinidad-tarjetas.json` | Marco's "Relevancia - Afinidad" table: 17 cards scored 1–5 against the four `q1` criteria. Drives which cards the bot recommends. Its `_meta.pendiente_confirmar` lists what is still undecided — read it before building recommendation logic. **Read-only in spirit**: it is the record of what Marco sent, so new fields go in `tarjetas-catalogo.json` instead. |
-| `tarjetas-catalogo.json` | **The card crosswalk.** 17 cards × DOM code, name per source, affinity, membership, exoneration, miles, Priority Pass — plus the DOM selectors that reveal which cards a user is a lead for, the "3 + Visa Oro" rule, and the per-criterion casuistry filled in as Marco delivers each perfilador screen. Dev-only: the snippet never reads it. See *Lead detection* below. |
-| `referencias/*.html` | Read-only DOM snapshots of the **target page** `/felicitaciones`. `certi` = staging Adobe Launch (`launch-b540b12ff8c9-staging`), otherwise production (`launch-e838ddbd0060`). `con-exp`/`sin-exp` differ **only in tracking-tag ordering and beacon ids** — the visible text is byte-identical, so don't spend time diffing them. |
+| `adobe-target/piloto/bot.html` | **The file being built — this is what you edit.** The new `/felicitaciones` bot. Started as a byte-copy of `referencia/bot-actual.html`'s engine with the namespace swapped (a `tcxxxx` placeholder until 2026-09-11, `tc0091` since) and the home node tree replaced. See *State of the offer* below. |
+| `adobe-target/control/control.html` | **The control variant of the experiment.** Not a bot: a standalone `<script>` that pushes the single `- C` event and nothing else. The control group gets a page with no bot, so none of the pilot's seven events can fire there. See *Analytics*. |
+| `netlify.toml` | Deploy config for the preview. Builds a `publicado/` allow-list containing **only** `preview/` and the pilot offer. **`referencia/paginas/` is deliberately excluded: those snapshots carry real client names and credit lines.** |
+| `README.md` | Human-facing entry point: how to run the preview locally and on Netlify, what the directory holds, pilot vs control. |
+| `referencia/bot-actual.html` | **Read-only reference.** The live home snippet as authored: `<style>` (1–991), markup (993–1056), `<script>` IIFE (1058–4141). Do not edit — it is the working original we ported from. |
+| `referencia/bot-insertado.html` | Read-only snapshot of the **live home page in production with the bot inserted**. Shows the real injection context. Its `<style>` (5331–6321) and `<script>` (6397–9480) are byte-identical to `referencia/bot-actual.html` — only indentation and live-DOM attributes differ. Do not edit; it is evidence, not a build output. |
+| `preview/` | **Editable.** Dev-only, never shipped: `preview/index.html` (the harness) and `fonts/` (Flexo webfonts). The harness must stay a faithful mirror of the offer — that is its whole job. |
+| `contenido/wordings/` | **Dev-only mirror of all the bot's copy, split one file per flow.** Read this instead of the HTML when the task is wording. Never loaded by the snippet — see *Working on copy* below. |
+| `referencia/pasos/` | Screen-by-screen mockups Marco supplies as the source of truth for content, e.g. `primera-pantalla.png`. |
+| `contenido/afinidad-tarjetas.json` | Marco's "Relevancia - Afinidad" table: 17 cards scored 1–5 against the four `q1` criteria. Drives which cards the bot recommends. Its `_meta.pendiente_confirmar` lists what is still undecided — read it before building recommendation logic. **Read-only in spirit**: it is the record of what Marco sent, so new fields go in `contenido/tarjetas-catalogo.json` instead. |
+| `contenido/tarjetas-catalogo.json` | **The card crosswalk.** 17 cards × DOM code, name per source, affinity, membership, exoneration, miles, Priority Pass — plus the DOM selectors that reveal which cards a user is a lead for, the "3 + Visa Oro" rule, and the per-criterion casuistry filled in as Marco delivers each perfilador screen. Dev-only: the snippet never reads it. See *Lead detection* below. |
+| `referencia/paginas/*.html` | Read-only DOM snapshots of the **target page** `/felicitaciones`. `certi` = staging Adobe Launch (`launch-b540b12ff8c9-staging`), otherwise production (`launch-e838ddbd0060`). `con-exp`/`sin-exp` differ **only in tracking-tag ordering and beacon ids** — the visible text is byte-identical, so don't spend time diffing them. |
 
 All four snapshots are 0.5–1.2 MB. **Grep them; never read them whole.**
 
-**What you may edit.** Only the references are off limits: `referencias/*.html`, `bot-actual.html` and
-`bot-insertado.html`. They are evidence, and altering them destroys what they exist to preserve — read and
-grep only. The offer (`bot-nuevo.html`), the preview (`local/preview-local.html`), `wordings/`,
-`tarjetas-catalogo.json` and this file are the working set and are edited normally.
+**Directory layout** (reorganised 2026-09-11, Marco's request, so pilot and control read as two separate
+deliverables):
+
+```
+adobe-target/      what gets pasted into Target — the only thing that ships
+  piloto/bot.html
+  control/control.html
+preview/           the harness. The only thing Netlify publishes
+contenido/         working material the snippet NEVER reads: wordings/ + the two card JSONs
+docs/              correcciones-wording.md, the UI-team deliverable
+referencia/        read-only evidence: bot-actual, bot-insertado, paginas/, pasos/
+```
+
+> ⚠️ **`referencia/paginas/` must never be deployed.** The four snapshots carry real client data —
+> `data-client-name` (`YESY MARIBEL GARCIA`, `OSCAR CARLOS IBANEZ`) and `data-credit-line`. `netlify.toml`
+> publishes an allow-list, not the repo root, precisely so nobody has to remember to exclude them. Do not
+> add them to that copy for any reason. This is also why the harness fabricates its own
+> `<xt21-card-option>` markup instead of loading a snapshot.
+
+**What you may edit.** Only the references are off limits: `referencia/paginas/*.html`, `referencia/bot-actual.html` and
+`referencia/bot-insertado.html`. They are evidence, and altering them destroys what they exist to preserve — read and
+grep only. The offer (`adobe-target/piloto/bot.html`), the preview (`preview/index.html`), `contenido/wordings/`,
+`contenido/tarjetas-catalogo.json` and this file are the working set and are edited normally.
 
 **Marco dictates every change.** Do not proceed, extend the scope, or fill in pending screens unless he
 says so directly. Deliver exactly what was asked and stop there.
 
 ## Commands
 
-There is no build toolchain. Visual validation runs through `preview-local.html`:
+There is no build toolchain and no package manager. Visual validation runs through the harness:
 
 ```bash
 python3 -m http.server 8000 --bind 127.0.0.1   # desde la raiz del proyecto
-# abrir http://localhost:8000/local/preview-local.html
+# abrir http://localhost:8000/preview/
 ```
 
-`local/preview-local.html` is the dev harness for `bot-nuevo.html`. It **fetches the snippet at runtime** — it
+The harness is also deployed to Netlify so it can be opened from a phone — `netlify.toml` has no framework
+and no install step, just a copy into an allow-listed `publicado/`. To check what a deploy would expose,
+run that same copy locally:
+
+```bash
+rm -rf publicado && mkdir -p publicado/adobe-target/piloto &&
+  cp -R preview publicado/preview &&
+  cp adobe-target/piloto/bot.html publicado/adobe-target/piloto/bot.html &&
+  grep -rl 'data-client-name' publicado/ || echo "sin datos de cliente"
+```
+
+`preview/index.html` is the dev harness for `adobe-target/piloto/bot.html`. It **fetches the snippet at runtime** — it
 never copies its content, so the two cannot drift. It gives: live re-injection when the file changes
 (1 s poll), Desktop/Móvil-390px toggle via an iframe (so the bot's `matchMedia("(max-width: 768px)")`
 reacts to real width), a `digitalData` panel showing every analytics event the bot pushes, and a console
 panel where `validateGraph` errors surface. A `file://` open is detected and refused with instructions,
 because the fetch would be CORS-blocked.
 
+**The harness is responsive and usable on a phone** (Marco, 2026-09-11). Three things make it work, and
+each is load-bearing:
+
+- **`<meta name="viewport">` in the harness `<head>`.** Without it a real phone renders the preview at
+  980px and scales it down, so the media queries never fire. There is a second viewport tag further down —
+  that one belongs to the *iframe* document and is not the same thing.
+- **The breakpoint is 900px**, the width below which the 380px side panel stops fitting next to an iframe
+  that still needs the bot's 390px. Under it: one column, the width toggle hides (on a real phone the
+  width is already real), and the panel becomes off-canvas — `transform: translateX(100%)`, opened by the
+  `☰ panel` button, closed by the backdrop or Escape. Leaving that breakpoint on a wide screen resets the
+  panel, otherwise the backdrop stays stuck over the content.
+- **`height: 100dvh`, not `100vh`**, on mobile: the retracting address bar cuts the layout with `100vh`.
+
+**The iframe stays, the frame around it is gone** (Marco, 2026-09-11). The `#stage` wrapper — checkerboard
+background, drop shadow, rounded corners, 16px padding — was removed and the iframe is now a direct grid
+child of `<main>`, flush. **Do not remove the iframe itself**: it is what gives the bot a width of its own,
+so `matchMedia("(max-width: 768px)")` reacts to the iframe rather than the window, and it is what keeps the
+harness CSS from reaching the bot. Centring in 390px mode now comes from `justify-self: center` on the
+iframe, which used to come from the wrapper's `place-items: center`.
+
 **There is no chat/slides toggle any more** (Marco, 2026-09-10). The harness used to expose one, wired to
 `window.tc*SetMode`. The bot ships in chat mode and slides is not a state any real user can reach, so as a
-preview lever it only invited confusion. The `SetMode` hook still exists in the snippet — see the note
-under *Runtime hooks* — the harness just does not call it. Do not re-add the button.
+preview lever it only invited confusion. The `SetMode` hook is gone from the snippet too. Do not re-add the button.
 
 It deliberately renders on a **neutral background with only the design tokens `/felicitaciones` actually
 defines** — the real reference pages are never loaded, since that would fire live BCP/Adobe/Meta tracking
 beacons.
 
-`local/fonts/` holds the real Flexo webfonts and is wired **only into the harness** — never into the
+`preview/fonts/` holds the real Flexo webfonts and is wired **only into the harness** — never into the
 snippet, which must inherit its typeface from the host page. The bot uses one family
 (`Flexo-Regular`) at weights 600 and 700, so the harness maps Demi→600 and Bold→700 to avoid synthetic
 bolds. Verify they load by checking for `200` on the `.woff2` requests in the server log; a silent fallback
 to sans-serif looks plausible but is not faithful.
 
-A single snippet can also be opened directly (`open bot-actual.html`) — all icons are inline SVG and there
+A single snippet can also be opened directly (`open referencia/bot-actual.html`) — all icons are inline SVG and there
 are no external assets — but that gives no host-page tokens and no analytics panel.
 
-Runtime hooks (`tc0080` in `bot-actual.html`, `tcxxxx` in `bot-nuevo.html`):
-- `window.tc0080SetMode("slides" | "chat")` — switches render mode and restarts the flow. **`bot-actual.html`
+Runtime hooks (`tc0080` in `referencia/bot-actual.html`, `tc0091` in `adobe-target/piloto/bot.html`):
+- `window.tc0080SetMode("slides" | "chat")` — switches render mode and restarts the flow. **`referencia/bot-actual.html`
   only.** It was inherited by the port, never built for it, and on 2026-09-10 the preview's toggle, the hook
-  and the whole `slides` render path were removed from `bot-nuevo.html` — see *Dead code removed*. Do not
+  and the whole `slides` render path were removed from `adobe-target/piloto/bot.html` — see *Dead code removed*. Do not
   re-add either the hook or the preview button.
-- `window.tcxxxxCatalogo()` — **`bot-nuevo.html` only.** Returns the perfilador criteria, every card the
+- `window.tc0091Catalogo()` — **`adobe-target/piloto/bot.html` only.** Returns the perfilador criteria, every card the
   bot declares (`{codigo, nombre, criterio, caso}`) and the codes currently detected in the page. Feeds the
   preview's casuistics panel; the bot never calls it.
 - Graph problems are logged at init as `console.error("Destino inexistente:", ...)`.
@@ -84,7 +136,7 @@ Runtime hooks (`tc0080` in `bot-actual.html`, `tcxxxx` in `bot-nuevo.html`):
 
 **There is no Chrome on this machine — only Brave and Edge** (Marco, 2026-09-10), so the `claude-in-chrome`
 browser tools cannot drive this preview. Do not trust them here: in the 2026-09-10 session they served a
-page that looked exactly like the harness but was a **stale copy of `bot-nuevo.html` from the previous
+page that looked exactly like the harness but was a **stale copy of `adobe-target/piloto/bot.html` from the previous
 day**, with none of the edits just made, while the file on disk and the local server were both correct.
 The tell was that the local server logged **zero** requests from that browser. Cost about fifteen tool
 calls chasing a phantom cache bug. To see a change rendered, start the server and open it in Brave —
@@ -94,27 +146,27 @@ possible**. Never report a rendered observation taken from those tools.
 
 The harness also reinjects the whole iframe document on every file change, so a screenshot taken
 mid-reinjection can show unstyled markup — a capture race, not a broken snippet. And note the harness
-auto-reloads only `bot-nuevo.html`: after editing `preview-local.html` itself, the page needs a manual F5.
+auto-reloads only `adobe-target/piloto/bot.html`: after editing `preview/index.html` itself, the page needs a manual F5.
 
 ## Working on copy
 
-`wordings/` mirrors every user-visible string in `bot-nuevo.html`, one JSON per flow, plus `ui-fija.json`
+`contenido/wordings/` mirrors every user-visible string in `adobe-target/piloto/bot.html`, one JSON per flow, plus `ui-fija.json`
 for the copy that lives in the markup and in hardcoded engine strings rather than in `config.nodes`.
 
 **The snippet never reads these files** — not in production, not in the local preview. Do not add a
-`fetch`, an `import`, or any other way of loading them: `bot-nuevo.html` must stay self-contained because
+`fetch`, an `import`, or any other way of loading them: `adobe-target/piloto/bot.html` must stay self-contained because
 it ships as one blob pasted into Adobe Target. They exist purely so a wording task doesn't have to drag
 four 17-row tables through context to change one word.
 
 Workflow for a copy change — **all three steps, every time**:
 
-1. Read `wordings/_index.json` to find which file owns the screen. Open only that file.
-2. Edit the JSON, **then apply the same change to `bot-nuevo.html`** — `wordings/README.md` documents how
+1. Read `contenido/wordings/_index.json` to find which file owns the screen. Open only that file.
+2. Edit the JSON, **then apply the same change to `adobe-target/piloto/bot.html`** — `contenido/wordings/README.md` documents how
    each field maps back (tables → `| a | b |` rows, blank string = spacer, emoji → HTML entity).
-3. **Open the change in `preview-local.html`, walk to that screen, and look at it.** Report what was
+3. **Open the change in `preview/index.html`, walk to that screen, and look at it.** Report what was
    actually on screen, not what the diff says should be there.
 
-**A change that only exists in `wordings/*.json` is not a change.** The JSON is inert — nothing loads it,
+**A change that only exists in `contenido/wordings/*.json` is not a change.** The JSON is inert — nothing loads it,
 so editing it alone leaves the bot byte-identical. Never stop at step 2, and never report a wording task as
 done without having seen it rendered. This is the one failure mode the mirror introduces; the rest of the
 repo has no way to catch it, since there is no build, no test suite and no sync script.
@@ -124,14 +176,14 @@ If the copy touched is in `ui-fija.json`, step 2 means editing markup or engine 
 transition in `sessionStorage`; `"Pensando"` never renders at all while `config.thinking.showText` is
 `false`). Say so plainly instead of claiming a visual check that wasn't possible.
 
-`bot-nuevo.html` is the source of truth; the JSON is a mirror and there is no script keeping them in sync.
+`adobe-target/piloto/bot.html` is the source of truth; the JSON is a mirror and there is no script keeping them in sync.
 If you edit the HTML directly, update the JSON in the same pass. The `lineas` fields are jump hints that go
-stale as soon as nodes are added — confirm with `grep -n 'id: "q22"' bot-nuevo.html` before editing.
+stale as soon as nodes are added — confirm with `grep -n 'id: "q22"' adobe-target/piloto/bot.html` before editing.
 
 ## Architecture of the snippet
 
 The sections below describe the shared engine. Every selector, class, and id is namespaced and scoped
-under `#<ns>-scope` — `tc0080` in `bot-actual.html`, the `tcxxxx` placeholder in `bot-nuevo.html`.
+under `#<ns>-scope` — `tc0080` in `referencia/bot-actual.html`, `tc0091` in `adobe-target/piloto/bot.html`.
 
 ### Bootstrap (bottom of the script)
 
@@ -148,9 +200,9 @@ ES5 constructor + `Bot.prototype.*`, `var` declarations (a few arrow functions a
 runtime. Match this style when editing.
 
 **Conversation graph** — `config.nodes` is a flat array keyed by `id`. Ids encode tree depth:
-`q0` (root menu) → `q1` → `q11` → `q111`. In **`bot-actual.html`** it holds ~44 nodes, where `mixedNN` are
+`q0` (root menu) → `q1` → `q11` → `q111`. In **`referencia/bot-actual.html`** it holds ~44 nodes, where `mixedNN` are
 the "what now?" menus after a leaf answer and `rating` / `rating_number` / `rating_thanks_auto` /
-`mixed100` are the closing sequence. **`bot-nuevo.html` has 15 nodes and none of those**: its closing chain
+`mixed100` are the closing sequence. **`adobe-target/piloto/bot.html` has 15 nodes and none of those**: its closing chain
 was deleted on 2026-09-09 and the machinery behind it on 2026-09-10.
 
 Node fields: `id`, `type`, `title`, `text`, `className` (extra bubble classes), `next`, `options`,
@@ -160,11 +212,11 @@ Node types:
 - `question` — renders `options` as buttons; waits for the user.
 - `auto` — renders, then auto-advances to `next` after the thinking delay (`maybeAdvanceAutoNode`).
 - `mixed` — leaf menu mixing navigation options, external CTA links, and a close button.
-  **`bot-actual.html` only** — removed from `bot-nuevo.html` on 2026-09-10.
+  **`referencia/bot-actual.html` only** — removed from `adobe-target/piloto/bot.html` on 2026-09-10.
 - `rating` — renders the 1–5 star widget instead of options.
-  **`bot-actual.html` only** — removed from `bot-nuevo.html` on 2026-09-10.
+  **`referencia/bot-actual.html` only** — removed from `adobe-target/piloto/bot.html` on 2026-09-10.
 
-In `bot-nuevo.html` every one of the 15 nodes is `type: "question"`, and the engine only understands
+In `adobe-target/piloto/bot.html` every one of the 15 nodes is `type: "question"`, and the engine only understands
 `question` plus `auto`. See *Dead code removed* below.
 
 Option fields: `label`, plus `next`, or `href`+`target`+`isCta: true` for an external CTA, or
@@ -177,10 +229,10 @@ question bubble, so both stay clickable at once.
 markup (`data-next`, `data-idx`, `data-rating`, `data-response-idx` + `data-response-message-id`,
 `data-cta-discover`, `data-close`, `data-back`, `data-restart`, `data-main-restart`, `data-retry-error`,
 `data-runtime-error-action`). A new interactive control means emitting a `data-` attribute and handling it
-in `attachHandlers`. In `bot-nuevo.html` `data-rating`, `data-back` and `data-restart` are gone, and
+in `attachHandlers`. In `adobe-target/piloto/bot.html` `data-rating`, `data-back` and `data-restart` are gone, and
 `data-carousel*` was added.
 
-**Two modes** (`config.mode`, default `"chat"`) — **`bot-actual.html` only**. `bot-nuevo.html` has one
+**Two modes** (`config.mode`, default `"chat"`) — **`referencia/bot-actual.html` only**. `adobe-target/piloto/bot.html` has one
 render path and no `config.mode` at all; see *Dead code removed* below.
 - `chat` — append-only transcript. `state.chatLog` accumulates `{role: "user"|"bot", ...}`; each bot entry
   is a *snapshot* of the node taken in `appendBotMessageForCurrent`, so later config reads never
@@ -188,7 +240,7 @@ render path and no `config.mode` at all; see *Dead code removed* below.
   (plus any linked usage bubble) interactive. `back()` restores from `state.chatSnapshots`.
 - `slides` — `renderSlides` shows only the current node; `back()` pops `state.history`.
 
-The `chatLog`-as-snapshot behaviour **does** still hold in `bot-nuevo.html` and matters more than ever —
+The `chatLog`-as-snapshot behaviour **does** still hold in `adobe-target/piloto/bot.html` and matters more than ever —
 it is what freezes the perfilador's resolved cards into history. What is gone there is the *undo*
 machinery (`back()`, `state.chatSnapshots`), not the per-message snapshot.
 
@@ -197,7 +249,7 @@ machinery (`back()`, `state.chatSnapshots`), not the per-message snapshot.
 `allowWhileWaiting` is passed.
 
 **Rich text** — `richText: true` runs `text` through `formatRichText`: `**bold**`, `- ` bullets, blank
-lines as spacers, and — in `bot-nuevo.html` only — `| pipe | tables |`. Long copy is written as a string
+lines as spacers, and — in `adobe-target/piloto/bot.html` only — `| pipe | tables |`. Long copy is written as a string
 array joined with `"\n"`. Emojis are HTML entities
 (`&#128179;`) and `escapeHtml` deliberately preserves existing entities while escaping everything else — so
 node text and labels are trusted content. Do not route user-influenced strings through it.
@@ -206,13 +258,49 @@ node text and labels are trusted content. Do not route user-influenced strings t
 ### Analytics
 
 Events push onto `window.digitalData` (created as an array if absent) via `pushPromotionEvent`, with
-`event: "trackPromotionView" | "trackPromotionClick"` and `promotion: {name, creative, position}`. Names
-follow `Home - Cards - Bot - <section> - <experimentCode> - P`, where `experimentCode` comes from
-`config.analytics.experimentCode` (`"TC0080"`). Tracked: bot open, final-response view, feedback click
-(`position: "<nodeId> - <1|0>"`), discover-card CTA view/click, rating view/click, close view/click. The
-rating events exist in `bot-actual.html` only — `bot-nuevo.html` dropped them with the widget.
+`event: "trackPromotionView" | "trackPromotionClick"` and `promotion: {name, creative, position}`.
 
-This is the same `digitalData` queue the rest of the page uses — e.g. `bot-insertado.html` shows a sibling
+**In `referencia/bot-actual.html`** names follow `Home - Cards - Bot - <section> - <experimentCode> - P` with
+`experimentCode: "TC0080"`. Tracked: bot open, final-response view, feedback click
+(`position: "<nodeId> - <1|0>"`), discover-card CTA view/click, rating view/click, close view/click.
+
+**In `adobe-target/piloto/bot.html` the tagging plan is Marco's spec of 2026-09-11 and it is closed**: exactly these
+seven events, no more. Anything else that existed was deleted — do not re-add an event because the home bot
+has it.
+
+| Method | name (after `Felicitaciones - Cards - Bot - `) | creative | position | Fires when |
+| --- | --- | --- | --- | --- |
+| `trackLauncherView` | `Inicio - TC0091 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `Bot.launcherViewSent` |
+| `trackOpenBotClick` | `Inicio - TC0091 - P` | Button | `Modal` | panel opened |
+| `trackFinalResponseView` | `Arbol - TC0091 - P` | Modal | `<flow> - <nodeId>` | every **respuesta** node |
+| `trackElegirTarjetaView` | `Arbol - TC - TC0091 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
+| `trackElegirTarjetaClick` | `Arbol - TC - TC0091 - P` | Button | `Elegir Tarjeta` | click on `[data-card-cta]` / `[data-rec-cta]` |
+| `trackCloseView` | `TC0091 - P` | Button | `Cerrar` | node has an `isClose` option |
+| `trackCloseClick` | `TC0091 - P` | Button | `Cerrar` | `[data-close]` clicked |
+
+Three traps worth keeping:
+
+- **The close name has no section segment.** It goes from `Bot` straight to the code — the only one of the
+  four families without one. That is how Marco specified it; do not "fix" it by adding `Cierre`.
+- **`isRespuestaNode` decides what counts as a respuesta**: `id.length > 2`, which excludes the four menus
+  (`q0`–`q3`) and includes the eleven answer screens. The old gate was `node.feedbackText`, which no node
+  has, so **the whole Arbol funnel was silently dead** until 2026-09-11.
+- **`Elegir Tarjeta` is one View per screen, not per button.** A perfilador screen shows up to 4 CTAs and
+  the `position` is a fixed literal, so four identical events would only inflate the count.
+
+**Deleted on 2026-09-11, per Marco:** the `Arbol - Utilidad` feedback event (`trackFeedbackClick`,
+`getFeedbackScore`), and `trackDiscoverCardView/Click` + `isDiscoverCardCtaOption`, which keyed off
+`option.isCta` — a shape no node in this bot uses. The thumbs-up/down **UI** (CSS, `renderBotItem` branch,
+`[data-response-idx]` handler) was left in place but now emits nothing; see *Still open*.
+
+**`adobe-target/control/control.html` is the other half of the experiment.** The control group gets a page with no bot, so
+none of the seven can fire there. That file is a standalone `<script>` that pushes the single `- C` event
+(`Inicio - TC0091 - C`, Button, `Inicio Tarjetin`) and nothing else: no markup, no styles, no DOM writes,
+guarded by `window.__tc0091ControlViewSent` against Target re-injection. It pushes immediately rather than
+waiting for the page to create `digitalData` — a late control View unbalances the comparison against a
+pilot that pushes at once.
+
+This is the same `digitalData` queue the rest of the page uses — e.g. `referencia/bot-insertado.html` shows a sibling
 experiment **TC0037** (floating "Pide tu Tarjeta de Crédito BCP" button, `.m-button-fixed`) pushing
 `Home - Cards - TC0037 - P`.
 
@@ -238,7 +326,7 @@ Adobe Target (Alloy Web SDK) fetches decisions for a list of scopes and applies 
 `applyPropositions` + `actionType: "replaceHtml"` into placeholder divs
 `div.mbox-container[data-mbox="<scope>"]`, which a Launch rule creates inside a parent container div.
 
-On the **home** (`bot-insertado.html`): parent `.node-content-parent-otp`, scopes `cards-home`,
+On the **home** (`referencia/bot-insertado.html`): parent `.node-content-parent-otp`, scopes `cards-home`,
 `cards-home-personalizacion`, `cards-home-experimento`, `cards-home-acciones`, `cards-home-pruebas`,
 `cards-home-paso-paso`, `cards-home-personalizacion-2/-3`, `cards-home-utm-1..5` (plus
 `.node-content-parent-no-cookies` / `cards-home-no-cookies` for the pre-consent variant).
@@ -307,11 +395,20 @@ Visa Oro LATAM Pass (`TCRORL`) in the green recommendation box — but only if t
 `TCRORL` is absent from the production snapshot, so that user would see no fourth card. The selection
 order for the three is undecided; Marco defines it screen by screen.
 
-`tarjetas-catalogo.json` is the crosswalk: 17 cards × code, DOM name, name as written in the bot, affinity
+`contenido/tarjetas-catalogo.json` is the crosswalk: 17 cards × code, DOM name, name as written in the bot, affinity
 scores, membership, exoneration, miles and Priority Pass, plus the DOM selectors and the open questions.
-It is dev-only — **the snippet never reads it**, same rule as `wordings/`. **Cross-reference by code, never
-by name**: the DOM says "American Express Black LATAM Pass", the bot's tables say "AMEX Black LATAM" and
-`afinidad-tarjetas.json` says "Amex Black LATAM Pass".
+It is dev-only — **the snippet never reads it**, same rule as `contenido/wordings/`. **Cross-reference by code, never
+by name**: the DOM says "American Express Black LATAM Pass", the bot's tables say "American Express Black
+LATAM" (no trailing "Pass") and `contenido/afinidad-tarjetas.json` says "Amex Black LATAM Pass".
+
+**The bot never abbreviates the brand** (Marco, 2026-09-11): every user-visible string writes **"American
+Express"** in full — "Amex" and "AMEX" appear nowhere in `adobe-target/piloto/bot.html`. With that plus the completed
+"Pass" on `AMXGRE`, **`nombreEnElBot` now matches `nombreDom` character for character** on the six cards
+that appear in a snapshot. That coincidence is recent and one copy change away from breaking, so it does
+not license cross-referencing by name. This replaced the 2026-09-09
+decision to unify on "Amex". `contenido/afinidad-tarjetas.json` still says "Amex …" and is left alone: it is the
+record of what Marco sent, and `contenido/tarjetas-catalogo.json` keeps that spelling in `nombreEnAfinidad` so the
+crosswalk stays honest. Its `nombreEnElBot` fields carry the full name.
 
 ### Decisions taken (2026-09-06)
 
@@ -321,11 +418,13 @@ by name**: the DOM says "American Express Black LATAM Pass", the bot's tables sa
   refactor on your own initiative; change the engine only when he asks for something that needs it.
 - **Marco supplies all content**, screen by screen, including the tree and copy. Do not invent flows,
   wording, card data, or CTA destinations — implement what he sends.
-- **Experiment code is not assigned yet.** Use an obvious placeholder everywhere the code appears so it can
-  be swapped in one pass: the `tc0080-` CSS namespace, `#tc0080-scope`, the `tc0080_pending_transition`
-  sessionStorage key, `window.tc0080SetMode`, and `config.analytics.experimentCode`.
+- **Experiment code is `TC0091`** (Marco, 2026-09-11). The placeholder swap is **done**: `tc0091-` CSS
+  namespace, `#tc0091-scope`, `tc0091_pending_transition`, `window.tc0091Catalogo` and
+  `config.analytics.experimentCode: "TC0091"`. The analytics prefix `[[PAGINA]]` became `Felicitaciones`.
+  586 replacements in `adobe-target/piloto/bot.html`, plus `contenido/wordings/` and `preview/index.html`. Nothing in the
+  working set still carries a placeholder.
 
-## State of bot-nuevo.html
+## State of the offer (`adobe-target/piloto/bot.html`)
 
 ### Where the project stands (handoff, end of 2026-09-09)
 
@@ -351,15 +450,15 @@ A and a case B, all resolved at runtime from the user's approved cards. What rem
 - All four comparison screens swapped `✅ Elegir una tarjeta` for `Cerrar`, which orphaned the whole
   satisfaction-survey chain — **and Marco chose to delete it** rather than re-route it.
 - Six copy corrections were approved, plus that button unification. All are logged in
-  `correcciones-wording.md`, which is a **deliverable for the UI team**, not an internal note.
+  `docs/correcciones-wording.md`, which is a **deliverable for the UI team**, not an internal note.
 - Several engine rules changed: bubble width, bubble spacing, paragraph spacing, tight line breaks, option
   padding. Each is written up under *Engine changes* below.
-- `wordings/` was created as a dev-only mirror of all the copy — read it instead of this file when the task
+- `contenido/wordings/` was created as a dev-only mirror of all the copy — read it instead of this file when the task
   is wording.
 
-16 nodes. Placeholder namespace is `tcxxxx-` / `#tcxxxx-scope` / `tcxxxx_pending_transition` /
-`window.tcxxxxSetMode` / `experimentCode: "TCXXXX"`, and the analytics prefix is `"[[PAGINA]] - Cards -
-Bot - ..."`. All five swap in one pass once the real code is assigned.
+15 nodes. Namespace is `tc0091-` / `#tc0091-scope` / `tc0091_pending_transition` /
+`window.tc0091Catalogo` / `experimentCode: "TC0091"`, and the analytics prefix is
+`"Felicitaciones - Cards - Bot - ..."`. Assigned and swapped on 2026-09-11 — no placeholders left.
 
 | Branch | Status |
 | --- | --- |
@@ -391,17 +490,17 @@ survey rather than find it a new entry point. Every node is reachable from `q0` 
 
 **The rating and `mixed` machinery is gone** (Marco asked for it on 2026-09-10). It had been dead since the
 closing chain was deleted the day before: no node was `type: "rating"` or `type: "mixed"` any more. About
-**9.7 KB** came out, and `bot-nuevo.html` no longer contains the string "rating" anywhere.
+**9.7 KB** came out, and `adobe-target/piloto/bot.html` no longer contains the string "rating" anywhere.
 
 What was removed, so nobody goes looking for it:
 
 | Where | What |
 | --- | --- |
-| CSS | `.tcxxxx-rating`, `.tcxxxx-rating-btn` (+ `svg`, `:focus`, `:focus-visible`), `.tcxxxx-node-rating`, `.tcxxxx-node-rating-thanks` |
+| CSS | `.tc0091-rating`, `.tc0091-rating-btn` (+ `svg`, `:focus`, `:focus-visible`), `.tc0091-node-rating`, `.tc0091-node-rating-thanks` |
 | Widget | `createRating`, `createRatingReadonly`, `getRatingStarSvg` (both star SVGs), `paintRatingStars` |
 | Analytics | `trackRatingFinalView`, `trackRatingFinalClick`, and the `node.id === "rating_number"` hook in `appendBotMessageForCurrent` |
 | State | `state.rating` (init, `restart()`, the snapshot, and the restore in `back()`) and the `selectedRating` field on both chatLog message builders |
-| Handlers | the whole `[data-rating]` block in `attachHandlers` — click, hover, focus, `mousemove`/`mouseleave`/`focusout` on `.tcxxxx-rating` |
+| Handlers | the whole `[data-rating]` block in `attachHandlers` — click, hover, focus, `mousemove`/`mouseleave`/`focusout` on `.tc0091-rating` |
 | Render | `if (node.type === "rating")` and `if (node.type === "mixed")` in `renderSlides`, plus `includeRatingInBubble` in `renderChat` |
 
 **Then the `slides` mode went too**, in the same session and at Marco's request, once the preview's
@@ -410,11 +509,11 @@ chat/slides toggle was removed and nothing called it any more:
 | Where | What |
 | --- | --- |
 | Render | `renderSlides`, plus `createHeader`, `createText`, `createOptions`, `createFooter` — none had another caller |
-| Mode | `config.mode`, `setMode()`, `window.tcxxxxSetMode`, and `render()`'s ternary, which now calls `renderChat` directly |
-| Dead branches | the slides early-return in `adjustChatScroll`, the `tcxxxx-thinking--slide` waiting branch in `render()`, and the three `if (config.mode === "chat")` guards in `goTo`, `applyTransition` and `back()` |
+| Mode | `config.mode`, `setMode()`, `window.tc0091SetMode`, and `render()`'s ternary, which now calls `renderChat` directly |
+| Dead branches | the slides early-return in `adjustChatScroll`, the `tc0091-thinking--slide` waiting branch in `render()`, and the three `if (config.mode === "chat")` guards in `goTo`, `applyTransition` and `back()` |
 | State | `state.history`, which only the slides `back()` ever read |
 | Handlers | the `[data-restart]` and `[data-back]` blocks — they existed only for the slides footer |
-| CSS | `.tcxxxx-msg`, `.tcxxxx-options button`, `.tcxxxx-footer` (+ its nested `.tcxxxx-btn` and `[data-back]`), `.tcxxxx-thinking--slide` |
+| CSS | `.tc0091-msg`, `.tc0091-options button`, `.tc0091-footer` (+ its nested `.tc0091-btn` and `[data-back]`), `.tc0091-thinking--slide` |
 
 **And that orphaned the undo machinery, which Marco then had removed as well**: `back()`,
 `pushChatSnapshot()` and `state.chatSnapshots`. The slides footer's "Volver" button had been `back()`'s
@@ -431,65 +530,65 @@ in `renderChat`; and `createThinkingMarkup(extraClass)` lost its parameter, sinc
 passed one was the slides branch.
 
 **Deliberately kept:**
-- `.tcxxxx-btn` — the panel's close button is `class="tcxxxx-btn tcxxxx-close"`, and `.tcxxxx-chat-actions`
+- `.tc0091-btn` — the panel's close button is `class="tc0091-btn tc0091-close"`, and `.tc0091-chat-actions`
   nests it. It was never part of the slides path.
 - `createMainCta` — `renderChat` calls it when `state.finished` is true.
 - The per-message snapshot inside `appendBotMessageForCurrent`. That is what freezes the perfilador's
   resolved cards into the chatLog; only the *undo* snapshots went.
 
-`bot-actual.html` keeps every bit of this — it is the live home bot and is read-only. **This is now by far
+`referencia/bot-actual.html` keeps every bit of this — it is the live home bot and is read-only. **This is now by far
 the largest divergence between the two engines**: they no longer agree on node types, render paths, state
 shape or several method signatures. Do not port anything between them assuming they match, and do not
 "restore" something here because it exists there.
 
 If the satisfaction survey, the slides mode or a back button ever come back, they come back from
-`bot-actual.html` as the reference, not from this file's history.
+`referencia/bot-actual.html` as the reference, not from this file's history.
 
 **Four more dead CSS rules went too** (Marco, 2026-09-10), inherited from the home bot and unrelated to
-slides: `.tcxxxx-chat-actions` and its nested `.tcxxxx-btn`, bare `.tcxxxx-error` — the
-`.tcxxxx-error-message`, `-icon`, `-text` and `-retry` rules *are* used and stayed — and `.tcxxxx-hidden`,
+slides: `.tc0091-chat-actions` and its nested `.tc0091-btn`, bare `.tc0091-error` — the
+`.tc0091-error-message`, `-icon`, `-text` and `-retry` rules *are* used and stayed — and `.tc0091-hidden`,
 which was never applied to anything.
 
-**A sweep of every `.tcxxxx-*` class declared in the `<style>` block against the markup and the JS strings
+**A sweep of every `.tc0091-*` class declared in the `<style>` block against the markup and the JS strings
 now returns zero unused classes.** That sweep, plus the prototype-orphan scan, is the pair of checks worth
-re-running after any removal here. `.tcxxxx-btn` survives on a single use: the panel's close button is
-`class="tcxxxx-btn tcxxxx-close"`.
+re-running after any removal here. `.tc0091-btn` survives on a single use: the panel's close button is
+`class="tc0091-btn tc0091-close"`.
 
-### Engine changes made in bot-nuevo.html
+### Engine changes made in the offer
 
-These are real deviations from `bot-actual.html`. Diffing the two engines will no longer return zero.
+These are real deviations from `referencia/bot-actual.html`. Diffing the two engines will no longer return zero.
 
 - **`richText` now works on every node type.** It was only honoured for `response`/`auto`; `question`
   nodes silently fell through to plain text, so bold, bullets and tables were ignored there. Fixed in
   `renderBotItem`.
 - **Tables.** `formatRichText` parses markdown pipe rows (`| a | b |`, first row = header, dash row
-  discarded, closed by a blank or non-table line) into `.tcxxxx-rich-table` wrapped in
-  `.tcxxxx-rich-table-wrap`. The wrapper exists so `border-radius` clips the zebra striping and row
+  discarded, closed by a blank or non-table line) into `.tc0091-rich-table` wrapped in
+  `.tc0091-rich-table-wrap`. The wrapper exists so `border-radius` clips the zebra striping and row
   borders; without it the bottom corners render square.
 - **No `<br>` anywhere, and two levels of line separation** (the second added 2026-09-09).
   `formatPlainText()` splits on blank lines first, then on single newlines:
 
   | In the copy | Rendered as | Gap |
   | --- | --- | --- |
-  | blank line | new `<p class="tcxxxx-text-line">` | 16px |
-  | single newline | `<span class="tcxxxx-text-row">` (`display: block`) inside the same `<p>` | **0px** |
+  | blank line | new `<p class="tc0091-text-line">` | 16px |
+  | single newline | `<span class="tc0091-text-row">` (`display: block`) inside the same `<p>` | **0px** |
 
   The tight row exists because Marco's Figma chains two sentences with a hard break and no air, reserving
   the air to separate blocks of idea (`q31`, `q33`). It is a `display: block` span, not a `<br>` — the same
-  trick the launcher greeting already used with `.tcxxxx-welcome-line`. **This changed the meaning of a
+  trick the launcher greeting already used with `.tc0091-welcome-line`. **This changed the meaning of a
   single `\n`**: before, every line became its own 16px-separated paragraph. All pre-existing copy used
   `\n\n`, so nothing broke, but check the two-level rule when reading old node text.
 
   `formatRichText` (used when `richText: true`) is a separate path and does **not** support the tight row:
-  its blank line emits a `.tcxxxx-rich-spacer` and `.tcxxxx-rich-text` has `gap: 8px`.
-- **Bubble spacing depends on who spoke** (Marco, 2026-09-09). `.tcxxxx-chat` no longer uses `gap` — a gap
+  its blank line emits a `.tc0091-rich-spacer` and `.tc0091-rich-text` has `gap: 8px`.
+- **Bubble spacing depends on who spoke** (Marco, 2026-09-09). `.tc0091-chat` no longer uses `gap` — a gap
   is uniform and this distance is not. Spacing runs through `> * + *` margins: **24px when the sender
   changes, 12px when two bubbles from the same side are chained**, so a run of bot messages reads as one
   block. Verified on the closing chain, where four consecutive bot bubbles sit at 12px and the one that
-  follows a user bubble stays at 24px. The selectors key off `.tcxxxx-chat-bot-row` and
-  `.tcxxxx-chat-item--user` being direct children of `.tcxxxx-chat` — keep that flat structure if you touch
+  follows a user bubble stays at 24px. The selectors key off `.tc0091-chat-bot-row` and
+  `.tc0091-chat-item--user` being direct children of `.tc0091-chat` — keep that flat structure if you touch
   `renderChat`.
-- **Message entrance animation.** `.tcxxxx-msg-enter` slides bubbles in from their own side (bot from the
+- **Message entrance animation.** `.tc0091-msg-enter` slides bubbles in from their own side (bot from the
   left, user from the right) with `scale(0.8)`. Because `render()` rebuilds the whole thread with
   `innerHTML`, the class is applied only to chatLog entries past `this.animatedUpTo` — otherwise the
   entire history re-animates on every message. That counter lives **outside `state`** on purpose so it
@@ -498,21 +597,21 @@ These are real deviations from `bot-actual.html`. Diffing the two engines will n
   kills animations with `!important`) leaves bubbles visible rather than invisible.
 - **Panel entrance on desktop.** `shouldAnimateMobilePanel()` → `shouldAnimatePanel()`, now true at any
   width. The class/rAF/`transitionend` machinery was already there; only the mobile gate was removed.
-- **Bot avatar removed from the thread.** The `.tcxxxx-chat-bot-icon` span, its `iconSvg` variable and its
-  CSS are gone. The header avatar stays. `.tcxxxx-chat-bot-row` remains because it anchors
+- **Bot avatar removed from the thread.** The `.tc0091-chat-bot-icon` span, its `iconSvg` variable and its
+  CSS are gone. The header avatar stays. `.tc0091-chat-bot-row` remains because it anchors
   `data-feedback-anchor`.
-- **`.tcxxxx-body` is `overflow-x: hidden`.** The old `overflow: auto` shorthand let the entrance
+- **`.tc0091-body` is `overflow-x: hidden`.** The old `overflow: auto` shorthand let the entrance
   animation's X displacement raise a horizontal scrollbar.
 - **Option buttons wrap.** `white-space: nowrap` removed, plus `min-width: 0` on
-  `.tcxxxx-chat-item-option-label` — a flex item will not shrink below its content width without it, so
+  `.tc0091-chat-item-option-label` — a flex item will not shrink below its content width without it, so
   removing nowrap alone does nothing.
-- Online dot is `var(--state-success, #6AC90F)` — **green**, where `bot-actual.html:1035` and Marco's
+- Online dot is `var(--state-success, #6AC90F)` — **green**, where `referencia/bot-actual.html:1035` and Marco's
   mockup both have `white`. Confirmed by Marco on 2026-09-09; do not "fix" it.
 - Header title is **"Asistente Virtual"** with a capital V (Marco, 2026-09-09), where the home bot uses
   "Asistente virtual". The divergence between the two products is intentional.
 - Option buttons are `padding: 7.5px 16px` (Marco, 2026-09-09; was `9px 16px`), which puts them at 34px
   tall. The orange recommendation CTA keeps its own `6px 16px` and the bubble keeps its `12px`.
-- Spacing values were tuned (title `margin-bottom: 8px`, `.tcxxxx-chat-item` `padding: 12px`, options
+- Spacing values were tuned (title `margin-bottom: 8px`, `.tc0091-chat-item` `padding: 12px`, options
   `gap: 8px`).
 - **Type scale: 14px text is always `line-height: 20px`** (Marco, 2026-09-09). Applied to every rule that
   declares `font-size: 14px` — bubble text, titles, card descriptions, bullets, recommendation details,
@@ -522,24 +621,24 @@ These are real deviations from `bot-actual.html`. Diffing the two engines will n
   The one exception is the `aviso` box, which Marco specified at 12/18 — see the `aviso` node field below.
 
   Two knock-ons worth knowing: **option buttons went from 34px to 37px tall** (the `padding: 7.5px 16px`
-  Marco tuned earlier was aimed at 34px, and the taller line-height wins), and `.tcxxxx-card-name` **was
+  Marco tuned earlier was aimed at 34px, and the taller line-height wins), and `.tc0091-card-name` **was
   15px and is now 14px** at Marco's request, so the perfilador card title is the same size as its body copy
   and only weight tells them apart.
 
-  Not covered by the rule, and still on their own values: `.tcxxxx-rec-card` (15px — the card name inside
-  `q21`–`q24`'s recommendation box, the sibling of `.tcxxxx-card-name` that did *not* change), the tables
-  (13px), the badge and the status line (12px), and `.tcxxxx-error-retry` (13px).
-- **Paragraph spacing is a flat 16px** (Marco, 2026-09-09). `.tcxxxx-text-line` is `margin: 0 0 16px`, so
+  Not covered by the rule, and still on their own values: `.tc0091-rec-card` (15px — the card name inside
+  `q21`–`q24`'s recommendation box, the sibling of `.tc0091-card-name` that did *not* change), the tables
+  (13px), the badge and the status line (12px), and `.tc0091-error-retry` (13px).
+- **Paragraph spacing is a flat 16px** (Marco, 2026-09-09). `.tc0091-text-line` is `margin: 0 0 16px`, so
   the gap between paragraphs and the gap between the last paragraph and the options below are the same.
   Previously paragraphs sat at 8px and only the last line got 16px; the `:last-child` override is gone,
   since both values now coincide. Affects every `"<intro>\n\nElige una opción:"` screen (`q0`–`q3`).
-- **Bubble width** (Marco, 2026-09-09). `.tcxxxx-chat-item` is `max-width: 100%` with no fixed `width`, so
+- **Bubble width** (Marco, 2026-09-09). `.tc0091-chat-item` is `max-width: 100%` with no fixed `width`, so
   a bubble sizes to its own max-content. On top of that, a bot bubble that **contains option buttons or a
   table** is forced to `width: 100%`:
 
   ```css
-  .tcxxxx-chat-item--bot:has(.tcxxxx-chat-item-options),
-  .tcxxxx-chat-item--bot:has(.tcxxxx-rich-table) { width: 100%; }
+  .tc0091-chat-item--bot:has(.tc0091-chat-item-options),
+  .tc0091-chat-item--bot:has(.tc0091-rich-table) { width: 100%; }
   ```
 
   Without that rule a menu sits at whatever its longest button measures — `q3` landed at 96% and looked
@@ -553,9 +652,9 @@ These are real deviations from `bot-actual.html`. Diffing the two engines will n
   `:has()` is the only modern-CSS dependency in the file. Where it is unsupported the bubble just falls
   back to content width — the previous behaviour, not a broken layout.
 
-  This replaced a fixed `width: 90%` on bot bubbles plus a `tcxxxx-node-ancho` opt-in class for the table
+  This replaced a fixed `width: 90%` on bot bubbles plus a `tc0091-node-ancho` opt-in class for the table
   screens. **That class no longer exists** — its CSS rule and all four `className` usages were removed, and
-  `.tcxxxx-node-rating`'s `width: 90%` went with them. Do not reintroduce a fixed width to "make a bubble
+  `.tc0091-node-rating`'s `width: 90%` went with them. Do not reintroduce a fixed width to "make a bubble
   wide". The `mixed100` wrinkle recorded here before (a tiny "¿Qué deseas hacer ahora?" bubble forced to
   100%) **no longer applies**: that node was deleted with the closing chain.
 - **Recommendation card (`recommendation` node field).** New optional node field rendered by
@@ -572,8 +671,8 @@ These are real deviations from `bot-actual.html`. Diffing the two engines will n
   - `badge` ("La más usada") is a solid-green chip **inside** the box, top-left, on its own line, with an
     almost square `border-radius: 2px` — deliberately not a pill.
   - `details` render as a real `<ul>` with disc bullets, not paragraphs.
-  - the CTA is right-aligned and **auto-width** (`.tcxxxx-rec-actions` is `justify-content: flex-end`),
-    unlike `.tcxxxx-chat-item-option--cta` which is full-width.
+  - the CTA is right-aligned and **auto-width** (`.tc0091-rec-actions` is `justify-content: flex-end`),
+    unlike `.tc0091-chat-item-option--cta` which is full-width.
 
   Greens are eyeballed from the mockup and unconfirmed: border `var(--state-success, #6AC90F)` (the token
   already used by the header's online dot), badge `#3D9B00` picked darker so white text stays legible.
@@ -584,7 +683,7 @@ These are real deviations from `bot-actual.html`. Diffing the two engines will n
   It is **the only text in the thread that is not 14/20**: Marco specified 12px / `line-height: 18px` /
   `#002A8D`, and supplied the SVG (whose `fill` is hardcoded `#002A8D`, as delivered). He also gave
   `border-radius: 8px`, `margin-top: 24px`, and **32px between the box and `menuText`** — that last one via
-  `.tcxxxx-aviso + .tcxxxx-menu-text`, an adjacent-sibling rule so `q21`–`q24` and `q31`–`q33` keep their
+  `.tc0091-aviso + .tc0091-menu-text`, an adjacent-sibling rule so `q21`–`q24` and `q31`–`q33` keep their
   16px. Only `background: var(--primary-040, #EBF4FF)`, `padding: 16px` and `gap: 16px` were matched to his
   mockup by eye and are still unconfirmed.
 - **`menuText` node field.** Copy rendered after the recommendation card and before the options, so
@@ -599,11 +698,11 @@ These are real deviations from `bot-actual.html`. Diffing the two engines will n
   recommendation one.
 
   It is a **sibling of `createRecommendationMarkup`, not a refactor of it**: `q21`–`q24` are approved and
-  were left untouched, so the `.tcxxxx-card*` CSS deliberately duplicates the `.tcxxxx-rec*` rules. If both
+  were left untouched, so the `.tc0091-card*` CSS deliberately duplicates the `.tc0091-rec*` rules. If both
   ever need to change together, that duplication is the thing to fix — but only when asked.
 
-  The one layout difference from the recommendation block is `.tcxxxx-card-desc`: a description line glued
-  to the card name, with the air kept for separating it from the bullets (`.tcxxxx-card-bullets` has
+  The one layout difference from the recommendation block is `.tc0091-card-desc`: a description line glued
+  to the card name, with the air kept for separating it from the bullets (`.tc0091-card-bullets` has
   `margin-top: 12px`). `cards` travels in the chatLog snapshot and is honoured in `renderSlides`.
 
 - **The `cards` block is a horizontal carousel, not a stack** (Marco, 2026-09-10). Stacked vertically, 3–4
@@ -613,30 +712,30 @@ These are real deviations from `bot-actual.html`. Diffing the two engines will n
   orange circular next.
 
   **The card itself did not change by one pixel.** `createCardBoxMarkup` was split out of
-  `createCardsMarkup` verbatim, and `createCardsMarkup` now only wraps it. The `.tcxxxx-card*` CSS is
-  untouched; every carousel rule is a new `.tcxxxx-carousel*` class.
+  `createCardsMarkup` verbatim, and `createCardsMarkup` now only wraps it. The `.tc0091-card*` CSS is
+  untouched; every carousel rule is a new `.tc0091-carousel*` class.
 
   Things worth knowing before touching it:
 
   - **The scrolling is native, not `transform`.** `overflow-x: auto` + `scroll-snap-type: x mandatory` on
-    `.tcxxxx-carousel-track`, so swipe, inertia and snap are the browser's; the JS only sets `scrollLeft`
+    `.tc0091-carousel-track`, so swipe, inertia and snap are the browser's; the JS only sets `scrollLeft`
     for the arrows and dots. Do not rewrite it as a transform slider — that would mean reimplementing the
     touch gesture.
   - **`bindScrollIsolation` had to learn about it.** Its `wheel`/`touchmove` handlers call
     `preventDefault()` when the panel has no vertical scroll, which killed the horizontal swipe on exactly
     the short screens the carousel is for. Both now bail out early (keeping `stopPropagation`) when the
-    event target is inside `.tcxxxx-carousel-track`. If swipe ever stops working, look there first.
+    event target is inside `.tc0091-carousel-track`. If swipe ever stops working, look there first.
   - **Equal heights come from `align-items: stretch`** on the flex track, and because of that the CTA of
     the shorter cards is pushed to the bottom with `margin-top: auto` (its 12px of air becomes
-    `padding-top`). That override is scoped to `.tcxxxx-carousel-slide`, so a single-card block keeps the
+    `padding-top`). That override is scoped to `.tc0091-carousel-slide`, so a single-card block keeps the
     original spacing.
-  - **A single card renders as before**, through `.tcxxxx-cards`, with no controls — a dots row for one
+  - **A single card renders as before**, through `.tc0091-cards`, with no controls — a dots row for one
     card is noise.
   - **The `La más usada` badge needs `align-self: flex-start`** inside a slide. It is an `inline-block`,
     but turning the card into a flex column makes it a flex item, and the default stretch ran its green
     across the whole card width (spotted by Marco, 2026-09-10). Anything else `inline-block` added to
-    `.tcxxxx-card` later will hit the same trap — the `<p>`s and the `<ul>` do not, they were full width
-    already, and `.tcxxxx-card-actions` stretches on purpose to right-align its CTA.
+    `.tc0091-card` later will hit the same trap — the `<p>`s and the `<ul>` do not, they were full width
+    already, and `.tc0091-card-actions` stretches on purpose to right-align its CTA.
   - **The active index lives in `this.carouselIndex`, keyed by carousel id, outside `state`** — same
     reasoning and same trap as `animatedUpTo`: `render()` rebuilds the thread with `innerHTML`, so without
     it every carousel in the history would snap back to the first card on each new message. It resets in
@@ -677,10 +776,10 @@ starts appearing on its own for the users who are leads for it. No other change 
 `config.perfilador.sinDeteccion` decides what happens when the DOM yields no cards at all; it currently
 falls back to the unfiltered case A list, on the reasoning that the real page always has at least one
 approved card, so an empty read means the selector failed. Logged as
-`console.debug("[tcxxxx][error:PERFILADOR_SIN_LEADS]", …)`. **Not confirmed by Marco.**
+`console.debug("[tc0091][error:PERFILADOR_SIN_LEADS]", …)`. **Not confirmed by Marco.**
 
-`window.tcxxxxCatalogo()` is a dev hook next to `tcxxxxSetMode`: it returns the criteria, every card the
-bot declares (code, name, which case) and the codes currently detected. `preview-local.html` builds its
+`window.tc0091Catalogo()` is a dev hook (`tc0091SetMode` no longer exists — it went with the slides mode): it returns the criteria, every card the
+bot declares (code, name, which case) and the codes currently detected. `preview/index.html` builds its
 casuistics panel from it, so **the panel grows on its own as perfilador screens are added** — nothing to
 keep in sync by hand.
 
@@ -699,7 +798,7 @@ Marco extended the lead rule to `q21`–`q24`: **the tables list only the cards 
 
 **This sharpened an old problem.** The recommendation block in `q21`–`q24` is still hardcoded to Visa Oro
 LATAM Pass and is **not** filtered. With the production preset the membership table now shows 4 rows —
-Clásica LATAM Pass, Amex Clásica, Light, Clásica Qore — and still recommends a card that is not one of
+Clásica LATAM Pass, American Express Clásica, Light, Clásica Qore — and still recommends a card that is not one of
 them. Before the filtering it was merely questionable; now the screen contradicts itself on screen.
 
 ### Testing casuistics in the preview
@@ -730,13 +829,13 @@ Four things constrain the branch, and still do if a fifth criterion ever appears
 1. **They have to recommend more than one card.** `q1` now promises "te recomendaré **algunas opciones** que
    mejor se adapten a ti" (it used to say "solo la opción"). A single-card answer would contradict the
    menu that leads into it.
-2. **`afinidad-tarjetas.json` feeds exactly these four branches** — 17 cards scored 1–5 against the four
+2. **`contenido/afinidad-tarjetas.json` feeds exactly these four branches** — 17 cards scored 1–5 against the four
    `q1` criteria. Read its `_meta.pendiente_confirmar` before building any logic. It does **not** order the
    `q2` comparison tables.
 3. **The cards shown depend on the user being a lead for them** (Marco, 2026-09-09): at most **3** cards
    plus the Visa Oro LATAM Pass last, and **only if the user has it**. Implemented — see *The perfilador is
    dynamic* below. Marco delivers the priority order per screen; record it under `casuisticasPorCriterio`
-   in `tarjetas-catalogo.json` in the same pass as the node.
+   in `contenido/tarjetas-catalogo.json` in the same pass as the node.
 4. **They are dynamic now.** `q11` is the pattern: a node with `perfilador: "<criterio>"` plus its two
    card lists in `config.perfilador.criterios`. Do not hardcode a card list into a node again.
 
@@ -745,7 +844,7 @@ a Figma image — the design of the multi-card block included.
 
 ### Still open
 
-Also tracked in `correcciones-wording.md` (Parte 6), which is the version written for the UI team.
+Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version written for the UI team.
 
 **Blocked on Marco**
 
@@ -759,7 +858,6 @@ Also tracked in `correcciones-wording.md` (Parte 6), which is the version writte
   and `Visa Oro Qore S/170` are exactly their `q22` membership figures, while every other Qore row uses the
   exoneration scale. Marco re-sent the screen on 2026-09-09 with the same two values, so it is reproduced
   verbatim and still unanswered.
-- The `promotion.name` prefix for analytics. Hardcoded as `"[[PAGINA]] - Cards - Bot - ..."`.
 - Which `cards-felicitaciones-*` mbox delivers the offer.
 - **`AMXGRE`: "Amex green" in Marco's list vs *American Express Black LATAM Pass* in the certi DOM.** Kept
   as Black on the DOM's evidence. See the card-code bullet under *Facts worth not re-deriving* for what
@@ -773,9 +871,15 @@ Also tracked in `correcciones-wording.md` (Parte 6), which is the version writte
 
 **Lower-stakes, unconfirmed**
 
-- **The recommendation CTA emits no analytics.** `isDiscoverCardCtaOption` matches the literal label
-  "Descubrir si accedo a una tarjeta" and only inspects `options`, so it never sees this one. Blocked on
-  the `promotion.name` convention.
+- **`{Flujo} - {Respuesta}` is implemented as the technical id** (`"1 - q11"`), the same shape TC0080
+  already emits on the home. Marco has not confirmed whether analytics wants the screen title instead;
+  it is a one-line change in `trackFinalResponseView`.
+- **The `Elegir Tarjeta` click does not say which card was chosen.** The `position` Marco specified is a
+  fixed literal, so picking the Visa Oro and picking the American Express Black land identically. Raised,
+  not answered.
+- **The thumbs-up/down UI is now dead weight.** Its event was deleted on 2026-09-11 but the CSS, the
+  `renderBotItem` branch and the `[data-response-idx]` handler stayed. No node uses them, so nothing
+  renders. Marco has not said whether to remove them.
 - Comparison tables are at `font-size: 13px`. Marco's mockup was rendered wider than the real 374px panel,
   where 14px would wrap long card names onto three lines. Also, his mockup's vertical column divider is
   inset from the row edges; ours is a full-height `border-left`.
@@ -800,7 +904,7 @@ Also tracked in `correcciones-wording.md` (Parte 6), which is the version writte
 ### Facts worth not re-deriving
 
 - **The affinity table does not order the comparison screens.** Marco pastes the card order per screen and
-  it is to be used verbatim. `afinidad-tarjetas.json` feeds the *recommendation* branches (`q11`–`q14`)
+  it is to be used verbatim. `contenido/afinidad-tarjetas.json` feeds the *recommendation* branches (`q11`–`q14`)
   only. The 2.1 table happens to list the same 17 cards, which is a coincidence of catalogue, not a sort.
 - **Card counts differ by environment**: the `certi` snapshots show **13** cards
   (`Todas (13) / VISA (9) / American Express (4)`); production shows **4** — American Express Clásica LATAM
@@ -824,18 +928,21 @@ Also tracked in `correcciones-wording.md` (Parte 6), which is the version writte
 
   **One conflict is still unresolved.** Marco's list writes `AMXGRE` as "Amex green", but the certi DOM
   renders that same code as *American Express Black LATAM Pass* (verified in
-  `referencia-certi-con-exp.html`). The catalogue keeps the DOM's reading — `AMXGRE` = Amex Black LATAM
-  Pass — because it is direct evidence, and treats "green" as an internal offer label. If `AMXGRE` turned
-  out to really be an Amex Green, then the Amex Black would have no code and would silently vanish from the
-  three premium casuistries where it appears today (`viajar` case A, `beneficios` case A, `experiencias`
+  `referencia/paginas/referencia-certi-con-exp.html`). The catalogue keeps the DOM's reading — `AMXGRE` = American Express Black
+  LATAM Pass — because it is direct evidence, and treats "green" as an internal offer label. If `AMXGRE` turned
+  out to really be an Amex Green, then the American Express Black would have no code and would silently
+  vanish from the three premium casuistries where it appears today (`viajar` case A, `beneficios` case A, `experiencias`
   case A). Do not resolve this by guessing.
 
   The page lists cards descending by tier (Infinite → Signature → Platinum → Oro → Clásica → Light), and the
   two environments agree on that order.
-- Marco's 2.1 and 2.2 lists both write "AMEX Black LATAM" without the trailing "Pass" that every other row
-  has. Reproduced verbatim.
+- **`AMXGRE` is now written the same everywhere** (Marco, 2026-09-11). Marco's 2.1 and 2.2 lists wrote the
+  Black card without the trailing "Pass", so the four tables said "American Express Black LATAM" while the
+  perfilador said "… Pass". He asked for the "Pass" to be completed, and all five now agree on **"American
+  Express Black LATAM Pass"**. Do not re-raise it as a verbatim irregularity — it was, and it was fixed.
+  The Qore cards, Visa Light and Visa Clásica correctly carry no "LATAM Pass": they are not in that program.
 - **The comparison screens do not share one card order.** 2.1 and 2.3 put Visa Light and Visa Clásica at
-  positions 7–8 and AMEX Clásica at 9; 2.2 moves AMEX Clásica up to 7. Reproduced verbatim per screen —
+  positions 7–8 and American Express Clásica at 9; 2.2 moves it up to 7. Reproduced verbatim per screen —
   do not normalise them to each other.
 - 2.2 writes Visa Light's membership as bare `0`, not `S/0` like every other row. Reproduced verbatim.
 
@@ -849,11 +956,11 @@ Also tracked in `correcciones-wording.md` (Parte 6), which is the version writte
 
   | If you touched… | Update in the same pass |
   | --- | --- |
-  | user-visible copy in `bot-nuevo.html` | the owning `wordings/*.json` **and** `correcciones-wording.md` if it was a correction |
-  | card codes, names, affinity, casuistry | `tarjetas-catalogo.json` (ficha + every `casuisticasPorCriterio` entry) and its `_meta.pendiente_confirmar` |
-  | the node tree, engine rules, namespace | the *State of bot-nuevo.html* and *Engine changes* sections here |
-  | `local/preview-local.html` | the *Commands* and *Testing casuistics* sections here |
-  | anything Marco decided or left open | *Still open* here **and** Parte 6 of `correcciones-wording.md` |
+  | user-visible copy in `adobe-target/piloto/bot.html` | the owning `contenido/wordings/*.json` **and** `docs/correcciones-wording.md` if it was a correction |
+  | card codes, names, affinity, casuistry | `contenido/tarjetas-catalogo.json` (ficha + every `casuisticasPorCriterio` entry) and its `_meta.pendiente_confirmar` |
+  | the node tree, engine rules, namespace | the *State of adobe-target/piloto/bot.html* and *Engine changes* sections here |
+  | `preview/index.html` | the *Commands* and *Testing casuistics* sections here |
+  | anything Marco decided or left open | *Still open* here **and** Parte 6 of `docs/correcciones-wording.md` |
 
   Two specific duties that get forgotten: **delete facts that stopped being true** instead of only adding
   new ones (a resolved item left in *Still open* costs the next session real time re-raising it), and
@@ -861,14 +968,14 @@ Also tracked in `correcciones-wording.md` (Parte 6), which is the version writte
   from a guess. If a change makes a sentence here half-true, rewrite the sentence; do not append a
   contradiction next to it.
 
-- **Every correction to Marco's copy goes into `correcciones-wording.md`, in the same pass as the code
+- **Every correction to Marco's copy goes into `docs/correcciones-wording.md`, in the same pass as the code
   change** (Marco, 2026-09-09). That file is a deliverable: he presents it to the UI team, and it is written
   so an AI can read it cold and explain it. Log what it said, what it says now, and the rule applied.
   **If he approves a correction without mentioning the file, add it anyway and tell him you did** — he
   asked to be reminded rather than have it silently skipped.
 - **No template literals in the offer** (Marco, 2026-09-09). Build every string with `+` concatenation;
-  never a backtick string or `${}`. `bot-nuevo.html` currently has **zero** of either — keep it that way.
-  Related ES6 that *is* still present and was inherited from `bot-actual.html`: five arrow functions in
+  never a backtick string or `${}`. `adobe-target/piloto/bot.html` currently has **zero** of either — keep it that way.
+  Related ES6 that *is* still present and was inherited from `referencia/bot-actual.html`: five arrow functions in
   `validateGraph`/`getNode`, one `Array.prototype.find`, three `Number.isFinite`, one `Array.from`. Marco
   has not asked to remove those.
 - Copy is Spanish (Peru), informal "tú". Keep emoji as HTML entities, not literal characters — Marco sends

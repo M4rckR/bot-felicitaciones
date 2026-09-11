@@ -8,7 +8,7 @@
       "lineas": "1586-1599",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "texto": {
         "parrafos": [
@@ -40,7 +40,7 @@
       "lineas": "",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "texto": {
         "parrafos": [
@@ -76,7 +76,7 @@
       "lineas": "",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "texto": {
         "parrafos": [
@@ -115,7 +115,7 @@
       "lineas": "",
       "tipo": "question",
       "estado": "completo",
-      "className": "tcxxxx-node-question",
+      "className": "tc0091-node-question",
       "titulo": "",
       "texto": {
         "parrafos": [
@@ -157,6 +157,6 @@
     "2026-09-09: q31 (Cambio de linea de credito) entregada por Marco e implementada. Faltan q32 y q33.",
     "2026-09-09: q32 (Es seguro solicitarla por aqui) entregada por Marco e implementada. Falta q33.",
     "2026-09-09: q33 (Por que me ofrecieron esa linea) implementada. El flujo 3 queda completo.",
-    "2026-09-09 DECIDIDO: la burbuja del usuario repite el boton completo. Los mockups la dibujan mas corta (ej. 'Comparar tarjetas' contra el boton 'Quiero comparar mis tarjetas'), pero se decidio no acortar ni el boton ni la burbuja. Regla general: manda el boton. Ver correcciones-wording.md."
+    "2026-09-09 DECIDIDO: la burbuja del usuario repite el boton completo. Los mockups la dibujan mas corta (ej. 'Comparar tarjetas' contra el boton 'Quiero comparar mis tarjetas'), pero se decidio no acortar ni el boton ni la burbuja. Regla general: manda el boton. Ver docs/correcciones-wording.md."
   ]
 }

@@ -1,13 +1,13 @@
 <style>
-    #tcxxxx-scope {
+    #tc0091-scope {
         font-family: var(--bcp-font-family-primary-regular), sans-serif;
     }
 
-    #tcxxxx-scope * {
+    #tc0091-scope * {
         box-sizing: border-box;
     }
 
-    #tcxxxx-scope .tcxxxx-mask {
+    #tc0091-scope .tc0091-mask {
         position: fixed;
         inset: 0;
         background: rgba(0, 0, 0, 0.4);
@@ -15,7 +15,7 @@
         z-index: 9998;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher {
+    #tc0091-scope .tc0091-launcher {
         position: fixed;
         bottom: 20px;
         right: 20px;
@@ -32,7 +32,7 @@
         z-index: 9999;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-welcome-wrap {
+    #tc0091-scope .tc0091-launcher-welcome-wrap {
         position: fixed;
         right: 25px;
         bottom: 115px;
@@ -43,7 +43,7 @@
         gap: 0;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-welcome-box {
+    #tc0091-scope .tc0091-launcher-welcome-box {
         display: flex;
         flex-direction: column;
         align-items: flex-end;
@@ -52,7 +52,7 @@
         filter: drop-shadow(0 1px 1px rgba(82, 112, 148, 0.14)) drop-shadow(0 4px 14px rgba(82, 112, 148, 0.2));
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-welcome {
+    #tc0091-scope .tc0091-launcher-welcome {
         display: flex;
         padding: 8px;
         justify-content: center;
@@ -67,20 +67,20 @@
         cursor: pointer;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-welcome strong {
+    #tc0091-scope .tc0091-launcher-welcome strong {
         font-size: 14px;
         line-height: 20px;
         font-weight: 700;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-welcome-pointer {
+    #tc0091-scope .tc0091-launcher-welcome-pointer {
         width: 16px;
         height: 8px;
         margin-right: 32px;
         display: block;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-base {
+    #tc0091-scope .tc0091-launcher-base {
         display: flex;
         width: 64px;
         height: 64px;
@@ -96,13 +96,13 @@
         z-index: 2;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-base svg {
+    #tc0091-scope .tc0091-launcher-base svg {
         width: 32px;
         height: 32px;
         display: block;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher-pulse {
+    #tc0091-scope .tc0091-launcher-pulse {
         position: absolute;
         width: 100px;
         height: 100px;
@@ -121,11 +121,11 @@
         pointer-events: none;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher:focus {
+    #tc0091-scope .tc0091-launcher:focus {
         outline: none;
     }
 
-    #tcxxxx-scope .tcxxxx-launcher:focus-visible {
+    #tc0091-scope .tc0091-launcher:focus-visible {
         outline: 2px solid #B2D6FF;
         outline-offset: 4px;
         border-radius: 44px;
@@ -200,7 +200,7 @@
         }
     }
 
-    #tcxxxx-scope .tcxxxx-panel {
+    #tc0091-scope .tc0091-panel {
         position: fixed;
         bottom: 40px;
         right: 20px;
@@ -223,12 +223,12 @@
         will-change: transform, opacity;
     }
 
-    #tcxxxx-scope .tcxxxx-panel.tcxxxx-panel--open {
+    #tc0091-scope .tc0091-panel.tc0091-panel--open {
         opacity: 1;
         transform: translateY(0) scale(1);
     }
 
-    #tcxxxx-scope .tcxxxx-header {
+    #tc0091-scope .tc0091-header {
         padding: 12px;
         background: #0030B3;
         display: flex;
@@ -236,13 +236,13 @@
         align-items: center;
     }
 
-    #tcxxxx-scope .tcxxxx-header-main {
+    #tc0091-scope .tc0091-header-main {
         display: flex;
         align-items: center;
         gap: 8px;
     }
 
-    #tcxxxx-scope .tcxxxx-header-icon {
+    #tc0091-scope .tc0091-header-icon {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -252,18 +252,18 @@
         padding: 9px;
     }
 
-    #tcxxxx-scope .tcxxxx-header-text {
+    #tc0091-scope .tc0091-header-text {
         display: flex;
         flex-direction: column;
         gap: 2px;
     }
 
-    #tcxxxx-scope .tcxxxx-title {
+    #tc0091-scope .tc0091-title {
         color: #fff;
         font-weight: 600;
     }
 
-    #tcxxxx-scope .tcxxxx-status {
+    #tc0091-scope .tc0091-status {
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -273,12 +273,12 @@
         line-height: 1.2;
     }
 
-    #tcxxxx-scope .tcxxxx-status-dot {
+    #tc0091-scope .tc0091-status-dot {
         display: inline-flex;
         line-height: 0;
     }
 
-    #tcxxxx-scope .tcxxxx-body {
+    #tc0091-scope .tc0091-body {
         padding: 12px;
         /* Solo scroll vertical. La entrada de las burbujas las desplaza en X
            fuera del ancho util y sin esto aparece una barra horizontal. */
@@ -291,7 +291,7 @@
         touch-action: pan-y;
     }
 
-    #tcxxxx-scope .tcxxxx-chat {
+    #tc0091-scope .tc0091-chat {
         display: flex;
         flex-direction: column;
         margin-bottom: 0;
@@ -301,22 +301,22 @@
        uniforme y aqui la distancia depende de quien habla: 24px cuando cambia
        el remitente y la mitad cuando se encadenan dos del mismo lado, para que
        una tanda del bot se lea como un bloque y no como mensajes sueltos. */
-    #tcxxxx-scope .tcxxxx-chat > * + * {
+    #tc0091-scope .tc0091-chat > * + * {
         margin-top: 24px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat > .tcxxxx-chat-bot-row + .tcxxxx-chat-bot-row,
-    #tcxxxx-scope .tcxxxx-chat > .tcxxxx-chat-item--user + .tcxxxx-chat-item--user {
+    #tc0091-scope .tc0091-chat > .tc0091-chat-bot-row + .tc0091-chat-bot-row,
+    #tc0091-scope .tc0091-chat > .tc0091-chat-item--user + .tc0091-chat-item--user {
         margin-top: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-shell {
+    #tc0091-scope .tc0091-chat-shell {
         display: flex;
         flex-direction: column;
         gap: 10px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-box {
+    #tc0091-scope .tc0091-chat-box {
         /* background: #fff; */
         /* border: 1px solid #d8deea; */
         border-radius: 12px;
@@ -327,7 +327,7 @@
         justify-content: flex-start;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-main-cta {
+    #tc0091-scope .tc0091-chat-main-cta {
         margin-top: 10px;
         display: block;
         width: 100%;
@@ -341,16 +341,16 @@
         font-weight: 600;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-main-cta:hover {
+    #tc0091-scope .tc0091-chat-main-cta:hover {
         background: #ff961f;
     }
 
     /* Regla general de ancho de burbuja:
        el ancho lo decide el contenido y el techo es el 100% del hilo. Una
        burbuja corta se encoge; una con tabla larga llega al borde. Antes esto
-       era 90% fijo mas una clase tcxxxx-node-ancho para optar al 100%; esa
+       era 90% fijo mas una clase tc0091-node-ancho para optar al 100%; esa
        clase ya no hace falta y se elimino. */
-    #tcxxxx-scope .tcxxxx-chat-item {
+    #tc0091-scope .tc0091-chat-item {
         max-width: 100%;
         padding: 12px;
         border-radius: 10px;
@@ -358,7 +358,7 @@
         font-size: 14px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item--bot {
+    #tc0091-scope .tc0091-chat-item--bot {
         color: var(--on-text, #202E44);
         border-radius: 4px 16px 16px 16px;
         border: 1px solid var(--background-100, #D8DFEA);
@@ -371,32 +371,32 @@
        conservan su tamano natural.
        Si el navegador no soporta :has(), la burbuja simplemente se queda al
        ancho de su contenido, que es el comportamiento anterior. */
-    #tcxxxx-scope .tcxxxx-chat-item--bot:has(.tcxxxx-chat-item-options),
-    #tcxxxx-scope .tcxxxx-chat-item--bot:has(.tcxxxx-rich-table) {
+    #tc0091-scope .tc0091-chat-item--bot:has(.tc0091-chat-item-options),
+    #tc0091-scope .tc0091-chat-item--bot:has(.tc0091-rich-table) {
         width: 100%;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item--response {
+    #tc0091-scope .tc0091-chat-item--response {
         padding: 0;
         overflow: hidden;
     }
 
-    #tcxxxx-scope .tcxxxx-response-content {
+    #tc0091-scope .tc0091-response-content {
         padding: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-response-divider {
+    #tc0091-scope .tc0091-response-divider {
         border-top: 1px solid #D8DFEA;
     }
 
-    #tcxxxx-scope .tcxxxx-response-footer {
+    #tc0091-scope .tc0091-response-footer {
         display: flex;
         align-items: center;
         gap: 10px;
         padding: 10px 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-response-label {
+    #tc0091-scope .tc0091-response-label {
         font-size: 14px;
         line-height: 20px;
         color: #4a5568;
@@ -404,13 +404,13 @@
         white-space: nowrap;
     }
 
-    #tcxxxx-scope .tcxxxx-response-actions {
+    #tc0091-scope .tc0091-response-actions {
         display: inline-flex;
         align-items: center;
         gap: 14px;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn {
+    #tc0091-scope .tc0091-response-btn {
         width: 15px;
         height: 15px;
         border-radius: 20px;
@@ -424,37 +424,37 @@
         line-height: 0;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn:hover {
+    #tc0091-scope .tc0091-response-btn:hover {
         background: #F5F8FF;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn:disabled {
+    #tc0091-scope .tc0091-response-btn:disabled {
         opacity: 0.65;
         cursor: default;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn.is-selected {
+    #tc0091-scope .tc0091-response-btn.is-selected {
         background: #EAF1FF;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn[data-icon-slot="up"].is-selected {
+    #tc0091-scope .tc0091-response-btn[data-icon-slot="up"].is-selected {
         border-color: #6AC90F;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn[data-icon-slot="down"].is-selected {
+    #tc0091-scope .tc0091-response-btn[data-icon-slot="down"].is-selected {
         border-color: #CA4500;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn:focus {
+    #tc0091-scope .tc0091-response-btn:focus {
         outline: none;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn:focus-visible {
+    #tc0091-scope .tc0091-response-btn:focus-visible {
         outline: 2px solid #0A47F0;
         outline-offset: 2px;
     }
 
-    #tcxxxx-scope .tcxxxx-response-icon-slot {
+    #tc0091-scope .tc0091-response-icon-slot {
         /* width: 16px; */
         /* height: 16px; */
         display: inline-flex;
@@ -470,40 +470,40 @@
         padding: 4px;
     }
 
-    #tcxxxx-scope .tcxxxx-response-icon-slot svg {
+    #tc0091-scope .tc0091-response-icon-slot svg {
         width: 16px;
         height: 16px;
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn.is-selected .tcxxxx-response-icon-slot[data-icon-slot="up"] {
+    #tc0091-scope .tc0091-response-btn.is-selected .tc0091-response-icon-slot[data-icon-slot="up"] {
         border: 1px solid var(--state-success, #6AC90F);
     }
 
-    #tcxxxx-scope .tcxxxx-response-btn.is-selected .tcxxxx-response-icon-slot[data-icon-slot="down"] {
+    #tc0091-scope .tc0091-response-btn.is-selected .tc0091-response-icon-slot[data-icon-slot="down"] {
         border: 1px solid var(--secondary-700, #CA4500);
     }
 
-    #tcxxxx-scope .tcxxxx-response-actions:not(.tcxxxx-response-actions--has-selection) .tcxxxx-response-btn:not(.is-selected):hover .tcxxxx-response-icon-slot[data-icon-slot="up"] {
+    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="up"] {
         border: 1px solid var(--state-success, #6AC90F);
     }
 
-    #tcxxxx-scope .tcxxxx-response-actions:not(.tcxxxx-response-actions--has-selection) .tcxxxx-response-btn:not(.is-selected):hover .tcxxxx-response-icon-slot[data-icon-slot="up"] svg path {
+    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="up"] svg path {
         fill: #37A500 !important;
     }
 
-    #tcxxxx-scope .tcxxxx-response-actions:not(.tcxxxx-response-actions--has-selection) .tcxxxx-response-btn:not(.is-selected):hover .tcxxxx-response-icon-slot[data-icon-slot="down"] {
+    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="down"] {
         border: 1px solid var(--secondary-700, #CA4500);
     }
 
-    #tcxxxx-scope .tcxxxx-response-actions:not(.tcxxxx-response-actions--has-selection) .tcxxxx-response-btn:not(.is-selected):hover .tcxxxx-response-icon-slot[data-icon-slot="down"] svg path {
+    #tc0091-scope .tc0091-response-actions:not(.tc0091-response-actions--has-selection) .tc0091-response-btn:not(.is-selected):hover .tc0091-response-icon-slot[data-icon-slot="down"] svg path {
         fill: #CA4500 !important;
     }
 
-    #tcxxxx-scope .tcxxxx-node-start .tcxxxx-chat-item-title {
+    #tc0091-scope .tc0091-node-start .tc0091-chat-item-title {
         font-size: 16px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-title {
+    #tc0091-scope .tc0091-chat-item-title {
         display: block;
         font-size: 14px;
         line-height: 20px;
@@ -512,7 +512,7 @@
         margin-bottom: 8px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-text {
+    #tc0091-scope .tc0091-chat-item-text {
         display: block;
         font-size: 14px;
         line-height: 20px;
@@ -526,35 +526,35 @@
        el bloque de texto de lo que venga debajo (opciones, feedback, tarjetas).
        Antes eran 8px entre parrafos y 16px solo en el ultimo; Marco pidio la
        misma medida en los dos casos (2026-09-09). */
-    #tcxxxx-scope .tcxxxx-text-line {
+    #tc0091-scope .tc0091-text-line {
         margin: 0 0 16px;
     }
 
     /* Renglon pegado dentro de un parrafo: corta la linea sin agregar aire.
        Es un span display:block a proposito, para no usar <br>. */
-    #tcxxxx-scope .tcxxxx-text-row {
+    #tc0091-scope .tc0091-text-row {
         display: block;
     }
 
-    #tcxxxx-scope .tcxxxx-welcome-line {
+    #tc0091-scope .tc0091-welcome-line {
         display: block;
     }
 
-    #tcxxxx-scope .tcxxxx-rich-text {
+    #tc0091-scope .tc0091-rich-text {
         display: flex;
         flex-direction: column;
         gap: 8px;
     }
 
-    #tcxxxx-scope .tcxxxx-rich-line {
+    #tc0091-scope .tc0091-rich-line {
         margin: 0;
     }
 
     /* Tabla comparativa. El contenedor redondea y recorta para que el
        zebrado y los bordes de fila no se salgan por las esquinas. */
-    #tcxxxx-scope .tcxxxx-rich-table-wrap {
+    #tc0091-scope .tc0091-rich-table-wrap {
         /* 32px de separacion con el texto de arriba: 8px los pone el gap de
-           .tcxxxx-rich-text y los 24 restantes este margen. */
+           .tc0091-rich-text y los 24 restantes este margen. */
         margin-top: 24px;
         border: 1px solid #E6E6E6;
         border-radius: 12px;
@@ -563,7 +563,7 @@
 
     /* El panel mide 374px: table-layout fijo y corte de palabra para que
        los nombres largos partan de linea en vez de desbordar. */
-    #tcxxxx-scope .tcxxxx-rich-table {
+    #tc0091-scope .tc0091-rich-table {
         width: 100%;
         border-collapse: collapse;
         table-layout: fixed;
@@ -571,8 +571,8 @@
         line-height: 1.3;
     }
 
-    #tcxxxx-scope .tcxxxx-rich-table th,
-    #tcxxxx-scope .tcxxxx-rich-table td {
+    #tc0091-scope .tc0091-rich-table th,
+    #tc0091-scope .tc0091-rich-table td {
         padding: 12px 10px;
         text-align: left;
         vertical-align: middle;
@@ -581,47 +581,47 @@
     }
 
     /* Separador vertical entre columnas. */
-    #tcxxxx-scope .tcxxxx-rich-table th+th,
-    #tcxxxx-scope .tcxxxx-rich-table td+td {
+    #tc0091-scope .tc0091-rich-table th+th,
+    #tc0091-scope .tc0091-rich-table td+td {
         border-left: 1px solid #E6E6E6;
     }
 
     /* Separador horizontal entre filas. */
-    #tcxxxx-scope .tcxxxx-rich-table tbody tr {
+    #tc0091-scope .tc0091-rich-table tbody tr {
         border-top: 1px solid #E6E6E6;
     }
 
-    #tcxxxx-scope .tcxxxx-rich-table thead th {
+    #tc0091-scope .tc0091-rich-table thead th {
         font-weight: 600;
         background: #FAFAFA;
     }
 
     /* Zebrado: filas pares en gris. */
-    #tcxxxx-scope .tcxxxx-rich-table tbody tr:nth-child(even) {
+    #tc0091-scope .tc0091-rich-table tbody tr:nth-child(even) {
         background: #FAFAFA;
     }
 
     /* Bloque de tarjeta recomendada, debajo de la tabla y en la misma burbuja. */
-    #tcxxxx-scope .tcxxxx-rec-block {
+    #tc0091-scope .tc0091-rec-block {
         margin-top: 16px;
     }
 
     /* El titulo va fuera del recuadro, como texto normal del hilo. */
-    #tcxxxx-scope .tcxxxx-rec-title {
+    #tc0091-scope .tc0091-rec-title {
         margin: 0 0 8px;
         font-size: 14px;
         line-height: 20px;
         color: var(--on-text, #202E44);
     }
 
-    #tcxxxx-scope .tcxxxx-rec {
+    #tc0091-scope .tc0091-rec {
         padding: 16px;
         border: 1px solid var(--state-success, #6AC90F);
         border-radius: 24px;
         background: #F9F9FB;
     }
 
-    #tcxxxx-scope .tcxxxx-rec-badge {
+    #tc0091-scope .tc0091-rec-badge {
         display: inline-block;
         margin-bottom: 8px;
         padding: 3px 10px;
@@ -633,7 +633,7 @@
         line-height: 1.4;
     }
 
-    #tcxxxx-scope .tcxxxx-rec-card {
+    #tc0091-scope .tc0091-rec-card {
         margin: 0 0 4px;
         font-size: 15px;
         font-weight: 700;
@@ -642,13 +642,13 @@
     }
 
     /* Los detalles son viñetas, no parrafos sueltos. */
-    #tcxxxx-scope .tcxxxx-rec-details {
+    #tc0091-scope .tc0091-rec-details {
         margin: 0;
         padding-left: 20px;
         list-style: disc;
     }
 
-    #tcxxxx-scope .tcxxxx-rec-details li {
+    #tc0091-scope .tc0091-rec-details li {
         margin: 0 0 2px;
         font-size: 14px;
         line-height: 20px;
@@ -656,13 +656,13 @@
     }
 
     /* El CTA se alinea a la derecha y mide lo que su texto, no el ancho entero. */
-    #tcxxxx-scope .tcxxxx-rec-actions {
+    #tc0091-scope .tc0091-rec-actions {
         display: flex;
         justify-content: flex-end;
         margin-top: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-rec-cta {
+    #tc0091-scope .tc0091-rec-cta {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -679,11 +679,11 @@
         cursor: pointer;
     }
 
-    #tcxxxx-scope .tcxxxx-rec-cta:hover {
+    #tc0091-scope .tc0091-rec-cta:hover {
         background: #ff961f;
     }
 
-    #tcxxxx-scope .tcxxxx-rec-cta[disabled] {
+    #tc0091-scope .tc0091-rec-cta[disabled] {
         opacity: 0.5;
         cursor: default;
     }
@@ -691,16 +691,16 @@
     /* Lista de tarjetas del perfilador (q11-q14).
        Es el mismo recuadro del bloque de recomendacion, pero repetido y en dos
        variantes: borde neutro por defecto y borde verde + badge para la que
-       Marco marca como "La más usada". Se escribio aparte de .tcxxxx-rec* en
+       Marco marca como "La más usada". Se escribio aparte de .tc0091-rec* en
        vez de reutilizarlo para no tocar q21-q24, que ya estan aprobadas. */
-    #tcxxxx-scope .tcxxxx-cards {
+    #tc0091-scope .tc0091-cards {
         display: flex;
         flex-direction: column;
         gap: 16px;
         margin-top: 16px;
     }
 
-    #tcxxxx-scope .tcxxxx-card {
+    #tc0091-scope .tc0091-card {
         padding: 16px;
         border: 1px solid #E6E6E6;
         border-radius: 24px;
@@ -710,15 +710,15 @@
     /* La destacada. El verde lo dio Marco el 2026-09-09: va en duro y no por el
        token --state-success, que en esta pagina no esta definido y caia en un
        #6AC90F distinto. */
-    #tcxxxx-scope .tcxxxx-card--destacada {
+    #tc0091-scope .tc0091-card--destacada {
         border-color: #37A500;
     }
 
-    #tcxxxx-scope .tcxxxx-card-badge {
+    #tc0091-scope .tc0091-card-badge {
         display: inline-block;
         margin-bottom: 8px;
         /* 2px en Y y 4px en X, dado por Marco el 2026-09-10 (antes 3px 10px).
-           Solo este badge: el de q21-q24 (.tcxxxx-rec-badge) sigue en 3px 10px
+           Solo este badge: el de q21-q24 (.tc0091-rec-badge) sigue en 3px 10px
            porque esas pantallas estan aprobadas y no se tocan. */
         padding: 2px 4px;
         border-radius: 2px;
@@ -729,7 +729,7 @@
         line-height: 1.4;
     }
 
-    #tcxxxx-scope .tcxxxx-card-name {
+    #tc0091-scope .tc0091-card-name {
         margin: 0;
         font-size: 14px;
         font-weight: 700;
@@ -738,7 +738,7 @@
     }
 
     /* La descripcion va pegada al nombre, sin aire: asi esta en el mockup. */
-    #tcxxxx-scope .tcxxxx-card-desc {
+    #tc0091-scope .tc0091-card-desc {
         margin: 0;
         font-size: 14px;
         line-height: 20px;
@@ -746,26 +746,26 @@
     }
 
     /* El aire se reserva para separar la descripcion de las viñetas. */
-    #tcxxxx-scope .tcxxxx-card-bullets {
+    #tc0091-scope .tc0091-card-bullets {
         margin: 12px 0 0;
         padding-left: 20px;
         list-style: disc;
     }
 
-    #tcxxxx-scope .tcxxxx-card-bullets li {
+    #tc0091-scope .tc0091-card-bullets li {
         margin: 0 0 2px;
         font-size: 14px;
         line-height: 20px;
         color: var(--on-text, #202E44);
     }
 
-    #tcxxxx-scope .tcxxxx-card-actions {
+    #tc0091-scope .tc0091-card-actions {
         display: flex;
         justify-content: flex-end;
         margin-top: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-card-cta {
+    #tc0091-scope .tc0091-card-cta {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -782,11 +782,11 @@
         cursor: pointer;
     }
 
-    #tcxxxx-scope .tcxxxx-card-cta:hover {
+    #tc0091-scope .tc0091-card-cta:hover {
         background: #ff961f;
     }
 
-    #tcxxxx-scope .tcxxxx-card-cta[disabled] {
+    #tc0091-scope .tc0091-card-cta[disabled] {
         opacity: 0.5;
         cursor: default;
     }
@@ -800,13 +800,13 @@
        El desplazamiento es scroll nativo con scroll-snap, NO transform: asi el
        swipe tactil, la inercia y el snap los hace el navegador, y el JS solo
        mueve scrollLeft cuando se usan las flechas o los dots. La tarjeta en si
-       no cambia ni un pixel: .tcxxxx-card queda igual y el carrusel solo la
+       no cambia ni un pixel: .tc0091-card queda igual y el carrusel solo la
        envuelve. */
-    #tcxxxx-scope .tcxxxx-carousel {
+    #tc0091-scope .tc0091-carousel {
         margin-top: 16px;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-track {
+    #tc0091-scope .tc0091-carousel-track {
         display: flex;
         /* stretch es lo que iguala la altura de todas las tarjetas: el flex
            las lleva a la de la mas alta, asi no salta el layout al deslizar. */
@@ -824,12 +824,12 @@
         -ms-overflow-style: none;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-track::-webkit-scrollbar {
+    #tc0091-scope .tc0091-carousel-track::-webkit-scrollbar {
         display: none;
     }
 
     /* 82% del ancho del track deja ~18% de la siguiente tarjeta asomando. */
-    #tcxxxx-scope .tcxxxx-carousel-slide {
+    #tc0091-scope .tc0091-carousel-slide {
         flex: 0 0 82%;
         min-width: 0;
         scroll-snap-align: start;
@@ -837,7 +837,7 @@
         display: flex;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-slide > .tcxxxx-card {
+    #tc0091-scope .tc0091-carousel-slide > .tc0091-card {
         display: flex;
         flex-direction: column;
         width: 100%;
@@ -847,20 +847,20 @@
        flex column pasa a ser flex item y el stretch por defecto le estiraba el
        verde a todo el ancho. flex-start le devuelve el ancho de su texto. Solo
        le pasa al badge: los <p> y el <ul> ya eran de ancho completo, y
-       .tcxxxx-card-actions se estira a proposito para alinear su CTA a la
+       .tc0091-card-actions se estira a proposito para alinear su CTA a la
        derecha. */
-    #tcxxxx-scope .tcxxxx-carousel-slide .tcxxxx-card-badge {
+    #tc0091-scope .tc0091-carousel-slide .tc0091-card-badge {
         align-self: flex-start;
     }
 
     /* Al igualar alturas, el CTA de las tarjetas mas cortas quedaria flotando a
        media caja. Se pega al fondo y el aire minimo de 12px pasa a padding. */
-    #tcxxxx-scope .tcxxxx-carousel-slide .tcxxxx-card-actions {
+    #tc0091-scope .tc0091-carousel-slide .tc0091-card-actions {
         margin-top: auto;
         padding-top: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-controls {
+    #tc0091-scope .tc0091-carousel-controls {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -868,7 +868,7 @@
         margin-top: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-arrow {
+    #tc0091-scope .tc0091-carousel-arrow {
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -882,36 +882,36 @@
         font-family: inherit;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-arrow--prev {
+    #tc0091-scope .tc0091-carousel-arrow--prev {
         background: #EFF0F2;
         color: #202E44;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-arrow--prev:hover:not([disabled]) {
+    #tc0091-scope .tc0091-carousel-arrow--prev:hover:not([disabled]) {
         background: #E6E6E6;
     }
 
     /* La flecha de avanzar usa el mismo naranja del CTA "Elegir tarjeta". */
-    #tcxxxx-scope .tcxxxx-carousel-arrow--next {
+    #tc0091-scope .tc0091-carousel-arrow--next {
         background: #FF7800;
         color: #fff;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-arrow--next:hover:not([disabled]) {
+    #tc0091-scope .tc0091-carousel-arrow--next:hover:not([disabled]) {
         background: #ff961f;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-arrow[disabled] {
+    #tc0091-scope .tc0091-carousel-arrow[disabled] {
         opacity: 0.4;
         cursor: default;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-arrow:focus-visible {
+    #tc0091-scope .tc0091-carousel-arrow:focus-visible {
         outline: 2px solid #0A47F0;
         outline-offset: 2px;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-dots {
+    #tc0091-scope .tc0091-carousel-dots {
         display: flex;
         align-items: center;
         gap: 6px;
@@ -919,7 +919,7 @@
 
     /* Misma convencion que los puntos de "pensando": activo #0A47F0, inactivo
        #99A1AD al 45%. No se inventa un azul nuevo. */
-    #tcxxxx-scope .tcxxxx-carousel-dot {
+    #tc0091-scope .tc0091-carousel-dot {
         width: 8px;
         height: 8px;
         padding: 0;
@@ -930,12 +930,12 @@
         cursor: pointer;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-dot--activo {
+    #tc0091-scope .tc0091-carousel-dot--activo {
         background: #0A47F0;
         opacity: 1;
     }
 
-    #tcxxxx-scope .tcxxxx-carousel-dot:focus-visible {
+    #tc0091-scope .tc0091-carousel-dot:focus-visible {
         outline: 2px solid #0A47F0;
         outline-offset: 2px;
     }
@@ -943,7 +943,7 @@
     /* Aviso al pie de la lista de tarjetas: recuadro celeste con icono.
        Va entre las tarjetas y el "¿Que deseas hacer ahora?". Es el unico texto
        del hilo que no usa el tamaño 14/20 del resto. */
-    #tcxxxx-scope .tcxxxx-aviso {
+    #tc0091-scope .tc0091-aviso {
         display: flex;
         align-items: center;
         gap: 16px;
@@ -953,19 +953,19 @@
         background: var(--primary-040, #EBF4FF);
     }
 
-    #tcxxxx-scope .tcxxxx-aviso-icono {
+    #tc0091-scope .tc0091-aviso-icono {
         display: inline-flex;
         flex: 0 0 auto;
         line-height: 0;
     }
 
-    #tcxxxx-scope .tcxxxx-aviso-icono svg {
+    #tc0091-scope .tc0091-aviso-icono svg {
         display: block;
         width: 20px;
         height: 20px;
     }
 
-    #tcxxxx-scope .tcxxxx-aviso-texto {
+    #tc0091-scope .tc0091-aviso-texto {
         margin: 0;
         font-size: 12px;
         font-weight: 400;
@@ -975,18 +975,18 @@
     }
 
     /* "¿Que deseas hacer ahora?" separa la tarjeta del menu de opciones. */
-    #tcxxxx-scope .tcxxxx-menu-text {
+    #tc0091-scope .tc0091-menu-text {
         margin-top: 16px;
     }
 
     /* Detras del aviso la separacion es el doble (Marco, 2026-09-09). Va con el
        selector de hermano adyacente para no tocar q21-q24 ni q31-q33, donde el
        mismo texto sigue a 16px del bloque de arriba. */
-    #tcxxxx-scope .tcxxxx-aviso+.tcxxxx-menu-text {
+    #tc0091-scope .tc0091-aviso+.tc0091-menu-text {
         margin-top: 32px;
     }
 
-    #tcxxxx-scope .tcxxxx-rich-list {
+    #tc0091-scope .tc0091-rich-list {
         margin: 0;
         padding-left: 18px;
         display: flex;
@@ -994,15 +994,15 @@
         gap: 4px;
     }
 
-    #tcxxxx-scope .tcxxxx-rich-list li {
+    #tc0091-scope .tc0091-rich-list li {
         margin: 0;
     }
 
-    #tcxxxx-scope .tcxxxx-rich-spacer {
+    #tc0091-scope .tc0091-rich-spacer {
         height: 2px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-bot-row {
+    #tc0091-scope .tc0091-chat-bot-row {
         display: flex;
         gap: 8px;
         align-items: flex-start;
@@ -1016,7 +1016,7 @@
        La opacidad inicial vive solo en el keyframe: con prefers-reduced-motion
        la animacion se anula y la burbuja aparece visible, no en blanco. */
     /* Cada burbuja nace de su lado. Derecha: usuario. */
-    @keyframes tcxxxx-msg-in {
+    @keyframes tc0091-msg-in {
         from {
             opacity: 0;
             transform: translateX(28px) scale(0.8);
@@ -1029,7 +1029,7 @@
     }
 
     /* Izquierda: bot y burbuja de "pensando". */
-    @keyframes tcxxxx-msg-in-left {
+    @keyframes tc0091-msg-in-left {
         from {
             opacity: 0;
             transform: translateX(-28px) scale(0.8);
@@ -1043,18 +1043,18 @@
 
     /* Va en la burbuja, no en la fila: la fila ocupa todo el ancho y
        escalarla no se percibe. La burbuja se ajusta al contenido. */
-    #tcxxxx-scope .tcxxxx-msg-enter {
-        animation: tcxxxx-msg-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    #tc0091-scope .tc0091-msg-enter {
+        animation: tc0091-msg-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
         transform-origin: 100% 100%;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item--bot.tcxxxx-msg-enter,
-    #tcxxxx-scope .tcxxxx-thinking.tcxxxx-msg-enter {
-        animation-name: tcxxxx-msg-in-left;
+    #tc0091-scope .tc0091-chat-item--bot.tc0091-msg-enter,
+    #tc0091-scope .tc0091-thinking.tc0091-msg-enter {
+        animation-name: tc0091-msg-in-left;
         transform-origin: 0 100%;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-options {
+    #tc0091-scope .tc0091-chat-item-options {
         display: flex;
         /* flex-wrap: wrap; */
         flex-direction: column;
@@ -1062,7 +1062,7 @@
         margin-top: 8px;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option {
+    #tc0091-scope .tc0091-chat-item-option {
         display: inline-flex;
         align-items: center;
         padding: 7.5px 16px;
@@ -1080,12 +1080,12 @@
         background: #FFF;
     }
 
-    #tcxxxx-scope a.tcxxxx-chat-item-option {
+    #tc0091-scope a.tc0091-chat-item-option {
         cursor: pointer;
         text-decoration: none;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option--cta {
+    #tc0091-scope .tc0091-chat-item-option--cta {
         width: 100%;
         justify-content: center;
         padding: 6px 16px;
@@ -1099,7 +1099,7 @@
         font-weight: 600;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option-label {
+    #tc0091-scope .tc0091-chat-item-option-label {
         display: inline-flex;
         align-items: center;
         /* Un item flex no baja de su ancho de contenido salvo con min-width: 0.
@@ -1107,7 +1107,7 @@
         min-width: 0;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option-icon {
+    #tc0091-scope .tc0091-chat-item-option-icon {
         width: 24px;
         height: 24px;
         display: inline-flex;
@@ -1116,39 +1116,39 @@
         flex: 0 0 auto;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option-icon svg {
+    #tc0091-scope .tc0091-chat-item-option-icon svg {
         width: 24px;
         height: 24px;
         display: block;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option--cta:hover {
+    #tc0091-scope .tc0091-chat-item-option--cta:hover {
         background: #ff961f;
         border-color: #ff961f;
     }
 
-    #tcxxxx-scope button.tcxxxx-chat-item-option {
+    #tc0091-scope button.tc0091-chat-item-option {
         cursor: pointer;
         font-family: inherit;
         width: fit-content;
     }
 
-    #tcxxxx-scope button.tcxxxx-chat-item-option:hover {
+    #tc0091-scope button.tc0091-chat-item-option:hover {
         background: #eef3ff;
         border-color: #b7c6ea;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option[disabled] {
+    #tc0091-scope .tc0091-chat-item-option[disabled] {
         opacity: 0.7;
         cursor: default;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item-option[disabled]:hover {
+    #tc0091-scope .tc0091-chat-item-option[disabled]:hover {
         background: #FFF;
         border-color: #E6E6E6;
     }
 
-    #tcxxxx-scope .tcxxxx-chat-item--user {
+    #tc0091-scope .tc0091-chat-item--user {
         color: #fff;
         align-self: flex-end;
         margin-left: auto;
@@ -1157,7 +1157,7 @@
         background: var(--primary-400, #0A47F0);
     }
 
-    #tcxxxx-scope .tcxxxx-thinking {
+    #tc0091-scope .tc0091-thinking {
         display: inline-flex;
         align-items: center;
         gap: 6px;
@@ -1171,17 +1171,17 @@
         background: var(--on-white, #FFF);
     }
 
-    #tcxxxx-scope .tcxxxx-thinking--chat {
+    #tc0091-scope .tc0091-thinking--chat {
         /* margin-left: 40px; */
         margin-right: auto;
     }
 
-    #tcxxxx-scope .tcxxxx-thinking-dots {
+    #tc0091-scope .tc0091-thinking-dots {
         display: inline-flex;
         gap: 4px;
     }
 
-    #tcxxxx-scope .tcxxxx-thinking-dot {
+    #tc0091-scope .tc0091-thinking-dot {
         width: 8px;
         height: 8px;
         border-radius: 50%;
@@ -1190,19 +1190,19 @@
         transform: scale(0.92);
     }
 
-    #tcxxxx-scope .tcxxxx-thinking-dot:nth-child(1) {
-        animation: tcxxxx-dot-step-1 1.2s infinite steps(1, end);
+    #tc0091-scope .tc0091-thinking-dot:nth-child(1) {
+        animation: tc0091-dot-step-1 1.2s infinite steps(1, end);
     }
 
-    #tcxxxx-scope .tcxxxx-thinking-dot:nth-child(2) {
-        animation: tcxxxx-dot-step-2 1.2s infinite steps(1, end);
+    #tc0091-scope .tc0091-thinking-dot:nth-child(2) {
+        animation: tc0091-dot-step-2 1.2s infinite steps(1, end);
     }
 
-    #tcxxxx-scope .tcxxxx-thinking-dot:nth-child(3) {
-        animation: tcxxxx-dot-step-3 1.2s infinite steps(1, end);
+    #tc0091-scope .tc0091-thinking-dot:nth-child(3) {
+        animation: tc0091-dot-step-3 1.2s infinite steps(1, end);
     }
 
-    @keyframes tcxxxx-dot-step-1 {
+    @keyframes tc0091-dot-step-1 {
 
         0%,
         33.333% {
@@ -1219,7 +1219,7 @@
         }
     }
 
-    @keyframes tcxxxx-dot-step-2 {
+    @keyframes tc0091-dot-step-2 {
 
         0%,
         33.333% {
@@ -1243,7 +1243,7 @@
         }
     }
 
-    @keyframes tcxxxx-dot-step-3 {
+    @keyframes tc0091-dot-step-3 {
 
         0%,
         66.666% {
@@ -1260,9 +1260,9 @@
         }
     }
 
-    /* .tcxxxx-btn se queda: la usa el boton de cerrar del panel, que en el markup
-       es class="tcxxxx-btn tcxxxx-close". Es su unico uso hoy. */
-    #tcxxxx-scope .tcxxxx-btn {
+    /* .tc0091-btn se queda: la usa el boton de cerrar del panel, que en el markup
+       es class="tc0091-btn tc0091-close". Es su unico uso hoy. */
+    #tc0091-scope .tc0091-btn {
         background: var(--on-text, #202E44);
         color: #fff;
         border: none;
@@ -1272,25 +1272,25 @@
         background-color: #fff;
     }
 
-    #tcxxxx-scope .tcxxxx-btn:focus {
+    #tc0091-scope .tc0091-btn:focus {
         outline: 3px solid #2b7cff;
     }
 
-    #tcxxxx-scope .tcxxxx-close {
+    #tc0091-scope .tc0091-close {
         cursor: pointer;
         background-color: #0030B3;
     }
 
-    #tcxxxx-scope .tcxxxx-close:focus {
+    #tc0091-scope .tc0091-close:focus {
         outline: none;
     }
 
-    #tcxxxx-scope .tcxxxx-close:focus-visible {
+    #tc0091-scope .tc0091-close:focus-visible {
         outline: 2px solid #ffffff;
         outline-offset: 2px;
     }
 
-    #tcxxxx-scope .tcxxxx-error-message {
+    #tc0091-scope .tc0091-error-message {
         display: flex;
         align-items: center;
         gap: 12px;
@@ -1301,14 +1301,14 @@
         margin-bottom: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-error-icon {
+    #tc0091-scope .tc0091-error-icon {
         flex-shrink: 0;
         color: #DC3545;
         font-size: 20px;
         line-height: 1;
     }
 
-    #tcxxxx-scope .tcxxxx-error-content {
+    #tc0091-scope .tc0091-error-content {
         flex: 1;
         display: flex;
         align-items: center;
@@ -1316,7 +1316,7 @@
         gap: 12px;
     }
 
-    #tcxxxx-scope .tcxxxx-error-text {
+    #tc0091-scope .tc0091-error-text {
         font-size: 14px;
         line-height: 20px;
         font-weight: 600;
@@ -1324,7 +1324,7 @@
         margin: 0;
     }
 
-    #tcxxxx-scope .tcxxxx-error-retry {
+    #tc0091-scope .tc0091-error-retry {
         flex-shrink: 0;
         padding: 8px 16px;
         background: #FF7800;
@@ -1338,45 +1338,45 @@
         line-height: 1.2;
     }
 
-    #tcxxxx-scope .tcxxxx-error-retry:hover {
+    #tc0091-scope .tc0091-error-retry:hover {
         background: #ff961f;
     }
 
-    #tcxxxx-scope .tcxxxx-error-retry:focus {
+    #tc0091-scope .tc0091-error-retry:focus {
         outline: none;
     }
 
-    #tcxxxx-scope .tcxxxx-error-retry:focus-visible {
+    #tc0091-scope .tc0091-error-retry:focus-visible {
         outline: 2px solid #0A47F0;
         outline-offset: 2px;
     }
 
     @media (max-width: 768px) {
-        #tcxxxx-scope .tcxxxx-launcher-welcome-wrap {
+        #tc0091-scope .tc0091-launcher-welcome-wrap {
             right: 20px;
             bottom: 106px;
             width: min(218px, calc(100vw - 132px));
         }
 
-        #tcxxxx-scope .tcxxxx-launcher.tcxxxx-launcher--lifted {
+        #tc0091-scope .tc0091-launcher.tc0091-launcher--lifted {
             bottom: 122px;
         }
 
-        #tcxxxx-scope .tcxxxx-launcher-welcome-wrap.tcxxxx-launcher-welcome-wrap--lifted {
+        #tc0091-scope .tc0091-launcher-welcome-wrap.tc0091-launcher-welcome-wrap--lifted {
             bottom: 208px;
         }
 
-        #tcxxxx-scope .tcxxxx-launcher-welcome {
+        #tc0091-scope .tc0091-launcher-welcome {
             font-size: 14px;
             line-height: 20px;
         }
 
-        #tcxxxx-scope .tcxxxx-launcher-welcome strong {
+        #tc0091-scope .tc0091-launcher-welcome strong {
             font-size: 14px;
             line-height: 20px;
         }
 
-        #tcxxxx-scope .tcxxxx-panel {
+        #tc0091-scope .tc0091-panel {
             width: 100%;
             right: 0;
             bottom: 0;
@@ -1389,53 +1389,53 @@
             will-change: transform, opacity;
         }
 
-        #tcxxxx-scope .tcxxxx-panel.tcxxxx-panel--open {
+        #tc0091-scope .tc0091-panel.tc0091-panel--open {
             transform: translateY(0);
             opacity: 1;
         }
     }
 
     @media (prefers-reduced-motion: reduce) {
-        #tcxxxx-scope * {
+        #tc0091-scope * {
             transition: none !important;
             animation: none !important;
         }
 
-        #tcxxxx-scope .tcxxxx-launcher-pulse {
+        #tc0091-scope .tc0091-launcher-pulse {
             animation:
                 kf_631_1318_opacity_0 2s linear,
                 kf_631_1318_scale_0 2s linear !important;
             animation-iteration-count: infinite !important;
         }
 
-        #tcxxxx-scope .tcxxxx-thinking-dot:nth-child(1) {
-            animation: tcxxxx-dot-step-1 1.2s infinite steps(1, end) !important;
+        #tc0091-scope .tc0091-thinking-dot:nth-child(1) {
+            animation: tc0091-dot-step-1 1.2s infinite steps(1, end) !important;
             transform: none !important;
         }
 
-        #tcxxxx-scope .tcxxxx-thinking-dot:nth-child(2) {
-            animation: tcxxxx-dot-step-2 1.2s infinite steps(1, end) !important;
+        #tc0091-scope .tc0091-thinking-dot:nth-child(2) {
+            animation: tc0091-dot-step-2 1.2s infinite steps(1, end) !important;
             transform: none !important;
         }
 
-        #tcxxxx-scope .tcxxxx-thinking-dot:nth-child(3) {
-            animation: tcxxxx-dot-step-3 1.2s infinite steps(1, end) !important;
+        #tc0091-scope .tc0091-thinking-dot:nth-child(3) {
+            animation: tc0091-dot-step-3 1.2s infinite steps(1, end) !important;
             transform: none !important;
         }
     }
 </style>
 
-<div class="tcxxxx-mask" aria-hidden="true"></div>
+<div class="tc0091-mask" aria-hidden="true"></div>
 
-<div class="tcxxxx-launcher-welcome-wrap">
-    <div class="tcxxxx-launcher-welcome-box">
-        <div class="tcxxxx-launcher-welcome" role="button" tabindex="0" aria-label="Abrir bot">
+<div class="tc0091-launcher-welcome-wrap">
+    <div class="tc0091-launcher-welcome-box">
+        <div class="tc0091-launcher-welcome" role="button" tabindex="0" aria-label="Abrir bot">
             <strong>
-                <span class="tcxxxx-welcome-line">¡Hola! Soy Tarjetín. &#128075;</span>
-                <span class="tcxxxx-welcome-line">¿En qué te puedo ayudar?</span>
+                <span class="tc0091-welcome-line">¡Hola! Soy Tarjetín. &#128075;</span>
+                <span class="tc0091-welcome-line">¿En qué te puedo ayudar?</span>
             </strong>
         </div>
-        <svg class="tcxxxx-launcher-welcome-pointer" xmlns="http://www.w3.org/2000/svg" width="16" height="8"
+        <svg class="tc0091-launcher-welcome-pointer" xmlns="http://www.w3.org/2000/svg" width="16" height="8"
             viewBox="0 0 16 8" fill="none" aria-hidden="true">
             <path
                 d="M6.58579 6.58579C7.36683 7.36683 8.63316 7.36684 9.41421 6.58579L16 0L6.99382e-07 -1.39876e-06L6.58579 6.58579Z"
@@ -1444,9 +1444,9 @@
     </div>
 </div>
 
-<div class="tcxxxx-launcher" role="button" tabindex="0" aria-label="Abrir bot">
-    <span class="tcxxxx-launcher-pulse" aria-hidden="true"></span>
-    <span class="tcxxxx-launcher-base" aria-hidden="true">
+<div class="tc0091-launcher" role="button" tabindex="0" aria-label="Abrir bot">
+    <span class="tc0091-launcher-pulse" aria-hidden="true"></span>
+    <span class="tc0091-launcher-base" aria-hidden="true">
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
             <path
                 d="M16.0004 10.6668V5.33398H10.6667M2.66602 18.666H5.3329M26.6679 18.666H29.3348M20.0007 17.3328V19.9992M12.0001 17.3328V19.9992M7.99978 10.6668H24.0011C25.4739 10.6668 26.6679 11.8606 26.6679 13.3332V23.9988C26.6679 25.4714 25.4739 26.6652 24.0011 26.6652H7.99978C6.5269 26.6652 5.3329 25.4714 5.3329 23.9988V13.3332C5.3329 11.8606 6.5269 10.6668 7.99978 10.6668Z"
@@ -1455,20 +1455,20 @@
     </span>
 </div>
 
-<div class="tcxxxx-panel" role="dialog" aria-modal="true" aria-label="Bot determinístico">
-    <div class="tcxxxx-header">
-        <div class="tcxxxx-header-main">
-            <span class="tcxxxx-header-icon" aria-hidden="true">
+<div class="tc0091-panel" role="dialog" aria-modal="true" aria-label="Bot determinístico">
+    <div class="tc0091-header">
+        <div class="tc0091-header-main">
+            <span class="tc0091-header-icon" aria-hidden="true">
                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
                     <path
                         d="M8.99962 6.00019V3.00049H5.99938M1.49902 10.4997H2.99914M15.0001 10.4997H16.5002M11.2498 9.74981V11.2497M6.74944 9.74981V11.2497M4.49926 6.00019H13.5C14.3285 6.00019 15.0001 6.67169 15.0001 7.50004V13.4994C15.0001 14.3278 14.3285 14.9993 13.5 14.9993H4.49926C3.67077 14.9993 2.99914 14.3278 2.99914 13.4994V7.50004C2.99914 6.67169 3.67077 6.00019 4.49926 6.00019Z"
                         stroke="white" stroke-width="2" stroke-linecap="round" />
                 </svg>
             </span>
-            <div class="tcxxxx-header-text">
-                <span class="tcxxxx-title">Asistente Virtual</span>
-                <p class="tcxxxx-status">
-                    <span class="tcxxxx-status-dot" aria-hidden="true">
+            <div class="tc0091-header-text">
+                <span class="tc0091-title">Asistente Virtual</span>
+                <p class="tc0091-status">
+                    <span class="tc0091-status-dot" aria-hidden="true">
                         <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
                             <circle cx="3" cy="3" r="3" fill="var(--state-success, #6AC90F)" />
                         </svg>
@@ -1478,7 +1478,7 @@
             </div>
         </div>
         <div>
-            <button class="tcxxxx-btn tcxxxx-close" aria-label="Cerrar">
+            <button class="tc0091-btn tc0091-close" aria-label="Cerrar">
                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
                     style="background: #0030B3; pointer-events: none; display: block;">
                     <path fill-rule="evenodd" clip-rule="evenodd"
@@ -1490,7 +1490,7 @@
 
 
     </div>
-    <div class="tcxxxx-body"></div>
+    <div class="tc0091-body"></div>
 </div>
 
 <script>
@@ -1520,10 +1520,10 @@
                 startNode: "q0",
                 menuText: "Ir al inicio",
                 analytics: {
-                    experimentCode: "TCXXXX",
+                    experimentCode: "TC0091",
                     openBotPromotion: {
                         creative: "Button",
-                        position: "Banner Footer",
+                        position: "Modal",
                     },
                 },
                 thinking: {
@@ -1568,10 +1568,10 @@
                             { codigo: "TCRINF", nombre: "Visa Infinite Iridium LATAM Pass", valor: "Hasta 2 millas por $1 de consumo." },
                             { codigo: "TCRMIN", nombre: "Visa Light", valor: "No Aplica" },
                             { codigo: null, nombre: "Visa Clásica", valor: "No Aplica" },
-                            { codigo: "AMXCLL", nombre: "Amex Clásica LATAM Pass", valor: "1 milla por cada $2" },
-                            { codigo: "AMXGLL", nombre: "Amex Oro LATAM Pass", valor: "1 milla por cada $1.5" },
-                            { codigo: "AMXPLL", nombre: "Amex Platinum LATAM Pass", valor: "1 milla por $1" },
-                            { codigo: "AMXGRE", nombre: "Amex Black LATAM", valor: "1.5 millas por $1" },
+                            { codigo: "AMXCLL", nombre: "American Express Clásica LATAM Pass", valor: "1 milla por cada $2" },
+                            { codigo: "AMXGLL", nombre: "American Express Oro LATAM Pass", valor: "1 milla por cada $1.5" },
+                            { codigo: "AMXPLL", nombre: "American Express Platinum LATAM Pass", valor: "1 milla por $1" },
+                            { codigo: "AMXGRE", nombre: "American Express Black LATAM Pass", valor: "1.5 millas por $1" },
                             { codigo: "TCRLY5", nombre: "Visa Clásica Qore", valor: "No Aplica" },
                             { codigo: "TCRLY3", nombre: "Visa Oro Qore", valor: "No Aplica" },
                             { codigo: "TCRLY4", nombre: "Visa Platinum Qore", valor: "No Aplica" },
@@ -1589,12 +1589,12 @@
                             { codigo: "TCRPL1", nombre: "Visa Signature LATAM Pass", valor: "S/400" },
                             { codigo: "TCRBA7", nombre: "Visa Infinite Sapphire LATAM Pass", valor: "S/450" },
                             { codigo: "TCRINF", nombre: "Visa Infinite Iridium LATAM Pass", valor: "S/500" },
-                            { codigo: "AMXCLL", nombre: "Amex Clásica LATAM Pass", valor: "S/80" },
+                            { codigo: "AMXCLL", nombre: "American Express Clásica LATAM Pass", valor: "S/80" },
                             { codigo: "TCRMIN", nombre: "Visa Light", valor: "0" },
                             { codigo: null, nombre: "Visa Clásica", valor: "S/80" },
-                            { codigo: "AMXGLL", nombre: "Amex Oro LATAM Pass", valor: "S/170" },
-                            { codigo: "AMXPLL", nombre: "Amex Platinum LATAM Pass", valor: "S/350" },
-                            { codigo: "AMXGRE", nombre: "Amex Black LATAM", valor: "S/400" },
+                            { codigo: "AMXGLL", nombre: "American Express Oro LATAM Pass", valor: "S/170" },
+                            { codigo: "AMXPLL", nombre: "American Express Platinum LATAM Pass", valor: "S/350" },
+                            { codigo: "AMXGRE", nombre: "American Express Black LATAM Pass", valor: "S/400" },
                             { codigo: "TCRLY5", nombre: "Visa Clásica Qore", valor: "S/80" },
                             { codigo: "TCRLY3", nombre: "Visa Oro Qore", valor: "S/170" },
                             { codigo: "TCRLY4", nombre: "Visa Platinum Qore", valor: "S/350" },
@@ -1614,10 +1614,10 @@
                             { codigo: "TCRINF", nombre: "Visa Infinite Iridium LATAM Pass", valor: "S/5,000" },
                             { codigo: "TCRMIN", nombre: "Visa Light", valor: "Gratis" },
                             { codigo: null, nombre: "Visa Clásica", valor: "S/50" },
-                            { codigo: "AMXCLL", nombre: "Amex Clásica LATAM Pass", valor: "S/1" },
-                            { codigo: "AMXGLL", nombre: "Amex Oro LATAM Pass", valor: "S/1" },
-                            { codigo: "AMXPLL", nombre: "Amex Platinum LATAM Pass", valor: "S/1,200" },
-                            { codigo: "AMXGRE", nombre: "Amex Black LATAM", valor: "S/3,500" },
+                            { codigo: "AMXCLL", nombre: "American Express Clásica LATAM Pass", valor: "S/1" },
+                            { codigo: "AMXGLL", nombre: "American Express Oro LATAM Pass", valor: "S/1" },
+                            { codigo: "AMXPLL", nombre: "American Express Platinum LATAM Pass", valor: "S/1,200" },
+                            { codigo: "AMXGRE", nombre: "American Express Black LATAM Pass", valor: "S/3,500" },
                             { codigo: "TCRLY5", nombre: "Visa Clásica Qore", valor: "S/80" },
                             { codigo: "TCRLY3", nombre: "Visa Oro Qore", valor: "S/170" },
                             { codigo: "TCRLY4", nombre: "Visa Platinum Qore", valor: "S/1,200" },
@@ -1637,10 +1637,10 @@
                             { codigo: "TCRINF", nombre: "Visa Infinite Iridium LATAM Pass", valor: "Sí" },
                             { codigo: "TCRMIN", nombre: "Visa Light", valor: "No" },
                             { codigo: null, nombre: "Visa Clásica", valor: "No" },
-                            { codigo: "AMXCLL", nombre: "Amex Clásica LATAM Pass", valor: "No" },
-                            { codigo: "AMXGLL", nombre: "Amex Oro LATAM Pass", valor: "No" },
-                            { codigo: "AMXPLL", nombre: "Amex Platinum LATAM Pass", valor: "No" },
-                            { codigo: "AMXGRE", nombre: "Amex Black LATAM", valor: "Sí" },
+                            { codigo: "AMXCLL", nombre: "American Express Clásica LATAM Pass", valor: "No" },
+                            { codigo: "AMXGLL", nombre: "American Express Oro LATAM Pass", valor: "No" },
+                            { codigo: "AMXPLL", nombre: "American Express Platinum LATAM Pass", valor: "No" },
+                            { codigo: "AMXGRE", nombre: "American Express Black LATAM Pass", valor: "Sí" },
                             { codigo: "TCRLY5", nombre: "Visa Clásica Qore", valor: "No" },
                             { codigo: "TCRLY3", nombre: "Visa Oro Qore", valor: "No" },
                             { codigo: "TCRLY4", nombre: "Visa Platinum Qore", valor: "No" },
@@ -1710,7 +1710,7 @@
                                     },
                                     {
                                         codigo: "AMXGRE",
-                                        name: "&#128179; Amex Black LATAM Pass",
+                                        name: "&#128179; American Express Black LATAM Pass",
                                         description: "Ideal para disfrutar experiencias premium en los viajes.",
                                         bullets: [
                                             "6,000 Millas de bienvenida.",
@@ -1722,7 +1722,7 @@
                                     },
                                     {
                                         codigo: "AMXPLL",
-                                        name: "&#128179; Amex Platinum LATAM Pass",
+                                        name: "&#128179; American Express Platinum LATAM Pass",
                                         description: "Ideal para viajeros frecuentes que quieren beneficios premium.",
                                         bullets: [
                                             "3,000 Millas de bienvenida",
@@ -1752,7 +1752,7 @@
                                     },
                                     {
                                         codigo: "AMXGLL",
-                                        name: "&#128179; Amex Oro LATAM Pass",
+                                        name: "&#128179; American Express Oro LATAM Pass",
                                         description: "Ideal para quienes buscan acumular más millas para viajar.",
                                         bullets: [
                                             "2,000 Millas de bienvenida",
@@ -1772,7 +1772,7 @@
                                     },
                                     {
                                         codigo: "AMXCLL",
-                                        name: "&#128179; Amex Clásica LATAM Pass",
+                                        name: "&#128179; American Express Clásica LATAM Pass",
                                         description: "Ideal para quienes buscan acumular millas en sus compras diarias.",
                                         bullets: [
                                             "1,000 Millas de bienvenida",
@@ -1890,7 +1890,7 @@
                             },
                             {
                                 codigo: "AMXCLL",
-                                name: "&#128179; Amex Clásica LATAM Pass",
+                                name: "&#128179; American Express Clásica LATAM Pass",
                                 description: "Ideal para quienes buscan acumular millas con una membresía accesible.",
                                 bullets: [
                                     "Membresía anual de S/80.",
@@ -1936,7 +1936,7 @@
                             },
                             {
                                 codigo: "AMXGLL",
-                                name: "&#128179; Amex Oro LATAM Pass",
+                                name: "&#128179; American Express Oro LATAM Pass",
                                 description: "Ideal para quienes buscan acumular más millas con sus compras frecuentes.",
                                 bullets: [
                                     "Membresía anual de S/170.",
@@ -2006,7 +2006,7 @@
                             },
                             {
                                 codigo: "AMXPLL",
-                                name: "&#128179; Amex Platinum LATAM Pass",
+                                name: "&#128179; American Express Platinum LATAM Pass",
                                 description: "Tarjeta premium para viajes y acumulación de millas.",
                                 bullets: [
                                     "Membresía anual: S/350.",
@@ -2029,7 +2029,7 @@
                             },
                             {
                                 codigo: "AMXGRE",
-                                name: "&#128179; Amex Black LATAM Pass",
+                                name: "&#128179; American Express Black LATAM Pass",
                                 description: "Experiencia premium enfocada en viajeros frecuentes.",
                                 bullets: [
                                     "Membresía anual: S/400.",
@@ -2110,7 +2110,7 @@
                             },
                             {
                                 codigo: "AMXPLL",
-                                name: "&#128179; Amex Platinum LATAM Pass",
+                                name: "&#128179; American Express Platinum LATAM Pass",
                                 description: "Obtén más beneficios por tus consumos frecuentes.",
                                 bullets: [
                                     "3,000 Millas de bienvenida",
@@ -2122,7 +2122,7 @@
                             },
                             {
                                 codigo: "AMXGRE",
-                                name: "&#128179; Amex Black LATAM Pass",
+                                name: "&#128179; American Express Black LATAM Pass",
                                 description: "Acumulación acelerada y beneficios premium.",
                                 bullets: [
                                     "6,000 Millas de bienvenida",
@@ -2184,7 +2184,7 @@
                             },
                             {
                                 codigo: "AMXGLL",
-                                name: "&#128179; Amex Oro LATAM Pass",
+                                name: "&#128179; American Express Oro LATAM Pass",
                                 description: "Para los que buscan viajar con más frecuencia.",
                                 bullets: [
                                     "2,000 millas de bienvenida.",
@@ -2217,7 +2217,7 @@
                             },
                             {
                                 codigo: "AMXCLL",
-                                name: "&#128179; Amex Clásica LATAM Pass",
+                                name: "&#128179; American Express Clásica LATAM Pass",
                                 description: "Acumula recompensas por tus compras diarias.",
                                 bullets: [
                                     "Hasta 1,000 Millas de bienvenida.",
@@ -2319,7 +2319,7 @@
                             },
                             {
                                 codigo: "AMXGRE",
-                                name: "&#128179; Amex Black LATAM Pass",
+                                name: "&#128179; American Express Black LATAM Pass",
                                 description: "Experiencia premium para viajeros frecuentes.",
                                 bullets: [
                                     "Acumula hasta 1.5 Millas por cada $1 de consumo.",
@@ -2332,7 +2332,7 @@
                             },
                             {
                                 codigo: "AMXPLL",
-                                name: "&#128179; Amex Platinum LATAM Pass",
+                                name: "&#128179; American Express Platinum LATAM Pass",
                                 description: "Experiencia premium combinada con acumulación de millas.",
                                 bullets: [
                                     "Acumula 1 Milla por cada $1 de consumo.",
@@ -2440,13 +2440,13 @@
                             },
                             {
                                 codigo: "AMXGLL",
-                                name: "&#128179; Amex Oro LATAM Pass",
+                                name: "&#128179; American Express Oro LATAM Pass",
                                 description: "Mayor acumulación y beneficios respecto a una tarjeta clásica.",
                                 bullets: [
                                     "Acumula 1 Milla por cada $ 1.5 de consumo.",
                                     "Canjea millas por vuelos y experiencias LATAM.",
                                     "Seguros de viaje y equipaje.",
-                                    "Descuentos en Booking.com y beneficios AMEX.",
+                                    "Descuentos en Booking.com y beneficios American Express.",
                                     "50% de descuento en Cineplanet.",
                                     "Campañas exclusivas para acumular más millas.",
                                 ],
@@ -2465,7 +2465,7 @@
                             },
                             {
                                 codigo: "AMXCLL",
-                                name: "&#128179; Amex Clásica LATAM Pass",
+                                name: "&#128179; American Express Clásica LATAM Pass",
                                 bullets: [
                                     "Acumula recompensas por tus compras diarias.",
                                     "Acumula 1 Milla por cada $2 de consumo.",
@@ -2532,7 +2532,7 @@
                         title: "Hola! &#128075; Soy Tarjetín.",
                         text: "Te ayudaré a elegir una tarjeta de crédito. ¿Qué necesitas hacer?\n\nElige una opción:",
                         type: "question",
-                        className: "tcxxxx-node-question tcxxxx-node-start",
+                        className: "tc0091-node-question tc0091-node-start",
                         options: [
                             { label: "&#128179; Ayúdame a elegir una tarjeta", next: "q1" },
                             { label: "&#x2696;&#xFE0F; Quiero comparar mis tarjetas", next: "q2" },
@@ -2546,7 +2546,7 @@
                         title: "",
                         text: "¡Claro! &#128516; Cuéntame para qué te gustaría usar tu tarjeta y te recomendaré algunas opciones que mejor se adapten a ti.\n\nElige una opción:",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         options: [
                             { label: "&#x2708;&#xFE0F; Viajar y acumular millas", next: "q11" },
                             { label: "&#128176; Ahorrar en costos", next: "q12" },
@@ -2565,7 +2565,7 @@
                         title: "",
                         perfilador: "viajar",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         aviso: "Solo te mostraremos las tarjetas recomendadas",
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2581,7 +2581,7 @@
                         title: "",
                         perfilador: "ahorrar",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         aviso: "Solo te mostraremos las tarjetas recomendadas",
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2595,7 +2595,7 @@
                         title: "",
                         perfilador: "beneficios",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         aviso: "Solo te mostraremos las tarjetas recomendadas",
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2609,7 +2609,7 @@
                         title: "",
                         perfilador: "experiencias",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         aviso: "Solo te mostraremos las tarjetas recomendadas",
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2624,7 +2624,7 @@
                         title: "",
                         text: "¡Claro! &#128516; ¿Qué características te gustaría comparar de tus tarjetas aprobadas?\n\nElige una opción:",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         options: [
                             { label: "Acumulación de millas por consumo", next: "q21" },
                             { label: "Membresía Anual", next: "q22" },
@@ -2640,7 +2640,7 @@
                         title: "",
                         comparador: "millas",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         richText: true,
                         recommendation: {
                             title: "Te recomendamos esta tarjeta",
@@ -2660,13 +2660,13 @@
                         ],
                     },
                     // 2.2 Membresia Anual. Orden de tarjetas tal cual lo mando Marco:
-                    // no coincide con el de 2.1 (AMEX Clasica sube al puesto 7).
+                    // no coincide con el de 2.1 (American Express Clasica sube al puesto 7).
                     {
                         id: "q22",
                         title: "",
                         comparador: "membresia",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         richText: true,
                         recommendation: {
                             title: "Te recomendamos esta tarjeta",
@@ -2687,12 +2687,12 @@
                     },
                     {
                         // 2.3 Exoneracion de membresia. Orden de tarjetas como en 2.1
-                        // (Visa Light y Visa Clasica antes de las AMEX), no como en 2.2.
+                        // (Visa Light y Visa Clasica antes de las American Express), no como en 2.2.
                         id: "q23",
                         title: "",
                         comparador: "exoneracion",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         richText: true,
                         recommendation: {
                             title: "Te recomendamos esta tarjeta",
@@ -2719,7 +2719,7 @@
                         title: "",
                         comparador: "priorityPass",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         richText: true,
                         // Marco pidio incluir la tarjeta recomendada aunque su texto
                         // no la traia. Se replica la de q21-q23, que es el unico
@@ -2750,7 +2750,7 @@
                         title: "",
                         text: "¡Claro! &#128516; ¿Qué dudas deseas resolver?\n\nElige una opción:",
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         options: [
                             { label: "&#128200; ¿Puedo cambiar mi línea de crédito?", next: "q31" },
                             { label: "&#128274; ¿Es seguro solicitarla por aquí?", next: "q32" },
@@ -2773,7 +2773,7 @@
                             "&#128161; Elige una línea de crédito que se adapte a tus necesidades y te permita mantener un buen control de tus gastos.",
                         ].join("\n"),
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
                             // [PENDIENTE] "las alternativas" aqui se asume que son
@@ -2797,7 +2797,7 @@
                             "Recuerda que el BCP nunca te pedirá compartir tus claves o códigos de seguridad con otras personas.",
                         ].join("\n"),
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         richText: true,
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
@@ -2824,7 +2824,7 @@
                             "Por eso, la línea de crédito puede ser diferente para cada cliente.",
                         ].join("\n"),
                         type: "question",
-                        className: "tcxxxx-node-question",
+                        className: "tc0091-node-question",
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
                             { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q3" },
@@ -2835,12 +2835,12 @@
             };
 
             this.el = {
-                welcome: root.querySelector(".tcxxxx-launcher-welcome-wrap"),
-                launcher: root.querySelector(".tcxxxx-launcher"),
-                panel: root.querySelector(".tcxxxx-panel"),
-                body: root.querySelector(".tcxxxx-body"),
-                close: root.querySelector(".tcxxxx-close"),
-                mask: root.querySelector(".tcxxxx-mask"),
+                welcome: root.querySelector(".tc0091-launcher-welcome-wrap"),
+                launcher: root.querySelector(".tc0091-launcher"),
+                panel: root.querySelector(".tc0091-panel"),
+                body: root.querySelector(".tc0091-body"),
+                close: root.querySelector(".tc0091-close"),
+                mask: root.querySelector(".tc0091-mask"),
             };
 
             this.scrollState = {
@@ -2881,7 +2881,7 @@
                 this.el.mask
             );
             if (!ok) {
-                console.warn("[tcxxxx] Elementos base incompletos para iniciar bot");
+                console.warn("[tc0091] Elementos base incompletos para iniciar bot");
             }
             return ok;
         };
@@ -3127,6 +3127,9 @@
 
             this.toggleWelcome(true);
 
+            // El launcher ya esta en la pagina y enlazado: el usuario ve el bot.
+            this.trackLauncherView();
+
             if (this.el.welcome) {
                 this.el.welcome.addEventListener("click", function () {
                     self.open();
@@ -3152,7 +3155,7 @@
                 self.close();
             });
             this.el.panel.addEventListener("click", function (e) {
-                if (e.target && e.target.closest && e.target.closest(".tcxxxx-close")) {
+                if (e.target && e.target.closest && e.target.closest(".tc0091-close")) {
                     self.close();
                 }
             });
@@ -3189,8 +3192,8 @@
         Bot.prototype.updateLauncherMobileOffset = function () {
             if (!this.el.launcher) return;
 
-            var launcherLiftClass = "tcxxxx-launcher--lifted";
-            var welcomeLiftClass = "tcxxxx-launcher-welcome-wrap--lifted";
+            var launcherLiftClass = "tc0091-launcher--lifted";
+            var welcomeLiftClass = "tc0091-launcher-welcome-wrap--lifted";
 
             if (!this.isMobileViewport()) {
                 this.el.launcher.classList.remove(launcherLiftClass);
@@ -3256,7 +3259,7 @@
             var self = this;
             var scrollBox = this.el.body;
 
-            if (!scrollBox || scrollBox.dataset.tcxxxxScrollBound === "true") return;
+            if (!scrollBox || scrollBox.dataset.tc0091ScrollBound === "true") return;
 
             function canScroll(el) {
                 return el && el.scrollHeight > el.clientHeight;
@@ -3279,7 +3282,7 @@
             function enCarrusel(e) {
                 var target = e.target;
                 if (!target || typeof target.closest !== "function") return false;
-                return !!target.closest(".tcxxxx-carousel-track");
+                return !!target.closest(".tc0091-carousel-track");
             }
 
             scrollBox.addEventListener(
@@ -3340,7 +3343,7 @@
                 { passive: false },
             );
 
-            scrollBox.dataset.tcxxxxScrollBound = "true";
+            scrollBox.dataset.tc0091ScrollBound = "true";
         };
 
         Bot.prototype.lockPageScroll = function () {
@@ -3404,93 +3407,85 @@
             this.pushPromotionEvent("trackPromotionView", promotionData);
         };
 
-        Bot.prototype.trackOpenBotClick = function () {
-            var analytics = this.config.analytics || {};
-            var openBotPromotion = analytics.openBotPromotion || {};
-            var experimentCode = analytics.experimentCode || "TCXXXX";
+        Bot.prototype.getExperimentCode = function () {
+            return (this.config.analytics || {}).experimentCode || "TC0091";
+        };
 
-            this.trackPromotionClick({
-                name: "[[PAGINA]] - Cards - Bot - Inicio - " + experimentCode + " - P",
-                creative: openBotPromotion.creative || "Button",
-                position: openBotPromotion.position || "Banner Footer",
+        // "Se vio el bot": el launcher quedo pintado en la pagina. Es el unico
+        // evento que tiene equivalente en la variante de control (bot-control.html,
+        // mismo name y position pero con " - C"), asi que los dos tienen que medir
+        // lo mismo: al usuario se le mostro el experimento. Se emite una sola vez
+        // por sesion aunque el MutationObserver reconstruya el bot.
+        Bot.prototype.trackLauncherView = function () {
+            if (Bot.launcherViewSent) return;
+            Bot.launcherViewSent = true;
+
+            this.trackPromotionView({
+                name: "Felicitaciones - Cards - Bot - Inicio - " + this.getExperimentCode() + " - P",
+                creative: "Button",
+                position: "Inicio Tarjetin",
             });
         };
 
-        Bot.prototype.trackFinalResponseView = function (node) {
-            if (!node || !node.feedbackText) return;
+        Bot.prototype.trackOpenBotClick = function () {
+            var openBotPromotion = (this.config.analytics || {}).openBotPromotion || {};
 
-            var analytics = this.config.analytics || {};
-            var experimentCode = analytics.experimentCode || "<código del experimento>";
+            this.trackPromotionClick({
+                name: "Felicitaciones - Cards - Bot - Inicio - " + this.getExperimentCode() + " - P",
+                creative: openBotPromotion.creative || "Button",
+                position: openBotPromotion.position || "Modal",
+            });
+        };
+
+        // Una pantalla cuenta como "Respuesta" si le contesta algo al usuario, no si
+        // solo le ofrece botones. Los cuatro menus (q0, q1, q2, q3) quedan fuera; las
+        // once restantes entran: q11-q14 (tarjetas recomendadas), q21-q24 (tablas) y
+        // q31-q33 (dudas). Un menu es un nodo cuyo id tiene dos caracteres o menos
+        // ("q0", "q1"); una respuesta baja un nivel mas ("q11", "q21").
+        Bot.prototype.isRespuestaNode = function (node) {
+            if (!node) return false;
+            return String(node.id || "").length > 2;
+        };
+
+        // [POR CONFIRMAR] position = "{Flujo} - {Respuesta}" con el id tecnico:
+        // "1 - q11", "2 - q23". Es el mismo formato que ya usa TC0080 en la home.
+        // Si analitica quiere el titulo de la pantalla en vez del id, se cambia aqui.
+        Bot.prototype.trackFinalResponseView = function (node) {
+            if (!this.isRespuestaNode(node)) return;
+
             var nodeId = String(node.id || "");
             var firstDigitMatch = nodeId.match(/\d/);
             var flow = firstDigitMatch ? firstDigitMatch[0] : "";
 
             this.trackPromotionView({
-                name: "[[PAGINA]] - Cards - Bot - Arbol - " + experimentCode + " - P",
+                name: "Felicitaciones - Cards - Bot - Arbol - " + this.getExperimentCode() + " - P",
                 creative: "Modal",
                 position: flow + " - " + nodeId,
             });
         };
 
-        Bot.prototype.getFeedbackScore = function (action, fallbackIdx) {
-            var a = action || {};
-            var iconSlot = String(a.iconSlot || "").toLowerCase();
-            if (iconSlot === "up") return "1";
-            if (iconSlot === "down") return "0";
-
-            var normalizedLabel = String(a.label || "")
-                .toLowerCase()
-                .replace(/í/g, "i")
-                .trim();
-            if (normalizedLabel === "si") return "1";
-            if (normalizedLabel === "no") return "0";
-
-            var idx = Number(fallbackIdx);
-            if (idx === 0) return "1";
-            if (idx === 1) return "0";
-
-            return "";
+        // Un solo View por pantalla que traiga botones "Elegir tarjeta", no uno por
+        // boton: el position es fijo, asi que cuatro eventos identicos solo inflarian
+        // el numero sin distinguir nada. El Click si va uno por click.
+        Bot.prototype.tieneCtaElegirTarjeta = function (item) {
+            if (!item) return false;
+            if ((item.cards || []).length) return true;
+            return !!(item.recommendation && item.recommendation.cta);
         };
 
-        Bot.prototype.trackFeedbackClick = function (nodeId, action, fallbackIdx) {
-            var node = this.getNode(nodeId);
-            if (!node || !node.feedbackText) return;
-
-            var analytics = this.config.analytics || {};
-            var experimentCode = analytics.experimentCode || "<código del experimento>";
-            var score = this.getFeedbackScore(action, fallbackIdx);
-
-            this.trackPromotionClick({
-                name: "[[PAGINA]] - Cards - Bot - Arbol - Utilidad - " + experimentCode + " - P",
-                creative: "Button",
-                position: String(nodeId || "") + " - " + score,
-            });
-        };
-
-        Bot.prototype.isDiscoverCardCtaOption = function (option) {
-            var o = option || {};
-            return !!(o.isCta && o.href);
-        };
-
-        Bot.prototype.trackDiscoverCardView = function () {
-            var analytics = this.config.analytics || {};
-            var experimentCode = analytics.experimentCode || "<código del experimento>";
-
+        Bot.prototype.trackElegirTarjetaView = function () {
             this.trackPromotionView({
-                name: "[[PAGINA]] - Cards - Bot - Arbol - TC - " + experimentCode + " - P",
+                name: "Felicitaciones - Cards - Bot - Arbol - TC - " + this.getExperimentCode() + " - P",
                 creative: "Button",
-                position: "Descubrir Tarjeta",
+                position: "Elegir Tarjeta",
             });
         };
 
-        Bot.prototype.trackDiscoverCardClick = function () {
-            var analytics = this.config.analytics || {};
-            var experimentCode = analytics.experimentCode || "<código del experimento>";
-
+        Bot.prototype.trackElegirTarjetaClick = function () {
             this.trackPromotionClick({
-                name: "[[PAGINA]] - Cards - Bot - Arbol - TC - " + experimentCode + " - P",
+                name: "Felicitaciones - Cards - Bot - Arbol - TC - " + this.getExperimentCode() + " - P",
                 creative: "Button",
-                position: "Descubrir Tarjeta",
+                position: "Elegir Tarjeta",
             });
         };
 
@@ -3499,25 +3494,22 @@
             return !!o.isClose;
         };
 
+        // El name del cierre NO lleva segmento propio: va de "Bot" directo al codigo
+        // del experimento. Es la unica de las cuatro familias sin segmento, y esta
+        // asi porque asi lo especifico Marco el 2026-09-11. No agregarle "Cierre".
         Bot.prototype.trackCloseView = function () {
-            var analytics = this.config.analytics || {};
-            var experimentCode = analytics.experimentCode || "<código del experimento>";
-
             this.trackPromotionView({
-                name: "[[PAGINA]] - Cards - Bot - Cierre - " + experimentCode + " - P",
+                name: "Felicitaciones - Cards - Bot - " + this.getExperimentCode() + " - P",
                 creative: "Button",
-                position: "Finalizar",
+                position: "Cerrar",
             });
         };
 
         Bot.prototype.trackCloseClick = function () {
-            var analytics = this.config.analytics || {};
-            var experimentCode = analytics.experimentCode || "<código del experimento>";
-
             this.trackPromotionClick({
-                name: "[[PAGINA]] - Cards - Bot - Cierre - " + experimentCode + " - P",
+                name: "Felicitaciones - Cards - Bot - " + this.getExperimentCode() + " - P",
                 creative: "Button",
-                position: "Finalizar",
+                position: "Cerrar",
             });
         };
 
@@ -3540,15 +3532,15 @@
             panel.style.display = "flex";
 
             if (!this.shouldAnimatePanel()) {
-                panel.classList.add("tcxxxx-panel--open");
+                panel.classList.add("tc0091-panel--open");
                 return;
             }
 
-            panel.classList.remove("tcxxxx-panel--open");
+            panel.classList.remove("tc0091-panel--open");
 
             requestAnimationFrame(function () {
                 requestAnimationFrame(function () {
-                    panel.classList.add("tcxxxx-panel--open");
+                    panel.classList.add("tc0091-panel--open");
                 });
             });
         };
@@ -3558,12 +3550,12 @@
             if (!panel) return;
 
             if (!this.shouldAnimatePanel()) {
-                panel.classList.remove("tcxxxx-panel--open");
+                panel.classList.remove("tc0091-panel--open");
                 panel.style.display = "none";
                 return;
             }
 
-            panel.classList.remove("tcxxxx-panel--open");
+            panel.classList.remove("tc0091-panel--open");
 
             var self = this;
             var done = false;
@@ -3571,7 +3563,7 @@
                 if (done) return;
                 done = true;
                 panel.removeEventListener("transitionend", onTransitionEnd);
-                if (!panel.classList.contains("tcxxxx-panel--open")) {
+                if (!panel.classList.contains("tc0091-panel--open")) {
                     panel.style.display = "none";
                 }
             };
@@ -3649,7 +3641,7 @@
 
         Bot.prototype.debugError = function (type, payload) {
             if (!type) return;
-            console.debug("[tcxxxx][error:" + type + "]", payload || {});
+            console.debug("[tc0091][error:" + type + "]", payload || {});
         };
 
         Bot.prototype.getMissingNextNodeMaxRetries = function () {
@@ -3751,11 +3743,11 @@
 
             try {
                 sessionStorage.setItem(
-                    "tcxxxx_pending_transition",
+                    "tc0091_pending_transition",
                     JSON.stringify(transition)
                 );
             } catch (e) {
-                console.warn("[tcxxxx] No se pudo guardar transición pendiente", e);
+                console.warn("[tc0091] No se pudo guardar transición pendiente", e);
             }
         };
 
@@ -3763,9 +3755,9 @@
             var transitionJson = null;
 
             try {
-                transitionJson = sessionStorage.getItem("tcxxxx_pending_transition");
+                transitionJson = sessionStorage.getItem("tc0091_pending_transition");
             } catch (e) {
-                console.warn("[tcxxxx] No se pudo acceder a sessionStorage", e);
+                console.warn("[tc0091] No se pudo acceder a sessionStorage", e);
                 return;
             }
 
@@ -3799,7 +3791,7 @@
                         nextId: transition.nextId,
                     };
                 } catch (e) {
-                    console.warn("[tcxxxx] Error parsing pending transition", e);
+                    console.warn("[tc0091] Error parsing pending transition", e);
                     this.clearPendingTransition();
                 }
             }
@@ -3807,9 +3799,9 @@
 
         Bot.prototype.clearPendingTransition = function () {
             try {
-                sessionStorage.removeItem("tcxxxx_pending_transition");
+                sessionStorage.removeItem("tc0091_pending_transition");
             } catch (e) {
-                console.warn("[tcxxxx] No se pudo limpiar transición pendiente", e);
+                console.warn("[tc0091] No se pudo limpiar transición pendiente", e);
             }
             this.state.errorRecovery = null;
         };
@@ -3997,7 +3989,7 @@
                 selectedResponseActionIdx: -1,
                 allowOptionsWhileLinked: false,
                 linkedQuestionMessageId: linkedQuestionMessageId,
-                bubbleClass: node.usageSupportClassName || "tcxxxx-node-usage-option",
+                bubbleClass: node.usageSupportClassName || "tc0091-node-usage-option",
                 title: "",
                 text: node.usageSupportText || "",
                 feedbackText: "",
@@ -4052,10 +4044,6 @@
 
             this.trackFinalResponseView(node);
 
-            if ((node.options || []).some(this.isDiscoverCardCtaOption)) {
-                this.trackDiscoverCardView();
-            }
-
             if ((node.options || []).some(this.hasCloseOption)) {
                 this.trackCloseView();
             }
@@ -4109,6 +4097,12 @@
 
             this.state.chatLog.push(botMessage);
 
+            // Va despues de armar el mensaje, no antes: las tarjetas del perfilador
+            // recien existen aqui, cuando resolvePerfilador ya corrio.
+            if (this.tieneCtaElegirTarjeta(botMessage)) {
+                this.trackElegirTarjetaView();
+            }
+
             if (botMessage.options.length) {
                 this.state.activeQuestionMessageId = botMessage.messageId;
             } else {
@@ -4134,13 +4128,13 @@
             var buttonLabel = this.escapeHtml(cfg.buttonLabel || "Ir al inicio");
 
             return (
-                '<div class="tcxxxx-error-message">' +
-                '<span class="tcxxxx-error-icon">⚠</span>' +
-                '<div class="tcxxxx-error-content">' +
-                '<p class="tcxxxx-error-text">' +
+                '<div class="tc0091-error-message">' +
+                '<span class="tc0091-error-icon">⚠</span>' +
+                '<div class="tc0091-error-content">' +
+                '<p class="tc0091-error-text">' +
                 text +
                 "</p>" +
-                '<button class="tcxxxx-error-retry" type="button" data-runtime-error-action="' +
+                '<button class="tc0091-error-retry" type="button" data-runtime-error-action="' +
                 action +
                 '">' +
                 buttonLabel +
@@ -4177,8 +4171,8 @@
 
         // Texto plano en parrafos. Recibe el valor YA escapado.
         // Dos niveles de separacion, ninguno con <br>:
-        //   - linea en blanco  -> parrafo nuevo, 16px de aire (.tcxxxx-text-line)
-        //   - salto simple     -> renglon pegado, sin aire (.tcxxxx-text-row,
+        //   - linea en blanco  -> parrafo nuevo, 16px de aire (.tc0091-text-line)
+        //   - salto simple     -> renglon pegado, sin aire (.tc0091-text-row,
         //                         un span display:block, igual que las dos
         //                         lineas del saludo del launcher)
         // El salto simple existe porque los mockups encadenan frases sin
@@ -4197,9 +4191,9 @@
 
                 if (!renglones.length) return;
 
-                html += '<p class="tcxxxx-text-line">';
+                html += '<p class="tc0091-text-line">';
                 renglones.forEach(function (texto) {
-                    html += '<span class="tcxxxx-text-row">' + texto + "</span>";
+                    html += '<span class="tc0091-text-row">' + texto + "</span>";
                 });
                 html += "</p>";
             });
@@ -4230,8 +4224,8 @@
                 var cuerpo = filasTabla.slice(1);
                 // El contenedor redondea y recorta: sin el, el zebrado y los
                 // bordes de las filas se saldrian por las esquinas.
-                var html = '<div class="tcxxxx-rich-table-wrap">' +
-                    '<table class="tcxxxx-rich-table"><thead><tr>';
+                var html = '<div class="tc0091-rich-table-wrap">' +
+                    '<table class="tc0091-rich-table"><thead><tr>';
 
                 cabecera.forEach(function (celda) {
                     html += "<th>" + self.formatInlineRichText(celda) + "</th>";
@@ -4252,7 +4246,7 @@
             }
 
             // La linea en blanco que precede a una tabla no emite espaciador: la
-            // separacion con lo de arriba la fija .tcxxxx-rich-table-wrap y si no
+            // separacion con lo de arriba la fija .tc0091-rich-table-wrap y si no
             // se descuadraria segun el autor deje o no el hueco en el texto.
             function siguienteEsTabla(desde) {
                 for (var i = desde + 1; i < lines.length; i++) {
@@ -4270,7 +4264,7 @@
                     closeList();
                     closeTable();
                     if (!siguienteEsTabla(idx)) {
-                        htmlParts.push('<div class="tcxxxx-rich-spacer"></div>');
+                        htmlParts.push('<div class="tc0091-rich-spacer"></div>');
                     }
                     return;
                 }
@@ -4291,7 +4285,7 @@
 
                 if (/^[-*]\s+/.test(trimmed)) {
                     if (!inList) {
-                        htmlParts.push('<ul class="tcxxxx-rich-list">');
+                        htmlParts.push('<ul class="tc0091-rich-list">');
                         inList = true;
                     }
                     htmlParts.push("<li>" + self.formatInlineRichText(trimmed.replace(/^[-*]\s+/, "")) + "</li>");
@@ -4299,12 +4293,12 @@
                 }
 
                 closeList();
-                htmlParts.push('<p class="tcxxxx-rich-line">' + self.formatInlineRichText(trimmed) + "</p>");
+                htmlParts.push('<p class="tc0091-rich-line">' + self.formatInlineRichText(trimmed) + "</p>");
             });
 
             closeList();
             closeTable();
-            return '<div class="tcxxxx-rich-text">' + htmlParts.join("") + "</div>";
+            return '<div class="tc0091-rich-text">' + htmlParts.join("") + "</div>";
         };
 
         Bot.prototype.getUserBubbleLabel = function (value) {
@@ -4320,7 +4314,7 @@
                 : [];
             var bubbleClass = item.bubbleClass ? " " + item.bubbleClass : "";
             if (item.nodeType === "response" || responseActions.length > 0) {
-                bubbleClass += " tcxxxx-chat-item--response";
+                bubbleClass += " tc0091-chat-item--response";
             }
             bubbleClass += claseEntrada || "";
             var title = item.title ? this.escapeHtml(item.title) : "";
@@ -4328,23 +4322,23 @@
             var useRichText = !!item.richText;
 
             var messageHtml =
-                '<div class="tcxxxx-chat-item tcxxxx-chat-item--bot' +
+                '<div class="tc0091-chat-item tc0091-chat-item--bot' +
                 bubbleClass +
                 '"' +
                 (item.feedbackText ? ' data-feedback-node="true"' : "") +
                 '>';
             if (title) {
-                messageHtml += '<span class="tcxxxx-chat-item-title">' + title + "</span>";
+                messageHtml += '<span class="tc0091-chat-item-title">' + title + "</span>";
             }
             if (item.nodeType === "response" || responseActions.length > 0) {
                 var responseTextHtml = useRichText
                     ? this.formatRichText(item.text || "")
                     : this.formatPlainText(text);
-                messageHtml += '<div class="tcxxxx-response-content"><div class="tcxxxx-chat-item-text">' + responseTextHtml + "</div></div>";
+                messageHtml += '<div class="tc0091-response-content"><div class="tc0091-chat-item-text">' + responseTextHtml + "</div></div>";
             } else {
                 // richText aplica a cualquier tipo de nodo, tambien a los question.
                 // Antes solo se honraba en "auto" y las tablas salian como texto plano.
-                messageHtml += '<div class="tcxxxx-chat-item-text">' +
+                messageHtml += '<div class="tc0091-chat-item-text">' +
                     (useRichText
                         ? this.formatRichText(item.text || "")
                         : this.formatPlainText(text)) +
@@ -4368,7 +4362,7 @@
             }
 
             if (item.menuText) {
-                messageHtml += '<div class="tcxxxx-chat-item-text tcxxxx-menu-text">' +
+                messageHtml += '<div class="tc0091-chat-item-text tc0091-menu-text">' +
                     this.formatPlainText(this.escapeHtml(item.menuText)) +
                     "</div>";
             }
@@ -4376,7 +4370,7 @@
             var options = Array.isArray(item.options) ? item.options : [];
 
             if (options.length) {
-                messageHtml += '<div class="tcxxxx-chat-item-options">';
+                messageHtml += '<div class="tc0091-chat-item-options">';
                 options.forEach(function (opt, idx) {
                     var obj =
                         typeof opt === "string" ? { label: opt, next: "" } : opt || {};
@@ -4385,28 +4379,27 @@
                     var href = self.escapeHtml(obj.href || "");
                     var target = self.escapeHtml(obj.target || "");
                     var rel = target === "_blank" ? ' rel="noopener noreferrer"' : "";
-                    var ctaClass = obj.isCta ? " tcxxxx-chat-item-option--cta" : "";
+                    var ctaClass = obj.isCta ? " tc0091-chat-item-option--cta" : "";
                     var isDiscoverCta =
                         !!obj.isCta &&
                         String(obj.label || "").trim() === "Descubrir si accedo a una tarjeta";
                     var ctaIconHtml = isDiscoverCta
-                        ? '<span class="tcxxxx-chat-item-option-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.0018H17.584L14.289 7.70676C13.898 7.31576 13.898 6.68376 14.289 6.29276C14.68 5.90176 15.313 5.90176 15.703 6.29276L20.703 11.2928C21.094 11.6838 21.094 12.3158 20.703 12.7068L15.707 17.7068C15.512 17.9018 15.256 17.9998 15 17.9998C14.744 17.9998 14.488 17.9018 14.293 17.7068C13.902 17.3168 13.902 16.6838 14.292 16.2928L17.581 13.0018H4C3.447 13.0018 3 12.5548 3 12.0018C3 11.4488 3.447 11.0018 4 11.0018Z" fill="white"/></svg></span>'
+                        ? '<span class="tc0091-chat-item-option-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.0018H17.584L14.289 7.70676C13.898 7.31576 13.898 6.68376 14.289 6.29276C14.68 5.90176 15.313 5.90176 15.703 6.29276L20.703 11.2928C21.094 11.6838 21.094 12.3158 20.703 12.7068L15.707 17.7068C15.512 17.9018 15.256 17.9998 15 17.9998C14.744 17.9998 14.488 17.9018 14.293 17.7068C13.902 17.3168 13.902 16.6838 14.292 16.2928L17.581 13.0018H4C3.447 13.0018 3 12.5548 3 12.0018C3 11.4488 3.447 11.0018 4 11.0018Z" fill="white"/></svg></span>'
                         : "";
 
                     if (isActiveQuestion && href) {
                         messageHtml +=
-                            '<a class="tcxxxx-chat-item-option' +
+                            '<a class="tc0091-chat-item-option' +
                             ctaClass +
                             '" href="' +
                             href +
                             '"' +
                             (target ? ' target="' + target + '"' : "") +
                             rel +
-                            (obj.isCta ? ' data-cta-discover="true"' : "") +
                             ' data-link-option="true" data-idx="' +
                             idx +
                             '">' +
-                            '<span class="tcxxxx-chat-item-option-label">' +
+                            '<span class="tc0091-chat-item-option-label">' +
                             label +
                             '</span>' +
                             ctaIconHtml +
@@ -4414,7 +4407,7 @@
                     } else if (isActiveQuestion && next) {
                         var userLabel = self.escapeHtml(self.getUserBubbleLabel(obj.label || ""));
                         messageHtml +=
-                            '<button class="tcxxxx-chat-item-option" data-next="' +
+                            '<button class="tc0091-chat-item-option" data-next="' +
                             next +
                             '" data-idx="' +
                             idx +
@@ -4425,14 +4418,14 @@
                             "</button>";
                     } else if (isActiveQuestion && obj.isClose) {
                         messageHtml +=
-                            '<button class="tcxxxx-chat-item-option" type="button" data-close="true" data-idx="' +
+                            '<button class="tc0091-chat-item-option" type="button" data-close="true" data-idx="' +
                             idx +
                             '">' +
                             label +
                             "</button>";
                     } else {
                         messageHtml +=
-                            '<button class="tcxxxx-chat-item-option" type="button" disabled>' +
+                            '<button class="tc0091-chat-item-option" type="button" disabled>' +
                             label +
                             "</button>";
                     }
@@ -4441,12 +4434,12 @@
             }
 
             if (responseActions.length) {
-                messageHtml += '<div class="tcxxxx-response-divider"></div>';
-                messageHtml += '<div class="tcxxxx-response-footer">';
-                messageHtml += '<p class="tcxxxx-response-label">' + self.escapeHtml(item.feedbackText || "¿Resolví tu consulta?") + "</p>";
+                messageHtml += '<div class="tc0091-response-divider"></div>';
+                messageHtml += '<div class="tc0091-response-footer">';
+                messageHtml += '<p class="tc0091-response-label">' + self.escapeHtml(item.feedbackText || "¿Resolví tu consulta?") + "</p>";
                 var responseActionsClass = Number(item.selectedResponseActionIdx) >= 0
-                    ? 'tcxxxx-response-actions tcxxxx-response-actions--has-selection'
-                    : 'tcxxxx-response-actions';
+                    ? 'tc0091-response-actions tc0091-response-actions--has-selection'
+                    : 'tc0091-response-actions';
                 messageHtml += '<div class="' + responseActionsClass + '">';
 
                 responseActions.forEach(function (action) {
@@ -4483,7 +4476,7 @@
                     var disabled = Number(item.selectedResponseActionIdx) >= 0 ? " disabled" : "";
 
                     messageHtml +=
-                        '<button class="tcxxxx-response-btn' +
+                        '<button class="tc0091-response-btn' +
                         selectedClass +
                         '" type="button" data-response-label="' +
                         label +
@@ -4496,7 +4489,7 @@
                         '"' +
                         disabled +
                         '>' +
-                        '<span class="tcxxxx-response-icon-slot" data-icon-slot="' +
+                        '<span class="tc0091-response-icon-slot" data-icon-slot="' +
                         iconSlot +
                         '">' +
                         iconSvgContent +
@@ -4510,7 +4503,7 @@
 
             messageHtml += "</div>";
 
-            var html = '<div class="tcxxxx-chat-bot-row"' +
+            var html = '<div class="tc0091-chat-bot-row"' +
                 (item.feedbackText ? ' data-feedback-anchor="true"' : "") +
                 '>' +
                 messageHtml +
@@ -4524,25 +4517,25 @@
         Bot.prototype.createRecommendationMarkup = function (rec, isActiveQuestion) {
             var self = this;
             var cfg = rec || {};
-            var html = '<div class="tcxxxx-rec-block">';
+            var html = '<div class="tc0091-rec-block">';
 
             // El titulo va FUERA del recuadro verde, encima de el.
             if (cfg.title) {
-                html += '<p class="tcxxxx-rec-title">' + this.escapeHtml(cfg.title) + "</p>";
+                html += '<p class="tc0091-rec-title">' + this.escapeHtml(cfg.title) + "</p>";
             }
 
-            html += '<div class="tcxxxx-rec">';
+            html += '<div class="tc0091-rec">';
 
             if (cfg.badge) {
-                html += '<span class="tcxxxx-rec-badge">' + this.escapeHtml(cfg.badge) + "</span>";
+                html += '<span class="tc0091-rec-badge">' + this.escapeHtml(cfg.badge) + "</span>";
             }
 
             if (cfg.card) {
-                html += '<p class="tcxxxx-rec-card">' + this.escapeHtml(cfg.card) + "</p>";
+                html += '<p class="tc0091-rec-card">' + this.escapeHtml(cfg.card) + "</p>";
             }
 
             if ((cfg.details || []).length) {
-                html += '<ul class="tcxxxx-rec-details">';
+                html += '<ul class="tc0091-rec-details">';
                 cfg.details.forEach(function (linea) {
                     html += "<li>" + self.escapeHtml(linea) + "</li>";
                 });
@@ -4555,14 +4548,14 @@
                 var target = this.escapeHtml(cfg.cta.target || "");
                 var rel = target === "_blank" ? ' rel="noopener noreferrer"' : "";
 
-                html += '<div class="tcxxxx-rec-actions">';
+                html += '<div class="tc0091-rec-actions">';
                 if (isActiveQuestion) {
-                    html += '<a class="tcxxxx-rec-cta" href="' + href + '"' +
+                    html += '<a class="tc0091-rec-cta" href="' + href + '"' +
                         (target ? ' target="' + target + '"' : "") +
                         rel +
                         ' data-rec-cta="true">' + label + "</a>";
                 } else {
-                    html += '<button class="tcxxxx-rec-cta" type="button" disabled>' + label + "</button>";
+                    html += '<button class="tc0091-rec-cta" type="button" disabled>' + label + "</button>";
                 }
                 html += "</div>";
             }
@@ -4584,7 +4577,7 @@
             // Con una sola tarjeta no hay nada que deslizar: se pinta como
             // antes, a todo el ancho y sin controles.
             if (lista.length < 2) {
-                return '<div class="tcxxxx-cards">' +
+                return '<div class="tc0091-cards">' +
                     self.createCardBoxMarkup(lista[0], isActiveQuestion) +
                     "</div>";
             }
@@ -4593,33 +4586,33 @@
                 ? "cards"
                 : String(carouselId);
 
-            var html = '<div class="tcxxxx-carousel" data-carousel="' + self.escapeHtml(id) + '"' +
+            var html = '<div class="tc0091-carousel" data-carousel="' + self.escapeHtml(id) + '"' +
                 ' role="group" aria-label="Tarjetas recomendadas">';
 
-            html += '<div class="tcxxxx-carousel-track" data-carousel-track="true">';
+            html += '<div class="tc0091-carousel-track" data-carousel-track="true">';
             lista.forEach(function (item) {
-                html += '<div class="tcxxxx-carousel-slide">' +
+                html += '<div class="tc0091-carousel-slide">' +
                     self.createCardBoxMarkup(item, isActiveQuestion) +
                     "</div>";
             });
             html += "</div>";
 
-            html += '<div class="tcxxxx-carousel-controls">';
-            html += '<button class="tcxxxx-carousel-arrow tcxxxx-carousel-arrow--prev" type="button"' +
+            html += '<div class="tc0091-carousel-controls">';
+            html += '<button class="tc0091-carousel-arrow tc0091-carousel-arrow--prev" type="button"' +
                 ' data-carousel-prev="true" aria-label="Ver la tarjeta anterior" disabled>' +
                 self.getCarouselChevronSvg("prev") +
                 "</button>";
 
-            html += '<div class="tcxxxx-carousel-dots">';
+            html += '<div class="tc0091-carousel-dots">';
             lista.forEach(function (item, idx) {
-                html += '<button class="tcxxxx-carousel-dot' +
-                    (idx === 0 ? " tcxxxx-carousel-dot--activo" : "") +
+                html += '<button class="tc0091-carousel-dot' +
+                    (idx === 0 ? " tc0091-carousel-dot--activo" : "") +
                     '" type="button" data-carousel-dot="' + idx + '"' +
                     ' aria-label="Ir a la tarjeta ' + (idx + 1) + ' de ' + lista.length + '"></button>';
             });
             html += "</div>";
 
-            html += '<button class="tcxxxx-carousel-arrow tcxxxx-carousel-arrow--next" type="button"' +
+            html += '<button class="tc0091-carousel-arrow tc0091-carousel-arrow--next" type="button"' +
                 ' data-carousel-next="true" aria-label="Ver la tarjeta siguiente">' +
                 self.getCarouselChevronSvg("next") +
                 "</button>";
@@ -4635,23 +4628,23 @@
         Bot.prototype.createCardBoxMarkup = function (item, isActiveQuestion) {
             var self = this;
             var cfg = item || {};
-            var claseDestacada = cfg.badge ? " tcxxxx-card--destacada" : "";
-            var html = '<div class="tcxxxx-card' + claseDestacada + '">';
+            var claseDestacada = cfg.badge ? " tc0091-card--destacada" : "";
+            var html = '<div class="tc0091-card' + claseDestacada + '">';
 
             if (cfg.badge) {
-                html += '<span class="tcxxxx-card-badge">' + self.escapeHtml(cfg.badge) + "</span>";
+                html += '<span class="tc0091-card-badge">' + self.escapeHtml(cfg.badge) + "</span>";
             }
 
             if (cfg.name) {
-                html += '<p class="tcxxxx-card-name">' + self.escapeHtml(cfg.name) + "</p>";
+                html += '<p class="tc0091-card-name">' + self.escapeHtml(cfg.name) + "</p>";
             }
 
             if (cfg.description) {
-                html += '<p class="tcxxxx-card-desc">' + self.escapeHtml(cfg.description) + "</p>";
+                html += '<p class="tc0091-card-desc">' + self.escapeHtml(cfg.description) + "</p>";
             }
 
             if ((cfg.bullets || []).length) {
-                html += '<ul class="tcxxxx-card-bullets">';
+                html += '<ul class="tc0091-card-bullets">';
                 cfg.bullets.forEach(function (linea) {
                     html += "<li>" + self.escapeHtml(linea) + "</li>";
                 });
@@ -4664,14 +4657,14 @@
                 var target = self.escapeHtml(cfg.cta.target || "");
                 var rel = target === "_blank" ? ' rel="noopener noreferrer"' : "";
 
-                html += '<div class="tcxxxx-card-actions">';
+                html += '<div class="tc0091-card-actions">';
                 if (isActiveQuestion) {
-                    html += '<a class="tcxxxx-card-cta" href="' + href + '"' +
+                    html += '<a class="tc0091-card-cta" href="' + href + '"' +
                         (target ? ' target="' + target + '"' : "") +
                         rel +
                         ' data-card-cta="true">' + label + "</a>";
                 } else {
-                    html += '<button class="tcxxxx-card-cta" type="button" disabled>' + label + "</button>";
+                    html += '<button class="tc0091-card-cta" type="button" disabled>' + label + "</button>";
                 }
                 html += "</div>";
             }
@@ -4691,7 +4684,7 @@
             var track = root.querySelector("[data-carousel-track]");
             if (!track) return;
 
-            var slides = root.querySelectorAll(".tcxxxx-carousel-slide");
+            var slides = root.querySelectorAll(".tc0091-carousel-slide");
             if (slides.length < 2) return;
 
             var id = root.getAttribute("data-carousel") || "";
@@ -4732,10 +4725,10 @@
 
                 for (var i = 0; i < dots.length; i++) {
                     if (i === idx) {
-                        dots[i].classList.add("tcxxxx-carousel-dot--activo");
+                        dots[i].classList.add("tc0091-carousel-dot--activo");
                         dots[i].setAttribute("aria-current", "true");
                     } else {
-                        dots[i].classList.remove("tcxxxx-carousel-dot--activo");
+                        dots[i].classList.remove("tc0091-carousel-dot--activo");
                         dots[i].setAttribute("aria-current", "false");
                     }
                 }
@@ -4824,32 +4817,32 @@
             if (!texto) return "";
 
             return (
-                '<div class="tcxxxx-aviso">' +
-                '<span class="tcxxxx-aviso-icono" aria-hidden="true">' +
+                '<div class="tc0091-aviso">' +
+                '<span class="tc0091-aviso-icono" aria-hidden="true">' +
                 '<svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">' +
                 '<path fill-rule="evenodd" clip-rule="evenodd" d="M10 0C15.5228 0 20 4.47715 20 10C20 15.5228 15.5228 20 10 20C4.47715 20 0 15.5228 0 10C0 8.34273 0.404358 6.74154 1.16651 5.30903C1.42592 4.82145 2.03147 4.63649 2.51904 4.8959C3.00661 5.15531 3.19157 5.76085 2.93217 6.24842C2.32296 7.39345 2 8.67234 2 10C2 14.4183 5.58172 18 10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C8.59854 2 7.34992 2.31467 6.25012 2.89887C5.76238 3.15795 5.15696 2.97259 4.89787 2.48484C4.63879 1.9971 4.82416 1.39167 5.3119 1.13259C6.69898 0.395793 8.26949 0 10 0ZM10 8C10.5523 8 11 8.44771 11 9V11C11 11.5523 10.5523 12 10 12C9.44771 12 9 11.5523 9 11V9C9 8.44771 9.44771 8 10 8ZM14 8C14.5523 8 15 8.44771 15 9V11C15 11.5523 14.5523 12 14 12C13.4477 12 13 11.5523 13 11V9C13 8.44771 13.4477 8 14 8ZM6 8C6.55228 8 7 8.44771 7 9V11C7 11.5523 6.55228 12 6 12C5.44772 12 5 11.5523 5 11V9C5 8.44771 5.44772 8 6 8Z" fill="#002A8D"/>' +
                 "</svg>" +
                 "</span>" +
-                '<p class="tcxxxx-aviso-texto">' + this.escapeHtml(texto) + "</p>" +
+                '<p class="tc0091-aviso-texto">' + this.escapeHtml(texto) + "</p>" +
                 "</div>"
             );
         };
 
         Bot.prototype.createThinkingMarkup = function () {
             // Siempre es nueva cuando se muestra, asi que entra animada siempre.
-            var cls = "tcxxxx-thinking tcxxxx-msg-enter tcxxxx-thinking--chat";
+            var cls = "tc0091-thinking tc0091-msg-enter tc0091-thinking--chat";
             var textHtml = this.shouldShowThinkingText()
-                ? '<span class="tcxxxx-thinking-text">' + this.escapeHtml(this.getThinkingText()) + '</span>'
+                ? '<span class="tc0091-thinking-text">' + this.escapeHtml(this.getThinkingText()) + '</span>'
                 : "";
             return (
                 '<div class="' +
                 cls +
                 '">' +
                 textHtml +
-                '<span class="tcxxxx-thinking-dots" aria-hidden="true">' +
-                '<span class="tcxxxx-thinking-dot"></span>' +
-                '<span class="tcxxxx-thinking-dot"></span>' +
-                '<span class="tcxxxx-thinking-dot"></span>' +
+                '<span class="tc0091-thinking-dots" aria-hidden="true">' +
+                '<span class="tc0091-thinking-dot"></span>' +
+                '<span class="tc0091-thinking-dot"></span>' +
+                '<span class="tc0091-thinking-dot"></span>' +
                 '</span>' +
                 "</div>"
             );
@@ -4861,9 +4854,9 @@
                 this.appendBotMessageForCurrent();
             }
 
-            var html = '<div class="tcxxxx-chat-shell">';
-            html += '<div class="tcxxxx-chat-box">';
-            html += '<div class="tcxxxx-chat">';
+            var html = '<div class="tc0091-chat-shell">';
+            html += '<div class="tc0091-chat-box">';
+            html += '<div class="tc0091-chat">';
 
             var activeNodeId = this.state.current;
             var allowCurrentCtas = !this.state.finished;
@@ -4882,21 +4875,21 @@
             var animadosHasta = Number(this.animatedUpTo) || 0;
 
             this.state.chatLog.forEach(function (item, idx) {
-                var claseEntrada = idx >= animadosHasta ? " tcxxxx-msg-enter" : "";
+                var claseEntrada = idx >= animadosHasta ? " tc0091-msg-enter" : "";
 
                 if (item.role === "user") {
                     // Si hay error recovery y es el último mensaje de usuario, mostrar error
                     if (self.state.errorRecovery && idx === lastUserMessageIdx) {
-                        html += '<div class="tcxxxx-error-message">' +
-                            '<span class="tcxxxx-error-icon">⚠</span>' +
-                            '<div class="tcxxxx-error-content">' +
-                            '<p class="tcxxxx-error-text">Error en el envío</p>' +
-                            '<button class="tcxxxx-error-retry" type="button" data-retry-error>Reintentar</button>' +
+                        html += '<div class="tc0091-error-message">' +
+                            '<span class="tc0091-error-icon">⚠</span>' +
+                            '<div class="tc0091-error-content">' +
+                            '<p class="tc0091-error-text">Error en el envío</p>' +
+                            '<button class="tc0091-error-retry" type="button" data-retry-error>Reintentar</button>' +
                             '</div>' +
                             '</div>';
                     } else {
                         html +=
-                            '<div class="tcxxxx-chat-item tcxxxx-chat-item--user' + claseEntrada + '">' +
+                            '<div class="tc0091-chat-item tc0091-chat-item--user' + claseEntrada + '">' +
                             self.escapeHtml(item.text || "") +
                             "</div>";
                     }
@@ -4983,7 +4976,7 @@
 
         Bot.prototype.createMainCta = function () {
             return (
-                '<button class="tcxxxx-chat-main-cta" type="button" data-main-restart>' +
+                '<button class="tc0091-chat-main-cta" type="button" data-main-restart>' +
                 this.config.menuText +
                 "</button>"
             );
@@ -5042,11 +5035,17 @@
                 self.bindCarousel(carrusel);
             });
 
-            this.el.body.querySelectorAll('[data-cta-discover="true"]').forEach(function (link) {
-                link.addEventListener("click", function () {
-                    self.trackDiscoverCardClick();
+            // Los dos CTA "Elegir tarjeta" que existen: el de cada tarjeta del
+            // perfilador (data-card-cta) y el del recuadro recomendado de q21-q24
+            // (data-rec-cta). Solo se enlazan mientras son <a>: al decaer a <button>
+            // deshabilitado el atributo ya no se emite.
+            this.el.body
+                .querySelectorAll('[data-card-cta="true"], [data-rec-cta="true"]')
+                .forEach(function (link) {
+                    link.addEventListener("click", function () {
+                        self.trackElegirTarjetaClick();
+                    });
                 });
-            });
 
             this.el.body.querySelectorAll("[data-close]").forEach(function (btn) {
                 btn.addEventListener("click", function () {
@@ -5073,17 +5072,9 @@
                             if (Number(entry.selectedResponseActionIdx) >= 0) {
                                 return;
                             }
+                            // Sin tageo: el evento "Utilidad" se elimino el
+                            // 2026-09-11 por no estar en la lista de Marco.
                             entry.selectedResponseActionIdx = selectedIdx;
-                            var selectedAction = null;
-                            if (Array.isArray(entry.responseActions)) {
-                                for (var j = 0; j < entry.responseActions.length; j++) {
-                                    if (Number(entry.responseActions[j].idx) === selectedIdx) {
-                                        selectedAction = entry.responseActions[j];
-                                        break;
-                                    }
-                                }
-                            }
-                            self.trackFeedbackClick(entry.nodeId, selectedAction, selectedIdx);
                             updated = true;
                             break;
                         }
@@ -5121,8 +5112,8 @@
         var instance;
 
         function ensureScope() {
-            var scope = document.getElementById("tcxxxx-scope");
-            var welcome = document.querySelector(".tcxxxx-launcher-welcome-wrap");
+            var scope = document.getElementById("tc0091-scope");
+            var welcome = document.querySelector(".tc0091-launcher-welcome-wrap");
 
             if (scope) {
                 if (welcome && welcome.parentNode !== scope) {
@@ -5131,14 +5122,14 @@
                 return scope;
             }
 
-            var launcher = document.querySelector(".tcxxxx-launcher");
-            var panel = document.querySelector(".tcxxxx-panel");
-            var mask = document.querySelector(".tcxxxx-mask");
+            var launcher = document.querySelector(".tc0091-launcher");
+            var panel = document.querySelector(".tc0091-panel");
+            var mask = document.querySelector(".tc0091-mask");
 
             if (!launcher || !panel || !mask) return null;
 
             scope = document.createElement("div");
-            scope.id = "tcxxxx-scope";
+            scope.id = "tc0091-scope";
 
             launcher.parentNode.insertBefore(scope, launcher);
             scope.appendChild(mask);
@@ -5166,7 +5157,7 @@
         // casuisticas sin tener que mantener a mano la lista de tarjetas: se alimenta
         // de config.perfilador, asi que crece solo a medida que se van agregando
         // pantallas del perfilador. No lo usa el bot.
-        window.tcxxxxCatalogo = function () {
+        window.tc0091Catalogo = function () {
             if (!instance) return { criterios: [], tarjetas: [], leads: [] };
 
             var cfg = instance.config.perfilador || {};
@@ -5217,9 +5208,9 @@
                 var scope = ensureScope();
                 if (
                     scope &&
-                    scope.querySelector(".tcxxxx-launcher") &&
-                    scope.querySelector(".tcxxxx-panel") &&
-                    scope.querySelector(".tcxxxx-mask")
+                    scope.querySelector(".tc0091-launcher") &&
+                    scope.querySelector(".tc0091-panel") &&
+                    scope.querySelector(".tc0091-mask")
                 ) {
                     clearInterval(timer);
                     init(scope);
@@ -5229,23 +5220,23 @@
                 elapsed += pollInterval;
                 if (elapsed >= maxWait) {
                     clearInterval(timer);
-                    console.warn("[tcxxxx] Timeout esperando estructura del bot");
+                    console.warn("[tc0091] Timeout esperando estructura del bot");
                 }
             }, pollInterval);
         }
 
         function observeReinsertion() {
-            if (window.__tcxxxxObserved) return;
+            if (window.__tc0091Observed) return;
 
             var observer = new MutationObserver(function () {
-                var scope = document.getElementById("tcxxxx-scope");
+                var scope = document.getElementById("tc0091-scope");
                 if (!scope || !document.contains(scope)) {
                     waitForBotAndInit();
                 }
             });
 
             observer.observe(document.body, { childList: true, subtree: true });
-            window.__tcxxxxObserved = true;
+            window.__tc0091Observed = true;
         }
 
         if (document.readyState === "loading") {
