@@ -1,0 +1,46 @@
+{
+  "flujo": "0 - Inicio",
+  "estado": "completo",
+  "origen": "Entregado por Marco (pasos/primera-pantalla.png)",
+  "nodos": [
+    {
+      "id": "q0",
+      "lineas": "1322-1333",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question tcxxxx-node-start",
+      "titulo": "Hola! &#128075; Soy Tarjetín.",
+      "texto": {
+        "parrafos": [
+          "Te ayudaré a elegir una tarjeta de crédito. ¿Qué necesitas hacer?",
+          "Elige una opción:"
+        ]
+      },
+      "opciones": [
+        {
+          "label": "&#128179; Ayúdame a elegir una tarjeta",
+          "emoji": "💳",
+          "next": "q1"
+        },
+        {
+          "label": "&#x2696;&#xFE0F; Quiero comparar mis tarjetas",
+          "emoji": "⚖️",
+          "next": "q2"
+        },
+        {
+          "label": "&#10067; Resolver dudas para elegir",
+          "emoji": "❓",
+          "next": "q3"
+        }
+      ],
+      "pendientes": [],
+      "notas": [
+        "El saludo va sin '¡' de apertura a proposito: Marco rechazo la correccion porque el mockup dice 'Hola!'. La burbuja del launcher si lleva '¡Hola!' (ver ui-fija.json).",
+        "Es el unico nodo con titulo no vacio del flujo conversacional."
+      ]
+    }
+  ],
+  "notas": [
+    "2026-09-09 DECIDIDO: la burbuja del usuario repite el boton completo. Los mockups la dibujan mas corta (ej. 'Comparar tarjetas' contra el boton 'Quiero comparar mis tarjetas'), pero se decidio no acortar ni el boton ni la burbuja. Regla general: manda el boton. Ver correcciones-wording.md."
+  ]
+}

@@ -1,0 +1,907 @@
+{
+  "_meta": {
+    "titulo": "Catalogo de tarjetas de /felicitaciones",
+    "generado": "2026-09-09",
+    "proposito": "Tabla unica que cruza el codigo de tarjeta del DOM con los nombres que usa cada fuente, los puntajes de afinidad y los datos que ya muestran las pantallas de comparar. Es la base compartida entre la fase estatica del perfilador (q11-q14) y la futura deteccion de leads.",
+    "no_se_carga_en_runtime": "Artefacto de desarrollo, igual que wordings/. bot-nuevo.html NUNCA lee este archivo: ni fetch, ni import, ni en produccion ni en el preview local. El snippet se pega entero como oferta en Adobe Target y tiene que seguir siendo autocontenido. Cuando llegue la fase dinamica, esta tabla se transcribe A MANO dentro de config.",
+    "entorno_de_referencia": {
+      "cual": "produccion (referencias/referencia-sin-exp.html y referencia-con-exp.html)",
+      "decidido": "2026-09-09 por Marco",
+      "por_que_es_seguro": "Los dos entornos exponen las tarjetas de forma identica, y el codigo identifica a la TARJETA, no al entorno. Comprobado sobre las tres tarjetas que aparecen en ambos (AMXCLL, TCRCLL, TCRMIN): mismo codigo y mismo nombre en produccion y en certi.",
+      "para_que_se_sigue_usando_certi": "Produccion solo muestra 4 tarjetas, porque cada snapshot muestra unicamente las tarjetas de las que ESE usuario es lead. Los otros 10 codigos -incluido TCRORL, la Visa Oro de la regla- solo se observaron en certi. Certi no es referencia de nada: es la evidencia de donde se vio cada codigo, que queda registrada en 'vistaEn'."
+    },
+    "origen_por_campo": {
+      "codigo": "Derivado de los snapshots de referencias/. Aparece dos veces por tarjeta: en el src de la imagen y en el name del boton.",
+      "nombreDom": "Texto literal de los dos <h3> de .card-option__product, unidos con un espacio.",
+      "nombreEnElBot": "Nombre tal como lo escribio Marco en las tablas de q21-q24 de bot-nuevo.html. Es el que ve el usuario.",
+      "nombreEnAfinidad": "Clave con la que aparece en afinidad-tarjetas.json (sin tildes).",
+      "afinidad": "Copiado de afinidad-tarjetas.json, tabla 'Relevancia - Afinidad' entregada por Marco el 2026-09-06.",
+      "membresiaAnual": "Copiado VERBATIM de la tabla de q22.",
+      "exoneracion": "Copiado VERBATIM de la tabla de q23.",
+      "millas": "Copiado VERBATIM de la tabla de q21.",
+      "priorityPass": "Copiado VERBATIM de la tabla de q24.",
+      "ordenEnLaPagina": "Posicion en el slider de /felicitaciones. Se obtiene fusionando el orden de certi (13 tarjetas) con el de produccion (4): son compatibles entre si y van de mayor a menor categoria.",
+      "vistaEn": "En que snapshots de referencias/ se vio renderizada."
+    },
+    "relacion_con_afinidad_tarjetas_json": "afinidad-tarjetas.json queda intacto: es la evidencia de la tabla que entrego Marco. Este catalogo la copia, no la reemplaza. Si los puntajes cambian, mandan los de aquel archivo.",
+    "advertencia_cruce": "Cruzar SIEMPRE por codigo, nunca por nombre. Las tres fuentes escriben distinto: el DOM dice 'American Express Black LATAM Pass', las tablas del bot dicen 'Amex Black LATAM' y afinidad-tarjetas.json dice 'Amex Black LATAM Pass'.",
+    "pendiente_confirmar": [
+      "Falta el codigo de UNA sola tarjeta: Visa Clasica (a secas). Sin codigo el bot no la detecta y no se muestra nunca, y Marco decidio el 2026-09-10 dejarla asi de momento: cuando le asignen codigo empezara a incluirse sola. Visa Platinum Qore ya tiene su codigo (TCRLY4), entregado ese mismo dia. La lista del 2026-09-10 trae 16 codigos y confirma TCRLY5 (Visa Clasica Qore), que hasta entonces se sostenia solo con la evidencia del snapshot de produccion.",
+      "CONFLICTO DE NOMBRE sin resolver: en la lista de Marco del 2026-09-10, AMXGRE figura como 'TC oferta: Amex green', pero el DOM de certi renderiza ese mismo codigo como 'American Express Black LATAM Pass' (verificado en referencia-certi-con-exp.html). El catalogo mantiene la lectura del DOM (AMXGRE = Amex Black LATAM Pass) porque es evidencia directa, y 'green' se interpreta como etiqueta interna de la oferta. Si resultara que AMXGRE es de verdad una Amex Green, entonces la Amex Black se queda sin codigo y desaparece de las tres casuisticas premium donde hoy figura (viajar casoA, beneficios casoA, experiencias casoA).",
+      "Los cuatro criterios ya tienen su orden entregado e implementado (2026-09-09). Lo que sigue sin confirmar es que pasa en el caso A cuando el usuario NO tiene la Visa Oro: hoy se muestran 3 tarjetas y no se rellena con una cuarta.",
+      "DATO DE CONTRASTE: la pagina escribe la membresia de Visa Light como 'S/ 0'; la tabla q22 la escribe como '0' pelado. Los montos de las otras tres tarjetas de produccion (AMXCLL, TCRCLL, TCRLY5) coinciden exactamente con los de Marco: S/80. Informativo, NO se corrige sin su aprobacion.",
+      "DUDA DE DATO ya planteada a Marco y sin respuesta: la exoneracion de Visa Clasica Qore (S/80) y Visa Oro Qore (S/170) coincide con sus montos de MEMBRESIA, no con la escala de exoneracion que usan las demas Qore. Reproducido verbatim.",
+      "Que significan data-lead-program ('LAN' en los dos entornos) y data-profit-type ('.' en produccion, 'GRUP20' en certi). Parecen segmentos, pero es una lectura de dos snapshots, no un dato confirmado.",
+      "De afinidad-tarjetas.json siguen abiertos: si el 5 es tope duro o solo orden relativo, y que significan las 12 tarjetas en negrita del original."
+    ]
+  },
+  "reglas": {
+    "deteccionLead": "Si el codigo de la tarjeta esta presente en el DOM de /felicitaciones, el usuario es lead (candidato) de esa tarjeta. No hay que inferir nada mas.",
+    "maximoTarjetas": 4,
+    "comoSeLee": "Al usuario le pueden salir muchas tarjetas aprobadas en la pagina, pero el bot muestra COMO MAXIMO 4 (Marco, 2026-09-09). Las listas de casuisticasPorCriterio son el ORDEN de prioridad completo: el bot recorre esa lista, se queda con las que el usuario tiene y corta en 4.",
+    "cuartaTarjeta": {
+      "codigo": "TCRORL",
+      "nombreEnElBot": "Visa Oro LATAM Pass",
+      "ubicacion": "va en la lista de tarjetas (createCardsMarkup) con badge 'La más usada', que es lo que le pone el borde verde. No usa el bloque createRecommendationMarkup de q21-q24, aunque se vea igual.",
+      "condicion": "solo se muestra si TCRORL esta presente en el DOM. Si el usuario no es lead de la Oro, no aparece.",
+      "evidencia": "TCRORL esta en los snapshots de certi pero NO en los de produccion: ese usuario no la tiene disponible. Es la casuistica exacta que describio Marco el 2026-09-09."
+    },
+    "ordenDeSeleccion": "Lo entrega Marco pantalla por pantalla, como una lista ordenada. NO se calcula por afinidad ni por iniciativa propia. Ver casuisticasPorCriterio.",
+    "fase": "Estatica primero: el contenido lo entrega Marco pantalla por pantalla con su mockup. La deteccion real de leads en runtime llega despues."
+  },
+  "senalesDom": {
+    "_nota": "Verificado sobre los cuatro snapshots de referencias/. Los dos entornos exponen esto de forma identica y las variantes con-exp / sin-exp no se diferencian en nada de esto.",
+    "contenedorTarjeta": "xt21-card-option (dentro, section.card-option)",
+    "codigo": [
+      "img[src*='/congratulations/img/'] -> el nombre del archivo es el codigo (AMXCLL.svg)",
+      "button[name='QA_Congratulations_BtnSeleccionar_<CODIGO>']"
+    ],
+    "advertencia_cdn": "El host del CDN cambia entre entornos: acdneu2xt21p01ecdn01 en produccion y acdneu2xt21c01ecdn01 en certi. El selector tiene que matchear por '/congratulations/img/' y quedarse con el nombre del archivo, NUNCA por la URL completa, o en un entorno dejaria de encontrar nada.",
+    "nombre": ".card-option__product -> dos <h3> ('American Express Clasica' + 'LATAM Pass')",
+    "favoritaDeLaPagina": {
+      "atributo": "#profitType[data-card-recomended]",
+      "clase": "section.card-option.highlights-green",
+      "badge": ".card-option__favourite con el texto 'LA FAVORITA'",
+      "valores": {
+        "produccion": "AMXCLL",
+        "certi": "TCRINF"
+      }
+    },
+    "cabecera": {
+      "selector": "#profitType",
+      "atributos": {
+        "data-credit-line": "linea de credito aprobada (13700 en produccion, 50250 en certi)",
+        "data-client-name": "nombre del cliente",
+        "data-card-recomended": "codigo de la tarjeta favorita",
+        "data-lead-program": "LAN en los dos entornos",
+        "data-profit-type": "'.' en produccion, 'GRUP20' en certi"
+      }
+    },
+    "filtrosPorMarca": "xt21-brand-selection .tabs -> 'Todas (n)', 'American Express (n)', 'VISA (n)'. El total coincide con la cantidad de xt21-card-option.",
+    "costos": "xt21-cost-item[label] dentro de .card-option__costs. Etiquetas exactas: 'Membresia Anual', 'TEA / TCEA max', 'Seguro de desgravamen', 'Disposicion de efectivo' (con sus tildes en el DOM).",
+    "beneficios": ".card-option__benefits -> ul con xt21-cards-benefits. Ahi vive la linea de acumulacion de millas.",
+    "lineaDeCreditoPorTarjeta": ".card-option__range-line -> 'Desde S/ 1,000 hasta S/ 13,700'",
+    "nota_fase_dinamica": "Los montos de membresia, exoneracion, TEA/TCEA y millas estan en el DOM: en la fase dinamica se pueden leer de ahi en vez de hardcodearlos."
+  },
+  "conteoPorEntorno": {
+    "_nota": "Cada snapshot muestra SOLO las tarjetas de las que ese usuario es lead: no son dos catalogos distintos, son dos usuarios distintos. Produccion = usuario con 4 leads, certi = usuario con 13.",
+    "produccion": {
+      "archivos": [
+        "referencias/referencia-sin-exp.html",
+        "referencias/referencia-con-exp.html"
+      ],
+      "total": 4,
+      "codigos": [
+        "AMXCLL",
+        "TCRCLL",
+        "TCRLY5",
+        "TCRMIN"
+      ]
+    },
+    "certi": {
+      "archivos": [
+        "referencias/referencia-certi-sin-exp.html",
+        "referencias/referencia-certi-con-exp.html"
+      ],
+      "total": 13,
+      "codigos": [
+        "TCRINF",
+        "TCRLY1",
+        "AMXGRE",
+        "TCRPL1",
+        "TCRLY2",
+        "AMXPLL",
+        "TCRPLL",
+        "AMXGLL",
+        "TCRORL",
+        "TCRLY3",
+        "AMXCLL",
+        "TCRCLL",
+        "TCRMIN"
+      ]
+    },
+    "enAmbos": [
+      "AMXCLL",
+      "TCRCLL",
+      "TCRMIN"
+    ],
+    "resumen": "Produccion es el entorno de referencia, pero su usuario solo tiene 4 leads. Los otros 10 codigos se observaron en certi, y TCRLY5 (Visa Clasica Qore) solo en produccion. Uniendo ambos: 14 codigos de 17 observados en el DOM. Los otros dos (TCRBA7 y TCRLY4) los declaro Marco sin respaldo de snapshot, lo que deja 16 de 17 en el catalogo. Las 3 tarjetas comunes traen codigo y nombre identicos en los dos entornos."
+  },
+  "tarjetas": [
+    {
+      "codigo": "TCRINF",
+      "ordenEnLaPagina": 1,
+      "nombreDom": "Visa Infinite Iridium LATAM Pass",
+      "nombreEnElBot": "Visa Infinite Iridium LATAM Pass",
+      "nombreEnAfinidad": "Visa Infinite Iridium LATAM Pass",
+      "afinidad": {
+        "viajar": 5,
+        "ahorrar": 1,
+        "beneficios": 5,
+        "experiencias": 5
+      },
+      "membresiaAnual": "S/500",
+      "exoneracion": "S/5,000",
+      "millas": "Hasta 2 millas por $1 de consumo.",
+      "priorityPass": "Sí",
+      "vistaEn": [
+        "certi"
+      ]
+    },
+    {
+      "codigo": "TCRLY1",
+      "ordenEnLaPagina": 2,
+      "nombreDom": "Visa Infinite Qore",
+      "nombreEnElBot": "Visa Infinite Qore",
+      "nombreEnAfinidad": "Visa Infinite Qore",
+      "afinidad": {
+        "viajar": 2,
+        "ahorrar": 2,
+        "beneficios": 5,
+        "experiencias": 5
+      },
+      "membresiaAnual": "S/500",
+      "exoneracion": "S/5,000",
+      "millas": "No Aplica",
+      "priorityPass": "Sí",
+      "vistaEn": [
+        "certi"
+      ]
+    },
+    {
+      "codigo": "AMXGRE",
+      "ordenEnLaPagina": 3,
+      "nombreDom": "American Express Black LATAM Pass",
+      "nombreEnElBot": "Amex Black LATAM",
+      "nombreEnAfinidad": "Amex Black LATAM Pass",
+      "afinidad": {
+        "viajar": 5,
+        "ahorrar": 1,
+        "beneficios": 5,
+        "experiencias": 5
+      },
+      "membresiaAnual": "S/400",
+      "exoneracion": "S/3,500",
+      "millas": "1.5 millas por $1",
+      "priorityPass": "Sí",
+      "vistaEn": [
+        "certi"
+      ],
+      "nota": "Las cuatro tablas del bot la escriben sin el 'Pass' final que si llevan todas las demas. El DOM si lo incluye. Reproducido verbatim, planteado a Marco."
+    },
+    {
+      "codigo": "TCRPL1",
+      "ordenEnLaPagina": 4,
+      "nombreDom": "Visa Signature LATAM Pass",
+      "nombreEnElBot": "Visa Signature LATAM Pass",
+      "nombreEnAfinidad": "Visa Signature LATAM Pass",
+      "afinidad": {
+        "viajar": 5,
+        "ahorrar": 2,
+        "beneficios": 5,
+        "experiencias": 4
+      },
+      "membresiaAnual": "S/400",
+      "exoneracion": "S/3,500",
+      "millas": "1.25 millas por $1",
+      "priorityPass": "Sí",
+      "vistaEn": [
+        "certi"
+      ]
+    },
+    {
+      "codigo": "TCRLY2",
+      "ordenEnLaPagina": 5,
+      "nombreDom": "Visa Signature Qore",
+      "nombreEnElBot": "Visa Signature Qore",
+      "nombreEnAfinidad": "Visa Signature Qore",
+      "afinidad": {
+        "viajar": 2,
+        "ahorrar": 3,
+        "beneficios": 5,
+        "experiencias": 4
+      },
+      "membresiaAnual": "S/400",
+      "exoneracion": "S/3,500",
+      "millas": "No Aplica",
+      "priorityPass": "Sí",
+      "vistaEn": [
+        "certi"
+      ]
+    },
+    {
+      "codigo": "AMXPLL",
+      "ordenEnLaPagina": 6,
+      "nombreDom": "American Express Platinum LATAM Pass",
+      "nombreEnElBot": "Amex Platinum LATAM Pass",
+      "nombreEnAfinidad": "Amex Platinum LATAM Pass",
+      "afinidad": {
+        "viajar": 5,
+        "ahorrar": 2,
+        "beneficios": 5,
+        "experiencias": 5
+      },
+      "membresiaAnual": "S/350",
+      "exoneracion": "S/1,200",
+      "millas": "1 milla por $1",
+      "priorityPass": "No",
+      "vistaEn": [
+        "certi"
+      ]
+    },
+    {
+      "codigo": "TCRPLL",
+      "ordenEnLaPagina": 7,
+      "nombreDom": "Visa Platinum LATAM Pass",
+      "nombreEnElBot": "Visa Platinum LATAM Pass",
+      "nombreEnAfinidad": "Visa Platinum LATAM Pass",
+      "afinidad": {
+        "viajar": 4,
+        "ahorrar": 3,
+        "beneficios": 4,
+        "experiencias": 3
+      },
+      "membresiaAnual": "S/350",
+      "exoneracion": "S/1,200",
+      "millas": "1 milla por $1",
+      "priorityPass": "No",
+      "vistaEn": [
+        "certi"
+      ]
+    },
+    {
+      "codigo": "AMXGLL",
+      "ordenEnLaPagina": 8,
+      "nombreDom": "American Express Oro LATAM Pass",
+      "nombreEnElBot": "Amex Oro LATAM Pass",
+      "nombreEnAfinidad": "Amex Oro LATAM Pass",
+      "afinidad": {
+        "viajar": 4,
+        "ahorrar": 4,
+        "beneficios": 4,
+        "experiencias": 2
+      },
+      "membresiaAnual": "S/170",
+      "exoneracion": "S/1",
+      "millas": "1 milla por cada $1.5",
+      "priorityPass": "No",
+      "vistaEn": [
+        "certi"
+      ]
+    },
+    {
+      "codigo": "TCRORL",
+      "ordenEnLaPagina": 9,
+      "nombreDom": "Visa Oro LATAM Pass",
+      "nombreEnElBot": "Visa Oro LATAM Pass",
+      "nombreEnAfinidad": "Visa Oro LATAM Pass",
+      "afinidad": {
+        "viajar": 4,
+        "ahorrar": 4,
+        "beneficios": 3,
+        "experiencias": 1
+      },
+      "membresiaAnual": "S/170",
+      "exoneracion": "S/1",
+      "millas": "1 Milla por $1.5",
+      "priorityPass": "No",
+      "vistaEn": [
+        "certi"
+      ],
+      "nota": "ES LA TARJETA DE LA REGLA: la cuarta del perfilador, siempre en el recuadro verde y solo si el usuario la tiene. Tambien es la que q21-q24 recomiendan de forma fija. NO esta en el snapshot de produccion. Su fila de millas escribe 'Milla' con mayuscula, verbatim de Marco."
+    },
+    {
+      "codigo": "TCRLY3",
+      "ordenEnLaPagina": 10,
+      "nombreDom": "Visa Oro Qore",
+      "nombreEnElBot": "Visa Oro Qore",
+      "nombreEnAfinidad": "Visa Oro Qore",
+      "afinidad": {
+        "viajar": 1,
+        "ahorrar": 5,
+        "beneficios": 4,
+        "experiencias": 1
+      },
+      "membresiaAnual": "S/170",
+      "exoneracion": "S/170",
+      "millas": "No Aplica",
+      "priorityPass": "No",
+      "vistaEn": [
+        "certi"
+      ],
+      "nota": "Su exoneracion (S/170) coincide con su membresia, no con la escala de exoneracion de las demas Qore. Duda de dato abierta con Marco, reproducida verbatim."
+    },
+    {
+      "codigo": "AMXCLL",
+      "ordenEnLaPagina": 11,
+      "nombreDom": "American Express Clásica LATAM Pass",
+      "nombreEnElBot": "Amex Clásica LATAM Pass",
+      "nombreEnAfinidad": "Amex Clasica LATAM Pass",
+      "afinidad": {
+        "viajar": 3,
+        "ahorrar": 5,
+        "beneficios": 3,
+        "experiencias": 1
+      },
+      "membresiaAnual": "S/80",
+      "exoneracion": "S/1",
+      "millas": "1 milla por cada $2",
+      "priorityPass": "No",
+      "vistaEn": [
+        "produccion",
+        "certi"
+      ],
+      "nota": "Es la favorita (data-card-recomended) del usuario del snapshot de produccion. El DOM confirma su membresia de S/ 80 y su exoneracion con S/1 mensual."
+    },
+    {
+      "codigo": "TCRCLL",
+      "ordenEnLaPagina": 12,
+      "nombreDom": "Visa Clásica LATAM Pass",
+      "nombreEnElBot": "Visa Clásica LATAM Pass",
+      "nombreEnAfinidad": "Visa Clasica LATAM Pass",
+      "afinidad": {
+        "viajar": 3,
+        "ahorrar": 5,
+        "beneficios": 2,
+        "experiencias": 1
+      },
+      "membresiaAnual": "S/80",
+      "exoneracion": "S/1",
+      "millas": "1 milla por $2",
+      "priorityPass": "No",
+      "vistaEn": [
+        "produccion",
+        "certi"
+      ]
+    },
+    {
+      "codigo": "TCRLY5",
+      "ordenEnLaPagina": 13,
+      "nombreDom": "Visa Clásica Qore",
+      "nombreEnElBot": "Visa Clásica Qore",
+      "nombreEnAfinidad": "Visa Clasica Qore",
+      "afinidad": {
+        "viajar": 1,
+        "ahorrar": 5,
+        "beneficios": 3,
+        "experiencias": 1
+      },
+      "membresiaAnual": "S/80",
+      "exoneracion": "S/80",
+      "millas": "No Aplica",
+      "priorityPass": "No",
+      "vistaEn": [
+        "produccion"
+      ],
+      "nota": "Unica tarjeta que aporta el snapshot de produccion y que certi no tiene. Su exoneracion (S/80) coincide con su membresia: misma duda de dato que Visa Oro Qore."
+    },
+    {
+      "codigo": "TCRMIN",
+      "ordenEnLaPagina": 14,
+      "nombreDom": "Visa Light",
+      "nombreEnElBot": "Visa Light",
+      "nombreEnAfinidad": "Visa Light",
+      "afinidad": {
+        "viajar": 1,
+        "ahorrar": 5,
+        "beneficios": 1,
+        "experiencias": 1
+      },
+      "membresiaAnual": "0",
+      "exoneracion": "Gratis",
+      "millas": "No Aplica",
+      "priorityPass": "No",
+      "vistaEn": [
+        "produccion",
+        "certi"
+      ],
+      "nota": "La tabla q22 escribe su membresia como '0' pelado, sin 'S/', a diferencia de todas las demas. El DOM la escribe 'S/ 0'. Verbatim, planteado a Marco."
+    },
+    {
+      "codigo": null,
+      "ordenEnLaPagina": null,
+      "nombreDom": null,
+      "nombreEnElBot": "Visa Clásica",
+      "nombreEnAfinidad": "Visa Clasica",
+      "afinidad": {
+        "viajar": 1,
+        "ahorrar": 5,
+        "beneficios": 2,
+        "experiencias": 1
+      },
+      "membresiaAnual": "S/80",
+      "exoneracion": "S/50",
+      "millas": "No Aplica",
+      "priorityPass": "No",
+      "vistaEn": [],
+      "nota": "SIN CODIGO, y Marco decidio el 2026-09-10 dejarla asi de momento: sin codigo no hay deteccion posible, asi que simplemente no se muestra. Cuando le asignen codigo empezara a incluirse sola, sin tocar nada mas, en los usuarios que la tengan aprobada. Ojo, no confundirla con Visa Clasica LATAM Pass (TCRCLL) ni con Visa Clasica Qore (TCRLY5), que si estan en produccion."
+    },
+    {
+      "codigo": "TCRBA7",
+      "ordenEnLaPagina": null,
+      "nombreDom": null,
+      "nombreEnElBot": "Visa Infinite Sapphire LATAM Pass",
+      "nombreEnAfinidad": "Visa Infinite Sapphire LATAM Pass",
+      "afinidad": {
+        "viajar": 5,
+        "ahorrar": 1,
+        "beneficios": 5,
+        "experiencias": 5
+      },
+      "membresiaAnual": "S/450",
+      "exoneracion": "S/4,500",
+      "millas": "Hasta 1.5 millas por $1",
+      "priorityPass": "Sí",
+      "vistaEn": [],
+      "nota": "Codigo entregado por Marco el 2026-09-09. NO aparece en ninguno de los cuatro snapshots, asi que su nombre en el DOM no esta verificado."
+    },
+    {
+      "codigo": "TCRLY4",
+      "ordenEnLaPagina": null,
+      "nombreDom": null,
+      "nombreEnElBot": "Visa Platinum Qore",
+      "nombreEnAfinidad": "Visa Platinum Qore",
+      "afinidad": {
+        "viajar": 2,
+        "ahorrar": 4,
+        "beneficios": 5,
+        "experiencias": 3
+      },
+      "membresiaAnual": "S/350",
+      "exoneracion": "S/1,200",
+      "millas": "No Aplica",
+      "priorityPass": "No",
+      "vistaEn": [],
+      "nota": "Codigo entregado por Marco el 2026-09-10 ('TC oferta: Qore platinum'). NO aparece en ninguno de los cuatro snapshots, asi que su nombre en el DOM no esta verificado. Antes estaba en null y por eso nunca se mostraba."
+    }
+  ],
+  "casuisticasPorCriterio": {
+    "_nota": "Se completa pantalla por pantalla, a medida que Marco entrega cada una del perfilador. Registrar que tarjetas entran, en que orden y por que (afinidad, decision suya, o ambas). NO deducirlo por iniciativa propia.",
+    "viajar": {
+      "nodo": "q11",
+      "label": "Viajar y acumular millas",
+      "estado": "implementado y DINAMICO desde el 2026-09-09. Los dos casos los resuelve el nodo q11 leyendo del DOM que tarjetas tiene el usuario. Las 17 tarjetas con su copy viven en config.perfilador.criterios.viajar dentro de bot-nuevo.html.",
+      "copyEn": "wordings/flujo-1-elegir.json, nodo q11",
+      "tieneDosCasos": true,
+      "casoA": {
+        "cuando": "el usuario tiene al menos una tarjeta del programa LATAM Pass",
+        "nota": "La lista son exactamente las 10 tarjetas LATAM Pass del catalogo, en este orden.",
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRINF",
+            "nombre": "Visa Infinite Iridium LATAM Pass"
+          },
+          {
+            "pos": 2,
+            "codigo": "TCRBA7",
+            "nombre": "Visa Infinite Sapphire LATAM Pass"
+          },
+          {
+            "pos": 3,
+            "codigo": "TCRPL1",
+            "nombre": "Visa Signature LATAM Pass"
+          },
+          {
+            "pos": 4,
+            "codigo": "AMXGRE",
+            "nombre": "Amex Black LATAM Pass",
+            "nota": "En 1.1 se llama 'Amex Black LATAM Pass'; en las cuatro tablas de comparar sigue siendo 'Amex Black LATAM', sin el 'Pass'. Esa diferencia sigue abierta."
+          },
+          {
+            "pos": 5,
+            "codigo": "AMXPLL",
+            "nombre": "Amex Platinum LATAM Pass"
+          },
+          {
+            "pos": 6,
+            "codigo": "TCRORL",
+            "nombre": "Visa Oro LATAM Pass",
+            "badge": "La más usada"
+          },
+          {
+            "pos": 7,
+            "codigo": "TCRPLL",
+            "nombre": "Visa Platinum LATAM Pass"
+          },
+          {
+            "pos": 8,
+            "codigo": "AMXGLL",
+            "nombre": "Amex Oro LATAM Pass"
+          },
+          {
+            "pos": 9,
+            "codigo": "TCRCLL",
+            "nombre": "Visa Clásica LATAM Pass"
+          },
+          {
+            "pos": 10,
+            "codigo": "AMXCLL",
+            "nombre": "Amex Clásica LATAM Pass"
+          }
+        ]
+      },
+      "casoB": {
+        "cuando": "el usuario no tiene ninguna tarjeta enfocada en millas",
+        "nota": "Son las 7 tarjetas que no son LATAM Pass. La Visa Oro LATAM Pass NO va en este caso.",
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRLY1",
+            "nombre": "Visa Infinite Qore",
+            "nota": "Marco la escribio 'Visa infinite Qore'; el 2026-09-09 aprobo corregir la mayuscula."
+          },
+          {
+            "pos": 2,
+            "codigo": "TCRLY2",
+            "nombre": "Visa Signature Qore"
+          },
+          {
+            "pos": 3,
+            "codigo": "TCRLY4",
+            "nombre": "Visa Platinum Qore",
+            "nota": "Sin codigo conocido."
+          },
+          {
+            "pos": 4,
+            "codigo": "TCRLY3",
+            "nombre": "Visa Oro Qore"
+          },
+          {
+            "pos": 5,
+            "codigo": "TCRLY5",
+            "nombre": "Visa Clásica Qore"
+          },
+          {
+            "pos": 6,
+            "codigo": null,
+            "nombre": "Visa Clásica",
+            "nota": "Sin codigo conocido."
+          },
+          {
+            "pos": 7,
+            "codigo": "TCRMIN",
+            "nombre": "Visa Light"
+          }
+        ],
+        "sinBadge": "Al salir la Visa Oro, este caso queda sin ninguna tarjeta marcada como 'La más usada'.",
+        "decision_2026-09-09": "El texto original abria con Visa Oro LATAM Pass y su badge 'La más usada', pero el intro dice que el usuario NO tiene tarjeta de millas y la Oro si lo es: se contradecia. Marco decidio que el caso B va SIN la Visa Oro. El bloque eliminado decia: 'Incrementa la acumulacion de millas en compras frecuentes.' + '2,000 Millas de bienvenida' / 'Acumula 1 Milla por cada $1.5 de consumo.' / 'Incluye Campañas multiplicadoras de millas.'"
+      }
+    },
+    "ahorrar": {
+      "nodo": "q12",
+      "label": "1.2 Ahorrar en costos",
+      "estado": "orden y copy entregados e implementados el 2026-09-09. Dinamico: los dos casos los resuelve el nodo q12.",
+      "copyEn": "wordings/flujo-1-elegir.json, nodo q12",
+      "tieneDosCasos": true,
+      "casoA": {
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRMIN",
+            "nombre": "Visa Light"
+          },
+          {
+            "pos": 2,
+            "codigo": null,
+            "nombre": "Visa Clásica"
+          },
+          {
+            "pos": 3,
+            "codigo": "TCRCLL",
+            "nombre": "Visa Clásica LATAM Pass"
+          },
+          {
+            "pos": 4,
+            "codigo": "AMXCLL",
+            "nombre": "Amex Clásica LATAM Pass"
+          },
+          {
+            "pos": 5,
+            "codigo": "TCRLY5",
+            "nombre": "Visa Clásica Qore"
+          },
+          {
+            "pos": 6,
+            "codigo": "TCRLY3",
+            "nombre": "Visa Oro Qore"
+          },
+          {
+            "pos": 7,
+            "codigo": "TCRORL",
+            "nombre": "Visa Oro LATAM Pass"
+          },
+          {
+            "pos": 8,
+            "codigo": "AMXGLL",
+            "nombre": "Amex Oro LATAM Pass"
+          },
+          {
+            "pos": 9,
+            "codigo": "TCRLY4",
+            "nombre": "Visa Platinum Qore"
+          },
+          {
+            "pos": 10,
+            "codigo": "TCRPLL",
+            "nombre": "Visa Platinum LATAM Pass"
+          },
+          {
+            "pos": 11,
+            "codigo": "TCRLY2",
+            "nombre": "Visa Signature Qore"
+          }
+        ]
+      },
+      "casoB": {
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRORL",
+            "nombre": "Visa Oro LATAM Pass"
+          },
+          {
+            "pos": 2,
+            "codigo": "TCRPL1",
+            "nombre": "Visa Signature LATAM Pass"
+          },
+          {
+            "pos": 3,
+            "codigo": "AMXPLL",
+            "nombre": "Amex Platinum LATAM Pass"
+          },
+          {
+            "pos": 4,
+            "codigo": "TCRLY1",
+            "nombre": "Visa Infinite Qore"
+          },
+          {
+            "pos": 5,
+            "codigo": "AMXGRE",
+            "nombre": "Amex Black LATAM Pass"
+          },
+          {
+            "pos": 6,
+            "codigo": "TCRBA7",
+            "nombre": "Visa Infinite Sapphire LATAM Pass"
+          },
+          {
+            "pos": 7,
+            "codigo": "TCRINF",
+            "nombre": "Visa Infinite Iridium LATAM Pass"
+          }
+        ]
+      }
+    },
+    "beneficios": {
+      "nodo": "q13",
+      "label": "1.3 Obtener más beneficios",
+      "estado": "orden y copy entregados e implementados el 2026-09-09. Dinamico: los dos casos los resuelve el nodo q13.",
+      "copyEn": "wordings/flujo-1-elegir.json, nodo q13",
+      "tieneDosCasos": true,
+      "casoA": {
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRINF",
+            "nombre": "Visa Infinite Iridium LATAM Pass"
+          },
+          {
+            "pos": 2,
+            "codigo": "TCRBA7",
+            "nombre": "Visa Infinite Sapphire LATAM Pass"
+          },
+          {
+            "pos": 3,
+            "codigo": "TCRPL1",
+            "nombre": "Visa Signature LATAM Pass"
+          },
+          {
+            "pos": 4,
+            "codigo": "AMXPLL",
+            "nombre": "Amex Platinum LATAM Pass"
+          },
+          {
+            "pos": 5,
+            "codigo": "AMXGRE",
+            "nombre": "Amex Black LATAM Pass"
+          },
+          {
+            "pos": 6,
+            "codigo": "TCRLY1",
+            "nombre": "Visa Infinite Qore"
+          },
+          {
+            "pos": 7,
+            "codigo": "TCRLY2",
+            "nombre": "Visa Signature Qore"
+          },
+          {
+            "pos": 8,
+            "codigo": "TCRLY4",
+            "nombre": "Visa Platinum Qore"
+          },
+          {
+            "pos": 9,
+            "codigo": "TCRPLL",
+            "nombre": "Visa Platinum LATAM Pass"
+          },
+          {
+            "pos": 10,
+            "codigo": "AMXGLL",
+            "nombre": "Amex Oro LATAM Pass"
+          },
+          {
+            "pos": 11,
+            "codigo": "TCRLY3",
+            "nombre": "Visa Oro Qore"
+          },
+          {
+            "pos": 12,
+            "codigo": "TCRORL",
+            "nombre": "Visa Oro LATAM Pass"
+          },
+          {
+            "pos": 13,
+            "codigo": "AMXCLL",
+            "nombre": "Amex Clásica LATAM Pass"
+          },
+          {
+            "pos": 14,
+            "codigo": "TCRLY5",
+            "nombre": "Visa Clásica Qore"
+          }
+        ]
+      },
+      "casoB": {
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRORL",
+            "nombre": "Visa Oro LATAM Pass"
+          },
+          {
+            "pos": 2,
+            "codigo": "TCRCLL",
+            "nombre": "Visa Clásica LATAM Pass"
+          },
+          {
+            "pos": 3,
+            "codigo": null,
+            "nombre": "Visa Clásica"
+          },
+          {
+            "pos": 4,
+            "codigo": "TCRMIN",
+            "nombre": "Visa Light"
+          }
+        ]
+      }
+    },
+    "experiencias": {
+      "nodo": "q14",
+      "label": "1.4 Experiencias exclusivas",
+      "estado": "orden y copy entregados e implementados el 2026-09-09. Dinamico: los dos casos los resuelve el nodo q14.",
+      "copyEn": "wordings/flujo-1-elegir.json, nodo q14",
+      "tieneDosCasos": true,
+      "casoA": {
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRINF",
+            "nombre": "Visa Infinite Iridium LATAM Pass"
+          },
+          {
+            "pos": 2,
+            "codigo": "TCRBA7",
+            "nombre": "Visa Infinite Sapphire LATAM Pass"
+          },
+          {
+            "pos": 3,
+            "codigo": "AMXGRE",
+            "nombre": "Amex Black LATAM Pass"
+          },
+          {
+            "pos": 4,
+            "codigo": "AMXPLL",
+            "nombre": "Amex Platinum LATAM Pass"
+          },
+          {
+            "pos": 5,
+            "codigo": "TCRLY1",
+            "nombre": "Visa Infinite Qore"
+          },
+          {
+            "pos": 6,
+            "codigo": "TCRPL1",
+            "nombre": "Visa Signature LATAM Pass"
+          },
+          {
+            "pos": 7,
+            "codigo": "TCRLY2",
+            "nombre": "Visa Signature Qore"
+          },
+          {
+            "pos": 8,
+            "codigo": "TCRPLL",
+            "nombre": "Visa Platinum LATAM Pass"
+          },
+          {
+            "pos": 9,
+            "codigo": "TCRLY4",
+            "nombre": "Visa Platinum Qore"
+          },
+          {
+            "pos": 10,
+            "codigo": "TCRORL",
+            "nombre": "Visa Oro LATAM Pass"
+          }
+        ]
+      },
+      "casoB": {
+        "orden": [
+          {
+            "pos": 1,
+            "codigo": "TCRORL",
+            "nombre": "Visa Oro LATAM Pass"
+          },
+          {
+            "pos": 2,
+            "codigo": "AMXGLL",
+            "nombre": "Amex Oro LATAM Pass"
+          },
+          {
+            "pos": 3,
+            "codigo": "TCRCLL",
+            "nombre": "Visa Clásica LATAM Pass"
+          },
+          {
+            "pos": 4,
+            "codigo": "AMXCLL",
+            "nombre": "Amex Clásica LATAM Pass"
+          },
+          {
+            "pos": 5,
+            "codigo": "TCRLY3",
+            "nombre": "Visa Oro Qore"
+          },
+          {
+            "pos": 6,
+            "codigo": "TCRLY5",
+            "nombre": "Visa Clásica Qore"
+          },
+          {
+            "pos": 7,
+            "codigo": null,
+            "nombre": "Visa Clásica"
+          },
+          {
+            "pos": 8,
+            "codigo": "TCRMIN",
+            "nombre": "Visa Light"
+          }
+        ]
+      }
+    }
+  }
+}

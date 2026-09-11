@@ -1,0 +1,50 @@
+{
+  "flujo": "2 - Quiero comparar mis tarjetas",
+  "estado": "completo",
+  "origen": "Entregado por Marco",
+  "nodos": [
+    {
+      "id": "q2",
+      "lineas": "1392-1404",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question",
+      "titulo": "",
+      "texto": {
+        "parrafos": [
+          "¡Claro! &#128516; ¿Qué características te gustaría comparar de tus tarjetas aprobadas?",
+          "Elige una opción:"
+        ]
+      },
+      "opciones": [
+        {
+          "label": "Acumulación de millas por consumo",
+          "next": "q21",
+          "marco": "2.1"
+        },
+        {
+          "label": "Membresía Anual",
+          "next": "q22",
+          "marco": "2.2"
+        },
+        {
+          "label": "Exoneración de membresía",
+          "next": "q23",
+          "marco": "2.3"
+        },
+        {
+          "label": "Priority Pass",
+          "next": "q24",
+          "marco": "2.4"
+        }
+      ],
+      "pendientes": []
+    }
+  ],
+  "notas": [
+    "Estas cuatro opciones son las unicas del bot SIN emoji. CONFIRMADO por el mockup de Marco del 2026-09-09: es intencional, no un olvido.",
+    "Las cuatro pantallas destino cierran con el mismo bloque, confirmado por Marco el 2026-09-06: menuText '¿Que deseas hacer ahora?' + exactamente '↩️ Volver a las alternativas' (-> q2) y '✅ Elegir una tarjeta'. Ninguna ofrece 'Ir al menu principal'. Mantenerlas identicas.",
+    "El orden de tarjetas NO es el mismo en las cuatro tablas y no se debe normalizar: cada pantalla reproduce verbatim la lista que mando Marco. afinidad-tarjetas.json no ordena estas tablas.",
+    "2026-09-09 DECIDIDO: la burbuja del usuario repite el boton completo. Los mockups la dibujan mas corta (ej. 'Comparar tarjetas' contra el boton 'Quiero comparar mis tarjetas'), pero se decidio no acortar ni el boton ni la burbuja. Regla general: manda el boton. Ver correcciones-wording.md."
+  ]
+}

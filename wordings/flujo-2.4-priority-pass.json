@@ -1,0 +1,137 @@
+{
+  "flujo": "2.4 - Priority Pass",
+  "estado": "completo",
+  "origen": "Tabla y menu entregados por Marco. El intro NO lo escribio Marco.",
+  "nodos": [
+    {
+      "id": "q24",
+      "lineas": "1544-1584",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question",
+      "richText": true,
+      "titulo": "",
+      "texto": {
+        "intro": "¡Buena elección! &#128522; Estas son tus tarjetas aprobadas que incluyen el beneficio Priority Pass.",
+        "tabla": {
+          "encabezado": [
+            "Tarjeta",
+            "Priority Pass"
+          ],
+          "filas": [
+            [
+              "Visa Clásica LATAM Pass",
+              "No"
+            ],
+            [
+              "Visa Oro LATAM Pass",
+              "No"
+            ],
+            [
+              "Visa Platinum LATAM Pass",
+              "No"
+            ],
+            [
+              "Visa Signature LATAM Pass",
+              "Sí"
+            ],
+            [
+              "Visa Infinite Sapphire LATAM Pass",
+              "Sí"
+            ],
+            [
+              "Visa Infinite Iridium LATAM Pass",
+              "Sí"
+            ],
+            [
+              "Visa Light",
+              "No"
+            ],
+            [
+              "Visa Clásica",
+              "No"
+            ],
+            [
+              "Amex Clásica LATAM Pass",
+              "No"
+            ],
+            [
+              "Amex Oro LATAM Pass",
+              "No"
+            ],
+            [
+              "Amex Platinum LATAM Pass",
+              "No"
+            ],
+            [
+              "Amex Black LATAM",
+              "Sí"
+            ],
+            [
+              "Visa Clásica Qore",
+              "No"
+            ],
+            [
+              "Visa Oro Qore",
+              "No"
+            ],
+            [
+              "Visa Platinum Qore",
+              "No"
+            ],
+            [
+              "Visa Signature Qore",
+              "Sí"
+            ],
+            [
+              "Visa Infinite Qore",
+              "Sí"
+            ]
+          ]
+        }
+      },
+      "recomendacion": {
+        "title": "Te recomendamos esta tarjeta",
+        "badge": "La más usada",
+        "card": "&#128179; Visa Oro LATAM Pass",
+        "details": [
+          "Membresía: S/170",
+          "Exoneración: S/1 mensual en consumo."
+        ],
+        "cta": {
+          "label": "Elegir tarjeta",
+          "href": "#",
+          "pendiente": "URL real sin definir"
+        }
+      },
+      "menuText": "¿Qué deseas hacer ahora?",
+      "opciones": [
+        {
+          "label": "&#x21A9;&#xFE0F; Volver a las alternativas",
+          "emoji": "↩️",
+          "next": "q2"
+        },
+        {
+          "label": "Cerrar",
+          "isClose": true
+        }
+      ],
+      "pendientes": [
+        "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
+        "PROVISIONAL, asumido por Marco el 2026-09-09: la tarjeta recomendada es Visa Oro LATAM Pass, que en la tabla de esta misma pantalla figura como 'No' en Priority Pass. Marco conoce la contradiccion y pidio dejarlo estatico tal cual; mas adelante entregara las CONDICIONES para elegir la tarjeta segun el caso. No cambiarla por iniciativa propia.",
+        "Los dos detalles de la tarjeta ('Membresia: S/170' y 'Exoneracion: S/1 mensual') hablan de membresia, no de Priority Pass. En las otras tres pantallas encajan; aqui quedan fuera de tema.",
+        "URL del CTA 'Elegir tarjeta': cableado como href '#'."
+      ],
+      "notas": [
+        "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.priorityPass de bot-nuevo.html como filas con codigo, y el nodo solo lleva 'comparador: \"priorityPass\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
+        "Unica tabla del set con valores booleanos ('Si'/'No') en vez de montos.",
+        "'Amex Black LATAM' va sin el 'Pass' final. Verbatim.",
+        "2026-09-09: se quito la clase tcxxxx-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
+        "2026-09-09: el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar', unificado en las cuatro pantallas de comparar. Correccion 7 en correcciones-wording.md. CONSECUENCIA: la cadena de calificacion (mixed1, rating, rating_number, rating_thanks_auto, mixed100) quedo huerfana.",
+        "2026-09-09: Marco entrego el intro definitivo ('Estas son tus tarjetas aprobadas que incluyen el beneficio Priority Pass') y pidio agregar la tarjeta recomendada, que su texto no traia. Ya no queda copy escrita por desarrollo en el bot.",
+        "El intro dice 'Estas son tus tarjetas... que incluyen el beneficio', pero la tabla lista las 17 con Si/No, no solo las que lo incluyen. Menor, planteado a Marco."
+      ],
+      "_advertencia": "La tabla de este archivo es el ESPEJO del orden completo. En pantalla nunca salen las 17 filas salvo que falle la deteccion: solo salen las tarjetas del usuario."
+    }
+  ]
+}

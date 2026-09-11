@@ -1,0 +1,162 @@
+{
+  "flujo": "3 - Resolver dudas para elegir",
+  "estado": "completo",
+  "origen": "q3 entregado por Marco (mockup 'Resolver dudas' del 2026-09-09). q31-q33 son stubs a la espera de contenido.",
+  "nodos": [
+    {
+      "id": "q3",
+      "lineas": "1586-1599",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question",
+      "titulo": "",
+      "texto": {
+        "parrafos": [
+          "¡Claro! &#128516; ¿Qué dudas deseas resolver?",
+          "Elige una opción:"
+        ]
+      },
+      "opciones": [
+        {
+          "label": "&#128200; ¿Puedo cambiar mi línea de crédito?",
+          "emoji": "📈",
+          "next": "q31"
+        },
+        {
+          "label": "&#128274; ¿Es seguro solicitarla por aquí?",
+          "emoji": "🔒",
+          "next": "q32"
+        },
+        {
+          "label": "&#129300; ¿Por qué me ofrecieron esa línea?",
+          "emoji": "🤔",
+          "next": "q33"
+        }
+      ],
+      "pendientes": []
+    },
+    {
+      "id": "q31",
+      "lineas": "",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question",
+      "titulo": "",
+      "texto": {
+        "parrafos": [
+          "¡Sí! &#128522; Si la línea de crédito ofrecida es mayor al monto que deseas utilizar, puedes solicitar desde la web una línea menor al momento de contratar tu tarjeta o posteriormente, según las opciones disponibles.",
+          "Si deseas una línea mayor, esta estará sujeta a una nueva evaluación crediticia por parte del BCP.",
+          "&#128161; Elige una línea de crédito que se adapte a tus necesidades y te permita mantener un buen control de tus gastos."
+        ]
+      },
+      "opciones": [
+        {
+          "label": "&#x21A9;&#xFE0F; Volver a las alternativas",
+          "emoji": "↩️",
+          "next": "q3",
+          "asumido": true
+        },
+        {
+          "label": "Cerrar",
+          "isClose": true
+        }
+      ],
+      "pendientes": [
+        "ASUNCION: 'Volver a las alternativas' apunta a q3 (las 3 preguntas de Resolver dudas). En q21-q24 el mismo label va a q2. Confirmar con Marco."
+      ],
+      "menuText": "¿Qué deseas hacer ahora?",
+      "notas": [
+        "Cierra distinto a q21-q24: aqui el par es 'Volver a las alternativas' + 'Cerrar', no 'Elegir una tarjeta'. 'Cerrar' va sin emoji, igual que en mixed100.",
+        "En el mockup las dos primeras frases van pegadas (salto de linea sin espacio) y solo hay aire antes del parrafo del foco. El motor no emite <br> y todos los parrafos llevan 16px, asi que aqui los tres quedan separados por igual.",
+        "2026-09-09: Marco aprobo agregar el '¡' de apertura ('Si!' -> '¡Si!'), igualandola con q32. Ojo: el saludo 'Hola!' de q0 SIGUE sin '¡' por decision previa suya."
+      ]
+    },
+    {
+      "id": "q32",
+      "lineas": "",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question",
+      "titulo": "",
+      "texto": {
+        "parrafos": [
+          "¡Sí! &#128522; Estás realizando tu solicitud desde un canal oficial del BCP. Puedes continuar de forma segura. Para mantener tu información protegida:",
+          "",
+          "- &#128274; Verifica que la dirección web empiece con https:// y aparezca el candado de seguridad.",
+          "- &#127760; Confirma que la URL corresponda a un dominio oficial del BCP.",
+          "- &#128273; Mantén siempre privadas tus claves, contraseñas y códigos de seguridad.",
+          "",
+          "Recuerda que el BCP nunca te pedirá compartir tus claves o códigos de seguridad con otras personas."
+        ]
+      },
+      "opciones": [
+        {
+          "label": "&#x21A9;&#xFE0F; Volver a las alternativas",
+          "emoji": "↩️",
+          "next": "q3"
+        },
+        {
+          "label": "Cerrar",
+          "isClose": true
+        }
+      ],
+      "pendientes": [],
+      "richText": true,
+      "menuText": "¿Qué deseas hacer ahora?",
+      "notas": [
+        "Unica pantalla de Resolver dudas con vinetas: usa richText y lineas que empiezan con '- '.",
+        "Cada vineta lleva ademas su propio emoji (candado, globo, llave) despues del punto de la lista.",
+        "Cierra igual que q31: 'Volver a las alternativas' (-> q3) + 'Cerrar'.",
+        "2026-09-09: sirvio de referencia para corregir q31, que abria sin '¡'."
+      ]
+    },
+    {
+      "id": "q33",
+      "lineas": "",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question",
+      "titulo": "",
+      "texto": {
+        "parrafos": [
+          "Entiendo tu duda. &#128522; La línea de crédito que recibes se define luego de una evaluación realizada por el BCP.",
+          "Para determinar ese monto, se consideran factores como:",
+          "",
+          "&#128176; Tu capacidad de pago.",
+          "&#128196; Tus ingresos.",
+          "&#128200; Tu historial crediticio.",
+          "&#127974; Otros criterios de evaluación del BCP.",
+          "",
+          "Por eso, la línea de crédito puede ser diferente para cada cliente."
+        ]
+      },
+      "opciones": [
+        {
+          "label": "&#x21A9;&#xFE0F; Volver a las alternativas",
+          "emoji": "↩️",
+          "next": "q3"
+        },
+        {
+          "label": "Cerrar",
+          "isClose": true
+        }
+      ],
+      "pendientes": [],
+      "menuText": "¿Qué deseas hacer ahora?",
+      "notas": [
+        "Los cuatro factores NO son lista con vinetas: en el Figma van pegados, solo con su emoji. Se usan saltos simples, por eso el nodo no necesita richText (a diferencia de q32, que si tiene vinetas).",
+        "Las dos primeras frases tambien van pegadas, igual que en q31.",
+        "Cierra igual que q31 y q32: 'Volver a las alternativas' (-> q3) + 'Cerrar'."
+      ]
+    }
+  ],
+  "notas": [
+    "2026-09-09: el menu paso de 5 opciones a 3, segun mockup de Marco. Se quitaron '¿Que beneficios tiene mi tarjeta?', '¿Cuanto cuesta la membresia?' y '¿Puedo exonerar la membresia?'; se agrego '¿Por que me ofrecieron esa linea?'. Los stubs se renumeraron a q31-q33 en el orden en que aparecen; los antiguos q34/q35 se eliminaron.",
+    "La opcion 'Ir al menu principal' de los tres stubs es temporal, solo para mantener el grafo navegable.",
+    "PENDIENTE DE CONFIRMAR: si las tres preguntas retiradas desaparecen del bot o reaparecen en otra pantalla.",
+    "2026-09-09: q31 (Cambio de linea de credito) entregada por Marco e implementada. Faltan q32 y q33.",
+    "2026-09-09: q32 (Es seguro solicitarla por aqui) entregada por Marco e implementada. Falta q33.",
+    "2026-09-09: q33 (Por que me ofrecieron esa linea) implementada. El flujo 3 queda completo.",
+    "2026-09-09 DECIDIDO: la burbuja del usuario repite el boton completo. Los mockups la dibujan mas corta (ej. 'Comparar tarjetas' contra el boton 'Quiero comparar mis tarjetas'), pero se decidio no acortar ni el boton ni la burbuja. Regla general: manda el boton. Ver correcciones-wording.md."
+  ]
+}

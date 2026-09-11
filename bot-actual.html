@@ -1,0 +1,4141 @@
+<style>
+    #tc0080-scope {
+        font-family: var(--bcp-font-family-primary-regular), sans-serif;
+    }
+
+    #tc0080-scope * {
+        box-sizing: border-box;
+    }
+
+    #tc0080-scope .tc0080-mask {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.4);
+        display: none;
+        z-index: 9998;
+    }
+
+    #tc0080-scope .tc0080-launcher {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 100px;
+        height: 100px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: none;
+        padding: 0;
+        overflow: visible;
+        cursor: pointer;
+        z-index: 9999;
+    }
+
+    #tc0080-scope .tc0080-launcher-welcome-wrap {
+        position: fixed;
+        right: 25px;
+        bottom: 115px;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        z-index: 9999;
+        gap: 0;
+    }
+
+    #tc0080-scope .tc0080-launcher-welcome-box {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        border-radius: 8px;
+        background: transparent;
+        filter: drop-shadow(0 1px 1px rgba(82, 112, 148, 0.14)) drop-shadow(0 4px 14px rgba(82, 112, 148, 0.2));
+    }
+
+    #tc0080-scope .tc0080-launcher-welcome {
+        display: flex;
+        padding: 8px;
+        justify-content: center;
+        align-items: flex-start;
+        align-self: stretch;
+        border-radius: 8px;
+        background: var(--primary-040, #EBF4FF);
+        color: var(--on-text, #202E44);
+        font-size: 14px;
+        line-height: 1.2;
+        text-align: center;
+        cursor: pointer;
+    }
+
+    #tc0080-scope .tc0080-launcher-welcome strong {
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+    #tc0080-scope .tc0080-launcher-welcome-pointer {
+        width: 16px;
+        height: 8px;
+        margin-right: 32px;
+        display: block;
+    }
+
+    #tc0080-scope .tc0080-launcher-base {
+        display: flex;
+        width: 64px;
+        height: 64px;
+        padding: 8px 16px;
+        justify-content: center;
+        align-items: center;
+        gap: 6px;
+        border-radius: 40px;
+        border: 1px solid var(--primary-100, #B2D6FF);
+        background: linear-gradient(180deg, #001E7E 0%, #002AAE 51.78%, #FF7800 100%, #F2C089 100%);
+        box-shadow: 0 0 70px 0 rgba(26, 89, 242, 0.12), 0 0 40px 6px rgba(26, 102, 255, 0.30), 0 0 18px 4px rgba(38, 115, 255, 0.55), 0 0 6px 2px rgba(51, 128, 255, 0.90);
+        position: relative;
+        z-index: 2;
+    }
+
+    #tc0080-scope .tc0080-launcher-base svg {
+        width: 32px;
+        height: 32px;
+        display: block;
+    }
+
+    #tc0080-scope .tc0080-launcher-pulse {
+        position: absolute;
+        width: 100px;
+        height: 100px;
+        left: 50%;
+        top: 50%;
+        border-radius: 100px;
+        border: 2px solid rgba(38, 115, 255, 0.60);
+        z-index: 1;
+        transform: translate(-50%, -50%) scale(0.8);
+        transform-origin: center;
+        animation:
+            kf_631_1318_opacity_0 2s linear,
+            kf_631_1318_scale_0 2s linear;
+        animation-iteration-count: infinite;
+        will-change: transform, opacity;
+        pointer-events: none;
+    }
+
+    #tc0080-scope .tc0080-launcher:focus {
+        outline: none;
+    }
+
+    #tc0080-scope .tc0080-launcher:focus-visible {
+        outline: 2px solid #B2D6FF;
+        outline-offset: 4px;
+        border-radius: 44px;
+    }
+
+    @keyframes kf_631_1318_opacity_0 {
+        0% {
+            animation-timing-function: ease-out;
+            opacity: 0;
+        }
+
+        7.5% {
+            animation-timing-function: ease-in;
+            opacity: 0.8;
+        }
+
+        25% {
+            opacity: 0;
+        }
+
+        55% {
+            animation-timing-function: ease-out;
+            opacity: 0;
+        }
+
+        62.5% {
+            animation-timing-function: ease-in;
+            opacity: 0.8;
+        }
+
+        80% {
+            opacity: 0;
+        }
+
+        100% {
+            opacity: 0;
+        }
+    }
+
+    @keyframes kf_631_1318_scale_0 {
+        0% {
+            animation-timing-function: ease-out;
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+
+        7.5% {
+            animation-timing-function: ease-in;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        25% {
+            animation-timing-function: cubic-bezier(0.5, 0, 0.5, 1);
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+
+        55% {
+            animation-timing-function: ease-out;
+            transform: translate(-50%, -50%) scale(0.8);
+        }
+
+        62.5% {
+            animation-timing-function: ease-in;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        80% {
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+
+        100% {
+            transform: translate(-50%, -50%) scale(1.15);
+        }
+    }
+
+    #tc0080-scope .tc0080-panel {
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        width: 374px;
+        height: 70vh;
+        background: #fff;
+        border-radius: 12px;
+        display: none;
+        flex-direction: column;
+        overflow: hidden;
+        overscroll-behavior: contain;
+        z-index: 9999;
+        box-shadow: 0 4px 5px 0 rgba(82, 112, 148, 0.14), 0 1px 10px 0 rgba(82, 112, 148, 0.12), 0 2px 4px 0 rgba(82, 112, 148, 0.20);
+    }
+
+    #tc0080-scope .tc0080-header {
+        padding: 12px;
+        background: #0030B3;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #tc0080-scope .tc0080-header-main {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    #tc0080-scope .tc0080-header-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 0;
+        background-color: #3D77FF;
+        border-radius: 50%;
+        padding: 9px;
+    }
+
+    #tc0080-scope .tc0080-header-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+    }
+
+    #tc0080-scope .tc0080-title {
+        color: #fff;
+        font-weight: 600;
+    }
+
+    #tc0080-scope .tc0080-status {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin: 0;
+        color: #fff;
+        font-size: 12px;
+        line-height: 1.2;
+    }
+
+    #tc0080-scope .tc0080-status-dot {
+        display: inline-flex;
+        line-height: 0;
+    }
+
+    #tc0080-scope .tc0080-body {
+        padding: 12px;
+        overflow: auto;
+        overflow-y: auto;
+        flex: 1;
+        background: #F5F8FF;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        touch-action: pan-y;
+    }
+
+    #tc0080-scope .tc0080-msg {
+        margin-bottom: 10px;
+    }
+
+    #tc0080-scope .tc0080-chat {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 0;
+    }
+
+    #tc0080-scope .tc0080-chat-shell {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    #tc0080-scope .tc0080-chat-box {
+        /* background: #fff; */
+        /* border: 1px solid #d8deea; */
+        border-radius: 12px;
+        padding: 6px;
+        min-height: 180px;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    #tc0080-scope .tc0080-chat-actions {
+        margin-top: 10px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    #tc0080-scope .tc0080-chat-actions .tc0080-btn {
+        width: auto;
+        min-width: 88px;
+        margin: 0;
+        text-align: center;
+    }
+
+    #tc0080-scope .tc0080-chat-main-cta {
+        margin-top: 10px;
+        display: block;
+        width: 100%;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        background: #ff7800;
+        color: #fff;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: 600;
+    }
+
+    #tc0080-scope .tc0080-chat-main-cta:hover {
+        background: #ff961f;
+    }
+
+    #tc0080-scope .tc0080-chat-item {
+        max-width: 90%;
+        padding: 8px 10px;
+        border-radius: 10px;
+        line-height: 1.3;
+        font-size: 14px;
+    }
+
+    #tc0080-scope .tc0080-chat-item--bot {
+        width: 90%;
+        color: var(--on-text, #202E44);
+        border-radius: 4px 16px 16px 16px;
+        border: 1px solid var(--background-100, #D8DFEA);
+        background: var(--on-white, #FFF);
+    }
+
+    #tc0080-scope .tc0080-chat-item--bot.tc0080-node-rating-thanks .tc0080-chat-item-text {
+        font-weight: 600;
+    }
+
+    #tc0080-scope .tc0080-chat-item--response {
+        padding: 0;
+        overflow: hidden;
+    }
+
+    #tc0080-scope .tc0080-response-content {
+        padding: 12px;
+    }
+
+    #tc0080-scope .tc0080-response-divider {
+        border-top: 1px solid #D8DFEA;
+    }
+
+    #tc0080-scope .tc0080-response-footer {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+    }
+
+    #tc0080-scope .tc0080-response-label {
+        font-size: 14px;
+        line-height: 1.2;
+        color: #4a5568;
+        margin: 0;
+        white-space: nowrap;
+    }
+
+    #tc0080-scope .tc0080-response-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+    }
+
+    #tc0080-scope .tc0080-response-btn {
+        width: 15px;
+        height: 15px;
+        border-radius: 20px;
+        border: 1px solid var(--onsurface-050, #EFF0F2);
+        background: var(--on-white, #FFF);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        padding: 0;
+        line-height: 0;
+    }
+
+    #tc0080-scope .tc0080-response-btn:hover {
+        background: #F5F8FF;
+    }
+
+    #tc0080-scope .tc0080-response-btn:disabled {
+        opacity: 0.65;
+        cursor: default;
+    }
+
+    #tc0080-scope .tc0080-response-btn.is-selected {
+        background: #EAF1FF;
+    }
+
+    #tc0080-scope .tc0080-response-btn[data-icon-slot="up"].is-selected {
+        border-color: #6AC90F;
+    }
+
+    #tc0080-scope .tc0080-response-btn[data-icon-slot="down"].is-selected {
+        border-color: #CA4500;
+    }
+
+    #tc0080-scope .tc0080-response-btn:focus {
+        outline: none;
+    }
+
+    #tc0080-scope .tc0080-response-btn:focus-visible {
+        outline: 2px solid #0A47F0;
+        outline-offset: 2px;
+    }
+
+    #tc0080-scope .tc0080-response-icon-slot {
+        /* width: 16px; */
+        /* height: 16px; */
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        color: #5f6f8a;
+        font-size: 14px;
+        font-weight: 600;
+        border-radius: 20px;
+        border: 1px solid var(--onsurface-050, #EFF0F2);
+        background: var(--on-white, #FFF);
+        padding: 4px;
+    }
+
+    #tc0080-scope .tc0080-response-icon-slot svg {
+        width: 16px;
+        height: 16px;
+    }
+
+    #tc0080-scope .tc0080-response-btn.is-selected .tc0080-response-icon-slot[data-icon-slot="up"] {
+        border: 1px solid var(--state-success, #6AC90F);
+    }
+
+    #tc0080-scope .tc0080-response-btn.is-selected .tc0080-response-icon-slot[data-icon-slot="down"] {
+        border: 1px solid var(--secondary-700, #CA4500);
+    }
+
+    #tc0080-scope .tc0080-response-actions:not(.tc0080-response-actions--has-selection) .tc0080-response-btn:not(.is-selected):hover .tc0080-response-icon-slot[data-icon-slot="up"] {
+        border: 1px solid var(--state-success, #6AC90F);
+    }
+
+    #tc0080-scope .tc0080-response-actions:not(.tc0080-response-actions--has-selection) .tc0080-response-btn:not(.is-selected):hover .tc0080-response-icon-slot[data-icon-slot="up"] svg path {
+        fill: #37A500 !important;
+    }
+
+    #tc0080-scope .tc0080-response-actions:not(.tc0080-response-actions--has-selection) .tc0080-response-btn:not(.is-selected):hover .tc0080-response-icon-slot[data-icon-slot="down"] {
+        border: 1px solid var(--secondary-700, #CA4500);
+    }
+
+    #tc0080-scope .tc0080-response-actions:not(.tc0080-response-actions--has-selection) .tc0080-response-btn:not(.is-selected):hover .tc0080-response-icon-slot[data-icon-slot="down"] svg path {
+        fill: #CA4500 !important;
+    }
+
+    #tc0080-scope .tc0080-node-start .tc0080-chat-item-title {
+        font-size: 16px;
+    }
+
+    #tc0080-scope .tc0080-chat-item-title {
+        display: block;
+        font-size: 14px;
+        line-height: 1.2;
+        font-weight: 600;
+        color: var(--on-text, #202E44);
+        margin-bottom: 4px;
+    }
+
+    #tc0080-scope .tc0080-chat-item-text {
+        display: block;
+        font-size: 14px;
+        line-height: 1.3;
+        color: var(--on-text, #202E44);
+    }
+
+    #tc0080-scope .tc0080-rich-text {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    #tc0080-scope .tc0080-rich-line {
+        margin: 0;
+    }
+
+    #tc0080-scope .tc0080-rich-list {
+        margin: 0;
+        padding-left: 18px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+    }
+
+    #tc0080-scope .tc0080-rich-list li {
+        margin: 0;
+    }
+
+    #tc0080-scope .tc0080-rich-spacer {
+        height: 2px;
+    }
+
+    #tc0080-scope .tc0080-node-rating {
+        width: 90%;
+        text-align: center;
+    }
+
+    #tc0080-scope .tc0080-chat-bot-row {
+        display: flex;
+        gap: 8px;
+        align-items: flex-start;
+        /* margin-right: auto; */
+    }
+
+    #tc0080-scope .tc0080-chat-bot-icon {
+        flex-shrink: 0;
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: #3D77FF;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 7px;
+    }
+
+    #tc0080-scope .tc0080-chat-bot-icon svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+
+    #tc0080-scope .tc0080-chat-item-options {
+        display: flex;
+        /* flex-wrap: wrap; */
+        flex-direction: column;
+        gap: 6px;
+        margin-top: 8px;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option {
+        display: inline-flex;
+        align-items: center;
+        padding: 9px 16px;
+        color: #22324d;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1;
+        white-space: nowrap;
+        cursor: default;
+        border-radius: 16px;
+        border: 1px solid #E6E6E6;
+        background: #FFF;
+    }
+
+    #tc0080-scope a.tc0080-chat-item-option {
+        cursor: pointer;
+        text-decoration: none;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option--cta {
+        width: 100%;
+        justify-content: center;
+        padding: 6px 16px;
+        gap: 8px;
+        border-radius: 20px;
+        border: 1px solid #FF7800;
+        background: #FF7800;
+        color: #fff;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option-label {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option-icon {
+        width: 24px;
+        height: 24px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: 0 0 auto;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option-icon svg {
+        width: 24px;
+        height: 24px;
+        display: block;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option--cta:hover {
+        background: #ff961f;
+        border-color: #ff961f;
+    }
+
+    #tc0080-scope button.tc0080-chat-item-option {
+        cursor: pointer;
+        font-family: inherit;
+        width: fit-content;
+    }
+
+    #tc0080-scope button.tc0080-chat-item-option:hover {
+        background: #eef3ff;
+        border-color: #b7c6ea;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option[disabled] {
+        opacity: 0.7;
+        cursor: default;
+    }
+
+    #tc0080-scope .tc0080-chat-item-option[disabled]:hover {
+        background: #FFF;
+        border-color: #E6E6E6;
+    }
+
+    #tc0080-scope .tc0080-chat-item--user {
+        color: #fff;
+        align-self: flex-end;
+        margin-left: auto;
+        text-align: right;
+        border-radius: 16px 4px 16px 16px;
+        background: var(--primary-400, #0A47F0);
+    }
+
+    #tc0080-scope .tc0080-thinking {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 10px 14px;
+        color: #6a7383;
+        font-size: 12px;
+        line-height: 1;
+        margin-top: 8px;
+        border-radius: 16px;
+        border: 1px solid var(--onsurface-100, #E5E7EB);
+        background: var(--on-white, #FFF);
+    }
+
+    #tc0080-scope .tc0080-thinking--chat {
+        /* margin-left: 40px; */
+        margin-right: auto;
+    }
+
+    #tc0080-scope .tc0080-thinking--slide {
+        margin-top: 10px;
+    }
+
+    #tc0080-scope .tc0080-thinking-dots {
+        display: inline-flex;
+        gap: 4px;
+    }
+
+    #tc0080-scope .tc0080-thinking-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #c3cad6;
+        opacity: 0.45;
+        transform: scale(0.92);
+    }
+
+    #tc0080-scope .tc0080-thinking-dot:nth-child(1) {
+        animation: tc0080-dot-step-1 1.2s infinite steps(1, end);
+    }
+
+    #tc0080-scope .tc0080-thinking-dot:nth-child(2) {
+        animation: tc0080-dot-step-2 1.2s infinite steps(1, end);
+    }
+
+    #tc0080-scope .tc0080-thinking-dot:nth-child(3) {
+        animation: tc0080-dot-step-3 1.2s infinite steps(1, end);
+    }
+
+    @keyframes tc0080-dot-step-1 {
+
+        0%,
+        33.333% {
+            background: #0A47F0;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        33.334%,
+        100% {
+            background: #99A1AD;
+            opacity: 0.45;
+            transform: scale(0.92);
+        }
+    }
+
+    @keyframes tc0080-dot-step-2 {
+
+        0%,
+        33.333% {
+            background: #99A1AD;
+            opacity: 0.45;
+            transform: scale(0.92);
+        }
+
+        33.334%,
+        66.666% {
+            background: #0A47F0;
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        66.667%,
+        100% {
+            background: #99A1AD;
+            opacity: 0.45;
+            transform: scale(0.92);
+        }
+    }
+
+    @keyframes tc0080-dot-step-3 {
+
+        0%,
+        66.666% {
+            background: #99A1AD;
+            opacity: 0.45;
+            transform: scale(0.92);
+        }
+
+        66.667%,
+        100% {
+            background: #0A47F0;
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+
+    #tc0080-scope .tc0080-options button {
+        display: block;
+        width: 100%;
+        margin: 6px 0;
+        padding: 10px;
+        cursor: pointer;
+        border: 1px solid #d6dbe7;
+        border-radius: 8px;
+        background: #fff;
+        color: #18253a;
+        text-align: left;
+        font-size: 14px;
+    }
+
+    #tc0080-scope .tc0080-btn {
+        background: var(--on-text, #202E44);
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        aspect-ratio: 1;
+        color: #0030B3;
+        background-color: #fff;
+    }
+
+    #tc0080-scope .tc0080-btn:focus {
+        outline: 3px solid #2b7cff;
+    }
+
+    #tc0080-scope .tc0080-close {
+        cursor: pointer;
+        background-color: #0030B3;
+    }
+
+    #tc0080-scope .tc0080-close:focus {
+        outline: none;
+    }
+
+    #tc0080-scope .tc0080-close:focus-visible {
+        outline: 2px solid #ffffff;
+        outline-offset: 2px;
+    }
+
+    #tc0080-scope .tc0080-error {
+        color: #b00020;
+        font-size: 12px;
+    }
+
+    #tc0080-scope .tc0080-rating {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        margin-top: 8px;
+    }
+
+    #tc0080-scope .tc0080-rating-btn {
+        border: none;
+        background: transparent;
+        padding: 0;
+        cursor: pointer;
+        line-height: 0;
+    }
+
+    #tc0080-scope .tc0080-rating-btn svg {
+        display: block;
+    }
+
+    #tc0080-scope .tc0080-rating-btn:focus {
+        outline: none;
+    }
+
+    #tc0080-scope .tc0080-rating-btn:focus-visible {
+        outline: 2px solid #0A47F0;
+        outline-offset: 2px;
+        border-radius: 4px;
+    }
+
+    #tc0080-scope .tc0080-footer {
+        display: flex;
+        gap: 8px;
+        margin-top: 10px;
+        padding-top: 10px;
+        border-top: 1px solid #d8deea;
+        background: #f7f9fc;
+    }
+
+    #tc0080-scope .tc0080-footer .tc0080-btn {
+        flex: 1;
+        height: 38px;
+        border-radius: 8px;
+    }
+
+    #tc0080-scope .tc0080-footer [data-back] {
+        background: #fff;
+        color: var(--on-text, #202E44);
+        border: 1px solid #cfd6e4;
+    }
+
+    #tc0080-scope .tc0080-hidden {
+        display: none !important;
+    }
+
+    #tc0080-scope .tc0080-error-message {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 16px;
+        background: #FFF4F4;
+        border: 1px solid #F8D7DA;
+        border-radius: 12px;
+        margin-bottom: 12px;
+    }
+
+    #tc0080-scope .tc0080-error-icon {
+        flex-shrink: 0;
+        color: #DC3545;
+        font-size: 20px;
+        line-height: 1;
+    }
+
+    #tc0080-scope .tc0080-error-content {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    #tc0080-scope .tc0080-error-text {
+        font-size: 14px;
+        font-weight: 600;
+        color: #DC3545;
+        margin: 0;
+    }
+
+    #tc0080-scope .tc0080-error-retry {
+        flex-shrink: 0;
+        padding: 8px 16px;
+        background: #FF7800;
+        color: #fff;
+        border: none;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        white-space: nowrap;
+        line-height: 1.2;
+    }
+
+    #tc0080-scope .tc0080-error-retry:hover {
+        background: #ff961f;
+    }
+
+    #tc0080-scope .tc0080-error-retry:focus {
+        outline: none;
+    }
+
+    #tc0080-scope .tc0080-error-retry:focus-visible {
+        outline: 2px solid #0A47F0;
+        outline-offset: 2px;
+    }
+
+    @media (max-width: 768px) {
+        #tc0080-scope .tc0080-launcher-welcome-wrap {
+            right: 20px;
+            bottom: 106px;
+            width: min(218px, calc(100vw - 132px));
+        }
+
+        #tc0080-scope .tc0080-launcher.tc0080-launcher--lifted {
+            bottom: 122px;
+        }
+
+        #tc0080-scope .tc0080-launcher-welcome-wrap.tc0080-launcher-welcome-wrap--lifted {
+            bottom: 208px;
+        }
+
+        #tc0080-scope .tc0080-launcher-welcome {
+            font-size: 14px;
+        }
+
+        #tc0080-scope .tc0080-launcher-welcome strong {
+            font-size: 14px;
+        }
+
+        #tc0080-scope .tc0080-panel {
+            width: 100%;
+            right: 0;
+            bottom: 0;
+            height: 90vh;
+            max-height: 90vh;
+            box-shadow: none;
+            transform: translateY(100%);
+            opacity: 0;
+            transition: transform 300ms cubic-bezier(0.22, 1, 0.36, 1), opacity 220ms ease;
+            will-change: transform, opacity;
+        }
+
+        #tc0080-scope .tc0080-panel.tc0080-panel--open {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        #tc0080-scope * {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        #tc0080-scope .tc0080-launcher-pulse {
+            animation:
+                kf_631_1318_opacity_0 2s linear,
+                kf_631_1318_scale_0 2s linear !important;
+            animation-iteration-count: infinite !important;
+        }
+
+        #tc0080-scope .tc0080-thinking-dot:nth-child(1) {
+            animation: tc0080-dot-step-1 1.2s infinite steps(1, end) !important;
+            transform: none !important;
+        }
+
+        #tc0080-scope .tc0080-thinking-dot:nth-child(2) {
+            animation: tc0080-dot-step-2 1.2s infinite steps(1, end) !important;
+            transform: none !important;
+        }
+
+        #tc0080-scope .tc0080-thinking-dot:nth-child(3) {
+            animation: tc0080-dot-step-3 1.2s infinite steps(1, end) !important;
+            transform: none !important;
+        }
+    }
+</style>
+
+<div class="tc0080-mask" aria-hidden="true"></div>
+
+<div class="tc0080-launcher-welcome-wrap">
+    <div class="tc0080-launcher-welcome-box">
+        <div class="tc0080-launcher-welcome" role="button" tabindex="0" aria-label="Abrir bot">
+            <strong>¡Hola! Soy Tarjetín. &#128075;<br>¿En qué te puedo ayudar?</strong>
+        </div>
+        <svg class="tc0080-launcher-welcome-pointer" xmlns="http://www.w3.org/2000/svg" width="16" height="8"
+            viewBox="0 0 16 8" fill="none" aria-hidden="true">
+            <path
+                d="M6.58579 6.58579C7.36683 7.36683 8.63316 7.36684 9.41421 6.58579L16 0L6.99382e-07 -1.39876e-06L6.58579 6.58579Z"
+                fill="var(--primary-040, #EBF4FF)" />
+        </svg>
+    </div>
+</div>
+
+<div class="tc0080-launcher" role="button" tabindex="0" aria-label="Abrir bot">
+    <span class="tc0080-launcher-pulse" aria-hidden="true"></span>
+    <span class="tc0080-launcher-base" aria-hidden="true">
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32" fill="none">
+            <path
+                d="M16.0004 10.6668V5.33398H10.6667M2.66602 18.666H5.3329M26.6679 18.666H29.3348M20.0007 17.3328V19.9992M12.0001 17.3328V19.9992M7.99978 10.6668H24.0011C25.4739 10.6668 26.6679 11.8606 26.6679 13.3332V23.9988C26.6679 25.4714 25.4739 26.6652 24.0011 26.6652H7.99978C6.5269 26.6652 5.3329 25.4714 5.3329 23.9988V13.3332C5.3329 11.8606 6.5269 10.6668 7.99978 10.6668Z"
+                stroke="white" stroke-width="3.55556" stroke-linecap="round" />
+        </svg>
+    </span>
+</div>
+
+<div class="tc0080-panel" role="dialog" aria-modal="true" aria-label="Bot determinístico">
+    <div class="tc0080-header">
+        <div class="tc0080-header-main">
+            <span class="tc0080-header-icon" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">
+                    <path
+                        d="M8.99962 6.00019V3.00049H5.99938M1.49902 10.4997H2.99914M15.0001 10.4997H16.5002M11.2498 9.74981V11.2497M6.74944 9.74981V11.2497M4.49926 6.00019H13.5C14.3285 6.00019 15.0001 6.67169 15.0001 7.50004V13.4994C15.0001 14.3278 14.3285 14.9993 13.5 14.9993H4.49926C3.67077 14.9993 2.99914 14.3278 2.99914 13.4994V7.50004C2.99914 6.67169 3.67077 6.00019 4.49926 6.00019Z"
+                        stroke="white" stroke-width="2" stroke-linecap="round" />
+                </svg>
+            </span>
+            <div class="tc0080-header-text">
+                <span class="tc0080-title">Asistente virtual</span>
+                <p class="tc0080-status">
+                    <span class="tc0080-status-dot" aria-hidden="true">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="6" height="6" viewBox="0 0 6 6" fill="none">
+                            <circle cx="3" cy="3" r="3" fill="white" />
+                        </svg>
+                    </span>
+                    En línea
+                </p>
+            </div>
+        </div>
+        <div>
+            <button class="tc0080-btn tc0080-close" aria-label="Cerrar">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none"
+                    style="background: #0030B3; pointer-events: none; display: block;">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M10 0C15.522 0 20 4.478 20 10C20 15.522 15.522 20 10 20C4.478 20 0 15.522 0 10C0 4.478 4.478 0 10 0ZM7.1129 5.7097C6.72061 5.40468 6.15338 5.43241 5.79289 5.79289L5.7097 5.8871C5.40468 6.27939 5.43241 6.84662 5.79289 7.20711L8.585 10L5.79289 12.7929C5.40237 13.1834 5.40237 13.8166 5.79289 14.2071C6.18342 14.5976 6.81658 14.5976 7.20711 14.2071L10 11.415L12.7929 14.2071L12.8871 14.2903C13.2794 14.5953 13.8466 14.5676 14.2071 14.2071L14.2903 14.1129C14.5953 13.7206 14.5676 13.1534 14.2071 12.7929L11.415 10L14.2071 7.20711C14.5976 6.81658 14.5976 6.18342 14.2071 5.79289C13.8166 5.40237 13.1834 5.40237 12.7929 5.79289L10 8.585L7.20711 5.79289L7.1129 5.7097Z"
+                        fill="white" />
+                </svg>
+            </button>
+        </div>
+
+
+    </div>
+    <div class="tc0080-body"></div>
+</div>
+
+<script>
+    (function () {
+        function Bot(root) {
+            this.root = root;
+            this.state = {
+                current: null,
+                history: [],
+                rating: null,
+                nextMessageId: 1,
+                chatLog: [],
+                chatSnapshots: [],
+                finished: false,
+                errorRecovery: null,
+                activeQuestionMessageId: null,
+                runtimeError: null,
+                missingNextErrorCount: 0,
+            };
+            this.config = {
+                mode: "chat",
+                startNode: "q0",
+                menuText: "Ir al inicio",
+                analytics: {
+                    experimentCode: "TC0080",
+                    openBotPromotion: {
+                        creative: "Button",
+                        position: "Banner Footer",
+                    },
+                },
+                thinking: {
+                    enabled: true,
+                    durationMs: 1200,
+                    showText: false,
+                    text: "Pensando",
+                },
+                errorHandling: {
+                    missingNextNodeMaxRetries: 3,
+                    fallbackNodeId: "",
+                },
+                nodes: [
+                    {
+                        id: "q0",
+                        title: "Hola! &#128075; Soy Tarjetín.",
+                        text: "Te ayudaré a resolver tus dudas sobre las tarjetas de crédito. ¿Qué necesitas hacer?\n\nElige una opción:",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-start",
+                        options: [
+                            { label: "&#128179; Elegir una tarjeta", next: "q1" },
+                            { label: "&#128680; Recibir ayuda con mi solicitud", next: "q2" },
+                            { label: "&#128200; Entender mi línea de crédito", next: "q3" },
+                            { label: "&#128274; Resolver dudas de seguridad", next: "q4" },
+                        ],
+                    },
+                    {
+                        id: "q1",
+                        title: "",
+                        text: "¡Perfecto! &#128077; Selecciona qué necesitas y te ayudaré a encontrarla.\n\nElige una opción:",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-q1",
+                        usageMenuOption: { label: "&#127968; Ir al menú principal", next: "q0" },
+                        options: [
+                            { label: "&#128179; Recomiéndame una tarjeta", next: "q11" },
+                            { label: "&#x2696;&#xFE0F; Quiero comparar las tarjetas", next: "q12" },
+                            { label: "&#10067; Resolver dudas para elegir", next: "q13" },
+                        ],
+                    },
+                    {
+                        id: "q11",
+                        title: "",
+                        text: "Claro! &#128512; Cuéntame para qué te gustaría usar tu tarjeta y te recomendaré la opción que mejor se adapte a ti.\n\nElige una opción:",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-q1",
+                        usageMenuOption: {},
+                        options: [
+                            { label: "&#x2708;&#xFE0F; Viajar", next: "q111" },
+                            { label: "&#x1F6CD;&#xFE0F; Comprar con frecuencia", next: "q112" },
+                            { label: "&#128526; Empezar mi historial crediticio", next: "q113" },
+                            { label: "&#128188; Hacer compras grandes", next: "q114" },
+                        ],
+                    },
+                    {
+                        id: "q111",
+                        title: "",
+                        text: [
+                            "Buena eleccion. &#128512; Si viajar es una prioridad para ti, estas son algunas opciones LATAM Pass que pueden interesarte.",
+                            "",
+                            "&#x2b50; **Las recomendadas**",
+                            "",
+                            "&#128179; **Visa Oro LATAM Pass**",
+                            "Ideal para empezar a acumular millas y viajar ocasionalmente.",
+                            "- &#128176; Ingreso minimo: S/2,500",
+                            "- &#128179; Membresia anual: S/170 (**gratis si consumes S/1 al mes**)",
+                            "- &#x2708;&#xFE0F; Acumulas 1 Milla LATAM Pass por cada $1.5 de consumo",
+                            "",
+                            "&#128179; **American Express Oro LATAM Pass**",
+                            "Ideal para acumular millas y disfrutar beneficios de American Express.",
+                            "- &#128176; Ingreso minimo: S/2,500",
+                            "- &#128179; Membresia anual: S/170 (**gratis si consumes S/1 al mes**)",
+                            "- &#x2708;&#xFE0F; Acumulas 1 Milla LATAM Pass por cada $1.5 de consumo",
+                            "",
+                            "**Si buscas mas beneficios**",
+                            "",
+                            "&#128142; **American Express Black LATAM Pass**",
+                            "Ideal para viajeros frecuentes que buscan una experiencia premium.",
+                            "- &#128176; Ingreso minimo: S/12,000",
+                            "- &#128179; Membresia anual: S/400",
+                            "- &#x2708;&#xFE0F; Acumulas 1.5 Millas LATAM Pass por cada $1 de consumo",
+                            "- &#x1F6CB;&#xFE0F; Viajes: Beneficios premium y acceso a salas VIP",
+                            "",
+                            "&#128142; **Visa Infinite Sapphire LATAM Pass**",
+                            "Ideal para viajeros frecuentes que buscan mayor acumulacion de millas y beneficios.",
+                            "- &#128176; Ingreso minimo: S/20,000",
+                            "- &#128179; Membresia anual: S/450",
+                            "- &#x2708;&#xFE0F; Acumulas: hasta 1.5 Millas LATAM Pass por cada $1 de consumo",
+                            "- &#x1f9f3; Equipaje: 1 maleta adicional de hasta 23 kg sin costo en vuelos LATAM participantes",
+                            "- &#x1F6CB;&#xFE0F; Salas VIP: acceso a salas VIP internacionales segun las condiciones del beneficio",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response1",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed11",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q112",
+                        title: "",
+                        text: [
+                            "¡Excelente opción! &#x1F6CD;&#xFE0F; Si realizas compras con frecuencia, te conviene una tarjeta que te permita acumular millas con tus compras y acceder a beneficios como Cuotas Sin Intereses en comercios afiliados.",
+                            "",
+                            "Te recomiendo estas dos opciones más solicitadas:",
+                            "",
+                            "&#128179; **Visa Oro LATAM Pass**",
+                            "- &#128176; Ingreso minimo: S/2,500",
+                            "- &#128179; Membresia anual: S/170 (**gratis si consumes S/1 al mes**)",
+                            "- &#x2708;&#xFE0F; Acumulas 1 Milla LATAM Pass por cada $1.5 de consumo",
+                            "- &#128095; Marcas con Cuotas Sin Intereses: Adidas, New Balance y Nike*",
+                            "",
+                            "&#128179; **American Express Oro LATAM Pass**",
+                            "Ideal para acumular millas y disfrutar beneficios de American Express.",
+                            "- &#128176; Ingreso minimo: S/2,500",
+                            "- &#128179; Membresia anual: S/170 (**gratis si consumes S/1 al mes**)",
+                            "- &#x2708;&#xFE0F; Acumulas 1 Milla LATAM Pass por cada $1.5 de consumo",
+                            "- &#127869;&#xFE0F; Restaurantes con descuentos: Carnaval, Osaka y La Huaca Pucllana*",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response1",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed11",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q113",
+                        title: "",
+                        text: [
+                            "¡Excelente decisión! &#x1F331; Si buscas empezar tu historial crediticio, estas son algunas de nuestras tarjetas con requisitos más accesibles para comenzar:",
+                            "",
+                            "&#128179; **Visa Light**",
+                            "Ideal para empezar con una tarjeta sencilla y sin preocuparte por el pago de membresía.",
+                            "- &#128176; Ingreso mínimo: S/850",
+                            "- &#9989; Membresía: S/0, sin consumo mínimo",
+                            "- &#x1F6CD;&#xFE0F; Beneficio: Cuotas Sin Intereses en comercios participantes",
+                            "",
+                            "&#128179; **Visa Clásica LATAM Pass**",
+                            "Ideal para empezar y acumular millas con tus compras.",
+                            "- &#128176; Ingreso mínimo: S/1,800",
+                            "- &#128179; Membresía: S/80 (exonérate consumiendo desde S/1 al mes)",
+                            "- &#x2708;&#xFE0F; Acumulas: 1 Milla LATAM Pass por cada $2 de consumo",
+                            "",
+                            "&#128179; **American Express Clásica LATAM Pass**",
+                            "Ideal para: Empezar y disfrutar los beneficios de American Express mientras acumulas millas.",
+                            "- &#128176; Ingreso mínimo: S/1,800",
+                            "- &#128179; Membresía: S/80 (exonérate consumiendo desde S/1 al mes)",
+                            "- &#x2708;&#xFE0F; Acumulas: 1 Milla LATAM Pass por cada $2 de consumo",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response1",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed11",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q114",
+                        title: "",
+                        text: [
+                            "¡Excelente elección! &#128521; Si planeas realizar compras grandes, te conviene una tarjeta que te permita pagar en Cuotas Sin Intereses, acumular millas con tus compras y acceder a beneficios exclusivos.",
+                            "",
+                            "Te recomiendo estas opciones más solicitadas:",
+                            "",
+                            "&#128179; **Visa Oro LATAM Pass**",
+                            "Ideal para quienes hacen compras grandes y buscan pagarlas en Cuotas Sin Intereses en comercios participantes.",
+                            "- &#128176; Ingreso mínimo: S/2,500",
+                            "- &#128179; Membresía anual: S/170 (gratis si consumes S/1 al mes)",
+                            "- &#x2708;&#xFE0F; Acumulas 1 Milla LATAM Pass por cada $1.5 de consumo",
+                            "",
+                            "&#128179; **American Express Oro LATAM Pass**",
+                            "Ideal para quienes hacen compras importantes y quieren acumular millas mientras aprovechan beneficios de American Express.",
+                            "- &#128176; Ingreso mínimo: S/2,500",
+                            "- &#128179; Membresía anual: S/170 (gratis si consumes S/1 al mes)",
+                            "- &#x2708;&#xFE0F; Acumulas: 1 Milla LATAM Pass por cada $ 1.5 de consumo",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response1",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed11",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q12",
+                        title: "",
+                        text: "¡Claro! &#128522; ¿Qué aspecto te gustaría comparar?",
+                        type: "auto",
+                        className: "tc0080-node-auto tc0080-node-q1",
+                        next: "q121",
+                    },
+                    {
+                        id: "q121",
+                        title: "",
+                        text: "Elige una opción:\n\n",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-q3",
+                        options: [
+                            { label: "&#x2708;&#xFE0F; Acumulación de millas", next: "q1211" },
+                            { label: "&#127873; Beneficios y promociones", next: "q1212" },
+                            { label: "&#128179; Membresía y costos", next: "q1213" },
+                            { label: "&#x1f6e1;&#xfe0f; Seguros y beneficios de viaje", next: "q1214" },
+                            { label: "&#128202; Ver comparación completa", next: "q1215" },
+                        ],
+                    },
+                    {
+                        id: "q1211",
+                        title: "",
+                        text: [
+                            "¡Claro! &#x2708;&#xFE0F; Si buscas acumular Millas LATAM Pass, estas son las categorías que te recomiendo. En cada una podrás elegir entre Visa o American Express, según tu interés.",
+                            "",
+                            "&#128179; **Visa Clásica LATAM Pass**",
+                            "Ideal para empezar a acumular millas con tus compras.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1 milla por cada $2 de consumo.",
+                            "",
+                            "&#128179; **American Express Clásica LATAM Pass**",
+                            "Ideal para empezar a acumular millas y disfrutar beneficios de American Express.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1 milla por cada $2 de consumo.",
+                            "",
+                            "&#128179; **Visa Oro LATAM Pass**",
+                            "Ideal para acumular millas con mayor frecuencia y viajar ocasionalmente.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1 milla por cada $1.5 de consumo.",
+                            "",
+                            "&#128179; **American Express Oro LATAM Pass**",
+                            "Ideal para acumular millas y aprovechar beneficios de American Express.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1 milla por cada $1.5 de consumo.",
+                            "",
+                            "&#128179; **Visa Platinum LATAM Pass**",
+                            "Ideal para viajeros frecuentes que quieren acumular millas más rápido.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1 milla por cada $1 de consumo.",
+                            "- &#127873; Bono de bienvenida: Hasta 3,000 millas.",
+                            "",
+                            "&#128179; **American Express Platinum LATAM Pass**",
+                            "Ideal para viajeros frecuentes que buscan millas y beneficios de American Express.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1 milla por cada $1 de consumo.",
+                            "- &#127873; Bono de bienvenida: Hasta 3,000 millas.",
+                            "",
+                            "&#128179; **Visa Signature LATAM Pass**",
+                            "Ideal para viajeros frecuentes que buscan mayor acumulación y beneficios premium.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1.25 millas por cada $1 de consumo.",
+                            "- &#127873; Bono de bienvenida: Hasta 6,000 millas.",
+                            "",
+                            "&#128179; **American Express Black LATAM Pass**",
+                            "Ideal para viajeros frecuentes que buscan alta acumulación y una experiencia premium.",
+                            "- &#x2708;&#xFE0F; Acumulación: 1.5 millas por cada $1 de consumo.",
+                            "- &#127873; Bono de bienvenida: Hasta 6,000 millas.",
+                            "",
+                            "&#128179; **Visa Infinite Sapphire LATAM Pass**",
+                            "Ideal para quienes viajan constantemente y buscan maximizar sus millas y beneficios.",
+                            "- &#x2708;&#xFE0F; Acumulación: Hasta 1.5 millas por cada $1 de consumo.",
+                            "- &#127873; Bono de bienvenida: Hasta 10,000 millas.",
+                            "",
+                            "&#128179; **Visa Infinite Iridium LATAM Pass**",
+                            "Ideal para viajeros frecuentes que buscan la mayor acumulación y beneficios exclusivos.ún las condiciones del beneficio.",
+                            "- &#x2708;&#xFE0F; Acumulación: Hasta 2 millas por cada $1 de consumo.",
+                            "- &#127873; Bono de bienvenida: Hasta 15,000 millas.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed121",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q1212",
+                        title: "",
+                        text: [
+                            "¡Claro! &#127873; Si buscas beneficios, estas son las dos opciones principales y lo que ofrece cada una:",
+                            "",
+                            "&#x2708;&#xFE0F; **LATAM Pass:** Visa y American Express",
+                            "Ideal para personas que viajan con frecuencia o quieren convertir sus compras en millas.",
+                            "",
+                            "Beneficios destacados:",
+                            "- &#x2708;&#xFE0F; Acumulas millas con cada compra.",
+                            "- &#127758; Canjeas tus millas por vuelos y productos.",
+                            "- &#128179; Accedes a Cuotas Sin Intereses en comercios participantes.",
+                            "",
+                            "&#128153; **Visa Qore:**",
+                            "Ideal para quienes compran con frecuencia y quieren aprovechar descuentos y beneficios todos los días.",
+                            "",
+                            "Beneficios destacados:",
+                            "- &#127873; Acumulas Puntos Qore con cada compra.",
+                            "- &#128179; Pagas con tus puntos en comercios afiliados.",
+                            "- &#x1F6CD;&#xFE0F; Disfrutas descuentos y beneficios exclusivos.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed121",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q1213",
+                        title: "",
+                        text: [
+                            "¡Claro! &#128179; Estas son las principales diferencias de las membresías en Visa, Visa Qore y American Express:",
+                            "",
+                            "&#128179; **Clásica**",
+                            "- Membresía anual: S/ 80",
+                            "- &#9989; Exonérate consumiendo desde S/ 1 al mes.",
+                            "",
+                            "&#x1F949; **Oro**",
+                            "- Membresía anual: S/ 170",
+                            "- &#9989; Exonérate consumiendo desde S/ 1 al mes.",
+                            "",
+                            "&#x1F948; **Platinum**",
+                            "- Membresía anual: S/ 350",
+                            "- &#9989; Exonérate consumiendo un promedio de S/ 1,200 al mes.",
+                            "",
+                            "&#x1F947; **Signature / Black**",
+                            "- Membresía anual: S/ 400",
+                            "- &#9989; Exonérate consumiendo un promedio de S/ 3,500 al mes.",
+                            "",
+                            "&#128142; **Infinite**",
+                            "- Membresía anual: S/ 450",
+                            "- &#9989; Exonérate consumiendo un promedio de S/ 4,500 al mes.",
+                            "",
+                            "&#128142; **Infinite Qore**",
+                            "- Membresía anual: S/ 500",
+                            "- &#9989; Exonérate consumiendo un promedio de S/ 5,000 al mes.",
+                            "",
+                            "**Recomendación:**",
+                            "Si buscas una membresía fácil de exonerar, las categorías Clásica y Oro son una excelente alternativa.",
+                            "Si realizas consumos mensuales más altos, Platinum, Signature/Black e Infinite te ofrecen más beneficios y también permiten exonerar la membresía.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed121",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q1214",
+                        title: "",
+                        text: [
+                            "¡Claro! &#x2708;&#xFE0F; Estas son las principales diferencias en seguros y beneficios de viaje de nuestras Tarjetas LATAM Pass.",
+                            "",
+                            "&#128179; **Clásica LATAM Pass**",
+                            "",
+                            "Ideal para quienes empiezan a viajar y buscan protección básica.",
+                            "- &#x1f6e1;&#xfe0f; Protección para compras y viajes.",
+                            "- &#x1F691; Asistencia durante tus viajes.",
+                            "",
+                            "&#x1F949; **Oro LATAM Pass**",
+                            "",
+                            "Ideal para: Viajeros ocasionales que buscan mayor tranquilidad.",
+                            "- &#x1f6e1;&#xfe0f; Mayor cobertura para viajes.",
+                            "- &#x1f9f3; Protección para equipaje.",
+                            "- &#x1F691; Asistencia durante tus viajes.",
+                            "",
+                            "&#x1F948; **Platinum LATAM Pass**",
+                            "",
+                            "Ideal para: Personas que viajan con frecuencia.",
+                            "- &#x1f6e1;&#xfe0f; Coberturas de viaje más amplias.",
+                            "- &#128663; Seguro para alquiler de autos.",
+                            "- &#x1f9f3; Mayor protección para equipaje.",
+                            "",
+                            "&#x1F947; **Signature / Black LATAM Pass**",
+                            "",
+                            "Ideal para: Viajeros frecuentes que buscan una experiencia premium.",
+                            "- &#x1F6CB;&#xFE0F; Priority Pass con acceso ilimitado a salas VIP para el titular y hasta 2 invitados.",
+                            "- &#x2708;&#xFE0F; Check-in preferente en vuelos LATAM.",
+                            "- &#x2B06;&#xfe0f; Cupones de upgrade de cabina (según condiciones del programa LATAM Pass).",
+                            "- &#128663; Seguro para alquiler de autos.",
+                            "",
+                            "&#128142; **Infinite Sapphire / Infinite Iridium LATAM Pass**",
+                            "",
+                            "Ideal para: Clientes que viajan constantemente y buscan la mejor experiencia de viaje.",
+                            "- &#x1F6CB;&#xFE0F; Priority Pass con acceso ilimitado a salas VIP para el titular y hasta 3 invitados (Sapphire) o hasta 4 invitados (Iridium).",
+                            "- &#x1f9f3; 1 maleta adicional de hasta 23 kg sin costo en vuelos LATAM participantes.",
+                            "- &#x2708;&#xFE0F; Check-in preferente en vuelos LATAM.",
+                            "- &#x2B06;&#xfe0f; Mayor cantidad de cupones de upgrade de cabina (según condiciones del programa LATAM Pass).",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed121",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q1215",
+                        title: "",
+                        text: [
+                            "¡Claro! &#128522; Aquí tienes una comparación completa de las principales diferencias para ayudarte a elegir tu Tarjeta Visa o American Express ideal:",
+                            "",
+                            "&#128179; **Clásica**",
+                            "",
+                            "Ideal para tu primera tarjeta de crédito.",
+                            "- &#x2708;&#xFE0F; Millas / Puntos: Acumulación básica.",
+                            "- &#127873; Beneficios: Beneficios esenciales para tus compras y viajes.",
+                            "- &#128176; Membresía: S/ 80.",
+                            "- &#9989; Exonérate: Consumiendo desde S/ 1 al mes.",
+                            "",
+                            "&#x1F949; **Oro**",
+                            "",
+                            "Ideal para compras frecuentes y viajes ocasionales.",
+                            "- &#x2708;&#xFE0F; Millas / Puntos: Mayor acumulación que Clásica.",
+                            "- &#127873; Beneficios: Más promociones, Cuotas Sin Intereses y beneficios adicionales.",
+                            "- &#128176; Membresía: S/ 170.",
+                            "- &#9989; Exonérate: Consumiendo desde S/ 1 al mes.",
+                            "",
+                            "&#x1F948; **Platinum**",
+                            "",
+                            "Ideal para personas que viajan con frecuencia.",
+                            "- &#x2708;&#xFE0F; Millas / Puntos: Alta acumulación.",
+                            "- &#127873; Beneficios: Beneficios superiores y seguros de viaje ampliados.",
+                            "- &#128176; Membresía: S/ 350.",
+                            "- &#9989; Exonérate: Consumiendo un promedio de S/ 1,200 al mes.",
+                            "",
+                            "&#x1F947; **Signature / Black**",
+                            "",
+                            "Ideal para quienes buscan una experiencia premium.",
+                            "- &#x2708;&#xFE0F; Millas / Puntos: Muy alta acumulación.",
+                            "- &#127873; Beneficios: Salas VIP, check-in preferente y beneficios exclusivos para viajar.",
+                            "- &#128176; Membresía: S/ 400.",
+                            "- &#9989; Exonérate: Consumiendo un promedio de S/ 3,500 al mes.",
+                            "",
+                            "&#128142; **Infinite**",
+                            "",
+                            "&#x1F464; Ideal para: Clientes que buscan el máximo nivel de beneficios.",
+                            "- &#x2708;&#xFE0F; Millas / Puntos: La mayor acumulación.",
+                            "- &#127873; Beneficios: Salas VIP, equipaje adicional de 23 kg y beneficios exclusivos para viajeros frecuentes.",
+                            "- &#128176; Membresía: S/ 450.",
+                            "- &#9989; Exonérate: Consumiendo un promedio de S/ 4,500 al mes.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed121",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "mixed11",
+                        title: "",
+                        text: "¿Qué deseas hacer ahora?",
+                        type: "mixed",
+                        className: "tc0080-node-mixed tc0080-node-mixed-01",
+                        options: [
+                            {
+                                label: "Descubrir si accedo a una tarjeta",
+                                href: "https://www.mitarjetabcp.viabcp.com/login",
+                                target: "_blank",
+                                isCta: true,
+                            },
+                            { label: "&#x21A9;&#xFE0F; Volver a elegir otra opción", next: "q11" },
+                            { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q1" },
+                            { label: "&#127968; Ir al menú principal", next: "q0" },
+                            { label: "&#9989; Finalizar", next: "rating" },
+                        ],
+                    },
+                    {
+                        id: "mixed121",
+                        title: "",
+                        text: "¿Qué deseas hacer ahora?",
+                        type: "mixed",
+                        className: "tc0080-node-mixed tc0080-node-mixed-01",
+                        options: [
+                            {
+                                label: "Descubrir si accedo a una tarjeta",
+                                href: "https://www.mitarjetabcp.viabcp.com/login",
+                                target: "_blank",
+                                isCta: true,
+                            },
+                            { label: "&#x21A9;&#xFE0F; Volver a elegir otra opción", next: "q121" },
+                            { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q1" },
+                            { label: "&#127968; Ir al menú principal", next: "q0" },
+                            { label: "&#9989; Finalizar", next: "rating" },
+                        ],
+                    },
+                    {
+                        id: "q13",
+                        title: "",
+                        text: "¡Claro! &#128522; ¿Qué duda tienes antes de elegir tu tarjeta?",
+                        type: "auto",
+                        className: "tc0080-node-auto tc0080-node-q1",
+                        next: "q131",
+                    },
+                    {
+                        id: "q131",
+                        title: "",
+                        text: "Elige una opción:\n\n",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-q3",
+                        options: [
+                            { label: "&#129300; ¿Visa o American Express?", next: "q1311" },
+                            { label: "&#128064; ¿Cómo elijo la categoría correcta?", next: "q1312" },
+                            { label: "&#x1f468;&#x200d;&#x1f469;&#x200d;&#x1f467;&#x200d;&#x1f466; ¿Puedo tener más de una tarjeta?", next: "q1313" },
+                            { label: "&#128200; ¿Puedo cambiar de categoría?", next: "q1314" },
+                        ],
+                    },
+                    {
+                        id: "q1311",
+                        title: "",
+                        text: [
+                            "¡Buena pregunta! &#128522; Tanto Visa como American Express ofrecen seguridad y beneficios. La mejor opción dependerá de lo que busques en tu tarjeta.",
+                            "",
+                            "&#128179; **Visa**",
+                            "Ideal para quienes buscan mayor aceptación, flexibilidad y elegir el programa de beneficios que mejor se adapte a su estilo de vida.",
+                            "",
+                            "¿Por qué elegirla?",
+                            "- &#127758; Mayor aceptación en comercios del Perú y el extranjero.",
+                            "- &#128153; Acumula Puntos Qore o Millas LATAM Pass según el programa que prefieras.",
+                            "- &#x1F6CD;&#xFE0F; Accede a descuentos, promociones y beneficios exclusivos de Visa.",
+                            "- &#128179; Disponible en todas las categorías: Clásica, Oro, Platinum, Signature e Infinite.",
+                            "",
+                            "&#128179; **American Express**",
+                            "Ideal para quienes buscan acumular millas y disfrutar de beneficios exclusivos para viajar.",
+                            "",
+                            "¿Por qué elegirla?",
+                            "- &#x2708;&#xFE0F; Acumula Millas LATAM Pass con tus compras.",
+                            "- &#127873; Accede a beneficios y promociones exclusivas de American Express.",
+                            "- &#127757; Disponible en las categorías Clásica, Oro, Platinum y Black LATAM Pass.",
+                            "- &#x1f6e1;&#xfe0f; Beneficios de viaje y experiencias exclusivas según la categoría de tu tarjeta.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed131",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q1312",
+                        title: "",
+                        text: [
+                            "¡Claro! &#128521; La categoría de tu tarjeta dependerá principalmente de tres aspectos:",
+                            "- &#128179; El uso que le darás.",
+                            "- &#128176; Tu nivel de consumo mensual.",
+                            "- &#x2708;&#xFE0F; Los beneficios que esperas obtener.",
+                            "",
+                            "Te recomiendo:",
+                            "",
+                            "- &#x1F331; Si recién empiezas: Clásica.",
+                            "- &#x1F6CD;&#xFE0F; Si compras con frecuencia: Oro.",
+                            "- &#x2708;&#xFE0F; Si viajas con frecuencia: Platinum.",
+                            "- &#x1F451; Si buscas la mejor experiencia: Signature, Black o Infinite.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed131",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q1313",
+                        title: "",
+                        text: [
+                            "¡Sí! &#128522; Puedes tener más de una Tarjeta de Crédito BCP, siempre que cumplas con la evaluación crediticia correspondiente. Incluso puedes combinar diferentes programas y categorías para aprovechar mejor sus beneficios.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed131",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q1314",
+                        title: "",
+                        text: [
+                            "¡Sí! &#128522; Con el tiempo podrás acceder a una categoría superior si cumples con la evaluación crediticia del BCP y las condiciones vigentes.",
+                            "",
+                            "**¿Cómo puedes hacerlo?**",
+                            "- &#128179; Usa tu tarjeta de forma frecuente.",
+                            "- &#9989; Mantén un buen comportamiento de pago.",
+                            "- &#128200; Cuando exista una oferta disponible, podrás acceder a una categoría con más beneficios.",
+                            "",
+                            "**¿Qué puedes obtener al subir de categoría?**",
+                            "",
+                            "- &#x2708;&#xFE0F; Mayor acumulación de Millas LATAM Pass o Puntos Qore.",
+                            "- &#127873; Más beneficios y promociones.",
+                            "- &#x1f6e1;&#xfe0f; Mejores seguros y beneficios de viaje.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed131",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "mixed131",
+                        title: "",
+                        text: "¿Qué deseas hacer ahora?",
+                        type: "mixed",
+                        className: "tc0080-node-mixed tc0080-node-mixed-01",
+                        options: [
+                            {
+                                label: "Descubrir si accedo a una tarjeta",
+                                href: "https://www.mitarjetabcp.viabcp.com/login",
+                                target: "_blank",
+                                isCta: true,
+                            },
+                            { label: "&#x21A9;&#xFE0F; Volver a elegir otra opción", next: "q131" },
+                            { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q1" },
+                            { label: "&#127968; Ir al menú principal", next: "q0" },
+                            { label: "&#9989; Finalizar", next: "rating" },
+                        ],
+                    },
+                    {
+                        id: "q2",
+                        title: "",
+                        text: "¡Perfecto! &#128077; Selecciona qué necesitas y te ayudaré de inmediato.\n\nElige una opción:",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-q1",
+                        usageMenuOption: { label: "&#127968; Ir al menú principal", next: "q0" },
+                        options: [
+                            { label: "&#x1F6AB; Tengo un error durante la solicitud", next: "q21" },
+                            { label: "&#128242; No recibí el código de validación", next: "q22" },
+                            { label: "&#128196; Saber el estado de mi solicitud", next: "q23" },
+                        ],
+                    },
+                    {
+                        id: "q21",
+                        title: "",
+                        text: [
+                            "Lamento el inconveniente. &#128533;",
+                            "Si tienes problemas durante la solicitud de tu tarjeta, espera unos minutos y vuelve a intentarlo.",
+                            "",
+                            "También puedes solicitar tu tarjeta en la App BCP siguiendo estos pasos:",
+                            "- Ingresa a la sección “Para ti”",
+                            "- Elige tu oferta",
+                            "- Y continúa el proceso",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed2",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q22",
+                        title: "",
+                        text: [
+                            "Entiendo. &#128533; Si no recibiste el código de validación, no te preocupes.",
+                            "",
+                            "Te recomiendo:",
+                            "- &#128241; Tener tu App BCP descargada y actualizada.",
+                            "- &#128276; Confirmar que las notificaciones de tu celular estén activadas.",
+                            "- &#127760; Recuerda no cerrar ni actualizar la pestaña de la web.",
+                            "",
+                            "Si aún no lo recibes después de unos minutos, intenta nuevamente más tarde."
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed2",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q23",
+                        title: "",
+                        text: [
+                            "Entiendo. &#128522; Si quieres conocer el estado de tu solicitud, no te preocupes. Una vez que completes el proceso, el BCP revisará tu información y te comunicará el resultado a través de los canales oficiales.",
+                            "",
+                            "Si aún no recibes una respuesta:",
+                            "- &#128241; Revisa tu correo electrónico y mensajes SMS.",
+                            "- &#9203; Espera el tiempo de evaluación indicado.",
+                            "- &#128269; Si ya pasó ese tiempo y no recibiste novedades, comunícate con nosotros al (01) 311-9898.",
+                            "",
+                            "No es necesario volver a realizar la solicitud, a menos que te lo indiquemos."
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed2",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "mixed2",
+                        title: "",
+                        text: "¿Qué deseas hacer ahora?",
+                        type: "mixed",
+                        className: "tc0080-node-mixed tc0080-node-mixed-01",
+                        options: [
+                            {
+                                label: "Descubrir si accedo a una tarjeta",
+                                href: "https://www.mitarjetabcp.viabcp.com/login",
+                                target: "_blank",
+                                isCta: true,
+                            },
+                            { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q2" },
+                            { label: "&#127968; Ir al menú principal", next: "q0" },
+                            { label: "&#9989; Finalizar", next: "rating" },
+                        ],
+                    },
+                    {
+                        id: "q3",
+                        title: "",
+                        text: "¡Claro! &#128522; ¿Qué te gustaría saber sobre tu línea de crédito?\n\nElige una opción:",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-q1",
+                        usageMenuOption: { label: "&#127968; Ir al menú principal", next: "q0" },
+                        options: [
+                            { label: "&#128179; ¿Qué es una línea de crédito?", next: "q31" },
+                            { label: "&#129300; ¿Por qué me ofrecieron esa línea?", next: "q32" },
+                            { label: "&#x270F;&#xFE0F; ¿Puedo cambiar el monto?", next: "q33" },
+                            { label: "&#128200; ¿Cómo aumentar mi línea de crédito?", next: "q34" },
+                        ],
+                    },
+                    {
+                        id: "q31",
+                        title: "",
+                        text: [
+                            "¡Claro! &#128522; La línea de crédito es el monto máximo que tienes disponible para realizar compras, pagar servicios u otras operaciones con tu tarjeta de crédito.",
+                            "",
+                            "Cada vez que utilizas tu tarjeta, el monto disponible disminuye. A medida que realizas tus pagos, esa línea vuelve a estar disponible para que puedas seguir utilizándola.",
+                            "Utiliza tu línea de crédito de forma responsable y realiza tus pagos a tiempo para mantener un buen historial crediticio.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed3",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q32",
+                        title: "",
+                        text: [
+                            "Entiendo tu duda. &#128522; La línea de crédito que recibes se define luego de una evaluación realizada por el BCP.",
+                            "Para determinar ese monto, se consideran factores como:",
+                            "- &#128176; Tu capacidad de pago.",
+                            "- &#128196; Tus ingresos.",
+                            "- &#128200; Tu historial crediticio.",
+                            "- &#127974; Otros criterios de evaluación del BCP.",
+                            "",
+                            "Por eso, la línea de crédito puede ser diferente para cada cliente.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed3",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q33",
+                        title: "",
+                        text: [
+                            "¡Sí! &#128522;",
+                            "- Si la línea de crédito ofrecida es mayor al monto que deseas utilizar, puedes solicitar desde la web una línea menor al momento de contratar tu tarjeta o posteriormente, según las opciones disponibles.",
+                            "- Si deseas una línea mayor, esta estará sujeta a una nueva evaluación crediticia por parte del BCP.",
+                            "",
+                            "&#128161; Elige una línea de crédito que se adapte a tus necesidades y te permita mantener un buen control de tus gastos.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed3",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q34",
+                        title: "",
+                        text: [
+                            "¡Sí! &#128522; Una vez que tengas tu tarjeta, el BCP podrá evaluar un aumento de tu línea de crédito de acuerdo con tu comportamiento financiero y las condiciones vigentes.",
+                            "",
+                            "Para ello se consideran aspectos como:",
+                            "- &#128179; El uso responsable de tu tarjeta.",
+                            "- &#9989; El pago puntual de tus cuotas.",
+                            "- &#128200; Tu comportamiento crediticio.",
+                            "- &#128176; Tu capacidad de pago",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed3",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "mixed3",
+                        title: "",
+                        text: "¿Qué deseas hacer ahora?",
+                        type: "mixed",
+                        className: "tc0080-node-mixed tc0080-node-mixed-01",
+                        options: [
+                            {
+                                label: "Descubrir si accedo a una tarjeta",
+                                href: "https://www.mitarjetabcp.viabcp.com/login",
+                                target: "_blank",
+                                isCta: true,
+                            },
+                            { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q3" },
+                            { label: "&#127968; Ir al menú principal", next: "q0" },
+                            { label: "&#9989; Finalizar", next: "rating" },
+                        ],
+                    },
+                    {
+                        id: "q4",
+                        title: "",
+                        text: "¡Claro! &#128274; Tu seguridad es muy importante. ¿Sobre qué tema tienes dudas?\n\nElige una opción:",
+                        type: "question",
+                        className: "tc0080-node-question tc0080-node-q1",
+                        usageMenuOption: { label: "&#127968; Ir al menú principal", next: "q0" },
+                        options: [
+                            { label: "&#127974; ¿Cómo sé si es un canal oficial?", next: "q41" },
+                            { label: "&#128274; ¿Cómo protegen mis datos?", next: "q42" },
+                            { label: "&#128273; ¿Qué datos no debo compartir?", next: "q43" },
+                            { label: "&#128680; ¿Qué hago si sospecho de un fraude?", next: "q44" },
+                        ],
+                    },
+                    {
+                        id: "q41",
+                        title: "",
+                        text: [
+                            "¡Buena pregunta! &#128522; Puedes reconocer un canal oficial del BCP revisando estas señales antes de ingresar tus datos.",
+                            "",
+                            "Para reconocerlo:",
+                            "- **Verifica la dirección web:** confirma que estés en un dominio oficial del BCP, como www.viabcp.com o mitarjeta.viabcp.com.pe.",
+                            "- **Verifica la seguridad del sitio:** revisa que la URL empiece con “https://”, aparezca el candado &#128274; y corresponda a un dominio oficial del BCP.",
+                            "- **Protege tus datos de seguridad:** mantén siempre privadas tus claves, contraseñas, códigos de validación y CVV dinámico. Estos datos son personales y no debes compartirlos con otras personas.",
+                            "",
+                            "Si tienes alguna duda sobre el canal en el que estás, puedes comunicarte con el BCP al (01) 311-9898 para verificarlo.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed4",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q42",
+                        title: "",
+                        text: [
+                            "Entiendo tu duda. &#128522;",
+                            "",
+                            "Durante la solicitud, el BCP necesita algunos datos para identificarte, evaluar tu solicitud y mantener seguro el proceso.",
+                            "",
+                            "Tu información puede utilizarse para:",
+                            "- &#x1faaa; Confirmar tu identidad.",
+                            "- &#128203; Evaluar tu solicitud de tarjeta de crédito.",
+                            "- &#128241; Contactarte sobre el avance o resultado de tu solicitud.",
+                            "- &#128272; Realizar validaciones de seguridad y prevenir fraudes.",
+                            "",
+                            "Ingresa tus datos únicamente en canales oficiales del BCP y revisa la información sobre su tratamiento antes de continuar.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed4",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q43",
+                        title: "",
+                        text: [
+                            "¡Muy importante! &#128272; Para proteger tus cuentas y tarjetas, hay información confidencial que nunca debes compartir con otras personas.",
+                            "",
+                            "Evita compartir:",
+                            "- &#128273; Tus contraseñas o claves secretas.",
+                            "- &#128242; Códigos de seguridad o validación que recibas en tu celular.",
+                            "- &#128179; Información confidencial de tus tarjetas.",
+                            "- &#128272; Datos de acceso a tus canales digitales.",
+                            "",
+                            "Si alguien te solicita esta información diciendo que representa al BCP, no la compartas y verifica la comunicación por un canal oficial.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed4",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "q44",
+                        title: "",
+                        text: [
+                            "Entiendo tu preocupación. &#128680; Si una comunicación te genera dudas, verifica siempre que provenga de uno de nuestros canales oficiales:",
+                            "",
+                            "Te recomendamos:",
+                            "- &#127760; Web: www.viabcp.com y sus páginas internas con “.viabcp.com” en la dirección web.",
+                            "- &#x1F4AC; WhatsApp BCP: 993 119 898, con cuenta verificada.",
+                            "- &#x260E;&#xFE0F; Banca por Teléfono: (01) 311-9898.",
+                            "- &#128241; App Banca Móvil BCP: descárgala desde la tienda oficial de aplicaciones de tu celular.",
+                            "",
+                            "&#128272; **Recuerda: mantén siempre privadas tus claves y códigos de seguridad.**",
+                            "",
+                            "Si ya compartiste información o crees que alguien pudo acceder a tus datos, comunícate de inmediato con al BCP: (01) 311-9898.",
+                        ].join("\n"),
+                        type: "auto",
+                        className: "tc0080-node-response tc0080-node-response2",
+                        feedbackText: "¿Resolví tu consulta?",
+                        richText: true,
+                        next: "mixed4",
+                        actions: [
+                            { label: "Sí", iconSlot: "up" },
+                            { label: "No", iconSlot: "down" },
+                        ],
+                    },
+                    {
+                        id: "mixed4",
+                        title: "",
+                        text: "¿Qué deseas hacer ahora?",
+                        type: "mixed",
+                        className: "tc0080-node-mixed tc0080-node-mixed-01",
+                        options: [
+                            {
+                                label: "Descubrir si accedo a una tarjeta",
+                                href: "https://www.mitarjetabcp.viabcp.com/login",
+                                target: "_blank",
+                                isCta: true,
+                            },
+                            { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q4" },
+                            { label: "&#127968; Ir al menú principal", next: "q0" },
+                            { label: "&#9989; Finalizar", next: "rating" },
+                        ],
+                    },
+                    {
+                        id: "rating",
+                        title: "¡Gracias por utilizar nuestro asistente!",
+                        text: "Antes de finalizar, califica tu experiencia:",
+                        type: "auto",
+                        className: "tc0080-node-auto tc0080-node-rating",
+                        next: "rating_number",
+                    },
+                    {
+                        id: "rating_number",
+                        title: "¿Cómo calificarías tu experiencia?",
+                        text: "",
+                        type: "rating",
+                        className: "tc0080-node-rating tc0080-node-rating",
+                    },
+                    {
+                        id: "rating_thanks_auto",
+                        title: "",
+                        text: "¡Gracias por tu calificación!",
+                        type: "auto",
+                        className: "tc0080-node-auto tc0080-node-rating-thanks",
+                        next: "mixed100",
+                    },
+                    {
+                        id: "mixed100",
+                        title: "",
+                        text: "¿Qué deseas hacer ahora?",
+                        type: "mixed",
+                        className: "tc0080-node-mixed tc0080-node-mixed-01",
+                        options: [
+                            {
+                                label: "Descubrir si accedo a una tarjeta",
+                                href: "https://www.mitarjetabcp.viabcp.com/login",
+                                target: "_blank",
+                                isCta: true,
+                            },
+                            { label: "Cerrar", isClose: true },
+                        ],
+                    },
+                ],
+            };
+
+            this.el = {
+                welcome: root.querySelector(".tc0080-launcher-welcome-wrap"),
+                launcher: root.querySelector(".tc0080-launcher"),
+                panel: root.querySelector(".tc0080-panel"),
+                body: root.querySelector(".tc0080-body"),
+                close: root.querySelector(".tc0080-close"),
+                mask: root.querySelector(".tc0080-mask"),
+            };
+
+            this.scrollState = {
+                touchStartY: 0,
+                suppressAdjustOnce: false,
+                launcherOffsetRafId: null,
+            };
+
+            this.pageScrollState = {
+                bodyOverflow: "",
+                htmlOverflow: "",
+                locked: false,
+            };
+
+            this.transitionState = {
+                waiting: false,
+                pendingNextId: null,
+                pendingLabel: null,
+                pendingUsageBubble: null,
+                autoNodeId: null,
+                timerId: null,
+            };
+        }
+
+        Bot.prototype.init = function () {
+            this.validateGraph();
+            if (!this.validateElements()) return;
+            this.bind();
+            this.state.current = this.config.startNode;
+        };
+
+        Bot.prototype.validateElements = function () {
+            var ok = !!(
+                this.el.launcher &&
+                this.el.panel &&
+                this.el.body &&
+                this.el.close &&
+                this.el.mask
+            );
+            if (!ok) {
+                console.warn("[tc0080] Elementos base incompletos para iniciar bot");
+            }
+            return ok;
+        };
+
+        Bot.prototype.validateGraph = function () {
+            var ids = this.config.nodes.map((n) => n.id);
+            this.config.nodes.forEach((n) => {
+                if (n.next && ids.indexOf(n.next) === -1) {
+                    console.error("Destino inexistente:", n.next);
+                }
+
+                if (n.type === "auto" && !n.next) {
+                    console.error("Nodo auto sin destino next:", n.id);
+                }
+
+                (n.options || []).forEach((o) => {
+                    if (o.next && ids.indexOf(o.next) === -1) {
+                        console.error("Destino inexistente:", o.next);
+                    }
+                });
+
+                (n.actions || []).forEach((a) => {
+                    if (a.next && ids.indexOf(a.next) === -1) {
+                        console.error("Destino inexistente en acción:", a.next);
+                    }
+                });
+            });
+        };
+
+        Bot.prototype.getNode = function (id) {
+            return this.config.nodes.find((n) => n.id === id);
+        };
+
+        Bot.prototype.bind = function () {
+            var self = this;
+
+            this.toggleWelcome(true);
+
+            if (this.el.welcome) {
+                this.el.welcome.addEventListener("click", function () {
+                    self.open();
+                });
+                this.el.welcome.addEventListener("keydown", function (e) {
+                    if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        self.open();
+                    }
+                });
+            }
+
+            this.el.launcher.addEventListener("click", function () {
+                self.open();
+            });
+            this.el.launcher.addEventListener("keydown", function (e) {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    self.open();
+                }
+            });
+            this.el.close.addEventListener("click", function () {
+                self.close();
+            });
+            this.el.panel.addEventListener("click", function (e) {
+                if (e.target && e.target.closest && e.target.closest(".tc0080-close")) {
+                    self.close();
+                }
+            });
+            this.el.mask.addEventListener("click", function (e) {
+                if (e && e.preventDefault) e.preventDefault();
+                if (e && e.stopPropagation) e.stopPropagation();
+                self.closeFromMask();
+            });
+
+            this.bindScrollIsolation();
+            this.bindLauncherMobileOffset();
+            this.scheduleLauncherMobileOffsetUpdate();
+        };
+
+        Bot.prototype.toggleWelcome = function (isVisible) {
+            if (!this.el.welcome) return;
+            this.el.welcome.style.display = isVisible ? "flex" : "none";
+        };
+
+        Bot.prototype.isMobileViewport = function () {
+            return !!window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
+        };
+
+        Bot.prototype.getLauncherLiftTriggerNode = function () {
+            return document.querySelector(".boton--pulsante") || document.querySelector(".boton-pulsante");
+        };
+
+        Bot.prototype.shouldLiftLauncherOnMobile = function () {
+            var trigger = this.getLauncherLiftTriggerNode();
+            if (!trigger || !trigger.getBoundingClientRect) return false;
+            return trigger.getBoundingClientRect().y <= 0;
+        };
+
+        Bot.prototype.updateLauncherMobileOffset = function () {
+            if (!this.el.launcher) return;
+
+            var launcherLiftClass = "tc0080-launcher--lifted";
+            var welcomeLiftClass = "tc0080-launcher-welcome-wrap--lifted";
+
+            if (!this.isMobileViewport()) {
+                this.el.launcher.classList.remove(launcherLiftClass);
+                if (this.el.welcome) {
+                    this.el.welcome.classList.remove(welcomeLiftClass);
+                }
+                return;
+            }
+
+            var shouldLift = this.shouldLiftLauncherOnMobile();
+            this.el.launcher.classList.toggle(launcherLiftClass, shouldLift);
+            if (this.el.welcome) {
+                this.el.welcome.classList.toggle(welcomeLiftClass, shouldLift);
+            }
+        };
+
+        Bot.prototype.scheduleLauncherMobileOffsetUpdate = function () {
+            var self = this;
+            if (this.scrollState.launcherOffsetRafId !== null) return;
+
+            this.scrollState.launcherOffsetRafId = requestAnimationFrame(function () {
+                self.scrollState.launcherOffsetRafId = null;
+                self.updateLauncherMobileOffset();
+            });
+        };
+
+        Bot.prototype.bindLauncherMobileOffset = function () {
+            var self = this;
+            if (this._launcherOffsetBound) return;
+
+            this._onLauncherOffsetScroll = function () {
+                self.scheduleLauncherMobileOffsetUpdate();
+            };
+
+            this._onLauncherOffsetResize = function () {
+                self.scheduleLauncherMobileOffsetUpdate();
+            };
+
+            window.addEventListener("scroll", this._onLauncherOffsetScroll, { passive: true });
+            window.addEventListener("resize", this._onLauncherOffsetResize);
+            window.addEventListener("orientationchange", this._onLauncherOffsetResize);
+            this._launcherOffsetBound = true;
+        };
+
+        Bot.prototype.unbindLauncherMobileOffset = function () {
+            if (!this._launcherOffsetBound) return;
+
+            window.removeEventListener("scroll", this._onLauncherOffsetScroll);
+            window.removeEventListener("resize", this._onLauncherOffsetResize);
+            window.removeEventListener("orientationchange", this._onLauncherOffsetResize);
+
+            this._onLauncherOffsetScroll = null;
+            this._onLauncherOffsetResize = null;
+            this._launcherOffsetBound = false;
+
+            if (this.scrollState.launcherOffsetRafId !== null) {
+                cancelAnimationFrame(this.scrollState.launcherOffsetRafId);
+                this.scrollState.launcherOffsetRafId = null;
+            }
+        };
+
+        Bot.prototype.bindScrollIsolation = function () {
+            var self = this;
+            var scrollBox = this.el.body;
+
+            if (!scrollBox || scrollBox.dataset.tc0080ScrollBound === "true") return;
+
+            function canScroll(el) {
+                return el && el.scrollHeight > el.clientHeight;
+            }
+
+            function isAtTop(el) {
+                return el.scrollTop <= 0;
+            }
+
+            function isAtBottom(el) {
+                return el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+            }
+
+            scrollBox.addEventListener(
+                "wheel",
+                function (e) {
+                    e.stopPropagation();
+
+                    if (!canScroll(scrollBox)) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    var deltaY = e.deltaY;
+                    var upOnTop = deltaY < 0 && isAtTop(scrollBox);
+                    var downOnBottom = deltaY > 0 && isAtBottom(scrollBox);
+
+                    if (upOnTop || downOnBottom) {
+                        e.preventDefault();
+                    }
+                },
+                { passive: false },
+            );
+
+            scrollBox.addEventListener(
+                "touchstart",
+                function (e) {
+                    if (!e.touches || !e.touches.length) return;
+                    self.scrollState.touchStartY = e.touches[0].clientY;
+                },
+                { passive: true },
+            );
+
+            scrollBox.addEventListener(
+                "touchmove",
+                function (e) {
+                    e.stopPropagation();
+
+                    if (!canScroll(scrollBox)) {
+                        e.preventDefault();
+                        return;
+                    }
+
+                    if (!e.touches || !e.touches.length) return;
+
+                    var currentY = e.touches[0].clientY;
+                    var delta = self.scrollState.touchStartY - currentY;
+                    var upOnTop = delta < 0 && isAtTop(scrollBox);
+                    var downOnBottom = delta > 0 && isAtBottom(scrollBox);
+
+                    if (upOnTop || downOnBottom) {
+                        e.preventDefault();
+                    }
+                },
+                { passive: false },
+            );
+
+            scrollBox.dataset.tc0080ScrollBound = "true";
+        };
+
+        Bot.prototype.lockPageScroll = function () {
+            if (this.pageScrollState.locked) return;
+            var docEl = document.documentElement;
+            this.pageScrollState.bodyOverflow = document.body.style.overflow;
+            this.pageScrollState.htmlOverflow = docEl ? docEl.style.overflow : "";
+            document.body.style.overflow = "hidden";
+            if (docEl) {
+                docEl.style.overflow = "hidden";
+            }
+            this.pageScrollState.locked = true;
+        };
+
+        Bot.prototype.unlockPageScroll = function () {
+            var docEl = document.documentElement;
+
+            if (!this.pageScrollState.locked) {
+                // Defensive cleanup: if lock state got out of sync, avoid leaving the page frozen.
+                if (document.body.style.overflow === "hidden") {
+                    document.body.style.overflow = "";
+                }
+                if (docEl && docEl.style.overflow === "hidden") {
+                    docEl.style.overflow = "";
+                }
+                return;
+            }
+
+            document.body.style.overflow = this.pageScrollState.bodyOverflow || "";
+            if (docEl) {
+                docEl.style.overflow = this.pageScrollState.htmlOverflow || "";
+            }
+            this.pageScrollState.locked = false;
+        };
+
+        Bot.prototype.pushPromotionEvent = function (eventName, promotionData) {
+            if (!eventName || !promotionData) return;
+
+            var globalObj = typeof window !== "undefined" ? window : null;
+            if (!globalObj) return;
+
+            if (!Array.isArray(globalObj.digitalData)) {
+                globalObj.digitalData = [];
+            }
+
+            globalObj.digitalData.push({
+                promotion: {
+                    name: promotionData.name || "",
+                    creative: promotionData.creative || "",
+                    position: promotionData.position || "",
+                },
+                event: eventName,
+            });
+        };
+
+        Bot.prototype.trackPromotionClick = function (promotionData) {
+            this.pushPromotionEvent("trackPromotionClick", promotionData);
+        };
+
+        Bot.prototype.trackPromotionView = function (promotionData) {
+            this.pushPromotionEvent("trackPromotionView", promotionData);
+        };
+
+        Bot.prototype.trackOpenBotClick = function () {
+            var analytics = this.config.analytics || {};
+            var openBotPromotion = analytics.openBotPromotion || {};
+            var experimentCode = analytics.experimentCode || "TC0080";
+
+            this.trackPromotionClick({
+                name: "Home - Cards - Bot - Inicio - " + experimentCode + " - P",
+                creative: openBotPromotion.creative || "Button",
+                position: openBotPromotion.position || "Banner Footer",
+            });
+        };
+
+        Bot.prototype.trackFinalResponseView = function (node) {
+            if (!node || !node.feedbackText) return;
+
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+            var nodeId = String(node.id || "");
+            var firstDigitMatch = nodeId.match(/\d/);
+            var flow = firstDigitMatch ? firstDigitMatch[0] : "";
+
+            this.trackPromotionView({
+                name: "Home - Cards - Bot - Arbol - " + experimentCode + " - P",
+                creative: "Modal",
+                position: flow + " - " + nodeId,
+            });
+        };
+
+        Bot.prototype.getFeedbackScore = function (action, fallbackIdx) {
+            var a = action || {};
+            var iconSlot = String(a.iconSlot || "").toLowerCase();
+            if (iconSlot === "up") return "1";
+            if (iconSlot === "down") return "0";
+
+            var normalizedLabel = String(a.label || "")
+                .toLowerCase()
+                .replace(/í/g, "i")
+                .trim();
+            if (normalizedLabel === "si") return "1";
+            if (normalizedLabel === "no") return "0";
+
+            var idx = Number(fallbackIdx);
+            if (idx === 0) return "1";
+            if (idx === 1) return "0";
+
+            return "";
+        };
+
+        Bot.prototype.trackFeedbackClick = function (nodeId, action, fallbackIdx) {
+            var node = this.getNode(nodeId);
+            if (!node || !node.feedbackText) return;
+
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+            var score = this.getFeedbackScore(action, fallbackIdx);
+
+            this.trackPromotionClick({
+                name: "Home - Cards - Bot - Arbol - Utilidad - " + experimentCode + " - P",
+                creative: "Button",
+                position: String(nodeId || "") + " - " + score,
+            });
+        };
+
+        Bot.prototype.isDiscoverCardCtaOption = function (option) {
+            var o = option || {};
+            return !!(o.isCta && o.href);
+        };
+
+        Bot.prototype.trackDiscoverCardView = function () {
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+
+            this.trackPromotionView({
+                name: "Home - Cards - Bot - Arbol - TC - " + experimentCode + " - P",
+                creative: "Button",
+                position: "Descubrir Tarjeta",
+            });
+        };
+
+        Bot.prototype.trackDiscoverCardClick = function () {
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+
+            this.trackPromotionClick({
+                name: "Home - Cards - Bot - Arbol - TC - " + experimentCode + " - P",
+                creative: "Button",
+                position: "Descubrir Tarjeta",
+            });
+        };
+
+        Bot.prototype.trackRatingFinalView = function () {
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+
+            this.trackPromotionView({
+                name: "Home - Cards - Bot - Final - Rating - " + experimentCode + " - P",
+                creative: "Button",
+                position: "Califica Experiencia",
+            });
+        };
+
+        Bot.prototype.trackRatingFinalClick = function (score) {
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+            var numericScore = Number(score);
+            var safeScore = Number.isFinite(numericScore)
+                ? Math.max(1, Math.min(5, Math.round(numericScore)))
+                : 0;
+
+            this.trackPromotionClick({
+                name: "Home - Cards - Bot - Final - Rating - " + experimentCode + " - P",
+                creative: "Button",
+                position: String(safeScore),
+            });
+        };
+
+        Bot.prototype.hasCloseOption = function (option) {
+            var o = option || {};
+            return !!o.isClose;
+        };
+
+        Bot.prototype.trackCloseView = function () {
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+
+            this.trackPromotionView({
+                name: "Home - Cards - Bot - Cierre - " + experimentCode + " - P",
+                creative: "Button",
+                position: "Finalizar",
+            });
+        };
+
+        Bot.prototype.trackCloseClick = function () {
+            var analytics = this.config.analytics || {};
+            var experimentCode = analytics.experimentCode || "<código del experimento>";
+
+            this.trackPromotionClick({
+                name: "Home - Cards - Bot - Cierre - " + experimentCode + " - P",
+                creative: "Button",
+                position: "Finalizar",
+            });
+        };
+
+        Bot.prototype.shouldAnimateMobilePanel = function () {
+            return (
+                !!this.el.panel &&
+                !!window.matchMedia &&
+                window.matchMedia("(max-width: 768px)").matches
+            );
+        };
+
+        Bot.prototype.isPanelVisible = function () {
+            return this.el.panel && this.el.panel.style.display === "flex";
+        };
+
+        Bot.prototype.showPanel = function () {
+            var panel = this.el.panel;
+            if (!panel) return;
+
+            panel.style.display = "flex";
+
+            if (!this.shouldAnimateMobilePanel()) {
+                panel.classList.add("tc0080-panel--open");
+                return;
+            }
+
+            panel.classList.remove("tc0080-panel--open");
+
+            requestAnimationFrame(function () {
+                requestAnimationFrame(function () {
+                    panel.classList.add("tc0080-panel--open");
+                });
+            });
+        };
+
+        Bot.prototype.hidePanel = function () {
+            var panel = this.el.panel;
+            if (!panel) return;
+
+            if (!this.shouldAnimateMobilePanel()) {
+                panel.classList.remove("tc0080-panel--open");
+                panel.style.display = "none";
+                return;
+            }
+
+            panel.classList.remove("tc0080-panel--open");
+
+            var self = this;
+            var done = false;
+            var finish = function () {
+                if (done) return;
+                done = true;
+                panel.removeEventListener("transitionend", onTransitionEnd);
+                if (!panel.classList.contains("tc0080-panel--open")) {
+                    panel.style.display = "none";
+                }
+            };
+            var onTransitionEnd = function (e) {
+                if (e && e.target !== panel) return;
+                if (e && e.propertyName && e.propertyName !== "transform") return;
+                finish();
+            };
+
+            panel.addEventListener("transitionend", onTransitionEnd);
+            setTimeout(finish, 360);
+        };
+
+        Bot.prototype.open = function () {
+            var isAlreadyOpen = this.isPanelVisible();
+
+            this.showPanel();
+            this.el.mask.style.display = "block";
+            if (this.el.launcher) {
+                this.el.launcher.style.display = "none";
+            }
+            this.toggleWelcome(false);
+            this.lockPageScroll();
+
+            if (!isAlreadyOpen) {
+                this.trackOpenBotClick();
+            }
+
+            this.checkPendingTransition();
+            this.render();
+        };
+
+        Bot.prototype.close = function () {
+            if (this.isWaiting()) {
+                this.savePendingTransition();
+            }
+            this.cancelWaitingTransition();
+            this.hidePanel();
+            this.el.mask.style.display = "none";
+            if (this.el.launcher) {
+                this.el.launcher.style.display = "inline-flex";
+            }
+            this.toggleWelcome(true);
+            this.unlockPageScroll();
+        };
+
+        Bot.prototype.closeFromMask = function () {
+            var self = this;
+            this.close();
+
+            // Mobile browsers can apply style updates in a later tick after overlay removal.
+            requestAnimationFrame(function () {
+                self.unlockPageScroll();
+            });
+            setTimeout(function () {
+                self.unlockPageScroll();
+            }, 0);
+        };
+
+        Bot.prototype.restart = function () {
+            this.cancelWaitingTransition();
+            this.clearPendingTransition();
+            this.state.current = this.config.startNode;
+            this.state.history = [];
+            this.state.rating = null;
+            this.state.nextMessageId = 1;
+            this.state.chatLog = [];
+            this.state.chatSnapshots = [];
+            this.state.finished = false;
+            this.state.errorRecovery = null;
+            this.state.activeQuestionMessageId = null;
+            this.state.runtimeError = null;
+            this.state.missingNextErrorCount = 0;
+            this.render();
+        };
+
+        Bot.prototype.debugError = function (type, payload) {
+            if (!type) return;
+            console.debug("[tc0080][error:" + type + "]", payload || {});
+        };
+
+        Bot.prototype.getMissingNextNodeMaxRetries = function () {
+            var cfg = this.config.errorHandling || {};
+            var value = Number(cfg.missingNextNodeMaxRetries);
+            return Number.isFinite(value) && value > 0 ? Math.floor(value) : 3;
+        };
+
+        Bot.prototype.getFallbackNodeId = function () {
+            var cfg = this.config.errorHandling || {};
+            return cfg.fallbackNodeId || this.config.startNode;
+        };
+
+        Bot.prototype.clearRuntimeError = function () {
+            this.state.runtimeError = null;
+        };
+
+        Bot.prototype.setRuntimeError = function (errorData) {
+            this.state.runtimeError = errorData || null;
+        };
+
+        Bot.prototype.handleMissingNextNodeError = function (nextId, source) {
+            var origin = source || "unknown";
+            var maxRetries = this.getMissingNextNodeMaxRetries();
+
+            this.state.missingNextErrorCount += 1;
+
+            var attempts = this.state.missingNextErrorCount;
+            this.debugError("MISSING_NEXT_NODE", {
+                fromNode: this.state.current,
+                nextId: nextId,
+                source: origin,
+                attempts: attempts,
+                maxRetries: maxRetries,
+            });
+
+            if (attempts > maxRetries) {
+                var fallbackId = this.getFallbackNodeId();
+                this.debugError("MISSING_NEXT_NODE_FALLBACK", {
+                    fallbackNodeId: fallbackId,
+                    reason: "max-retries-reached",
+                });
+                this.clearRuntimeError();
+                this.restart();
+                return;
+            }
+
+            var retriesLeft = maxRetries - attempts;
+            var helperText =
+                retriesLeft > 0
+                    ? "Puedes reintentar."
+                    : "En el siguiente intento te llevaremos al inicio.";
+
+            this.setRuntimeError({
+                type: "missing-next-node",
+                nextId: nextId,
+                source: origin,
+                attempts: attempts,
+                maxRetries: maxRetries,
+                text:
+                    "No pudimos continuar esta ruta en este momento. " +
+                    "Intento " +
+                    attempts +
+                    " de " +
+                    maxRetries +
+                    ". " +
+                    helperText,
+            });
+
+            this.render();
+        };
+
+        Bot.prototype.isWaiting = function () {
+            return !!this.transitionState.waiting;
+        };
+
+        Bot.prototype.cancelWaitingTransition = function () {
+            if (this.transitionState.timerId) {
+                clearTimeout(this.transitionState.timerId);
+            }
+
+            this.transitionState.waiting = false;
+            this.transitionState.pendingNextId = null;
+            this.transitionState.timerId = null;
+            this.transitionState.pendingLabel = null;
+            this.transitionState.pendingUsageBubble = null;
+            this.transitionState.autoNodeId = null;
+        };
+
+        Bot.prototype.savePendingTransition = function () {
+            if (!this.isWaiting() || !this.transitionState.pendingNextId) return;
+
+            var transition = {
+                nodeId: this.state.current,
+                selectedLabel: this.transitionState.pendingLabel || "",
+                nextId: this.transitionState.pendingNextId,
+                timestamp: Date.now(),
+            };
+
+            try {
+                sessionStorage.setItem(
+                    "tc0080_pending_transition",
+                    JSON.stringify(transition)
+                );
+            } catch (e) {
+                console.warn("[tc0080] No se pudo guardar transición pendiente", e);
+            }
+        };
+
+        Bot.prototype.checkPendingTransition = function () {
+            var transitionJson = null;
+
+            try {
+                transitionJson = sessionStorage.getItem("tc0080_pending_transition");
+            } catch (e) {
+                console.warn("[tc0080] No se pudo acceder a sessionStorage", e);
+                return;
+            }
+
+            if (transitionJson) {
+                try {
+                    var transition = JSON.parse(transitionJson);
+
+                    // Recovery only makes sense if the current chat actually contains
+                    // the previously selected user message in the same node.
+                    var hasMatchingUserMessage = this.state.chatLog.some(function (entry) {
+                        return (
+                            entry &&
+                            entry.role === "user" &&
+                            entry.text === (transition.selectedLabel || "")
+                        );
+                    });
+
+                    var canRecover =
+                        !!transition &&
+                        transition.nodeId === this.state.current &&
+                        hasMatchingUserMessage;
+
+                    if (!canRecover) {
+                        this.clearPendingTransition();
+                        return;
+                    }
+
+                    this.state.errorRecovery = {
+                        nodeId: transition.nodeId,
+                        selectedLabel: transition.selectedLabel,
+                        nextId: transition.nextId,
+                    };
+                } catch (e) {
+                    console.warn("[tc0080] Error parsing pending transition", e);
+                    this.clearPendingTransition();
+                }
+            }
+        };
+
+        Bot.prototype.clearPendingTransition = function () {
+            try {
+                sessionStorage.removeItem("tc0080_pending_transition");
+            } catch (e) {
+                console.warn("[tc0080] No se pudo limpiar transición pendiente", e);
+            }
+            this.state.errorRecovery = null;
+        };
+
+        Bot.prototype.getThinkingDuration = function () {
+            var cfg = this.config.thinking || {};
+            var value = Number(cfg.durationMs);
+            return Number.isFinite(value) && value >= 0 ? value : 1000;
+        };
+
+        Bot.prototype.getThinkingText = function () {
+            var cfg = this.config.thinking || {};
+            return cfg.text || "Pensando";
+        };
+
+        Bot.prototype.shouldShowThinkingText = function () {
+            var cfg = this.config.thinking || {};
+            return !!cfg.showText;
+        };
+
+        Bot.prototype.shouldUseThinking = function () {
+            var cfg = this.config.thinking || {};
+            return !!cfg.enabled;
+        };
+
+        Bot.prototype.isAutoNode = function (node) {
+            return !!(node && node.type === "auto" && node.next);
+        };
+
+        Bot.prototype.maybeAdvanceAutoNode = function () {
+            if (this.isWaiting()) return;
+
+            var node = this.getNode(this.state.current);
+            if (!this.isAutoNode(node)) {
+                this.transitionState.autoNodeId = null;
+                return;
+            }
+
+            if (this.transitionState.autoNodeId === node.id) return;
+            this.transitionState.autoNodeId = node.id;
+
+            if (this.shouldUseThinking()) {
+                this.startWaitingTransition(node.next, "");
+                return;
+            }
+
+            this.applyTransition(node.next);
+        };
+
+        Bot.prototype.scrollBodyToBottom = function () {
+            var body = this.el.body;
+            if (!body) return;
+
+            var self = this;
+            var scrollFn = function () {
+                body.scrollTop = body.scrollHeight;
+            };
+
+            scrollFn();
+            requestAnimationFrame(scrollFn);
+            requestAnimationFrame(function () {
+                scrollFn();
+            });
+        };
+
+        Bot.prototype.scrollToLatestFeedbackStart = function () {
+            var body = this.el.body;
+            if (!body) return;
+
+            var feedbackItems = body.querySelectorAll('[data-feedback-anchor="true"]');
+            if (!feedbackItems.length) {
+                this.scrollBodyToBottom();
+                return;
+            }
+
+            var target = feedbackItems[feedbackItems.length - 1];
+            var alignTop = function () {
+                var bodyRect = body.getBoundingClientRect();
+                var targetRect = target.getBoundingClientRect();
+                var delta = targetRect.top - bodyRect.top;
+                body.scrollTop = Math.max(0, body.scrollTop + delta);
+            };
+            var scrollFn = function () {
+                alignTop();
+            };
+
+            scrollFn();
+            requestAnimationFrame(scrollFn);
+            requestAnimationFrame(function () {
+                scrollFn();
+            });
+            setTimeout(scrollFn, 60);
+        };
+
+        Bot.prototype.adjustChatScroll = function (node) {
+            if (this.config.mode !== "chat") {
+                this.scrollBodyToBottom();
+                return;
+            }
+
+            // Preserve current viewport when the rerender comes from feedback action click.
+            if (this.scrollState && this.scrollState.suppressAdjustOnce) {
+                this.scrollState.suppressAdjustOnce = false;
+                return;
+            }
+
+            // During waiting transitions, keep the latest UI (thinking + new action)
+            // pinned to the bottom to avoid jumping back to previous feedback blocks.
+            if (this.isWaiting()) {
+                this.scrollBodyToBottom();
+                return;
+            }
+
+            var botEntries = (this.state.chatLog || []).filter(function (entry) {
+                return entry && entry.role === "bot";
+            });
+            var lastBot = botEntries.length ? botEntries[botEntries.length - 1] : null;
+            var prevBot = botEntries.length > 1 ? botEntries[botEntries.length - 2] : null;
+
+            var currentIsFeedback = !!(node && node.feedbackText);
+            var followsFeedbackNode =
+                !!lastBot &&
+                !!node &&
+                lastBot.nodeId === node.id &&
+                !!(prevBot && prevBot.feedbackText);
+
+            if (currentIsFeedback || followsFeedbackNode) {
+                this.scrollToLatestFeedbackStart();
+                return;
+            }
+
+            this.scrollBodyToBottom();
+        };
+
+        Bot.prototype.pushChatSnapshot = function () {
+            this.state.chatSnapshots.push({
+                current: this.state.current,
+                history: this.state.history.slice(),
+                rating: this.state.rating,
+                nextMessageId: this.state.nextMessageId,
+                chatLog: this.state.chatLog.slice(),
+                finished: this.state.finished,
+                activeQuestionMessageId: this.state.activeQuestionMessageId,
+            });
+        };
+
+        Bot.prototype.goTo = function (id, selectedLabel, meta) {
+            var opts = meta || {};
+
+            if (!this.getNode(id)) {
+                this.handleMissingNextNodeError(id, "goTo");
+                return;
+            }
+
+            if (this.isWaiting()) {
+                if (!opts.allowWhileWaiting) return;
+                this.cancelWaitingTransition();
+            }
+
+            if (this.config.mode === "chat") {
+                this.pushChatSnapshot();
+
+                if (selectedLabel && !opts.suppressUserBubble) {
+                    this.state.chatLog.push({ role: "user", text: selectedLabel });
+                }
+            }
+
+            if (this.shouldUseThinking()) {
+                this.startWaitingTransition(id, selectedLabel);
+                return;
+            }
+
+            this.applyTransition(id);
+        };
+
+        Bot.prototype.startWaitingTransition = function (id, label) {
+            if (!this.getNode(id)) {
+                this.handleMissingNextNodeError(id, "startWaitingTransition");
+                return;
+            }
+
+            this.cancelWaitingTransition();
+            this.transitionState.waiting = true;
+            this.transitionState.pendingNextId = id;
+            this.transitionState.pendingLabel = label || "";
+            this.transitionState.pendingUsageBubble = null;
+            this.render();
+
+            var self = this;
+            this.transitionState.timerId = setTimeout(function () {
+                var nextId = self.transitionState.pendingNextId;
+                self.cancelWaitingTransition();
+                if (!nextId) return;
+                self.applyTransition(nextId);
+            }, this.getThinkingDuration());
+        };
+
+        Bot.prototype.createUsageSupportMessage = function (node, linkedQuestionMessageId) {
+            if (!node || !node.usageMenuOption || !node.usageMenuOption.next) return null;
+
+            return {
+                messageId: this.state.nextMessageId++,
+                role: "bot",
+                nodeId: node.id,
+                nodeType: "question-usage",
+                selectedRating: 0,
+                selectedResponseActionIdx: -1,
+                allowOptionsWhileLinked: false,
+                linkedQuestionMessageId: linkedQuestionMessageId,
+                bubbleClass: node.usageSupportClassName || "tc0080-node-usage-option",
+                title: "",
+                text: node.usageSupportText || "",
+                feedbackText: "",
+                responseActions: [],
+                options: [
+                    {
+                        label: node.usageMenuOption.label,
+                        next: node.usageMenuOption.next,
+                        href: "",
+                        target: "",
+                        isCta: false,
+                    },
+                ],
+            };
+        };
+
+        Bot.prototype.startWaitingUsageBubble = function (usageMessage) {
+            if (!usageMessage) return;
+
+            this.cancelWaitingTransition();
+            this.transitionState.waiting = true;
+            this.transitionState.pendingNextId = null;
+            this.transitionState.pendingLabel = "";
+            this.transitionState.pendingUsageBubble = usageMessage;
+
+            var self = this;
+            this.transitionState.timerId = setTimeout(function () {
+                var pendingUsageBubble = self.transitionState.pendingUsageBubble;
+                self.cancelWaitingTransition();
+                if (!pendingUsageBubble) return;
+                self.state.chatLog.push(pendingUsageBubble);
+                self.render();
+            }, this.getThinkingDuration());
+        };
+
+        Bot.prototype.applyTransition = function (id) {
+            if (!this.getNode(id)) {
+                this.handleMissingNextNodeError(id, "applyTransition");
+                return;
+            }
+
+            this.clearRuntimeError();
+            this.state.missingNextErrorCount = 0;
+            this.state.history.push(this.state.current);
+            this.state.current = id;
+
+            if (this.config.mode === "chat") {
+                this.appendBotMessageForCurrent();
+            }
+
+            this.render();
+        };
+
+        Bot.prototype.back = function () {
+            if (this.isWaiting()) {
+                this.cancelWaitingTransition();
+            }
+
+            if (this.config.mode === "chat") {
+                var prev = this.state.chatSnapshots.pop();
+                if (!prev) return;
+
+                this.state.current = prev.current;
+                this.state.history = prev.history;
+                this.state.rating = prev.rating;
+                this.state.nextMessageId = Number(prev.nextMessageId) || 1;
+                this.state.chatLog = prev.chatLog;
+                this.state.finished = !!prev.finished;
+                this.state.activeQuestionMessageId = Number(prev.activeQuestionMessageId) || null;
+                this.render();
+                return;
+            }
+
+            if (!this.state.history.length) return;
+            this.state.current = this.state.history.pop();
+            this.render();
+        };
+
+        Bot.prototype.setMode = function (mode) {
+            var nextMode = mode === "slides" ? "slides" : "chat";
+            if (this.config.mode === nextMode) return;
+            this.config.mode = nextMode;
+            this.restart();
+        };
+
+        Bot.prototype.appendBotMessageForCurrent = function () {
+            var node = this.getNode(this.state.current);
+            if (!node) return;
+
+            this.trackFinalResponseView(node);
+
+            if ((node.options || []).some(this.isDiscoverCardCtaOption)) {
+                this.trackDiscoverCardView();
+            }
+
+            if (node.id === "rating_number") {
+                this.trackRatingFinalView();
+            }
+
+            if ((node.options || []).some(this.hasCloseOption)) {
+                this.trackCloseView();
+            }
+
+            var botMessage = {
+                messageId: this.state.nextMessageId++,
+                role: "bot",
+                nodeId: node.id,
+                nodeType: node.type || "",
+                richText: !!node.richText,
+                selectedRating: 0,
+                selectedResponseActionIdx: -1,
+                allowOptionsWhileLinked: !!node.usageMenuOption,
+                linkedQuestionMessageId: null,
+                bubbleClass: node.className || "",
+                title: node.title || "",
+                text: node.text || "",
+                feedbackText: node.feedbackText || "",
+                responseActions: (node.actions || []).map(function (a, idx) {
+                    return {
+                        idx: idx,
+                        label: a.label,
+                        next: a.next,
+                        iconSlot: a.iconSlot,
+                    };
+                }),
+                options: (node.options || []).map(function (o) {
+                    return {
+                        label: o.label,
+                        next: o.next,
+                        href: o.href,
+                        target: o.target,
+                        isCta: !!o.isCta,
+                        isClose: !!o.isClose,
+                    };
+                }),
+            };
+
+            this.state.chatLog.push(botMessage);
+
+            if (botMessage.options.length) {
+                this.state.activeQuestionMessageId = botMessage.messageId;
+            } else {
+                this.state.activeQuestionMessageId = null;
+            }
+
+            if (node.usageMenuOption && node.usageMenuOption.next) {
+                var usageMessage = this.createUsageSupportMessage(node, botMessage.messageId);
+                if (usageMessage) {
+                    if (this.shouldUseThinking()) {
+                        this.startWaitingUsageBubble(usageMessage);
+                    } else {
+                        this.state.chatLog.push(usageMessage);
+                    }
+                }
+            }
+        };
+
+        Bot.prototype.createErrorComponentMarkup = function (errorConfig) {
+            var cfg = errorConfig || {};
+            var text = this.escapeHtml(cfg.text || "Ocurrió un error inesperado.");
+            var action = this.escapeHtml(cfg.action || "goto-start");
+            var buttonLabel = this.escapeHtml(cfg.buttonLabel || "Ir al inicio");
+
+            return (
+                '<div class="tc0080-error-message">' +
+                '<span class="tc0080-error-icon">⚠</span>' +
+                '<div class="tc0080-error-content">' +
+                '<p class="tc0080-error-text">' +
+                text +
+                "</p>" +
+                '<button class="tc0080-error-retry" type="button" data-runtime-error-action="' +
+                action +
+                '">' +
+                buttonLabel +
+                "</button>" +
+                "</div>" +
+                "</div>"
+            );
+        };
+
+        Bot.prototype.createMissingNextErrorMarkup = function () {
+            var runtimeError = this.state.runtimeError || {};
+            return this.createErrorComponentMarkup({
+                text:
+                    runtimeError.text ||
+                    "No pudimos continuar esta ruta en este momento.",
+                action: "retry-missing-next",
+                buttonLabel: "Reintentar",
+            });
+        };
+
+        Bot.prototype.escapeHtml = function (value) {
+            return String(value)
+                .replace(/&(?!#\d+;|#[xX][0-9a-fA-F]+;|[a-zA-Z]+;)/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        };
+
+        Bot.prototype.formatInlineRichText = function (value) {
+            var escaped = this.escapeHtml(value || "");
+            return escaped.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
+        };
+
+        Bot.prototype.formatRichText = function (value) {
+            var source = String(value || "").replace(/\r\n/g, "\n");
+            var lines = source.split("\n");
+            var htmlParts = [];
+            var inList = false;
+            var self = this;
+
+            function closeList() {
+                if (!inList) return;
+                htmlParts.push("</ul>");
+                inList = false;
+            }
+
+            lines.forEach(function (rawLine) {
+                var trimmed = String(rawLine || "").trim();
+
+                if (!trimmed) {
+                    closeList();
+                    htmlParts.push('<div class="tc0080-rich-spacer"></div>');
+                    return;
+                }
+
+                if (/^[-*]\s+/.test(trimmed)) {
+                    if (!inList) {
+                        htmlParts.push('<ul class="tc0080-rich-list">');
+                        inList = true;
+                    }
+                    htmlParts.push("<li>" + self.formatInlineRichText(trimmed.replace(/^[-*]\s+/, "")) + "</li>");
+                    return;
+                }
+
+                closeList();
+                htmlParts.push('<p class="tc0080-rich-line">' + self.formatInlineRichText(trimmed) + "</p>");
+            });
+
+            closeList();
+            return '<div class="tc0080-rich-text">' + htmlParts.join("") + "</div>";
+        };
+
+        Bot.prototype.getUserBubbleLabel = function (value) {
+            return String(value || "")
+                .replace(/^\s*(?:(?:&#\d+;|&#x[0-9a-fA-F]+;|[\u2600-\u27BF]|[\uD83C-\uDBFF][\uDC00-\uDFFF])\s*)+/, "")
+                .trim();
+        };
+
+        Bot.prototype.renderBotItem = function (item, isActiveQuestion, includeRating) {
+            var self = this;
+            var iconSvg = '<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 18 18" fill="none">' +
+                '<path d="M8.99962 6.00019V3.00049H5.99938M1.49902 10.4997H2.99914M15.0001 10.4997H16.5002M11.2498 9.74981V11.2497M6.74944 9.74981V11.2497M4.49926 6.00019H13.5C14.3285 6.00019 15.0001 6.67169 15.0001 7.50004V13.4994C15.0001 14.3278 14.3285 14.9993 13.5 14.9993H4.49926C3.67077 14.9993 2.99914 14.3278 2.99914 13.4994V7.50004C2.99914 6.67169 3.67077 6.00019 4.49926 6.00019Z" stroke="white" stroke-width="2" stroke-linecap="round"/>' +
+                "</svg>";
+            var responseActions = Array.isArray(item.responseActions)
+                ? item.responseActions
+                : [];
+            var bubbleClass = item.bubbleClass ? " " + item.bubbleClass : "";
+            if (item.nodeType === "response" || responseActions.length > 0) {
+                bubbleClass += " tc0080-chat-item--response";
+            }
+            var title = item.title ? this.escapeHtml(item.title) : "";
+            var text = this.escapeHtml(item.text || "");
+            var useRichText = !!item.richText;
+
+            var messageHtml =
+                '<div class="tc0080-chat-item tc0080-chat-item--bot' +
+                bubbleClass +
+                '"' +
+                (item.feedbackText ? ' data-feedback-node="true"' : "") +
+                '>';
+            if (title) {
+                messageHtml += '<span class="tc0080-chat-item-title">' + title + "</span>";
+            }
+            if (item.nodeType === "response" || responseActions.length > 0) {
+                var responseTextHtml = useRichText
+                    ? this.formatRichText(item.text || "")
+                    : text.replace(/\n/g, "<br>");
+                messageHtml += '<div class="tc0080-response-content"><div class="tc0080-chat-item-text">' + responseTextHtml + "</div></div>";
+            } else if (item.nodeType === "auto" && useRichText) {
+                messageHtml += '<div class="tc0080-chat-item-text">' + this.formatRichText(item.text || "") + "</div>";
+            } else {
+                messageHtml += '<span class="tc0080-chat-item-text">' + text.replace(/\n/g, "<br>") + "</span>";
+            }
+            var options = Array.isArray(item.options) ? item.options : [];
+
+            if (options.length) {
+                messageHtml += '<div class="tc0080-chat-item-options">';
+                options.forEach(function (opt, idx) {
+                    var obj =
+                        typeof opt === "string" ? { label: opt, next: "" } : opt || {};
+                    var label = self.escapeHtml(obj.label || "");
+                    var next = self.escapeHtml(obj.next || "");
+                    var href = self.escapeHtml(obj.href || "");
+                    var target = self.escapeHtml(obj.target || "");
+                    var rel = target === "_blank" ? ' rel="noopener noreferrer"' : "";
+                    var ctaClass = obj.isCta ? " tc0080-chat-item-option--cta" : "";
+                    var isDiscoverCta =
+                        !!obj.isCta &&
+                        String(obj.label || "").trim() === "Descubrir si accedo a una tarjeta";
+                    var ctaIconHtml = isDiscoverCta
+                        ? '<span class="tc0080-chat-item-option-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"><path fill-rule="evenodd" clip-rule="evenodd" d="M4 11.0018H17.584L14.289 7.70676C13.898 7.31576 13.898 6.68376 14.289 6.29276C14.68 5.90176 15.313 5.90176 15.703 6.29276L20.703 11.2928C21.094 11.6838 21.094 12.3158 20.703 12.7068L15.707 17.7068C15.512 17.9018 15.256 17.9998 15 17.9998C14.744 17.9998 14.488 17.9018 14.293 17.7068C13.902 17.3168 13.902 16.6838 14.292 16.2928L17.581 13.0018H4C3.447 13.0018 3 12.5548 3 12.0018C3 11.4488 3.447 11.0018 4 11.0018Z" fill="white"/></svg></span>'
+                        : "";
+
+                    if (isActiveQuestion && href) {
+                        messageHtml +=
+                            '<a class="tc0080-chat-item-option' +
+                            ctaClass +
+                            '" href="' +
+                            href +
+                            '"' +
+                            (target ? ' target="' + target + '"' : "") +
+                            rel +
+                            (obj.isCta ? ' data-cta-discover="true"' : "") +
+                            ' data-link-option="true" data-idx="' +
+                            idx +
+                            '">' +
+                            '<span class="tc0080-chat-item-option-label">' +
+                            label +
+                            '</span>' +
+                            ctaIconHtml +
+                            "</a>";
+                    } else if (isActiveQuestion && next) {
+                        var userLabel = self.escapeHtml(self.getUserBubbleLabel(obj.label || ""));
+                        messageHtml +=
+                            '<button class="tc0080-chat-item-option" data-next="' +
+                            next +
+                            '" data-idx="' +
+                            idx +
+                            '" data-user-label="' +
+                            userLabel +
+                            '">' +
+                            label +
+                            "</button>";
+                    } else if (isActiveQuestion && obj.isClose) {
+                        messageHtml +=
+                            '<button class="tc0080-chat-item-option" type="button" data-close="true" data-idx="' +
+                            idx +
+                            '">' +
+                            label +
+                            "</button>";
+                    } else {
+                        messageHtml +=
+                            '<button class="tc0080-chat-item-option" type="button" disabled>' +
+                            label +
+                            "</button>";
+                    }
+                });
+                messageHtml += "</div>";
+            }
+
+            if (responseActions.length) {
+                messageHtml += '<div class="tc0080-response-divider"></div>';
+                messageHtml += '<div class="tc0080-response-footer">';
+                messageHtml += '<p class="tc0080-response-label">' + self.escapeHtml(item.feedbackText || "¿Resolví tu consulta?") + "</p>";
+                var responseActionsClass = Number(item.selectedResponseActionIdx) >= 0
+                    ? 'tc0080-response-actions tc0080-response-actions--has-selection'
+                    : 'tc0080-response-actions';
+                messageHtml += '<div class="' + responseActionsClass + '">';
+
+                responseActions.forEach(function (action) {
+                    var label = self.escapeHtml(action.label || "");
+                    var iconSlot = self.escapeHtml(action.iconSlot || "");
+                    var selectedClass = Number(item.selectedResponseActionIdx) === Number(action.idx)
+                        ? " is-selected"
+                        : "";
+                    var iconSvgContent = "";
+                    var isSelected = selectedClass.indexOf('is-selected') > -1;
+
+                    if (iconSlot === "up") {
+                        if (isSelected) {
+                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: block;">' +
+                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 13.9997C1.63197 13.9997 1.3335 13.7012 1.3335 13.333V7.99967C1.3335 7.63148 1.63197 7.33301 2.00016 7.33301H4.66683C6.00016 6.44412 6.66683 4.44412 6.66683 3.33301C6.66683 1.99967 7.66683 1.33301 8.66683 1.33301C9.66683 1.33301 10.6668 1.99967 10.6668 3.33301V5.99967H14.0002C14.3684 5.99967 14.6668 6.29815 14.6668 6.66634V13.9997C14.6668 14.3679 14.3684 14.6663 14.0002 14.6663H7.09353C7.03159 14.6663 6.96995 14.6577 6.91038 14.6407L4.66683 13.9997H2.00016ZM8.66683 2.66634C8.24552 2.66634 8.00016 2.88443 8.00016 3.33301C8.00016 4.74359 7.29589 6.97695 6.00016 8.01021V12.9939L7.1869 13.333H13.3335V7.33301H10.6668C9.93045 7.33301 9.3335 6.73605 9.3335 5.99967V3.33301C9.3335 2.88443 9.08814 2.66634 8.66683 2.66634Z" fill="#37A500"/>' +
+                                '</svg>';
+                        } else {
+                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20" fill="none" style="display: block;">' +
+                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 13.9997C1.63197 13.9997 1.3335 13.7012 1.3335 13.333V7.99967C1.3335 7.63148 1.63197 7.33301 2.00016 7.33301H4.66683C6.00016 6.44412 6.66683 4.44412 6.66683 3.33301C6.66683 1.99967 7.66683 1.33301 8.66683 1.33301C9.66683 1.33301 10.6668 1.99967 10.6668 3.33301V5.99967H14.0002C14.3684 5.99967 14.6668 6.29815 14.6668 6.66634V13.9997C14.6668 14.3679 14.3684 14.6663 14.0002 14.6663H7.09353C7.03159 14.6663 6.96995 14.6577 6.91038 14.6407L4.66683 13.9997H2.00016ZM8.66683 2.66634C8.24552 2.66634 8.00016 2.88443 8.00016 3.33301C8.00016 4.74359 7.29589 6.97695 6.00016 8.01021V12.9939L7.1869 13.333H13.3335V7.33301H10.6668C9.93045 7.33301 9.3335 6.73605 9.3335 5.99967V3.33301C9.3335 2.88443 9.08814 2.66634 8.66683 2.66634Z" fill="#4D5B70"/>' +
+                                '</svg>';
+                        }
+                    } else if (iconSlot === "down") {
+                        if (isSelected) {
+                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none" style="display: block;">' +
+                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 2.00033C1.63197 2.00033 1.3335 2.2988 1.3335 2.66699V8.00033C1.3335 8.36852 1.63197 8.66699 2.00016 8.66699H4.66683C6.00016 9.55588 6.66683 11.5559 6.66683 12.667C6.66683 14.0003 7.66683 14.667 8.66683 14.667C9.66683 14.667 10.6668 14.0003 10.6668 12.667V10.0003H14.0002C14.3684 10.0003 14.6668 9.70185 14.6668 9.33366V2.00033C14.6668 1.63214 14.3684 1.33366 14.0002 1.33366H7.09353C7.03159 1.33366 6.96995 1.34229 6.91038 1.35931L4.66683 2.00033H2.00016ZM8.66683 13.3337C8.24552 13.3337 8.00016 13.1156 8.00016 12.667C8.00016 11.2564 7.29589 9.02305 6.00016 7.98979V3.00606L7.1869 2.66699H13.3335V8.66699H10.6668C9.93045 8.66699 9.3335 9.26395 9.3335 10.0003V12.667C9.3335 13.1156 9.08814 13.3337 8.66683 13.3337Z" fill="#CA4500"/>' +
+                                '</svg>';
+                        } else {
+                            iconSvgContent = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="20" viewBox="0 0 16 20" fill="none" style="display: block;">' +
+                                '<path fill-rule="evenodd" clip-rule="evenodd" d="M2.00016 2.00033C1.63197 2.00033 1.3335 2.2988 1.3335 2.66699V8.00033C1.3335 8.36852 1.63197 8.66699 2.00016 8.66699H4.66683C6.00016 9.55588 6.66683 11.5559 6.66683 12.667C6.66683 14.0003 7.66683 14.667 8.66683 14.667C9.66683 14.667 10.6668 14.0003 10.6668 12.667V10.0003H14.0002C14.3684 10.0003 14.6668 9.70185 14.6668 9.33366V2.00033C14.6668 1.63214 14.3684 1.33366 14.0002 1.33366H7.09353C7.03159 1.33366 6.96995 1.34229 6.91038 1.35931L4.66683 2.00033H2.00016ZM8.66683 13.3337C8.24552 13.3337 8.00016 13.1156 8.00016 12.667C8.00016 11.2564 7.29589 9.02305 6.00016 7.98979V3.00606L7.1869 2.66699H13.3335V8.66699H10.6668C9.93045 8.66699 9.3335 9.26395 9.3335 10.0003V12.667C9.3335 13.1156 9.08814 13.3337 8.66683 13.3337Z" fill="#4D5B70"/>' +
+                                '</svg>';
+                        }
+                    }
+
+                    var disabled = Number(item.selectedResponseActionIdx) >= 0 ? " disabled" : "";
+
+                    messageHtml +=
+                        '<button class="tc0080-response-btn' +
+                        selectedClass +
+                        '" type="button" data-response-label="' +
+                        label +
+                        '" data-response-message-id="' +
+                        self.escapeHtml(item.messageId || "") +
+                        '" data-response-idx="' +
+                        action.idx +
+                        '" aria-label="' +
+                        label +
+                        '"' +
+                        disabled +
+                        '>' +
+                        '<span class="tc0080-response-icon-slot" data-icon-slot="' +
+                        iconSlot +
+                        '">' +
+                        iconSvgContent +
+                        '</span>' +
+                        "</button>";
+                });
+
+                messageHtml += "</div>";
+                messageHtml += "</div>";
+            }
+
+            var showReadonlyRating =
+                item.nodeType === "rating" &&
+                !includeRating &&
+                Number(item.selectedRating || 0) > 0;
+
+            if (showReadonlyRating) {
+                messageHtml += this.createRatingReadonly(Number(item.selectedRating || 0));
+            }
+
+            if (includeRating) {
+                messageHtml += this.createRating();
+            }
+
+            messageHtml += "</div>";
+
+            var html = '<div class="tc0080-chat-bot-row"' +
+                (item.feedbackText ? ' data-feedback-anchor="true"' : "") +
+                '>' +
+                '<span class="tc0080-chat-bot-icon" aria-hidden="true">' + iconSvg + '</span>' +
+                messageHtml +
+                "</div>";
+            return html;
+        };
+
+        Bot.prototype.createThinkingMarkup = function (extraClass) {
+            var cls = "tc0080-thinking" + (extraClass ? " " + extraClass : " tc0080-thinking--chat");
+            var textHtml = this.shouldShowThinkingText()
+                ? '<span class="tc0080-thinking-text">' + this.escapeHtml(this.getThinkingText()) + '</span>'
+                : "";
+            return (
+                '<div class="' +
+                cls +
+                '">' +
+                textHtml +
+                '<span class="tc0080-thinking-dots" aria-hidden="true">' +
+                '<span class="tc0080-thinking-dot"></span>' +
+                '<span class="tc0080-thinking-dot"></span>' +
+                '<span class="tc0080-thinking-dot"></span>' +
+                '</span>' +
+                "</div>"
+            );
+        };
+
+        Bot.prototype.renderSlides = function (node) {
+            var html = "";
+            html += this.createHeader(node.title);
+            html += this.createText(node.text);
+
+            if (node.type === "question") html += this.createOptions(node);
+            if (node.type === "mixed") html += this.createOptions(node);
+            if (node.type === "rating") html += this.createRating(node);
+
+            html += this.createFooter();
+            return html;
+        };
+
+        Bot.prototype.renderChat = function (node) {
+            var self = this;
+            if (!this.state.chatLog.length) {
+                this.appendBotMessageForCurrent();
+            }
+
+            var html = '<div class="tc0080-chat-shell">';
+            html += '<div class="tc0080-chat-box">';
+            html += '<div class="tc0080-chat">';
+
+            var activeNodeId = this.state.current;
+            var allowCurrentCtas = !this.state.finished;
+            var activeQuestionMessageId = Number(this.state.activeQuestionMessageId) || null;
+
+            // Encontrar el índice del último mensaje de usuario
+            var lastUserMessageIdx = -1;
+            for (var i = this.state.chatLog.length - 1; i >= 0; i--) {
+                if (this.state.chatLog[i].role === "user") {
+                    lastUserMessageIdx = i;
+                    break;
+                }
+            }
+
+            this.state.chatLog.forEach(function (item, idx) {
+                if (item.role === "user") {
+                    // Si hay error recovery y es el último mensaje de usuario, mostrar error
+                    if (self.state.errorRecovery && idx === lastUserMessageIdx) {
+                        html += '<div class="tc0080-error-message">' +
+                            '<span class="tc0080-error-icon">⚠</span>' +
+                            '<div class="tc0080-error-content">' +
+                            '<p class="tc0080-error-text">Error en el envío</p>' +
+                            '<button class="tc0080-error-retry" type="button" data-retry-error>Reintentar</button>' +
+                            '</div>' +
+                            '</div>';
+                    } else {
+                        html +=
+                            '<div class="tc0080-chat-item tc0080-chat-item--user">' +
+                            self.escapeHtml(item.text || "") +
+                            "</div>";
+                    }
+                    return;
+                }
+
+                // Si hay error recovery, no renderizar mensajes de bot después del último mensaje de usuario
+                if (
+                    self.state.errorRecovery &&
+                    lastUserMessageIdx >= 0 &&
+                    idx > lastUserMessageIdx
+                ) {
+                    return;
+                }
+
+                var isCurrentBot =
+                    allowCurrentCtas &&
+                    item.nodeId === activeNodeId &&
+                    idx === self.state.chatLog.length - 1;
+                var isOptionalSourceBot =
+                    allowCurrentCtas &&
+                    activeQuestionMessageId !== null &&
+                    Number(item.messageId) === activeQuestionMessageId &&
+                    !!item.allowOptionsWhileLinked;
+                var isUsageSupportBot =
+                    allowCurrentCtas &&
+                    activeQuestionMessageId !== null &&
+                    Number(item.linkedQuestionMessageId) === activeQuestionMessageId;
+                var isInteractiveBot =
+                    isCurrentBot || isOptionalSourceBot || isUsageSupportBot;
+                var includeRatingInBubble =
+                    !self.isWaiting() &&
+                    !self.state.finished &&
+                    node.type === "rating" &&
+                    isCurrentBot;
+                html += self.renderBotItem(item, isInteractiveBot, includeRatingInBubble);
+            });
+
+            if (this.isWaiting()) {
+                html += this.createThinkingMarkup();
+            }
+
+            if (
+                this.state.runtimeError &&
+                this.state.runtimeError.type === "missing-next-node"
+            ) {
+                html += this.createMissingNextErrorMarkup();
+            }
+
+            html += "</div>";
+
+            if (this.state.finished) {
+                html += this.createMainCta();
+            }
+
+            html += "</div>";
+            return html;
+        };
+
+        Bot.prototype.render = function () {
+            var node = this.getNode(this.state.current);
+            if (!node) {
+                this.debugError("INVALID_CURRENT_NODE", {
+                    current: this.state.current,
+                    mode: this.config.mode,
+                });
+                this.setRuntimeError({
+                    type: "invalid-current-node",
+                    text:
+                        "No encontramos el nodo actual del flujo. Te llevaremos al inicio para continuar.",
+                });
+                this.el.body.innerHTML = this.createErrorComponentMarkup({
+                    text: this.state.runtimeError.text,
+                    action: "goto-start",
+                    buttonLabel: "Ir al inicio",
+                });
+                this.attachHandlers();
+                this.scrollBodyToBottom();
+                return;
+            }
+
+            if (this.isWaiting() && this.config.mode === "slides") {
+                this.el.body.innerHTML = this.createThinkingMarkup("tc0080-thinking--slide");
+                this.attachHandlers();
+                this.scrollBodyToBottom();
+                return;
+            }
+
+            var html =
+                this.config.mode === "chat"
+                    ? this.renderChat(node)
+                    : this.renderSlides(node);
+
+            this.el.body.innerHTML = html;
+            this.attachHandlers();
+            this.adjustChatScroll(node);
+            this.maybeAdvanceAutoNode();
+        };
+
+        Bot.prototype.createHeader = function (t) {
+            return '<div class="tc0080-msg"><strong>' + t + "</strong></div>";
+        };
+
+        Bot.prototype.createText = function (t) {
+            return '<div class="tc0080-msg">' + t + "</div>";
+        };
+
+        Bot.prototype.createOptions = function (node) {
+            var self = this;
+            var html = '<div class="tc0080-options">';
+
+            node.options.forEach(function (o, idx) {
+                html +=
+                    '<button class="tc0080-btn" data-next="' +
+                    o.next +
+                    '" data-idx="' +
+                    idx +
+                    '">' +
+                    o.label +
+                    "</button>";
+            });
+
+            html += "</div>";
+            return html;
+        };
+
+        Bot.prototype.getRatingStarSvg = function (isFilled) {
+            if (isFilled) {
+                return (
+                    '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" style="pointer-events: none; display: block;">' +
+                    '<path fill-rule="evenodd" clip-rule="evenodd" d="M12.9002 2.56411L15.4502 7.97411L21.1402 8.84411C21.5229 8.92136 21.8331 9.20089 21.9497 9.57347C22.0663 9.94605 21.9706 10.3525 21.7002 10.6341L17.5802 14.8341L18.5802 20.7641C18.6748 21.1508 18.531 21.5567 18.2141 21.7977C17.8972 22.0386 17.4676 22.0686 17.1202 21.8741L12.0002 19.0541L6.91024 21.8541C6.56291 22.0486 6.1333 22.0186 5.8164 21.7777C5.49951 21.5367 5.35569 21.1308 5.45024 20.7441L6.45024 14.8141L2.30024 10.6141C2.02983 10.3325 1.93422 9.92605 2.05079 9.55347C2.16735 9.18089 2.47757 8.90136 2.86024 8.82411L8.55024 7.97411L11.1002 2.56411C11.2673 2.21912 11.6169 2 12.0002 2C12.3836 2 12.7332 2.21912 12.9002 2.56411Z" fill="#FF7800"/>' +
+                    "</svg>"
+                );
+            }
+
+            return (
+                '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" style="pointer-events: none; display: block;">' +
+                '<path fill-rule="evenodd" clip-rule="evenodd" d="M21.1595 8.826L15.4637 7.97576L12.9112 2.56427C12.7439 2.21918 12.394 2 12.0103 2C11.6266 2 11.2766 2.21918 11.1094 2.56427L8.55681 7.97576L2.8611 8.846C2.47805 8.92328 2.16751 9.20288 2.05083 9.57556C1.93416 9.94825 2.02985 10.3549 2.30054 10.6365L6.42467 14.8377L5.42367 20.7693C5.35208 21.0715 5.42501 21.3898 5.62105 21.6307C5.8171 21.8717 6.11402 22.008 6.42467 21.9996C6.58867 21.9965 6.74971 21.9554 6.89515 21.8796L12.0103 19.0588L17.1054 21.8596C17.2508 21.9354 17.4119 21.9765 17.5759 21.9796C17.8865 21.988 18.1834 21.8517 18.3795 21.6107C18.5755 21.3698 18.6485 21.0515 18.5769 20.7493L17.5759 14.8177L21.7 10.6165C21.9704 10.3376 22.0685 9.93428 21.9563 9.56251C21.844 9.19074 21.5391 8.90888 21.1595 8.826ZM16.1544 13.4173L15.4437 14.1375L15.6039 15.1377L16.2545 19.1388L13.0113 17.2983L12.0103 16.7682L11.0093 17.2983L7.75601 19.1088L8.40666 15.1077L8.56682 14.1075L7.85611 13.3873L5.00325 10.5165L8.85711 9.97631L9.91818 9.77626L10.3686 8.77598L12.0103 5.33503L13.6519 8.81599L14.1024 9.81627L19.0073 10.5565L16.1544 13.4173Z" fill="#FF7800"/>' +
+                "</svg>"
+            );
+        };
+
+        Bot.prototype.paintRatingStars = function (buttons, activeValue) {
+            var self = this;
+            var value = Number(activeValue) || 0;
+
+            buttons.forEach(function (btn) {
+                var btnValue = Number(btn.getAttribute("data-rating")) || 0;
+                var filled = btnValue <= value;
+                btn.innerHTML = self.getRatingStarSvg(filled);
+            });
+        };
+
+        Bot.prototype.createRating = function () {
+            var html = '<div class="tc0080-rating" role="group" aria-label="Rating">';
+            for (var i = 1; i <= 5; i++) {
+                html +=
+                    '<button class="tc0080-rating-btn" type="button" data-rating="' +
+                    i +
+                    '" aria-label="' +
+                    i +
+                    ' estrellas">' +
+                    this.getRatingStarSvg(false) +
+                    "</button>";
+            }
+            html += "</div>";
+            return html;
+        };
+
+        Bot.prototype.createRatingReadonly = function (value) {
+            var html = '<div class="tc0080-rating" role="group" aria-label="Rating seleccionado">';
+            var selected = Number(value) || 0;
+
+            for (var i = 1; i <= 5; i++) {
+                html +=
+                    '<button class="tc0080-rating-btn" type="button" disabled aria-label="' +
+                    i +
+                    ' estrellas">' +
+                    this.getRatingStarSvg(i <= selected) +
+                    "</button>";
+            }
+
+            html += "</div>";
+            return html;
+        };
+
+        Bot.prototype.createMainCta = function () {
+            return (
+                '<button class="tc0080-chat-main-cta" type="button" data-main-restart>' +
+                this.config.menuText +
+                "</button>"
+            );
+        };
+
+        Bot.prototype.createFooter = function () {
+            return (
+                "" +
+                '<div class="tc0080-footer">' +
+                '<button class="tc0080-btn" data-restart>Reiniciar</button>' +
+                '<button class="tc0080-btn" data-back>Volver</button>' +
+                "</div>"
+            );
+        };
+
+        Bot.prototype.attachHandlers = function () {
+            var self = this;
+
+            var retryError = this.el.body.querySelector("[data-retry-error]");
+            if (retryError) {
+                retryError.addEventListener("click", function () {
+                    if (!self.state.errorRecovery) return;
+                    var recovery = self.state.errorRecovery;
+                    self.clearPendingTransition();
+                    self.applyTransition(recovery.nextId);
+                });
+            }
+
+            this.el.body.querySelectorAll("[data-runtime-error-action]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    var action = this.getAttribute("data-runtime-error-action") || "";
+
+                    if (action === "retry-missing-next") {
+                        var runtimeError = self.state.runtimeError || {};
+                        if (!runtimeError.nextId) {
+                            self.debugError("MISSING_NEXT_NODE_RETRY_SKIPPED", {
+                                reason: "nextId-unavailable",
+                            });
+                            self.restart();
+                            return;
+                        }
+                        self.applyTransition(runtimeError.nextId);
+                        return;
+                    }
+
+                    self.debugError("RUNTIME_ERROR_GOTO_START", {
+                        action: action,
+                    });
+                    self.restart();
+                });
+            });
+
+            this.el.body.querySelectorAll("[data-next]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    var selectedLabel =
+                        this.getAttribute("data-user-label") ||
+                        (this.textContent || "").trim();
+                    self.goTo(
+                        this.getAttribute("data-next"),
+                        selectedLabel,
+                    );
+                });
+            });
+
+            this.el.body.querySelectorAll('[data-cta-discover="true"]').forEach(function (link) {
+                link.addEventListener("click", function () {
+                    self.trackDiscoverCardClick();
+                });
+            });
+
+            this.el.body.querySelectorAll("[data-close]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    self.trackCloseClick();
+                    self.close();
+                    self.restart();
+                });
+            });
+
+            this.el.body.querySelectorAll("[data-response-idx]").forEach(function (btn) {
+                btn.addEventListener("click", function () {
+                    var messageId = Number(this.getAttribute("data-response-message-id"));
+                    var selectedIdx = Number(this.getAttribute("data-response-idx"));
+
+                    // Actualiza solo el response clickeado, incluso si hay varios en historial.
+                    var updated = false;
+                    for (var i = self.state.chatLog.length - 1; i >= 0; i--) {
+                        var entry = self.state.chatLog[i];
+                        if (
+                            entry &&
+                            entry.role === "bot" &&
+                            Number(entry.messageId) === messageId
+                        ) {
+                            if (Number(entry.selectedResponseActionIdx) >= 0) {
+                                return;
+                            }
+                            entry.selectedResponseActionIdx = selectedIdx;
+                            var selectedAction = null;
+                            if (Array.isArray(entry.responseActions)) {
+                                for (var j = 0; j < entry.responseActions.length; j++) {
+                                    if (Number(entry.responseActions[j].idx) === selectedIdx) {
+                                        selectedAction = entry.responseActions[j];
+                                        break;
+                                    }
+                                }
+                            }
+                            self.trackFeedbackClick(entry.nodeId, selectedAction, selectedIdx);
+                            updated = true;
+                            break;
+                        }
+                    }
+
+                    if (updated) {
+                        if (self.scrollState) {
+                            self.scrollState.suppressAdjustOnce = true;
+                        }
+                        self.render();
+                    }
+                });
+            });
+
+            var ratingButtons = Array.from(this.el.body.querySelectorAll("[data-rating]"));
+            var selectedRating = Number(this.state.rating) || 0;
+            if (ratingButtons.length) {
+                this.paintRatingStars(ratingButtons, selectedRating);
+            }
+
+            ratingButtons.forEach(function (btn) {
+                btn.addEventListener("mouseenter", function () {
+                    self.paintRatingStars(ratingButtons, this.getAttribute("data-rating"));
+                });
+
+                btn.addEventListener("focus", function () {
+                    self.paintRatingStars(ratingButtons, this.getAttribute("data-rating"));
+                });
+
+                btn.addEventListener("click", function () {
+                    var ratingValue = this.getAttribute("data-rating");
+                    self.trackRatingFinalClick(ratingValue);
+
+                    if (self.config.mode === "chat") {
+                        self.pushChatSnapshot();
+                    }
+
+                    self.state.rating = ratingValue;
+                    selectedRating = Number(ratingValue) || 0;
+
+                    if (self.config.mode === "chat") {
+                        for (var i = self.state.chatLog.length - 1; i >= 0; i--) {
+                            var entry = self.state.chatLog[i];
+                            if (entry && entry.role === "bot" && entry.nodeType === "rating") {
+                                entry.selectedRating = selectedRating;
+                                break;
+                            }
+                        }
+
+                        if (self.shouldUseThinking()) {
+                            self.startWaitingTransition("rating_thanks_auto", "");
+                        } else {
+                            self.applyTransition("rating_thanks_auto");
+                        }
+                        return;
+                    }
+
+                    self.goTo(
+                        self.config.startNode,
+                        "Calificacion: " + ratingValue + " estrellas",
+                    );
+                });
+            });
+
+            var ratingGroup = this.el.body.querySelector(".tc0080-rating");
+            if (ratingGroup && ratingButtons.length) {
+                ratingGroup.addEventListener("mousemove", function (e) {
+                    var hoveredBtn =
+                        e.target && e.target.closest
+                            ? e.target.closest("[data-rating]")
+                            : null;
+
+                    if (hoveredBtn && ratingGroup.contains(hoveredBtn)) {
+                        self.paintRatingStars(
+                            ratingButtons,
+                            hoveredBtn.getAttribute("data-rating"),
+                        );
+                        return;
+                    }
+
+                    self.paintRatingStars(ratingButtons, selectedRating);
+                });
+
+                ratingGroup.addEventListener("mouseleave", function () {
+                    self.paintRatingStars(ratingButtons, selectedRating);
+                });
+
+                ratingGroup.addEventListener("focusout", function (e) {
+                    if (!ratingGroup.contains(e.relatedTarget)) {
+                        self.paintRatingStars(ratingButtons, selectedRating);
+                    }
+                });
+            }
+
+            var mainRestart = this.el.body.querySelector("[data-main-restart]");
+            if (mainRestart) {
+                mainRestart.addEventListener("click", function () {
+                    self.restart();
+                });
+            }
+
+            var restartBtn = this.el.body.querySelector("[data-restart]");
+            if (restartBtn) {
+                restartBtn.addEventListener("click", function () {
+                    self.restart();
+                });
+            }
+
+            var backBtn = this.el.body.querySelector("[data-back]");
+            if (backBtn) {
+                backBtn.addEventListener("click", function () {
+                    self.back();
+                });
+            }
+        };
+
+        Bot.prototype.destroy = function () {
+            this.cancelWaitingTransition();
+            this.close();
+            this.unbindLauncherMobileOffset();
+            if (this.el.launcher)
+                this.el.launcher.replaceWith(this.el.launcher.cloneNode(true));
+            if (this.el.close)
+                this.el.close.replaceWith(this.el.close.cloneNode(true));
+            if (this.el.mask) this.el.mask.replaceWith(this.el.mask.cloneNode(true));
+        };
+
+        var instance;
+
+        function ensureScope() {
+            var scope = document.getElementById("tc0080-scope");
+            var welcome = document.querySelector(".tc0080-launcher-welcome-wrap");
+
+            if (scope) {
+                if (welcome && welcome.parentNode !== scope) {
+                    scope.appendChild(welcome);
+                }
+                return scope;
+            }
+
+            var launcher = document.querySelector(".tc0080-launcher");
+            var panel = document.querySelector(".tc0080-panel");
+            var mask = document.querySelector(".tc0080-mask");
+
+            if (!launcher || !panel || !mask) return null;
+
+            scope = document.createElement("div");
+            scope.id = "tc0080-scope";
+
+            launcher.parentNode.insertBefore(scope, launcher);
+            scope.appendChild(mask);
+            if (welcome) {
+                scope.appendChild(welcome);
+            }
+            scope.appendChild(launcher);
+            scope.appendChild(panel);
+
+            return scope;
+        }
+
+        function init(scope) {
+            if (!scope) return;
+
+            if (instance) {
+                instance.unlockPageScroll();
+                instance.destroy();
+            }
+            instance = new Bot(scope);
+            instance.init();
+        }
+
+        window.tc0080SetMode = function (mode) {
+            if (!instance) return;
+            instance.setMode(mode);
+        };
+
+        function waitForBotAndInit() {
+            var elapsed = 0;
+            var maxWait = 8000;
+            var pollInterval = 150;
+
+            var timer = setInterval(function () {
+                var scope = ensureScope();
+                if (
+                    scope &&
+                    scope.querySelector(".tc0080-launcher") &&
+                    scope.querySelector(".tc0080-panel") &&
+                    scope.querySelector(".tc0080-mask")
+                ) {
+                    clearInterval(timer);
+                    init(scope);
+                    return;
+                }
+
+                elapsed += pollInterval;
+                if (elapsed >= maxWait) {
+                    clearInterval(timer);
+                    console.warn("[tc0080] Timeout esperando estructura del bot");
+                }
+            }, pollInterval);
+        }
+
+        function observeReinsertion() {
+            if (window.__tc0080Observed) return;
+
+            var observer = new MutationObserver(function () {
+                var scope = document.getElementById("tc0080-scope");
+                if (!scope || !document.contains(scope)) {
+                    waitForBotAndInit();
+                }
+            });
+
+            observer.observe(document.body, { childList: true, subtree: true });
+            window.__tc0080Observed = true;
+        }
+
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", function () {
+                waitForBotAndInit();
+                observeReinsertion();
+            });
+        } else {
+            waitForBotAndInit();
+            observeReinsertion();
+        }
+    })();
+
+</script>

@@ -1,0 +1,128 @@
+{
+  "_meta": {
+    "titulo": "Relevancia - Afinidad",
+    "origen": "Tabla entregada por Marco el 2026-09-06",
+    "uso": "Indices de prioridad para ordenar/recomendar tarjetas segun el criterio que elija el usuario en el nodo q1 del bot de /felicitaciones.",
+    "escala": "1 a 5. Mayor = mas afin al criterio. Sin confirmar si 5 es tope duro o solo orden relativo.",
+    "pendiente_confirmar": [
+      "En la tabla original 12 de las 17 tarjetas aparecen en negrita y 5 no. Se recoge en 'resaltadaEnOrigen' sin interpretar su significado.",
+      "Como se traduce el indice a la recomendacion: cuantas tarjetas mostrar, si hay umbral minimo y como se desempatan valores iguales.",
+      "Que tarjetas aplican realmente en /felicitaciones: el snapshot de la pagina solo muestra 4 aprobadas (Amex Clasica LATAM Pass, Visa Clasica, Qore, Visa Light)."
+    ]
+  },
+
+  "criterios": [
+    {
+      "id": "viajar",
+      "label": "Viajar y acumular millas",
+      "emoji": "&#x2708;&#xFE0F;",
+      "nodoDestino": "q11"
+    },
+    {
+      "id": "ahorrar",
+      "label": "Ahorrar en costos",
+      "emoji": "&#128176;",
+      "nodoDestino": "q12"
+    },
+    {
+      "id": "beneficios",
+      "label": "Obtener mas beneficios",
+      "emoji": "&#127873;",
+      "nodoDestino": "q13"
+    },
+    {
+      "id": "experiencias",
+      "label": "Experiencias exclusivas",
+      "emoji": "&#x2b50;",
+      "nodoDestino": "q14"
+    }
+  ],
+
+  "tarjetas": [
+    {
+      "nombre": "Visa Light",
+      "resaltadaEnOrigen": false,
+      "afinidad": { "viajar": 1, "ahorrar": 5, "beneficios": 1, "experiencias": 1 }
+    },
+    {
+      "nombre": "Visa Clasica",
+      "resaltadaEnOrigen": false,
+      "afinidad": { "viajar": 1, "ahorrar": 5, "beneficios": 2, "experiencias": 1 }
+    },
+    {
+      "nombre": "Visa Clasica LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 3, "ahorrar": 5, "beneficios": 2, "experiencias": 1 }
+    },
+    {
+      "nombre": "Visa Oro LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 4, "ahorrar": 4, "beneficios": 3, "experiencias": 1 }
+    },
+    {
+      "nombre": "Visa Platinum LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 4, "ahorrar": 3, "beneficios": 4, "experiencias": 3 }
+    },
+    {
+      "nombre": "Visa Signature LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 5, "ahorrar": 2, "beneficios": 5, "experiencias": 4 }
+    },
+    {
+      "nombre": "Visa Infinite Sapphire LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 5, "ahorrar": 1, "beneficios": 5, "experiencias": 5 }
+    },
+    {
+      "nombre": "Visa Infinite Iridium LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 5, "ahorrar": 1, "beneficios": 5, "experiencias": 5 }
+    },
+    {
+      "nombre": "Amex Clasica LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 3, "ahorrar": 5, "beneficios": 3, "experiencias": 1 }
+    },
+    {
+      "nombre": "Amex Oro LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 4, "ahorrar": 4, "beneficios": 4, "experiencias": 2 }
+    },
+    {
+      "nombre": "Amex Platinum LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 5, "ahorrar": 2, "beneficios": 5, "experiencias": 5 }
+    },
+    {
+      "nombre": "Amex Black LATAM Pass",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 5, "ahorrar": 1, "beneficios": 5, "experiencias": 5 }
+    },
+    {
+      "nombre": "Visa Clasica Qore",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 1, "ahorrar": 5, "beneficios": 3, "experiencias": 1 }
+    },
+    {
+      "nombre": "Visa Oro Qore",
+      "resaltadaEnOrigen": true,
+      "afinidad": { "viajar": 1, "ahorrar": 5, "beneficios": 4, "experiencias": 1 }
+    },
+    {
+      "nombre": "Visa Platinum Qore",
+      "resaltadaEnOrigen": false,
+      "afinidad": { "viajar": 2, "ahorrar": 4, "beneficios": 5, "experiencias": 3 }
+    },
+    {
+      "nombre": "Visa Signature Qore",
+      "resaltadaEnOrigen": false,
+      "afinidad": { "viajar": 2, "ahorrar": 3, "beneficios": 5, "experiencias": 4 }
+    },
+    {
+      "nombre": "Visa Infinite Qore",
+      "resaltadaEnOrigen": false,
+      "afinidad": { "viajar": 2, "ahorrar": 2, "beneficios": 5, "experiencias": 5 }
+    }
+  ]
+}

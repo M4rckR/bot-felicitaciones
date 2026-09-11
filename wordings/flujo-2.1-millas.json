@@ -1,0 +1,135 @@
+{
+  "flujo": "2.1 - Acumulacion de millas por consumo",
+  "estado": "completo",
+  "origen": "Entregado por Marco",
+  "nodos": [
+    {
+      "id": "q21",
+      "lineas": "1410-1445",
+      "tipo": "question",
+      "estado": "completo",
+      "className": "tcxxxx-node-question",
+      "richText": true,
+      "titulo": "",
+      "texto": {
+        "intro": "¡Buena elección! &#128522; Estas son las millas por consumo mensual.",
+        "tabla": {
+          "encabezado": [
+            "Tarjeta",
+            "Acumulación por consumo mensual"
+          ],
+          "filas": [
+            [
+              "Visa Clásica LATAM Pass",
+              "1 milla por $2"
+            ],
+            [
+              "Visa Oro LATAM Pass",
+              "1 Milla por $1.5"
+            ],
+            [
+              "Visa Platinum LATAM Pass",
+              "1 milla por $1"
+            ],
+            [
+              "Visa Signature LATAM Pass",
+              "1.25 millas por $1"
+            ],
+            [
+              "Visa Infinite Sapphire LATAM Pass",
+              "Hasta 1.5 millas por $1"
+            ],
+            [
+              "Visa Infinite Iridium LATAM Pass",
+              "Hasta 2 millas por $1 de consumo."
+            ],
+            [
+              "Visa Light",
+              "No Aplica"
+            ],
+            [
+              "Visa Clásica",
+              "No Aplica"
+            ],
+            [
+              "Amex Clásica LATAM Pass",
+              "1 milla por cada $2"
+            ],
+            [
+              "Amex Oro LATAM Pass",
+              "1 milla por cada $1.5"
+            ],
+            [
+              "Amex Platinum LATAM Pass",
+              "1 milla por $1"
+            ],
+            [
+              "Amex Black LATAM",
+              "1.5 millas por $1"
+            ],
+            [
+              "Visa Clásica Qore",
+              "No Aplica"
+            ],
+            [
+              "Visa Oro Qore",
+              "No Aplica"
+            ],
+            [
+              "Visa Platinum Qore",
+              "No Aplica"
+            ],
+            [
+              "Visa Signature Qore",
+              "No Aplica"
+            ],
+            [
+              "Visa Infinite Qore",
+              "No Aplica"
+            ]
+          ]
+        }
+      },
+      "recomendacion": {
+        "title": "Te recomendamos esta tarjeta",
+        "badge": "La más usada",
+        "card": "&#128179; Visa Oro LATAM Pass",
+        "details": [
+          "Membresía: S/170",
+          "Exoneración: S/1 mensual en consumo."
+        ],
+        "cta": {
+          "label": "Elegir tarjeta",
+          "href": "#",
+          "pendiente": "URL real sin definir"
+        }
+      },
+      "menuText": "¿Qué deseas hacer ahora?",
+      "opciones": [
+        {
+          "label": "&#x21A9;&#xFE0F; Volver a las alternativas",
+          "emoji": "↩️",
+          "next": "q2"
+        },
+        {
+          "label": "Cerrar",
+          "isClose": true
+        }
+      ],
+      "pendientes": [
+        "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
+        "URL del CTA 'Elegir tarjeta': cableado como href '#'."
+      ],
+      "notas": [
+        "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.millas de bot-nuevo.html como filas con codigo, y el nodo solo lleva 'comparador: \"millas\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
+        "Irregularidades reproducidas verbatim (no corregir sin Marco): 'Visa Oro LATAM Pass' escribe 'Milla' con mayuscula, la fila de Visa Infinite Iridium es la unica que termina en punto, y 'Amex Black LATAM' va sin el 'Pass' final que si tienen las demas.",
+        "Orden de tarjetas: Visa Light y Visa Clasica en posiciones 7-8, Amex Clasica en la 9. Coincide con 2.3 pero NO con 2.2.",
+        "2026-09-09: se quito la clase tcxxxx-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
+        "2026-09-09: corregido 'Estos son las millas' -> 'Estas son las millas'. Aprobado por Marco. Ver correcciones-wording.md.",
+        "2026-09-09: Marco entrego la pantalla completa. Se agrego la tarjeta recomendada (identica a la de q22) y el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar'. OJO: q22, q23 y q24 todavia cierran con '✅ Elegir una tarjeta'; falta confirmar si tambien cambian.",
+        "El intro se mantiene como 'Estas son las millas' (correccion 4 ya aprobada), aunque el texto que Marco reenvio el 2026-09-09 volvia a decir 'Estos'."
+      ],
+      "_advertencia": "La tabla de este archivo es el ESPEJO del orden completo. En pantalla nunca salen las 17 filas salvo que falle la deteccion: solo salen las tarjetas del usuario."
+    }
+  ]
+}

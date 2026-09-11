@@ -1,0 +1,156 @@
+{
+  "_meta": {
+    "descripcion": "Indice de la copy de bot-nuevo.html mapeada por flujo. Artefacto de desarrollo: no se envia a Adobe Target ni se lee en runtime.",
+    "fuente_de_verdad": "bot-nuevo.html",
+    "generado": "2026-09-09",
+    "namespace_placeholder": "tcxxxx / TCXXXX",
+    "total_nodos": 15,
+    "advertencia_lineas": "Los rangos son una pista de salto y se desactualizan al agregar nodos. Confirmar con grep -n 'id: \"qNN\"' bot-nuevo.html.",
+    "nota_cierre": "2026-09-09: se elimino la cadena de cierre (mixed1, rating, rating_number, rating_thanks_auto, mixed100) y su archivo flujo-cierre.json. Decision de Marco tras quedar inalcanzable."
+  },
+  "flujos": [
+    {
+      "flujo": "0 - Inicio",
+      "archivo": "flujo-0-inicio.json",
+      "estado": "completo",
+      "nodos": [
+        {
+          "id": "q0",
+          "lineas": "1346-1357"
+        }
+      ]
+    },
+    {
+      "flujo": "1 - Ayudame a elegir una tarjeta",
+      "archivo": "flujo-1-elegir.json",
+      "estado": "completo",
+      "nodos": [
+        {
+          "id": "q1",
+          "lineas": "1360-1372",
+          "estado": "completo"
+        },
+        {
+          "id": "q11",
+          "lineas": "1374-1383",
+          "estado": "implementado-dinamico (casos A y B)"
+        },
+        {
+          "id": "q12",
+          "lineas": "1384-1393",
+          "estado": "implementado-dinamico (casos A y B)"
+        },
+        {
+          "id": "q13",
+          "lineas": "1394-1403",
+          "estado": "implementado-dinamico (casos A y B)"
+        },
+        {
+          "id": "q14",
+          "lineas": "1404-1413",
+          "estado": "implementado-dinamico (casos A y B)"
+        }
+      ]
+    },
+    {
+      "flujo": "2 - Quiero comparar mis tarjetas",
+      "archivo": "flujo-2-comparar.json",
+      "estado": "completo",
+      "nodos": [
+        {
+          "id": "q2",
+          "lineas": "1416-1428"
+        }
+      ]
+    },
+    {
+      "flujo": "2.1 - Acumulacion de millas por consumo",
+      "archivo": "flujo-2.1-millas.json",
+      "estado": "completo",
+      "nodos": [
+        {
+          "id": "q21",
+          "lineas": "1432-1477"
+        }
+      ]
+    },
+    {
+      "flujo": "2.2 - Membresia Anual",
+      "archivo": "flujo-2.2-membresia.json",
+      "estado": "completo",
+      "nota": "Implementacion de referencia de una pantalla de comparacion terminada.",
+      "nodos": [
+        {
+          "id": "q22",
+          "lineas": "1480-1525"
+        }
+      ]
+    },
+    {
+      "flujo": "2.3 - Exoneracion de membresia",
+      "archivo": "flujo-2.3-exoneracion.json",
+      "estado": "completo",
+      "nodos": [
+        {
+          "id": "q23",
+          "lineas": "1526-1573"
+        }
+      ]
+    },
+    {
+      "flujo": "2.4 - Priority Pass",
+      "archivo": "flujo-2.4-priority-pass.json",
+      "estado": "completo",
+      "nodos": [
+        {
+          "id": "q24",
+          "lineas": "1574-1613"
+        }
+      ]
+    },
+    {
+      "flujo": "3 - Resolver dudas para elegir",
+      "archivo": "flujo-3-dudas.json",
+      "estado": "completo",
+      "nodos": [
+        {
+          "id": "q3",
+          "lineas": "1615-1626",
+          "estado": "completo"
+        },
+        {
+          "id": "q31",
+          "lineas": "1631-1651",
+          "estado": "completo"
+        },
+        {
+          "id": "q32",
+          "lineas": "1654-1674",
+          "estado": "completo"
+        },
+        {
+          "id": "q33",
+          "lineas": "1679-1700",
+          "estado": "completo"
+        }
+      ]
+    },
+    {
+      "flujo": "UI fija (fuera de config.nodes)",
+      "archivo": "ui-fija.json",
+      "estado": "completo",
+      "nodos": []
+    }
+  ],
+  "resumen_pendientes": {
+    "nodos_stub": [],
+    "bloqueado_por_marco": [
+      "Codigo de Visa Clasica (la pelada): sin el, el bot NO puede detectarla y no se muestra nunca, aunque el usuario la tenga. Marco decidio el 2026-09-10 dejarla asi de momento. Visa Infinite Sapphire (TCRBA7) y Visa Platinum Qore (TCRLY4) ya tienen codigo.",
+      "Conflicto de nombre de AMXGRE: la lista de Marco dice 'Amex green', el DOM de certi dibuja 'American Express Black LATAM Pass'. Se mantiene la lectura del DOM.",
+      "URL del CTA 'Elegir tarjeta' en todo el bot - hoy href '#'",
+      "Erratas y contradicciones de datos del perfilador (ver correcciones-wording.md, Parte 6)",
+      "Prefijo de promotion.name para analytics en pagina no-home, y que el perfilador no emite ningun evento",
+      "Codigo de experimento real que reemplaza TCXXXX"
+    ]
+  }
+}
