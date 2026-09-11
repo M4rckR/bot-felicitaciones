@@ -2995,6 +2995,43 @@
 
         // Devuelve {intro, tarjetas, caso} ya resueltos para el nodo, o null si el
         // criterio no existe en la config.
+        // La tarjeta recomendada de q21-q24 solo se pinta si el usuario la tiene
+        // aprobada (Marco, 2026-09-11). La regla es la misma que rige el perfilador:
+        // el bot no muestra tarjetas que no esten en el lead del cliente.
+        //
+        // Antes se pintaba siempre, fija en la Visa Oro. Con la tabla ya filtrada,
+        // a quien no la tuviera se le recomendaba una tarjeta que no figuraba en su
+        // propia tabla y cuyo boton, al no existir en la pagina, no hacia nada.
+        //
+        // Sin deteccion tampoco se pinta: no se puede afirmar que sea lead.
+        Bot.prototype.resolveRecommendation = function (node) {
+            var rec = (node || {}).recommendation;
+            if (!rec) return null;
+
+            var leads = this.getLeadCardCodes();
+            var codigo = String(rec.codigo || "").toUpperCase();
+
+            if (!codigo) {
+                this.debugError("RECOMENDACION_SIN_CODIGO", { nodo: (node || {}).id || "" });
+                return null;
+            }
+
+            for (var i = 0; i < leads.length; i++) {
+                if (leads[i] === codigo) return rec;
+            }
+
+            this.debugError("RECOMENDACION_NO_ES_LEAD", {
+                nodo: (node || {}).id || "",
+                codigo: codigo,
+            });
+            return null;
+        };
+
+        Bot.prototype.getTopeTarjetas = function (cfg) {
+            var tope = Number((cfg || {}).maxTarjetas);
+            return Number.isFinite(tope) && tope >= 0 ? tope : 4;
+        };
+
         Bot.prototype.resolvePerfilador = function (criterioId) {
             var cfg = this.config.perfilador || {};
             var criterio = (cfg.criterios || {})[criterioId];
@@ -3017,11 +3054,14 @@
                     fallback: cfg.sinDeteccion || "casoA",
                 });
                 var porDefecto = cfg.sinDeteccion === "casoB" ? casoB : casoA;
+                var tope = this.getTopeTarjetas(cfg);
+                // Sin destacada: la Visa Oro solo se muestra si el usuario la tiene
+                // (Marco), y aqui no hay forma de saberlo. Se corta sin mas.
                 return {
                     caso: cfg.sinDeteccion === "casoB" ? "B" : "A",
                     detectado: false,
                     intro: porDefecto.intro || "",
-                    tarjetas: this.conCta(this.recortarConDestacada(porDefecto.tarjetas || [], cfg), cfg),
+                    tarjetas: this.conCta((porDefecto.tarjetas || []).slice(0, tope), cfg),
                 };
             }
 
@@ -3038,14 +3078,11 @@
 
             // Caso B: no hay ninguna tarjeta de millas. Aqui no hay destacada, asi
             // que se corta directo en maxTarjetas.
-            var tope = Number(cfg.maxTarjetas);
-            if (!Number.isFinite(tope) || tope < 0) tope = 4;
-
             return {
                 caso: "B",
                 detectado: true,
                 intro: casoB.intro || "",
-                tarjetas: this.conCta(this.filtrarPorLeads(casoB.tarjetas, leads).slice(0, tope), cfg),
+                tarjetas: this.conCta(this.filtrarPorLeads(casoB.tarjetas, leads).slice(0, this.getTopeTarjetas(cfg)), cfg),
             };
         };
 
@@ -3975,7 +4012,7 @@
                 // al menu viajan en el snapshot como todo lo demas: el historial no se
                 // reescribe luego.
                 cards: perfilado ? perfilado.tarjetas : (node.cards || null),
-                recommendation: node.recommendation || null,
+                recommendation: this.resolveRecommendation(node),
                 aviso: node.aviso || "",
                 menuText: node.menuText || "",
                 options: (node.options || []).map(function (o) {

@@ -894,10 +894,14 @@ whose content is not in the node.
 no code there is nothing to detect, so the card simply never renders, and the day a code is assigned it
 starts appearing on its own for the users who are leads for it. No other change is needed.
 
-`config.perfilador.sinDeteccion` decides what happens when the DOM yields no cards at all; it currently
-falls back to the unfiltered case A list, on the reasoning that the real page always has at least one
-approved card, so an empty read means the selector failed. Logged as
-`console.debug("[tc0091][error:PERFILADOR_SIN_LEADS]", …)`. **Not confirmed by Marco.**
+`config.perfilador.sinDeteccion` decides what happens when the DOM yields no cards at all: it falls back to
+the case A list, on the reasoning that the real page always has at least one approved card, so an empty
+read means the selector failed. Logged as `console.debug("[tc0091][error:PERFILADOR_SIN_LEADS]", …)`.
+
+**That fallback no longer appends the destacada** (2026-09-11). It used to run through
+`recortarConDestacada`, which put the Visa Oro at the end — exactly what Marco's rule forbids, since with
+no detection there is no way to assert the user holds it. It now cuts at `maxTarjetas` and stops. The cut
+sizes moved into `getTopeTarjetas(cfg)`, shared by this path and case B.
 
 `window.tc0091Catalogo()` is a dev hook (`tc0091SetMode` no longer exists — it went with the slides mode): it returns the criteria, every card the
 bot declares (code, name, which case) and the codes currently detected. `preview/index.html` builds its
@@ -917,10 +921,20 @@ Marco extended the lead rule to `q21`–`q24`: **the tables list only the cards 
 - Each table keeps its own verbatim row order; filtering never reorders.
 - Empty detection → all 17 rows, logged as `COMPARADOR_SIN_LEADS`. Same reasoning as the perfilador.
 
-**This sharpened an old problem.** The recommendation block in `q21`–`q24` is still hardcoded to Visa Oro
-LATAM Pass and is **not** filtered. With the production preset the membership table now shows 4 rows —
-Clásica LATAM Pass, American Express Clásica, Light, Clásica Qore — and still recommends a card that is not one of
-them. Before the filtering it was merely questionable; now the screen contradicts itself on screen.
+**The recommendation block obeys the lead rule too** (Marco, 2026-09-11). `resolveRecommendation(node)`
+reads `recommendation.codigo` and returns `null` unless that code is in `getLeadCardCodes()`, so the whole
+green box — title, badge, card, details and CTA — simply is not painted for a user who does not hold that
+card. It resolves in `appendBotMessageForCurrent`, next to the perfilador and the comparador, so the
+decision freezes into the chatLog like everything else.
+
+Two details that follow from it: `tieneCtaElegirTarjeta` reads the *resolved* message, so the
+`Arbol - TC` View is not emitted either when the box is hidden; and **no detection means no box**, since
+being a lead cannot be asserted. Misses are logged as `RECOMENDACION_NO_ES_LEAD` /
+`RECOMENDACION_SIN_CODIGO`.
+
+Before this, the four screens recommended Visa Oro unconditionally. With the tables already filtered, a
+user without it got a recommendation absent from their own table, whose button — once the CTA started
+driving the page's native button — did nothing at all.
 
 ### Testing casuistics in the preview
 
@@ -969,10 +983,6 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 
 **Blocked on Marco**
 
-- **The hardcoded recommendation now has a visible failure mode.** Since the CTA clicks the page's own
-  button, a user without `TCRORL` gets a "Elegir tarjeta" that does nothing at all (logged as
-  `ELEGIR_TARJETA_SIN_BOTON`). Filtering the recommendation by lead — or hiding the CTA when the button is
-  absent — would fix it; Marco has been asked twice and has not decided. Do not change it unprompted.
 - **The recommended card is hardcoded and Priority Pass contradicts itself.** All four comparison screens
   recommend *Visa Oro LATAM Pass*, but that card shows **"No"** in `q24`'s own Priority Pass table, so the
   screen recommends a card without the benefit it is comparing. Marco knows, asked to leave it **static as
