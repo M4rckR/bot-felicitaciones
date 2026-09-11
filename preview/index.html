@@ -26,15 +26,35 @@
 
         body {
             margin: 0;
-            height: 100vh;
-            display: grid;
-            grid-template-rows: auto 1fr;
+            /* 100dvh y no 100vh: en los moviles la barra de direcciones se retrae
+               y con 100vh el preview queda cortado. */
+            height: 100dvh;
+            overflow: hidden;
             font: 13px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace;
             background: var(--ui-bg);
             color: var(--ui-text);
         }
 
+        /* ====================================================================
+           El header NO ocupa alto (Marco, 2026-09-11). El preview existe para
+           ver el bot como se vera de verdad, y una barra siempre visible le
+           roba pantalla -sobre todo en movil, donde el bot es pantalla
+           completa-. Asi que flota por encima y esta oculto por defecto.
+
+           Se muestra de cuatro maneras, y las cuatro conviven:
+             - el mouse entra en los 12px de arriba (#hotzone, desktop);
+             - el mouse esta sobre el propio header, para que no se escape
+               mientras se va a apretar un boton;
+             - algo adentro tiene el foco, para que funcione con teclado;
+             - esta fijado con el tirador o con la tecla H (clase .fijo), que
+               es la unica via en movil, donde no hay hover.
+           ==================================================================== */
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 30;
             display: flex;
             align-items: center;
             gap: 8px;
@@ -42,6 +62,75 @@
             background: var(--ui-panel);
             border-bottom: 1px solid var(--ui-line);
             flex-wrap: wrap;
+            /* Hueco para el tirador, que va por encima y taparia el primer boton. */
+            padding-left: 52px;
+            transform: translateY(-100%);
+            transition: transform .18s ease;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, .45);
+        }
+
+        #hotzone {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 12px;
+            z-index: 29;
+        }
+
+        #hotzone:hover+header,
+        header:hover,
+        header:focus-within,
+        header.fijo {
+            transform: translateY(0);
+        }
+
+        /* Tirador: lo unico que queda siempre a la vista. Chico y translucido
+           para no taparle nada al bot, arriba a la IZQUIERDA porque el launcher
+           del bot vive abajo a la derecha. */
+        #btn-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 31;
+            padding: 2px 8px 3px;
+            border: 0;
+            border-right: 1px solid var(--ui-line);
+            border-bottom: 1px solid var(--ui-line);
+            border-radius: 0 0 8px 0;
+            background: rgba(30, 41, 59, .72);
+            color: var(--ui-dim);
+            font-size: 11px;
+            line-height: 1.4;
+            opacity: .55;
+            transition: opacity .15s ease;
+        }
+
+        #btn-header:hover,
+        #btn-header:focus-visible {
+            opacity: 1;
+            color: var(--ui-text);
+        }
+
+        header.fijo~#btn-header {
+            opacity: 1;
+        }
+
+        /* Punto de actividad: destella cuando el bot se reinyecta, para que se
+           note que hubo recarga sin tener que abrir el header. */
+        #btn-header .dot {
+            display: inline-block;
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--ui-line);
+            vertical-align: middle;
+            margin-left: 5px;
+        }
+
+        #btn-header.activo .dot {
+            background: var(--ui-accent);
+            box-shadow: 0 0 6px var(--ui-accent);
         }
 
         header .sep {
@@ -87,10 +176,22 @@
             color: var(--ui-accent);
         }
 
+        /* main ocupa el alto completo: el header flota encima y no descuenta nada. */
         main {
             display: grid;
             grid-template-columns: 1fr 380px;
+            height: 100dvh;
             min-height: 0;
+        }
+
+        /* Panel lateral plegable tambien en desktop, con el mismo boton que en
+           movil: sin el, el bot nunca llega a ocupar la pantalla entera. */
+        main.sin-panel {
+            grid-template-columns: 1fr;
+        }
+
+        main.sin-panel>#panel {
+            display: none;
         }
 
         /* El iframe va a ras, sin marco: ni damero, ni sombra, ni borde redondeado
@@ -244,8 +345,8 @@
             color: var(--ui-dim);
         }
 
-        /* El boton del panel y el backdrop solo existen en pantalla angosta. */
-        #btn-panel,
+        /* El backdrop solo existe en pantalla angosta. El boton del panel se
+           muestra siempre: en ancho pliega la columna, en angosto la desliza. */
         #backdrop {
             display: none;
         }
@@ -256,14 +357,16 @@
            del panel deja de caber al lado.
            ==================================================================== */
         @media (max-width: 900px) {
-            body {
-                /* 100dvh y no 100vh: en Safari/Chrome moviles la barra de
-                   direcciones se retrae y con 100vh el preview queda cortado. */
-                height: 100dvh;
+
+            /* Sin hover la franja no aporta, y taparia la X del bot, que en esta
+               vista ocupa la pantalla entera. Aqui el header se abre con el
+               tirador. */
+            #hotzone {
+                display: none;
             }
 
             header {
-                padding: 8px;
+                padding: 8px 8px 8px 52px;
                 gap: 6px;
             }
 
@@ -277,10 +380,6 @@
 
             .solo-ancho {
                 display: none;
-            }
-
-            #btn-panel {
-                display: inline-block;
             }
 
             #status {
@@ -345,7 +444,11 @@
 </head>
 
 <body>
-    <header>
+    <!-- Franja sensible: el header aparece al acercar el mouse al borde de arriba.
+         Va ANTES del header porque el CSS los relaciona con el combinador "+". -->
+    <div id="hotzone"></div>
+
+    <header id="ui-header">
         <button id="btn-panel" aria-expanded="false" aria-controls="panel">☰ panel</button>
         <span class="title">preview · bot /felicitaciones</span>
         <button id="btn-reload">Reiniciar bot</button>
@@ -360,6 +463,10 @@
         <button id="btn-auto" aria-pressed="true">Auto-recarga</button>
         <span id="status">esperando…</span>
     </header>
+
+    <button id="btn-header" type="button" aria-pressed="false" aria-controls="ui-header"
+        title="Mostrar u ocultar la barra (tecla H)">≡<span class="dot"></span></button>
+
     <div id="backdrop" hidden></div>
 
     <main>
@@ -665,6 +772,7 @@
                 });
 
                 status.innerHTML = 'cargado <b>' + ahora() + '</b> · ' + (texto.length / 1024).toFixed(1) + ' KB';
+                senalarActividad();
                 refrescarCatalogo(0);
             }
 
@@ -706,34 +814,88 @@
                 this.setAttribute("aria-pressed", String(autoRecarga));
             };
 
-            // Panel off-canvas (solo visible en pantalla angosta; en desktop el CSS
-            // ignora la clase y el panel es una columna fija).
+            // ---- Header flotante -------------------------------------------
+            // Oculto por defecto para que el bot se lleve la pantalla entera. En
+            // desktop basta acercar el mouse arriba (lo resuelve el CSS); el
+            // tirador y la tecla H lo dejan fijo, que es la unica via en movil.
+            var header = document.getElementById("ui-header");
+            var btnHeader = document.getElementById("btn-header");
+
+            function fijarHeader(fijo) {
+                header.classList.toggle("fijo", fijo);
+                btnHeader.setAttribute("aria-pressed", String(fijo));
+            }
+
+            btnHeader.onclick = function () {
+                fijarHeader(!header.classList.contains("fijo"));
+            };
+
+            // Destello del punto: avisa que el bot se reinyecto sin tener que
+            // abrir el header para leer el "status".
+            var timerDot = null;
+            function senalarActividad() {
+                btnHeader.classList.add("activo");
+                clearTimeout(timerDot);
+                timerDot = setTimeout(function () {
+                    btnHeader.classList.remove("activo");
+                }, 900);
+            }
+
+            // ---- Panel lateral ---------------------------------------------
+            // Angosto: off-canvas sobre el contenido, con fondo oscuro detras.
+            // Ancho: columna que se puede plegar, mismo boton.
             var panel = document.getElementById("panel");
             var backdrop = document.getElementById("backdrop");
             var btnPanel = document.getElementById("btn-panel");
+            var elMain = document.querySelector("main");
+            var mqAngosto = window.matchMedia("(max-width: 900px)");
+
+            function panelAbierto() {
+                return mqAngosto.matches
+                    ? panel.classList.contains("abierto")
+                    : !elMain.classList.contains("sin-panel");
+            }
 
             function togglePanel(abrir) {
-                panel.classList.toggle("abierto", abrir);
-                backdrop.hidden = !abrir;
+                if (mqAngosto.matches) {
+                    panel.classList.toggle("abierto", abrir);
+                    backdrop.hidden = !abrir;
+                } else {
+                    elMain.classList.toggle("sin-panel", !abrir);
+                    backdrop.hidden = true;
+                }
                 btnPanel.setAttribute("aria-expanded", String(abrir));
             }
 
-            btnPanel.onclick = function () {
-                togglePanel(!panel.classList.contains("abierto"));
-            };
+            btnPanel.onclick = function () { togglePanel(!panelAbierto()); };
             backdrop.onclick = function () { togglePanel(false); };
 
             document.addEventListener("keydown", function (e) {
-                if (e.key === "Escape" && panel.classList.contains("abierto")) {
-                    togglePanel(false);
+                // Sin atajos mientras se escribe en un campo del preview.
+                var t = e.target || {};
+                var editando = /^(INPUT|SELECT|TEXTAREA)$/.test(t.tagName || "");
+
+                if (e.key === "Escape") {
+                    if (mqAngosto.matches && panel.classList.contains("abierto")) togglePanel(false);
+                    else if (header.classList.contains("fijo")) fijarHeader(false);
+                    return;
+                }
+                if (!editando && (e.key === "h" || e.key === "H")) {
+                    fijarHeader(!header.classList.contains("fijo"));
                 }
             });
 
-            // Al volver a pantalla ancha el panel es columna otra vez: se limpia el
-            // estado para que el backdrop no quede colgado encima del contenido.
-            window.matchMedia("(max-width: 900px)").addEventListener("change", function (e) {
-                if (!e.matches) togglePanel(false);
+            // Al cruzar el breakpoint se limpia el estado del otro modo: si no, el
+            // backdrop queda colgado encima o el panel desaparece sin boton visible.
+            mqAngosto.addEventListener("change", function (e) {
+                backdrop.hidden = true;
+                panel.classList.remove("abierto");
+                elMain.classList.remove("sin-panel");
+                btnPanel.setAttribute("aria-expanded", String(!e.matches));
             });
+
+            // Estado inicial coherente con el ancho de arranque.
+            btnPanel.setAttribute("aria-expanded", String(!mqAngosto.matches));
 
             if (location.protocol === "file:") {
                 document.body.innerHTML =

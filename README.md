@@ -62,7 +62,11 @@ ipconfig getifaddr en0               # te da la IP, p. ej. 192.168.1.40
 - **Panel `digitalData`**: muestra cada evento de analítica que el bot empuja, en vivo.
 - **Panel de consola**: ahí aparecen los errores de `validateGraph`.
 - **Toggle Desktop / Móvil 390px** en pantalla ancha. En un celular no aparece, porque el ancho ya es real.
-- En pantalla angosta el panel lateral se esconde detrás del botón **☰ panel**.
+- **La barra de controles no ocupa alto.** Está oculta: el bot se queda con la pantalla entera. Para
+  sacarla, acercá el mouse al borde de arriba, tocá el **≡** de la esquina superior izquierda o apretá
+  **H**. El puntito del ≡ destella cada vez que el bot se recarga solo.
+- **El panel lateral se pliega** con **☰ panel**, tanto en pantalla ancha como angosta. Con el panel
+  plegado y la barra escondida, lo único que se ve es el bot.
 
 Se renderiza sobre un fondo neutro con solo los design tokens que `/felicitaciones` define de verdad. **La
 página real nunca se carga**: eso dispararía los píxeles de tracking de BCP, Adobe y Meta.

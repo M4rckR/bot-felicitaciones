@@ -86,6 +86,29 @@ reacts to real width), a `digitalData` panel showing every analytics event the b
 panel where `validateGraph` errors surface. A `file://` open is detected and refused with instructions,
 because the fetch would be CORS-blocked.
 
+**The header takes no height** (Marco, 2026-09-11). The harness exists to see the bot as it will really
+look, and a permanently visible bar steals screen — most of all on mobile, where the bot is full-screen. So
+the header is `position: fixed`, `translateY(-100%)` by default, and `main` is a full `100dvh`. It comes
+down on any of four triggers, which deliberately coexist: hovering the top 12px (`#hotzone`, which must
+stay the header's *previous sibling* — the CSS joins them with `+`), hovering the header itself,
+`:focus-within` so keyboard use works, and the `.fijo` class set by the `≡` handle or the **H** key.
+
+Two collisions were found and fixed while building it; both come back if the pieces move:
+
+- The handle sits at `z-index: 31`, above the header's 30, so it covered the first button. The header
+  carries `padding-left: 52px` to leave it room.
+- `#hotzone` is **disabled under 900px**. There is no hover to serve there, and a 12px strip across the top
+  would eat taps on the bot's own close button, since in that view the bot fills the screen.
+
+The `≡` handle is the only chrome always on screen, at 55% opacity, **top-left** because the bot's launcher
+lives bottom-right. Its dot flashes on re-injection, so a reload is visible without opening the header to
+read `#status`.
+
+**The side panel folds on desktop too**, through the same `☰ panel` button (`main.sin-panel`), because
+otherwise the bot never gets the full width. Under 900px that same button slides it over the content
+instead. Crossing the breakpoint resets both states — without that the backdrop stays stuck over the
+content, or the panel vanishes with no visible way back.
+
 **The harness is responsive and usable on a phone** (Marco, 2026-09-11). Three things make it work, and
 each is load-bearing:
 
@@ -97,7 +120,8 @@ each is load-bearing:
   width is already real), and the panel becomes off-canvas — `transform: translateX(100%)`, opened by the
   `☰ panel` button, closed by the backdrop or Escape. Leaving that breakpoint on a wide screen resets the
   panel, otherwise the backdrop stays stuck over the content.
-- **`height: 100dvh`, not `100vh`**, on mobile: the retracting address bar cuts the layout with `100vh`.
+- **`height: 100dvh`, not `100vh`**, on `body` and `main`: the retracting address bar cuts the layout
+  with `100vh`.
 
 **The iframe stays, the frame around it is gone** (Marco, 2026-09-11). The `#stage` wrapper — checkerboard
 background, drop shadow, rounded corners, 16px padding — was removed and the iframe is now a direct grid
