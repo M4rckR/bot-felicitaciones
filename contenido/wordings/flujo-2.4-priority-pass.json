@@ -90,19 +90,6 @@
           ]
         }
       },
-      "recomendacion": {
-        "title": "Te recomendamos esta tarjeta",
-        "badge": "La más usada",
-        "card": "&#128179; Visa Oro LATAM Pass",
-        "details": [
-          "Membresía: S/170",
-          "Exoneración: S/1 mensual en consumo."
-        ],
-        "cta": {
-          "label": "Elegir tarjeta",
-          "pendiente": "URL real sin definir"
-        }
-      },
       "menuText": "¿Qué deseas hacer ahora?",
       "opciones": [
         {
@@ -115,12 +102,6 @@
           "isClose": true
         }
       ],
-      "pendientes": [
-        "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
-        "PROVISIONAL, asumido por Marco el 2026-09-09: la tarjeta recomendada es Visa Oro LATAM Pass, que en la tabla de esta misma pantalla figura como 'No' en Priority Pass. Marco conoce la contradiccion y pidio dejarlo estatico tal cual; mas adelante entregara las CONDICIONES para elegir la tarjeta segun el caso. No cambiarla por iniciativa propia.",
-        "Los dos detalles de la tarjeta ('Membresia: S/170' y 'Exoneracion: S/1 mensual') hablan de membresia, no de Priority Pass. En las otras tres pantallas encajan; aqui quedan fuera de tema.",
-        "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir."
-      ],
       "notas": [
         "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.priorityPass de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"priorityPass\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
         "Unica tabla del set con valores booleanos ('Si'/'No') en vez de montos.",
@@ -128,6 +109,7 @@
         "2026-09-09: se quito la clase tc0091-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
         "2026-09-09: el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar', unificado en las cuatro pantallas de comparar. Correccion 7 en docs/correcciones-wording.md. CONSECUENCIA: la cadena de calificacion (mixed1, rating, rating_number, rating_thanks_auto, mixed100) quedo huerfana.",
         "2026-09-09: Marco entrego el intro definitivo ('Estas son tus tarjetas aprobadas que incluyen el beneficio Priority Pass') y pidio agregar la tarjeta recomendada, que su texto no traia. Ya no queda copy escrita por desarrollo en el bot.",
+        "2026-09-14: Marco pidio quitar la tarjeta recomendada (Visa Oro LATAM Pass) de esta pantalla, porque en su propia tabla figura sin Priority Pass. El nodo ya no lleva recommendation: queda intro + tabla + menu.",
         "El intro dice 'Estas son tus tarjetas... que incluyen el beneficio', pero la tabla lista las 17 con Si/No, no solo las que lo incluyen. Menor, planteado a Marco."
       ],
       "_advertencia": "La tabla de este archivo es el ESPEJO del orden completo. En pantalla nunca salen las 17 filas salvo que falle la deteccion: solo salen las tarjetas del usuario."

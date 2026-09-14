@@ -369,7 +369,7 @@ Three traps worth keeping:
 | Handlers | the whole `[data-response-idx]` block |
 | State | `responseActions` and `selectedResponseActionIdx` on both chatLog builders, `feedbackText` |
 | Markup | `data-feedback-node`, `data-feedback-anchor` |
-| Scroll | `scrollToLatestFeedbackStart` plus the `currentIsFeedback` / `followsFeedbackNode` branch in `adjustChatScroll`, which now always falls to `scrollBodyToBottom` |
+| Scroll | `scrollToLatestFeedbackStart` plus the `currentIsFeedback` / `followsFeedbackNode` branch in `adjustChatScroll` (which then always fell to `scrollBodyToBottom`; see *Engine changes* for the 2026-09-14 scroll rule) |
 
 Nothing was reachable: no node in this bot is `type: "response"` or carries `feedbackText`/`actions`. The
 two post-removal checks were re-run and both come back clean — **zero orphan prototype methods** (out of
@@ -395,6 +395,10 @@ experiment **TC0037** (floating "Pide tu Tarjeta de Crédito BCP" button, `.m-bu
 - Closing the panel mid-thinking persists the pending transition to `sessionStorage` under
   `tc0080_pending_transition`; reopening (`checkPendingTransition`) shows an "Error en el envío /
   Reintentar" bubble, but only if the same node and user message are still in the log.
+  **In `adobe-target/piloto/bot.html` that path is unreachable from a user close** (Marco, 2026-09-14):
+  the header X and the mask now call `close()` **and then `restart()`**, which clears the pending
+  transition and the chatLog, so reopening always starts at `q0`. Same as the in-thread `Cerrar` button,
+  which already did it. The machinery stays; `destroy()` still calls plain `close()`.
 
 ### Mobile behaviour
 
@@ -521,7 +525,7 @@ Consequences worth knowing:
 - **Both CTAs are `<button type="button">` now, not `<a href>`.** `href`, `target` and `rel` are gone from
   `createRecommendationMarkup` and `createCardBoxMarkup`; what travels instead is `data-codigo`. The
   `cta` field is down to `{label}` — a `href` there would do nothing.
-- **The four `q21`–`q24` recommendation blocks carry `codigo: "TCRORL"`**, which they needed to know which
+- **The three `q21`–`q23` recommendation blocks carry `codigo: "TCRORL"`** (`q24` has had none since 2026-09-14), which they needed to know which
   button to press. That makes the unfiltered-recommendation problem concrete rather than theoretical: for a
   user without the Visa Oro there is no native button to click, so **the CTA does nothing** and logs
   `ELEGIR_TARJETA_SIN_BOTON`. The panel is deliberately *not* closed in that case — closing it with nothing
@@ -598,7 +602,7 @@ dangles.
 | Branch | State |
 | --- | --- |
 | `q0` root menu | done |
-| `q2` "Quiero comparar mis tarjetas" + `q21`–`q24` | **done**, all four tables + recommendation cards |
+| `q2` "Quiero comparar mis tarjetas" + `q21`–`q24` | **done**, all four tables; recommendation cards on `q21`–`q23` only |
 | `q3` "Resolver dudas" + `q31`–`q33` | **done**, all three answers |
 | `q1` "Ayúdame a elegir" + `q11`–`q14` | **done** (2026-09-09) — all four are dynamic, two casuistries each |
 
@@ -635,7 +639,7 @@ A and a case B, all resolved at runtime from the user's approved cards. What rem
 | `q21` "Acumulación de millas" | done — intro + 17-row table + recommendation card + menu. Marco sent the full screen on 2026-09-09 |
 | `q22` "Membresía Anual" | done — reconfirmed verbatim against Marco's 2026-09-09 text, zero changes needed. All in **one bubble** |
 | `q23` "Exoneración de membresía" | done — reconfirmed verbatim against Marco's 2026-09-09 text, zero changes needed |
-| `q24` "Priority Pass" | done — final intro + recommendation card, both delivered 2026-09-09. The recommended card contradicts its own table, see *Still open* |
+| `q24` "Priority Pass" | done — intro + table + menu. **No recommendation card** (Marco, 2026-09-14): it recommended Visa Oro LATAM Pass, which its own table lists without Priority Pass |
 | `q11` "Viajar y acumular millas" | done 2026-09-09, and **the only dynamic screen**: it carries no text or cards of its own, just `perfilador: "viajar"`. `resolvePerfilador` reads the user's approved cards from the DOM and picks the case and the cards at runtime. All 17 cards live in `config.perfilador`. See *The perfilador is dynamic* below |
 | `q12` "Ahorrar en costos" | done 2026-09-09 — dynamic, `perfilador: "ahorrar"`. Case A = the 11 cheaper cards, case B = the 6 premium ones + the Visa Oro |
 | `q13` "Obtener más beneficios" | done 2026-09-09 — dynamic, `perfilador: "beneficios"`. Case A = 14 cards, case B = 4 |
@@ -758,6 +762,24 @@ These are real deviations from `referencia/bot-actual.html`. Diffing the two eng
   never travels in `pushChatSnapshot`; it resets in the constructor and `restart()`, and is clamped in
   `back()`. The initial opacity lives only inside the `@keyframes`, so `prefers-reduced-motion` (which
   kills animations with `!important`) leaves bubbles visible rather than invisible.
+- **A new answer is shown from its start, not scrolled to the bottom** (Marco, 2026-09-14). Jumping to the
+  bottom left the user facing the menu of a long answer without having read any of it. `adjustChatScroll`
+  now calls `scrollBodyToLatestBotStart` when the last chatLog entry is a bot message (and there is no
+  `errorRecovery` / `runtimeError`): the **user bubble with the option just chosen** sits at the top of the
+  body and the answer starts right below it (Marco asked for the chosen option to stay in view). It takes
+  the last `.tc0091-chat-bot-row`'s top, less the body's `padding-top`, less the preceding user bubble's
+  `offsetHeight` and the row's `margin-top`. **It measures the row and uses `offsetHeight` for the user
+  bubble** because both bubbles enter with a `scale()` transform that shifts `getBoundingClientRect` but not
+  `offsetHeight`. With no preceding user bubble (`q0`) it aligns the row itself.
+
+  **Both movements are smooth** (Marco, 2026-09-14: the jump felt abrupt). Scrolling goes through
+  `desplazarBody(destino, suave)`: `adjustChatScroll` passes `suave`, which measures the target once inside
+  a `requestAnimationFrame` and calls `body.scrollTo({behavior: "smooth"})` **once** — relaunching it every
+  frame, as the instant path does three times, would restart the animation. Under
+  `prefers-reduced-motion` (`prefiereMenosMovimiento`) or without `scrollTo` it falls back to the instant
+  jump. The error screen in `render()` still calls `scrollBodyToBottom()` without `suave`. While waiting (the thinking bubble) and in
+  the error states it still scrolls to the bottom, so the user's own message and the dots stay visible. A
+  short answer simply cannot scroll that far and stays put, which is fine.
 - **Panel entrance on desktop.** `shouldAnimateMobilePanel()` → `shouldAnimatePanel()`, now true at any
   width. The class/rAF/`transitionend` machinery was already there; only the mobile gate was removed.
 - **Bot avatar removed from the thread.** The `.tc0091-chat-bot-icon` span, its `iconSvg` variable and its
@@ -871,8 +893,11 @@ These are real deviations from `referencia/bot-actual.html`. Diffing the two eng
 - **The `cards` block is a horizontal carousel, not a stack** (Marco, 2026-09-10). Stacked vertically, 3–4
   cards made the bubble enormous: the user scrolled the whole panel and lost the comparison between cards.
   One card is visible at a time at 82% of the track width, so ~18% of the next one peeks past the right
-  edge, and below it sits a centred control row — gray circular prev (disabled on the first card), dots,
-  orange circular next.
+  edge, and below it sits a centred control row — prev arrow, dots, next arrow. **An arrow's colour says
+  whether there are cards that way** (Marco, 2026-09-14): enabled is CTA orange, disabled is gray
+  `#EFF0F2` at full opacity, in both directions. It used to be a fixed gray prev and orange next, dimmed
+  when disabled, which on the last card read backwards. The colour keys off `[disabled]`, which
+  `bindCarousel`'s `sincronizar` already set — the fix was CSS only.
 
   **The card itself did not change by one pixel.** `createCardBoxMarkup` was split out of
   `createCardsMarkup` verbatim, and `createCardsMarkup` now only wraps it. The `.tc0091-card*` CSS is
@@ -907,7 +932,7 @@ These are real deviations from `referencia/bot-actual.html`. Diffing the two eng
   - The active index is derived by **nearest slide `offsetLeft`**, not by dividing `scrollLeft` by a fixed
     step: the last slide snaps against the end of the scroll, so a rounded division would never select it.
   - Dots reuse the thinking-dots convention — active `#0A47F0`, inactive `#99A1AD` at 45% opacity — and the
-    next arrow reuses the CTA orange `#FF7800` / `#ff961f`. No new colours were invented.
+    arrows reuse the CTA orange `#FF7800` / `#ff961f`. No new colours were invented.
   - **Carousel navigation stays enabled in old messages**, unlike the CTAs, which still decay to disabled
     `<button>`. Browsing back through cards is not a decision that advances the flow. Unconfirmed by
     Marco.
@@ -1025,11 +1050,11 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 
 **Blocked on Marco**
 
-- **The recommended card is hardcoded and Priority Pass contradicts itself.** All four comparison screens
-  recommend *Visa Oro LATAM Pass*, but that card shows **"No"** in `q24`'s own Priority Pass table, so the
-  screen recommends a card without the benefit it is comparing. Marco knows, asked to leave it **static as
-  is**, and will supply *condiciones* later to pick the card per case (2026-09-09). **Do not change it on
-  your own initiative.**
+- **The recommended card is hardcoded.** `q21`–`q23` recommend *Visa Oro LATAM Pass* unconditionally
+  (subject only to the lead rule). Marco asked to leave it **static as is** and will supply *condiciones*
+  later to pick the card per case (2026-09-09). **Do not change it on your own initiative.** `q24`'s
+  contradiction (recommending a card its own table lists without Priority Pass) was closed on 2026-09-14 by
+  removing that screen's recommendation block.
 - **`q23`'s two Qore rows still look like membership, not exoneration, amounts**: `Visa Clásica Qore S/80`
   and `Visa Oro Qore S/170` are exactly their `q22` membership figures, while every other Qore row uses the
   exoneration scale. Marco re-sent the screen on 2026-09-09 with the same two values, so it is reproduced
@@ -1063,7 +1088,10 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 - The user bubble repeats the button label in full. Marco's mockups draw it shorter in three places
   ("Comparar tarjetas", "Resolver dudas", "…esa línea de crédito?"); adding a per-option bubble label was
   offered and **rejected**. The button wins.
-- `q24`'s missing recommendation card: Marco asked for it to be added on 2026-09-09.
+- `q24`'s recommendation card: added at Marco's request on 2026-09-09, **removed** at his request on
+  2026-09-14. Do not re-add it.
+- **The whole bot closes with `Cerrar`** (Marco, 2026-09-14). The perfilador (`q11`–`q14`) used to say
+  `Finalizar`; no `Finalizar` is left anywhere.
 - `q24`'s intro: Marco delivered the final wording on 2026-09-09. **No copy in the file is written by
   development any more.**
 

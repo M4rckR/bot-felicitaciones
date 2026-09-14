@@ -759,27 +759,21 @@
         font-family: inherit;
     }
 
-    #tc0091-scope .tc0091-carousel-arrow--prev {
-        background: #EFF0F2;
-        color: #202E44;
-    }
-
-    #tc0091-scope .tc0091-carousel-arrow--prev:hover:not([disabled]) {
-        background: #E6E6E6;
-    }
-
-    /* La flecha de avanzar usa el mismo naranja del CTA "Elegir tarjeta". */
-    #tc0091-scope .tc0091-carousel-arrow--next {
+    /* El color no depende de la direccion sino de si hay tarjetas hacia ese
+       lado (Marco, 2026-09-14): la flecha habilitada va en el naranja del CTA
+       "Elegir tarjeta" y la deshabilitada en gris, a opacidad plena. */
+    #tc0091-scope .tc0091-carousel-arrow {
         background: #FF7800;
         color: #fff;
     }
 
-    #tc0091-scope .tc0091-carousel-arrow--next:hover:not([disabled]) {
+    #tc0091-scope .tc0091-carousel-arrow:hover:not([disabled]) {
         background: #ff961f;
     }
 
     #tc0091-scope .tc0091-carousel-arrow[disabled] {
-        opacity: 0.4;
+        background: #EFF0F2;
+        color: #202E44;
         cursor: default;
     }
 
@@ -2446,9 +2440,9 @@
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
                             { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q1" },
-                            // El perfilador cierra con "Finalizar"; el resto del bot
-                            // sigue cerrando con "Cerrar" (decision de Marco).
-                            { label: "Finalizar", isClose: true },
+                            // "Finalizar" paso a "Cerrar" (Marco, 2026-09-14): todo el
+                            // bot cierra con la misma etiqueta.
+                            { label: "Cerrar", isClose: true },
                         ],
                     },
                     // 1.2 Ahorrar en costos (entregada por Marco el 2026-09-09).
@@ -2462,7 +2456,7 @@
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
                             { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q1" },
-                            { label: "Finalizar", isClose: true },
+                            { label: "Cerrar", isClose: true },
                         ],
                     },
                     // 1.3 Obtener mas beneficios (entregada por Marco el 2026-09-09).
@@ -2476,7 +2470,7 @@
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
                             { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q1" },
-                            { label: "Finalizar", isClose: true },
+                            { label: "Cerrar", isClose: true },
                         ],
                     },
                     // 1.4 Experiencias exclusivas (entregada por Marco el 2026-09-09).
@@ -2490,7 +2484,7 @@
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
                             { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q1" },
-                            { label: "Finalizar", isClose: true },
+                            { label: "Cerrar", isClose: true },
                         ],
                     },
                     // --- Pantalla "Quiero comparar mis tarjetas" (entregada por Marco) ---
@@ -2603,25 +2597,9 @@
                         type: "question",
                         className: "tc0091-node-question",
                         richText: true,
-                        // Marco pidio incluir la tarjeta recomendada aunque su texto
-                        // no la traia. Se replica la de q21-q23, que es el unico
-                        // bloque de recomendacion que existe en el proyecto.
-                        // [POR RESOLVER] Visa Oro LATAM Pass figura como "No" en la
-                        // tabla de esta misma pantalla: se recomienda una tarjeta que
-                        // no tiene el beneficio que la pantalla compara. Planteado.
-                        recommendation: {
-                            title: "Te recomendamos esta tarjeta",
-                            badge: "La más usada",
-                            card: "&#128179; Visa Oro LATAM Pass",
-                            details: [
-                                "Membresía: S/170",
-                                "Exoneración: S/1 mensual en consumo.",
-                            ],
-                            // TCRORL = Visa Oro LATAM Pass. El CTA no navega: le da
-                            // click al boton "Seleccionar" de esa tarjeta en la pagina.
-                            codigo: "TCRORL",
-                            cta: { label: "Elegir tarjeta" },
-                        },
+                        // Sin tarjeta recomendada (Marco, 2026-09-14): recomendaba
+                        // Visa Oro LATAM Pass, que en esta misma tabla figura sin
+                        // Priority Pass.
                         menuText: "¿Qué deseas hacer ahora?",
                         options: [
                             { label: "&#x21A9;&#xFE0F; Volver a las alternativas", next: "q2" },
@@ -3117,18 +3095,23 @@
                     self.open();
                 }
             });
+            // Cerrar con la X o con la mascara no conserva el hilo: al reabrir se
+            // empieza desde q0 (Marco, 2026-09-14), igual que con el boton "Cerrar".
             this.el.close.addEventListener("click", function () {
                 self.close();
+                self.restart();
             });
             this.el.panel.addEventListener("click", function (e) {
                 if (e.target && e.target.closest && e.target.closest(".tc0091-close")) {
                     self.close();
+                    self.restart();
                 }
             });
             this.el.mask.addEventListener("click", function (e) {
                 if (e && e.preventDefault) e.preventDefault();
                 if (e && e.stopPropagation) e.stopPropagation();
                 self.closeFromMask();
+                self.restart();
             });
 
             this.bindScrollIsolation();
@@ -3839,20 +3822,46 @@
             this.applyTransition(node.next);
         };
 
-        Bot.prototype.scrollBodyToBottom = function () {
+        // Lleva el scroll del panel a "destino(body)". Con suave, se desplaza con
+        // animacion (Marco, 2026-09-14: el salto directo se sentia brusco); si el
+        // usuario pide menos movimiento, o el navegador no soporta scrollTo con
+        // opciones, cae al salto directo. El destino se calcula dentro de un rAF
+        // para medir con el DOM ya pintado, y el suave se lanza una sola vez: si
+        // se relanzara en cada frame como el directo, reiniciaria su animacion.
+        Bot.prototype.desplazarBody = function (destino, suave) {
             var body = this.el.body;
             if (!body) return;
 
-            var self = this;
-            var scrollFn = function () {
-                body.scrollTop = body.scrollHeight;
+            var usarSuave = !!suave && !this.prefiereMenosMovimiento() &&
+                typeof body.scrollTo === "function";
+
+            var directo = function () {
+                body.scrollTop = Math.max(0, destino(body));
             };
 
-            scrollFn();
-            requestAnimationFrame(scrollFn);
+            if (!usarSuave) {
+                directo();
+                requestAnimationFrame(directo);
+                requestAnimationFrame(function () {
+                    directo();
+                });
+                return;
+            }
+
             requestAnimationFrame(function () {
-                scrollFn();
+                var top = Math.max(0, destino(body));
+                try {
+                    body.scrollTo({ top: top, behavior: "smooth" });
+                } catch (e) {
+                    body.scrollTop = top;
+                }
             });
+        };
+
+        Bot.prototype.scrollBodyToBottom = function (suave) {
+            this.desplazarBody(function (body) {
+                return body.scrollHeight;
+            }, suave);
         };
 
         Bot.prototype.adjustChatScroll = function (node) {
@@ -3863,11 +3872,52 @@
 
             // During waiting transitions, keep the latest UI (thinking + new action)
             if (this.isWaiting()) {
-                this.scrollBodyToBottom();
+                this.scrollBodyToBottom(true);
                 return;
             }
 
-            this.scrollBodyToBottom();
+            // Una respuesta nueva se muestra desde su inicio, no desde el final
+            // (Marco, 2026-09-14): bajar hasta el fondo dejaba al usuario frente al
+            // menu sin haber leido nada de lo de arriba.
+            var log = this.state.chatLog;
+            var ultimo = log.length ? log[log.length - 1] : null;
+            if (
+                ultimo &&
+                ultimo.role === "bot" &&
+                !this.state.errorRecovery &&
+                !this.state.runtimeError
+            ) {
+                this.scrollBodyToLatestBotStart(true);
+                return;
+            }
+
+            this.scrollBodyToBottom(true);
+        };
+
+        // Deja arriba del panel la opcion que eligio el usuario y, debajo, el
+        // inicio de la respuesta (Marco, 2026-09-14). Se mide la fila del bot
+        // (.tc0091-chat-bot-row), que no se anima, y se le resta la altura de la
+        // burbuja del usuario con offsetHeight: esa burbuja entra con un transform
+        // de escala que falsea su getBoundingClientRect, pero no su offsetHeight.
+        Bot.prototype.scrollBodyToLatestBotStart = function (suave) {
+            this.desplazarBody(function (body) {
+                var filas = body.querySelectorAll(".tc0091-chat-bot-row");
+                var fila = filas.length ? filas[filas.length - 1] : null;
+                if (!fila) return body.scrollHeight;
+
+                var margen = parseFloat(window.getComputedStyle(body).paddingTop) || 0;
+                var top = fila.getBoundingClientRect().top -
+                    body.getBoundingClientRect().top +
+                    body.scrollTop -
+                    margen;
+
+                var anterior = fila.previousElementSibling;
+                if (anterior && anterior.classList.contains("tc0091-chat-item--user")) {
+                    top -= anterior.offsetHeight +
+                        (parseFloat(window.getComputedStyle(fila).marginTop) || 0);
+                }
+                return top;
+            }, suave);
         };
 
         Bot.prototype.goTo = function (id, selectedLabel, meta) {

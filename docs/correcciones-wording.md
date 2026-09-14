@@ -266,9 +266,14 @@ Debajo del carrusel hay una fila de controles centrada:
 
 | Control | Cómo se ve |
 | --- | --- |
-| Flecha anterior | círculo gris, **deshabilitada** cuando estás en la primera tarjeta |
+| Flecha anterior | círculo **naranja** si hay tarjetas hacia la izquierda; **gris y deshabilitada** en la primera tarjeta |
 | Puntos de posición | el activo azul, los inactivos gris claro. Son clickeables |
-| Flecha siguiente | círculo naranja, el mismo naranja del botón "Elegir tarjeta" |
+| Flecha siguiente | círculo **naranja** si hay tarjetas hacia la derecha; **gris y deshabilitada** en la última tarjeta |
+
+**El color de las flechas indica hacia dónde hay más tarjetas** (corregido el 2026-09-14). Antes la flecha
+anterior era siempre gris y la siguiente siempre naranja, y la deshabilitada solo se atenuaba: en la última
+tarjeta quedaba un naranja desvaído a la derecha y un gris activo a la izquierda, al revés de lo que había
+que comunicar. Ahora naranja es "hay opciones por este lado" y gris es "no hay más", en ambas direcciones.
 
 **La tarjeta en sí no cambió en nada**: mismo fondo, mismo borde fino, mismas esquinas redondeadas, mismo
 título azul marino, misma bajada, mismas viñetas y el mismo botón naranja alineado a la derecha. El borde
@@ -348,6 +353,19 @@ Esto es lo más útil de saber para quien escribe la copy:
 Se implementó así porque un mockup encadenaba dos frases sin espacio entre ellas y reservaba el aire para
 separar bloques de idea. Ahora esa intención se puede expresar directamente en el texto.
 
+### Cada respuesta se muestra desde su inicio
+
+**Decidido el 2026-09-14.** Al elegir una opción, el chat bajaba solo hasta el final de la respuesta. En las
+pantallas largas (tablas, carrusel) el usuario quedaba frente al menú "¿Qué deseas hacer ahora?" sin haber
+visto nada de lo de arriba.
+
+**Ahora arriba del panel queda la opción que eligió el usuario y, justo debajo, el inicio de la respuesta**,
+y el usuario baja leyendo.
+Mientras el bot "piensa", el chat sigue bajando para mostrar el mensaje del usuario y los puntos de espera.
+
+**El movimiento es suave, no un salto**, tanto al bajar a los puntos de espera como al subir a la respuesta.
+Si el usuario tiene activado "reducir movimiento" en su sistema, se respeta y el desplazamiento es directo.
+
 ---
 
 ## Parte 3 — Diferencias deliberadas con el Figma
@@ -405,7 +423,9 @@ No son correcciones ni decisiones de diseño: son cambios de qué dice el bot, p
 | Resolver dudas | Pasó de **5 preguntas a 3**. Salieron "¿Qué beneficios tiene mi tarjeta?", "¿Cuánto cuesta la membresía?" y "¿Puedo exonerar la membresía?". Entró "¿Por qué me ofrecieron esa línea?". |
 | Ayúdame a elegir una tarjeta | "te recomendaré **solo la opción**" pasó a "te recomendaré **algunas opciones**". |
 | Viajar y acumular millas (1.1) | El segundo caso —el del usuario que no tiene tarjetas de millas— **sale sin la Visa Oro LATAM Pass**. Ver abajo. |
-| Viajar y acumular millas (1.1) | El botón de cierre es **"Finalizar"**, no "Cerrar" como el resto del bot. Ver abajo. |
+| Las cuatro pantallas del perfilador (1.1 a 1.4) | El botón de cierre pasó de **"Finalizar"** a **"Cerrar"**, como el resto del bot. Ver abajo. |
+| Priority Pass (2.4) | **Sale el recuadro "Te recomendamos esta tarjeta"**. Recomendaba la Visa Oro LATAM Pass, que en la tabla de esa misma pantalla figura sin Priority Pass. Ver abajo. |
+| Todo el bot | **Cerrar el bot con la X ya no conserva la conversación**: al volver a abrirlo empieza desde el inicio. Ver abajo. |
 
 ### 1.1 — la Visa Oro se sale del segundo caso
 
@@ -425,17 +445,33 @@ marcada como "La más usada".
 *Si UI pregunta:* no es un cambio de estilo ni de prioridad comercial. Es que la tarjeta que se recomendaba
 era exactamente la que el texto acababa de decir que el usuario no tenía.
 
-### 1.1 — el botón de cierre dice "Finalizar"
+### Perfilador — el botón de cierre pasa de "Finalizar" a "Cerrar"
 
-Las siete pantallas terminadas del bot cierran con **"Cerrar"**, que fue una unificación acordada (ver
-corrección 7). El texto de 1.1 llegó con **"Finalizar"**.
+Las pantallas de Comparar y Resolver dudas cierran con **"Cerrar"**, que fue una unificación acordada (ver
+corrección 7). El texto de 1.1 llegó con **"Finalizar"**, y el 2026-09-09 se decidió mantenerlo solo en el
+perfilador, lo que dejaba **dos etiquetas distintas para la misma acción**.
 
-**Se decidió mantener "Finalizar", pero solo en el perfilador** (las cuatro pantallas de "Ayúdame a elegir
-una tarjeta"). Comparar y Resolver dudas siguen con "Cerrar".
+**El 2026-09-14 se unificó:** las cuatro pantallas de "Ayúdame a elegir una tarjeta" cierran ahora con
+"Cerrar". Ya no queda ningún "Finalizar" en el bot.
 
-*Conviene saberlo antes de la reunión:* quedan **dos etiquetas distintas para la misma acción** dentro del
-mismo bot. Es una decisión tomada, no un descuido, pero es lo primero que va a saltar si alguien compara
-pantallas.
+### Priority Pass — sale la tarjeta recomendada
+
+Las cuatro pantallas de comparación recomendaban la **Visa Oro LATAM Pass**. En Priority Pass eso no
+encajaba: la tabla de esa misma pantalla la muestra con **"No"**, así que el bot decía "estas son tus
+tarjetas que incluyen Priority Pass" y recomendaba una que no lo incluye. Además los dos detalles del
+recuadro ("Membresía: S/170", "Exoneración: S/1 mensual en consumo") no hablaban de Priority Pass.
+
+**Se decidió el 2026-09-14 quitar el recuadro de esa pantalla.** Priority Pass queda con el intro, la tabla
+y el menú "¿Qué deseas hacer ahora?". Las otras tres pantallas de comparación no cambian.
+
+### Cerrar con la X reinicia la conversación
+
+Hasta ahora, cerrar el panel con la X (o tocando fuera de él) solo lo ocultaba: al reabrir, la conversación
+seguía donde había quedado. El botón "Cerrar" del final de cada pantalla, en cambio, ya empezaba de cero.
+
+**Desde el 2026-09-14 las dos formas de cerrar se comportan igual:** al volver a abrir el bot, arranca desde
+el saludo inicial. Consecuencia: el aviso "Error en el envío / Reintentar", que aparecía al reabrir si se
+había cerrado el panel mientras el bot "pensaba", ya no puede mostrarse por esa vía.
 
 ---
 
@@ -534,10 +570,8 @@ tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mi
 | Qué | Detalle |
 | --- | --- |
 | Las tres preguntas retiradas | ¿Salen del bot definitivamente o reaparecen en otra pantalla? |
-| **El recuadro "Te recomendamos esta tarjeta" no siempre aparece** | Resuelto el 2026-09-11: ese recuadro **solo se muestra si el cliente tiene esa tarjeta aprobada**, igual que las tarjetas del perfilador. Es la misma regla en todo el bot: nunca se muestra una tarjeta que el cliente no pueda pedir.<br><br>Hoy las cuatro pantallas de comparación recomiendan la **Visa Oro LATAM Pass**, así que quien no la tenga ve la tabla y el menú, pero sin el recuadro. Antes se le mostraba igual, con un botón que no llevaba a ningún lado.<br><br>Cuando se definan las condiciones para elegir la tarjeta recomendada según el caso, el recuadro pasará a mostrarse más seguido, porque la tarjeta será una que el cliente sí tiene. |
+| **El recuadro "Te recomendamos esta tarjeta" no siempre aparece** | Resuelto el 2026-09-11: ese recuadro **solo se muestra si el cliente tiene esa tarjeta aprobada**, igual que las tarjetas del perfilador. Es la misma regla en todo el bot: nunca se muestra una tarjeta que el cliente no pueda pedir.<br><br>Hoy las pantallas de millas, membresía y exoneración recomiendan la **Visa Oro LATAM Pass** (Priority Pass ya no lleva recuadro desde el 2026-09-14), así que quien no la tenga ve la tabla y el menú, pero sin el recuadro. Antes se le mostraba igual, con un botón que no llevaba a ningún lado.<br><br>Cuando se definan las condiciones para elegir la tarjeta recomendada según el caso, el recuadro pasará a mostrarse más seguido, porque la tarjeta será una que el cliente sí tiene. |
 | Última burbuja del flujo | Dice "¿Qué deseas hacer ahora?" con un único botón "Cerrar", y por la regla de ancho ocupa el 100%, lo que la deja con mucho espacio vacío. Falta decidir si se deja pareja con los demás menús o se hace una excepción. |
-| **Priority Pass recomienda una tarjeta que no tiene Priority Pass** | Las cuatro pantallas de comparación recomiendan la misma tarjeta: **Visa Oro LATAM Pass**. En tres de ellas encaja. En Priority Pass **no**: esa tarjeta figura como "No" en la tabla de esa misma pantalla. Queda diciendo "estas son tus tarjetas que incluyen Priority Pass" y recomendando una que no lo incluye.<br><br>El bloque se agregó por pedido expreso, replicando el de las otras tres. **Es provisional y está asumido:** la tarjeta recomendada hoy está fija en las cuatro pantallas, y más adelante se van a definir las condiciones para que se elija según el caso. Cuando eso ocurra, esta pantalla debería recomendar alguna de las que sí tienen el beneficio (Visa Signature LATAM Pass, Visa Infinite Sapphire, Visa Infinite Iridium, American Express Black LATAM Pass, Visa Signature Qore o Visa Infinite Qore). |
-| Los datos de la tarjeta recomendada no aplican en Priority Pass | Los dos detalles del recuadro — "Membresía: S/170" y "Exoneración: S/1 mensual en consumo" — hablan de membresía. En las otras tres pantallas tienen sentido; en Priority Pass quedan fuera de tema. |
 | Priority Pass: el intro y la tabla no dicen lo mismo | El intro dice *"Estas son tus tarjetas aprobadas **que incluyen** el beneficio Priority Pass"*, lo que sugiere una lista filtrada, pero la tabla muestra las 17 tarjetas con Sí/No. Es menor, pero puede confundir. |
 
 ---
@@ -550,5 +584,5 @@ afectan a todo el chat. Hay **4 diferencias deliberadas** con el Figma que no so
 ninguna frase escrita por desarrollo**: todo el texto del bot lo escribió el equipo de contenido.
 
 Quedan abiertos: **datos de dos tablas** que parecen mal copiados, una decisión sobre **la encuesta de
-satisfacción, que quedó sin forma de aparecer**, y el hecho de que el bot ahora **cierra con dos etiquetas
-distintas** ("Cerrar" en la mayoría, "Finalizar" en el perfilador).
+satisfacción, que quedó sin forma de aparecer**. El cierre ya usa **una sola etiqueta** ("Cerrar") en
+todo el bot desde el 2026-09-14.

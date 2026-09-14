@@ -273,7 +273,7 @@
             "asumido": true
           },
           {
-            "label": "Finalizar",
+            "label": "Cerrar",
             "isClose": true
           }
         ]
@@ -289,7 +289,7 @@
       "notas": [
         "2026-09-09: Marco entrego el ORDEN y la COPY de la pantalla 1.1, con dos casuisticas. Decidido: el bot muestra como maximo 4 tarjetas de la lista, las que el usuario tenga.",
         "2026-09-09: el caso B va SIN la Visa Oro LATAM Pass (ver eliminado_2026-09-09).",
-        "2026-09-09: esta pantalla cierra con 'Finalizar', no con 'Cerrar'. Marco decidio que la diferencia aplica solo al perfilador: q21-q24 y q31-q33 siguen con 'Cerrar'.",
+        "2026-09-09: esta pantalla cerraba con 'Finalizar'. El 2026-09-14 Marco lo cambio a 'Cerrar' en las cuatro pantallas del perfilador: todo el bot cierra ahora con la misma etiqueta.",
         "2026-09-09 IMPLEMENTADO: q11 pinta el caso A con 4 tarjetas (Iridium, Sapphire, Signature LATAM Pass y Visa Oro con badge), elegidas por Marco como 'las 3 primeras + la Oro'.",
         "2026-09-09: Marco pidio dejar de hacerlo estatico. Se implemento la deteccion real de leads (getLeadCardCodes lee los <xt21-card-option> del DOM) y q11b se elimino: los dos casos los resuelve el mismo nodo q11.",
         "2026-09-09: tres erratas aprobadas y aplicadas: 'Shapphire'->'Sapphire', 'que quiere'->'que quieren', 'Visa infinite Qore'->'Visa Infinite Qore'. Y la grafia 'Amex' se unifico en todo el bot; el 2026-09-11 Marco la reemplazo por el nombre completo 'American Express'.",
@@ -546,7 +546,7 @@
             "next": "q1"
           },
           {
-            "label": "Finalizar",
+            "label": "Cerrar",
             "isClose": true
           }
         ]
@@ -812,7 +812,7 @@
             "next": "q1"
           },
           {
-            "label": "Finalizar",
+            "label": "Cerrar",
             "isClose": true
           }
         ]
@@ -1091,7 +1091,7 @@
             "next": "q1"
           },
           {
-            "label": "Finalizar",
+            "label": "Cerrar",
             "isClose": true
           }
         ]
