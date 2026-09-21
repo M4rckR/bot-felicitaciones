@@ -12,95 +12,66 @@
       "richText": true,
       "titulo": "",
       "texto": {
-        "intro": "¡Buena elección! &#128522; Estas son las millas por consumo mensual.",
-        "tabla": {
-          "encabezado": [
-            "Tarjeta",
-            "Acumulación por consumo mensual"
-          ],
-          "filas": [
-            [
-              "Visa Clásica LATAM Pass",
-              "1 milla por $2"
-            ],
-            [
-              "Visa Oro LATAM Pass",
-              "1 Milla por $1.5"
-            ],
-            [
-              "Visa Platinum LATAM Pass",
-              "1 milla por $1"
-            ],
-            [
-              "Visa Signature LATAM Pass",
-              "1.25 millas por $1"
-            ],
-            [
-              "Visa Infinite Sapphire LATAM Pass",
-              "Hasta 1.5 millas por $1"
-            ],
-            [
-              "Visa Infinite Iridium LATAM Pass",
-              "Hasta 2 millas por $1 de consumo."
-            ],
-            [
-              "Visa Light",
-              "No Aplica"
-            ],
-            [
-              "Visa Clásica",
-              "No Aplica"
-            ],
-            [
-              "American Express Clásica LATAM Pass",
-              "1 milla por cada $2"
-            ],
-            [
-              "American Express Oro LATAM Pass",
-              "1 milla por cada $1.5"
-            ],
-            [
-              "American Express Platinum LATAM Pass",
-              "1 milla por $1"
-            ],
-            [
-              "American Express Black LATAM Pass",
-              "1.5 millas por $1"
-            ],
-            [
-              "Visa Clásica Qore",
-              "No Aplica"
-            ],
-            [
-              "Visa Oro Qore",
-              "No Aplica"
-            ],
-            [
-              "Visa Platinum Qore",
-              "No Aplica"
-            ],
-            [
-              "Visa Signature Qore",
-              "No Aplica"
-            ],
-            [
-              "Visa Infinite Qore",
-              "No Aplica"
-            ]
-          ]
-        }
+        "saludo": "¡Buena elección! &#128522;",
+        "regla_dinamica": {
+          "latam_y_qore": "Muestra primero la tabla de millas y después la tabla de puntos.",
+          "solo_latam": "Muestra únicamente la tabla de millas.",
+          "solo_qore": "Muestra únicamente la tabla de puntos.",
+          "sin_programa": "Conserva la salida 'No Aplica' para tarjetas sin LATAM Pass ni Qore."
+        },
+        "secciones": [
+          {
+            "programa": "millas",
+            "intro": "Estas son las millas por consumo mensual.",
+            "tabla": {
+              "encabezado": [
+                "Tarjeta",
+                "Acumulación por consumo mensual"
+              ],
+              "filas": [
+                ["Visa Clásica LATAM Pass", "1 milla por $2"],
+                ["Visa Oro LATAM Pass", "1 Milla por $1.5"],
+                ["Visa Platinum LATAM Pass", "1 milla por $1"],
+                ["Visa Signature LATAM Pass", "1.25 millas por $1"],
+                ["Visa Infinite Sapphire LATAM Pass", "Hasta 1.5 millas por $1"],
+                ["Visa Infinite Iridium LATAM Pass", "Hasta 2 millas por $1 de consumo."],
+                ["American Express Clásica LATAM Pass", "1 milla por cada $2"],
+                ["American Express Oro LATAM Pass", "1 milla por cada $1.5"],
+                ["American Express Platinum LATAM Pass", "1 milla por $1"],
+                ["American Express Black LATAM Pass", "1.5 millas por $1"]
+              ]
+            }
+          },
+          {
+            "programa": "puntos",
+            "intro": "Estos son los puntos por consumo mensual",
+            "tabla": {
+              "encabezado": [
+                "Tarjeta",
+                "Acumulación de puntos por consumo mensual"
+              ],
+              "filas": [
+                ["Visa Clásica Qore", "1 Punto Qore por cada $2"],
+                ["Visa Oro Qore", "1 Punto Qore por cada $1"],
+                ["Visa Platinum Qore", "Hasta 1.5 Puntos Qore por cada $1"],
+                ["Visa Signature Qore", "Hasta 2.5 Puntos Qore por cada $1"],
+                ["Visa Infinite Qore", "Hasta 3 Puntos Qore por cada $1"]
+              ]
+            }
+          }
+        ]
       },
       "recomendacion": {
         "title": "Te recomendamos esta tarjeta",
         "badge": "La más usada",
-        "card": "&#128179; Visa Oro LATAM Pass",
+        "card": "&#128179; Visa Oro Qore",
+        "codigo": "TCRLY3",
         "details": [
-          "Membresía: S/170",
-          "Exoneración: S/1 mensual en consumo."
+          "Acumula 1 Punto Qore por cada $1 de consumo."
         ],
         "cta": {
           "label": "Elegir tarjeta",
-          "pendiente": "URL real sin definir"
+          "accion": "Activa el botón Seleccionar de TCRLY3 en la página"
         }
       },
       "menuText": "¿Qué deseas hacer ahora?",
@@ -116,19 +87,21 @@
         }
       ],
       "pendientes": [
-        "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
         "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir."
       ],
       "notas": [
-        "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.millas de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"millas\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
+        "2026-09-21: la recomendación se alineó con Figma: Visa Oro Qore y el texto 'Acumula 1 Punto Qore por cada $1 de consumo.'. Solo se muestra cuando TCRLY3 está entre las tarjetas aprobadas.",
+        "2026-09-21: la pantalla es dinámica por programa. Con tarjetas LATAM Pass y Qore muestra ambas tablas; con solo LATAM Pass muestra millas; con solo Qore muestra puntos. Las filas se filtran además por las tarjetas aprobadas del usuario.",
+        "El wording de la tabla Qore se tomó del Figma indicado por Marco. El 2026-09-21 se normalizó la errata 'Puntos Qores' a 'Puntos Qore'.",
+        "2026-09-09: la tabla dejó de estar escrita en el nodo. Ahora vive en config.comparador.millas de adobe-target/piloto/bot.html y el nodo solo lleva 'comparador: \"millas\"'. Desde el 2026-09-21 la configuración tiene secciones separadas de millas y puntos. resolveComparador filtra ambas por las tarjetas aprobadas; si falla la detección, muestra las dos tablas completas.",
         "Irregularidades reproducidas verbatim (no corregir sin Marco): 'Visa Oro LATAM Pass' escribe 'Milla' con mayuscula, la fila de Visa Infinite Iridium es la unica que termina en punto. El 2026-09-11 Marco completo el 'Pass' final de 'American Express Black LATAM Pass', que antes era la unica fila sin el.",
-        "Orden de tarjetas: Visa Light y Visa Clasica en posiciones 7-8, American Express Clasica en la 9. Coincide con 2.3 pero NO con 2.2.",
+        "Las tarjetas sin programa LATAM Pass ni Qore ya no se mezclan con las tablas principales. Si son las únicas detectadas, conservan la salida anterior 'No Aplica'.",
         "2026-09-09: se quito la clase tc0091-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
         "2026-09-09: corregido 'Estos son las millas' -> 'Estas son las millas'. Aprobado por Marco. Ver docs/correcciones-wording.md.",
         "2026-09-09: Marco entrego la pantalla completa. Se agrego la tarjeta recomendada (identica a la de q22) y el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar'. OJO: q22, q23 y q24 todavia cierran con '✅ Elegir una tarjeta'; falta confirmar si tambien cambian.",
         "El intro se mantiene como 'Estas son las millas' (correccion 4 ya aprobada), aunque el texto que Marco reenvio el 2026-09-09 volvia a decir 'Estos'."
       ],
-      "_advertencia": "La tabla de este archivo es el ESPEJO del orden completo. En pantalla nunca salen las 17 filas salvo que falle la deteccion: solo salen las tarjetas del usuario."
+      "_advertencia": "Las tablas de este archivo son el ESPEJO del orden completo. En pantalla solo salen los programas y las tarjetas aprobadas del usuario; si falla la detección, se muestran completas las tablas de millas y puntos."
     }
   ]
 }

@@ -18,7 +18,13 @@
       },
       "opciones": [
         {
-          "label": "Acumulación de millas por consumo",
+          "label": "Acumulación de millas / Puntos",
+          "label_dinamico": {
+            "latam_y_qore": "Acumulación de millas / Puntos",
+            "solo_latam": "Acumulación de millas",
+            "solo_qore": "Acumulación de puntos",
+            "sin_programa_o_sin_deteccion": "Acumulación de millas / Puntos"
+          },
           "next": "q21",
           "marco": "2.1"
         },
@@ -42,6 +48,7 @@
     }
   ],
   "notas": [
+    "2026-09-21: la primera opción es dinámica según las tarjetas aprobadas detectadas. LATAM Pass + Qore: 'Acumulación de millas / Puntos'; solo LATAM Pass: 'Acumulación de millas'; solo Qore: 'Acumulación de puntos'. Si no se detecta un programa o falla la detección, usa el texto general de millas / puntos.",
     "Estas cuatro opciones son las unicas del bot SIN emoji. CONFIRMADO por el mockup de Marco del 2026-09-09: es intencional, no un olvido.",
     "Las cuatro pantallas destino cierran con el mismo bloque, confirmado por Marco el 2026-09-06: menuText '¿Que deseas hacer ahora?' + exactamente '↩️ Volver a las alternativas' (-> q2) y '✅ Elegir una tarjeta'. Ninguna ofrece 'Ir al menu principal'. Mantenerlas identicas.",
     "El orden de tarjetas NO es el mismo en las cuatro tablas y no se debe normalizar: cada pantalla reproduce verbatim la lista que mando Marco. afinidad-tarjetas.json no ordena estas tablas.",

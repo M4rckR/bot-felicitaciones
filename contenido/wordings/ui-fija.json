@@ -7,12 +7,11 @@
     "ubicacion": "markup, adobe-target/piloto/bot.html lineas 1207-1233",
     "burbuja_bienvenida": {
       "lineas_de_texto": [
-        "¡Hola! Soy Tarjetín. &#128075;",
-        "¿En qué te puedo ayudar?"
+        "¡Hola! Te ayudaré a elegir una tarjeta"
       ],
       "notas": [
-        "Se emiten como dos <span class='tc0091-welcome-line'>, no con <br>: el motor no usa <br> en ninguna parte.",
-        "Aqui SI lleva '¡' de apertura, a diferencia del saludo de q0 ('Hola! 👋 Soy Tarjetín.'). Marco confirmo que la diferencia es intencional: q0 calca el mockup."
+        "Se emite en un <span class='tc0091-welcome-line'> y el ancho de la burbuja decide el salto visual.",
+        "2026-09-21: se alineó con Figma. El saludo conversacional de q0 conserva su wording propio."
       ]
     },
     "aria_label_burbuja": "Abrir bot",

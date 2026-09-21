@@ -59,7 +59,7 @@
       "titulo": "",
       "entregado": "2026-09-09, como texto plano. Sin captura todavia.",
       "ordenDeTarjetas": "tarjetas-catalogo.json -> casuisticasPorCriterio.viajar",
-      "reglaDeCantidad": "Caso A: hasta 3 tarjetas del orden mas la Visa Oro al final, y la Oro SOLO si el usuario la tiene (si no, se muestran 3). Caso B: hasta 4, sin destacada. Implementado en recortarConDestacada y resolvePerfilador.",
+      "reglaDeCantidad": "Caso A: hasta 3 tarjetas del orden mas la DESTACADA al final. Caso B: hasta 4, y desde el 2026-09-21 TAMBIEN con destacada (Marco: 'tambien en verde'); ahi el corte baja a 3 solo cuando el usuario la tiene, para que el total siga siendo 4 y nadie pierda una tarjeta. En los dos casos la destacada va SOLO si el usuario la tiene: si no, el caso A muestra 3 y el caso B muestra 4, sin recuadro verde. La destacada es la Visa Oro Qore (TCRLY3) y su ficha vive en config.perfilador.destacada, no en la lista del criterio, por eso aparece igual en los cuatro. Implementado en recortarConDestacada, tieneDestacada y resolvePerfilador.",
       "casoA": {
         "cuando": "el usuario tiene al menos una tarjeta LATAM Pass",
         "nodo": "q11",
@@ -70,7 +70,7 @@
             "nombre": "&#128179; Visa Infinite Iridium LATAM Pass",
             "descripcion": "Ideal para acumular millas y canjearlas por viajes o beneficios LATAM.",
             "vinetas": [
-              "Hasta 15,000 Millas de bienvenida.",
+              "Hasta 15,000 Millas de bienvenida solo por digital.",
               "Acumula hasta 2 Millas por cada $1 de consumo.*",
               "Priority Pass para titular + 4 invitados.",
               "Equipaje adicional LATAM.",
@@ -85,7 +85,7 @@
             "nombre": "&#128179; Visa Infinite Sapphire LATAM Pass",
             "descripcion": "Ideal para viajeros frecuentes que buscan más beneficios.",
             "vinetas": [
-              "Hasta 10,000 Millas de bienvenida.",
+              "Hasta 10,000 Millas de bienvenida solo por digital.",
               "Acumula hasta 1.5 Millas por cada $1 de consumo.",
               "Priority Pass para titular + 3 invitados.",
               "Equipaje adicional LATAM.",
@@ -99,7 +99,7 @@
             "nombre": "&#128179; Visa Signature LATAM Pass",
             "descripcion": "Ideal para acumular millas para tus viajes.",
             "vinetas": [
-              "6,000 Millas de bienvenida",
+              "6,000 Millas de bienvenida solo por digital.",
               "Acumula hasta 1.25 Millas por cada $1 de consumo",
               "Priority Pass para titular + 2 invitados.",
               "Visa Airport Companion.",
@@ -111,7 +111,7 @@
             "nombre": "&#128179; American Express Black LATAM Pass",
             "descripcion": "Ideal para disfrutar experiencias premium en los viajes.",
             "vinetas": [
-              "6,000 Millas de bienvenida.",
+              "6,000 Millas de bienvenida solo por digital.",
               "Acumula hasta 1.5 Millas por cada $1 de consumo.",
               "Priority Pass para titular + 2 invitados.",
               "Beneficios premium en viajes",
@@ -124,7 +124,7 @@
             "nombre": "&#128179; American Express Platinum LATAM Pass",
             "descripcion": "Ideal para viajeros frecuentes que quieren beneficios premium.",
             "vinetas": [
-              "3,000 Millas de bienvenida",
+              "3,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1 de consumo.",
               "Combina beneficios de viaje y experiencia premium."
             ],
@@ -132,22 +132,21 @@
             "nota": "Entregado como 'que quiere beneficios', que no concuerda con 'viajeros'. Marco aprobo 'quieren' el 2026-09-09."
           },
           {
-            "badge": "La más usada",
             "nombre": "&#128179; Visa Oro LATAM Pass",
             "descripcion": "Ideal para quienes buscan acumular millas en sus compras diarias.",
             "vinetas": [
-              "2,000 Millas de bienvenida",
+              "2,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1.5 de consumo.",
               "Participa en campañas multiplicadoras de millas."
             ],
             "cta": "Elegir tarjeta",
-            "nota": "Es la unica con badge, y el badge es lo que le pone el borde verde. En el ORDEN maestro va en la posicion 6; en el HTML, que solo pinta 4, queda cuarta."
+            "nota": "Es la unica con badge, y el badge es lo que le pone el borde verde. En el ORDEN maestro va en la posicion 6; en el HTML, que solo pinta 4, queda cuarta. Hasta el 2026-09-21 esta ficha llevaba el badge 'La más usada' y era la destacada; ahora la destacada es la Visa Oro Qore y esta tarjeta queda como una mas del orden."
           },
           {
             "nombre": "&#128179; Visa Platinum LATAM Pass",
             "descripcion": "Ideal para quienes buscan millas y beneficios de viaje.",
             "vinetas": [
-              "3,000 Millas de bienvenida",
+              "3,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1 de consumo.",
               "Buen equilibrio entre beneficios de viaje y costo de acceso."
             ],
@@ -157,7 +156,7 @@
             "nombre": "&#128179; American Express Oro LATAM Pass",
             "descripcion": "Ideal para quienes buscan acumular más millas para viajar.",
             "vinetas": [
-              "2,000 Millas de bienvenida",
+              "2,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1.5 de consumo.",
               "Beneficios LATAM con mayor acumulación que una tarjeta clásica."
             ],
@@ -167,7 +166,7 @@
             "nombre": "&#128179; Visa Clásica LATAM Pass",
             "descripcion": "Ideal para quienes buscan acumular más millas para viajar.",
             "vinetas": [
-              "1,000 Millas de bienvenida",
+              "1,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $2 de consumo.",
               "La forma más accesible de ingresar al programa LATAM Pass."
             ],
@@ -178,7 +177,7 @@
             "nombre": "&#128179; American Express Clásica LATAM Pass",
             "descripcion": "Ideal para quienes buscan acumular millas en sus compras diarias.",
             "vinetas": [
-              "1,000 Millas de bienvenida",
+              "1,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $2 de consumo.",
               "Permite acceder a beneficios LATAM con una membresía más accesible."
             ],
@@ -190,7 +189,7 @@
       "casoB": {
         "cuando": "el usuario no tiene ninguna tarjeta enfocada en millas",
         "nodo": "q11b",
-        "enElHtml": "las 7 estan en config.perfilador. En pantalla salen las primeras 4 que el usuario tenga; aqui no hay destacada porque la Visa Oro no forma parte del caso.",
+        "enElHtml": "las 7 estan en config.perfilador. En pantalla salen hasta 4: las primeras que el usuario tenga, mas la destacada al final si la tiene. Desde el 2026-09-21 el caso B tambien lleva destacada; antes no.",
         "intro": "Actualmente no cuentas con una tarjeta especializada en acumulación de millas o beneficios para viajes. Sin embargo, estas son las mejores opciones disponibles dentro de tus tarjetas aprobadas.",
         "tarjetas": [
           {
@@ -310,7 +309,7 @@
       "entregado": "2026-09-09 por Marco, como texto plano. Sin captura.",
       "flujoMarco": "1.2 Ahorrar en costos",
       "_advertencia": "El nodo lleva 'perfilador: \"ahorrar\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.ahorrar dentro de adobe-target/piloto/bot.html; esto es el espejo legible.",
-      "reglaDeCantidad": "Caso A: hasta 3 del orden mas la Visa Oro al final, y solo si el usuario la tiene. Caso B: hasta 4.",
+      "reglaDeCantidad": "Caso A: hasta 3 tarjetas del orden mas la DESTACADA al final. Caso B: hasta 4, y desde el 2026-09-21 TAMBIEN con destacada (Marco: 'tambien en verde'); ahi el corte baja a 3 solo cuando el usuario la tiene, para que el total siga siendo 4 y nadie pierda una tarjeta. En los dos casos la destacada va SOLO si el usuario la tiene: si no, el caso A muestra 3 y el caso B muestra 4, sin recuadro verde. La destacada es la Visa Oro Qore (TCRLY3) y su ficha vive en config.perfilador.destacada, no en la lista del criterio, por eso aparece igual en los cuatro. Implementado en recortarConDestacada, tieneDestacada y resolvePerfilador.",
       "casoA": {
         "intro": "¡Buena elección! &#128522; Estas son las mejores tarjetas aprobadas que mejor se adaptan a ti.",
         "tarjetas": [
@@ -319,7 +318,7 @@
             "codigo": "TCRMIN",
             "descripcion": "Ideal para quienes buscan controlar sus gastos del día a día.",
             "vinetas": [
-              "Membresía 0 sin consumo mínimo",
+              "Membresía 0 sin consumo mínimo.",
               "Cuotas Sin Intereses en comercios afiliados."
             ],
             "cta": "Elegir tarjeta"
@@ -327,10 +326,9 @@
           {
             "nombre": "&#128179; Visa Clásica",
             "codigo": null,
-            "descripcion": "Ideal para quienes buscan acumular millas con costos bajos.",
+            "descripcion": "Ideal para quienes buscan cashback y costos bajos.",
             "vinetas": [
-              "Membresía anual de S/80.",
-              "Exoneración consumiendo S/1 al mes.",
+              "Membresía anual S/80 **(GRATIS si consumes S/50 al mes).**",
               "Acceso a descuentos y promociones BCP.",
               "Cuotas Sin Intereses en comercios afiliados."
             ],
@@ -341,10 +339,9 @@
             "codigo": "TCRCLL",
             "descripcion": "Ideal para quienes buscan practicidad en sus compras.",
             "vinetas": [
-              "Membresía anual de S/80.",
-              "Exoneración consumiendo S/1 al mes.",
+              "Membresía anual S/80 **(GRATIS si consumes S/1 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
-              "Promociones y descuentos BCP."
+              "Acceso a descuentos y promociones BCP."
             ],
             "cta": "Elegir tarjeta"
           },
@@ -353,8 +350,7 @@
             "codigo": "AMXCLL",
             "descripcion": "Ideal para quienes buscan acumular millas con una membresía accesible.",
             "vinetas": [
-              "Membresía anual de S/80.",
-              "Exoneración consumiendo S/1 al mes.",
+              "Membresía anual S/80 **(GRATIS si consumes S/1 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Beneficios LATAM Pass."
             ],
@@ -366,9 +362,8 @@
             "descripcion": "Ideal para quienes buscan Puntos Qore con una membresía accesible.",
             "vinetas": [
               "Acumula puntos por consumos.",
-              "Membresía anual de S/80.",
-              "Exoneración consumiendo S/1 al mes",
-              "Acceso a descuentos y promociones.",
+              "Membresía anual S/80 **(GRATIS si consumes S/1 al mes).**",
+              "Acceso a descuentos y promociones BCP.",
               "Cuotas Sin Intereses en comercios afiliados."
             ],
             "cta": "Elegir tarjeta"
@@ -378,8 +373,7 @@
             "codigo": "TCRLY3",
             "descripcion": "Ideal para quienes buscan Puntos Qore en sus compras frecuentes.",
             "vinetas": [
-              "Membresía anual de S/170.",
-              "Exoneración consumiendo S/1 al mes",
+              "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
               "1 punto Qore por cada $ consumido.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Acumulación de Puntos Qore para canjes."
@@ -389,10 +383,9 @@
           {
             "nombre": "&#128179; Visa Oro LATAM Pass",
             "codigo": "TCRORL",
-            "descripcion": "Ideal para quienes buscan acumular más millas manteniendo un requisito de uso accesible.",
+            "descripcion": "Ideal para viajeros frecuentes que buscan acumular más millas con facilidad.",
             "vinetas": [
-              "Membresía anual de S/170.",
-              "Exoneración consumiendo S/1 al mes.",
+              "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Promociones exclusivas en comercios afiliados."
             ],
@@ -403,8 +396,7 @@
             "codigo": "AMXGLL",
             "descripcion": "Ideal para quienes buscan acumular más millas con sus compras frecuentes.",
             "vinetas": [
-              "Membresía anual de S/170.",
-              "Exoneración consumiendo S/1 al mes.",
+              "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Promociones BCP y LATAM Pass."
             ],
@@ -415,7 +407,7 @@
             "codigo": null,
             "descripcion": "Ideal para quienes buscan más promociones y beneficios.",
             "vinetas": [
-              "Membresía anual de S/350. Exoneración consumiendo S/1,200 al mes.",
+              "Membresía anual S/350 **(GRATIS si consumes S/1,200 al mes).**",
               "Balance entre beneficios y experiencia superior."
             ],
             "cta": "Elegir tarjeta"
@@ -425,8 +417,7 @@
             "codigo": "TCRPLL",
             "descripcion": "Ideal para quienes buscan más beneficios para viajar con frecuencia.",
             "vinetas": [
-              "Membresía anual de S/350.",
-              "Exoneración consumiendo S/1,200 al mes.",
+              "Membresía anual S/350 **(GRATIS si consumes S/1,200 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Beneficios adicionales para viajeros frecuentes."
             ],
@@ -437,8 +428,7 @@
             "codigo": "TCRLY2",
             "descripcion": "Ideal para quienes buscan más beneficios y recompensas.",
             "vinetas": [
-              "Membresía anual de S/400",
-              "Exoneración consumiendo S/3,500 al mes.",
+              "Membresía anual S/400 **(GRATIS si consumes S/3,500 al mes).**",
               "Beneficios superiores.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Acceso a experiencias y promociones premium."
@@ -455,8 +445,7 @@
             "codigo": "TCRORL",
             "descripcion": "Mayor acumulación de millas sin incrementar el requisito de uso.",
             "vinetas": [
-              "Membresía anual de S/170.",
-              "Exoneración consumiendo S/1 al mes.",
+              "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Promociones exclusivas en comercios afiliados."
             ],
@@ -467,8 +456,7 @@
             "codigo": "TCRPL1",
             "descripcion": "Acumulación acelerada de millas y beneficios premium.",
             "vinetas": [
-              "Membresía anual de S/400.",
-              "Exoneración consumiendo S/3,500 al mes.",
+              "Membresía anual S/400 **(GRATIS si consumes S/3,500 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Beneficios premium de viaje."
             ],
@@ -479,8 +467,7 @@
             "codigo": "AMXPLL",
             "descripcion": "Tarjeta premium para viajes y acumulación de millas.",
             "vinetas": [
-              "Membresía anual: S/350.",
-              "Exoneración consumiendo S/1,200 al mes.",
+              "Membresía anual S/350 **(GRATIS si consumes S/1,200 al mes).**",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Beneficios premium."
             ],
@@ -491,8 +478,7 @@
             "codigo": "TCRLY1",
             "descripcion": "Máximo nivel de beneficios dentro del ecosistema Qore.",
             "vinetas": [
-              "Membresía anual: S/500.",
-              "Exoneración consumiendo S/5,00 al mes.*",
+              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
               "Beneficios premium.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Acceso a promociones y experiencias exclusivas."
@@ -504,8 +490,7 @@
             "codigo": "AMXGRE",
             "descripcion": "Experiencia premium enfocada en viajeros frecuentes.",
             "vinetas": [
-              "Membresía anual: S/400.",
-              "Exoneración: consumiendo S/3,500 al mes.",
+              "Membresía anual S/400 **(GRATIS si consumes S/3,500 al mes).**",
               "Beneficios premium en viajes y restaurantes.",
               "Cuotas Sin Intereses en comercios afiliados."
             ],
@@ -516,8 +501,7 @@
             "codigo": "TCRBA7",
             "descripcion": "Experiencia premium con beneficios avanzados de viaje.",
             "vinetas": [
-              "Membresía anual: S/450.",
-              "Exoneración consumiendo S/4,500 al mes.",
+              "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).***",
               "Beneficios premium en aeropuertos.",
               "Cuotas Sin Intereses y promociones exclusivas."
             ],
@@ -528,8 +512,7 @@
             "codigo": "TCRINF",
             "descripcion": "Máximo nivel de beneficios dentro de LATAM Pass.",
             "vinetas": [
-              "Membresía anual: S/500.",
-              "Exoneración consumiendo S/5,000 al mes.*",
+              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
               "Beneficios LATAM Elite Gold.",
               "Cuotas Sin Intereses y beneficios exclusivos."
             ],
@@ -562,17 +545,17 @@
       "entregado": "2026-09-09 por Marco, como texto plano. Sin captura.",
       "flujoMarco": "1.3 Obtener más beneficios",
       "_advertencia": "El nodo lleva 'perfilador: \"beneficios\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.beneficios dentro de adobe-target/piloto/bot.html; esto es el espejo legible.",
-      "reglaDeCantidad": "Caso A: hasta 3 del orden mas la Visa Oro al final, y solo si el usuario la tiene. Caso B: hasta 4.",
+      "reglaDeCantidad": "Caso A: hasta 3 tarjetas del orden mas la DESTACADA al final. Caso B: hasta 4, y desde el 2026-09-21 TAMBIEN con destacada (Marco: 'tambien en verde'); ahi el corte baja a 3 solo cuando el usuario la tiene, para que el total siga siendo 4 y nadie pierda una tarjeta. En los dos casos la destacada va SOLO si el usuario la tiene: si no, el caso A muestra 3 y el caso B muestra 4, sin recuadro verde. La destacada es la Visa Oro Qore (TCRLY3) y su ficha vive en config.perfilador.destacada, no en la lista del criterio, por eso aparece igual en los cuatro. Implementado en recortarConDestacada, tieneDestacada y resolvePerfilador.",
       "casoA": {
         "intro": "¡Buena elección! &#128522; Estas son las mejores tarjetas aprobadas que mejor se adaptan a ti.",
         "tarjetas": [
           {
             "nombre": "&#128179; Visa Infinite Iridium LATAM Pass",
             "codigo": "TCRINF",
-            "descripcion": "Obtén recompensas mediante una alta acumulación de millas.",
+            "descripcion": "Ideal para obtener recompensas mediante una alta acumulación de millas.",
             "vinetas": [
-              "Hasta 15,000 Millas de bienvenida.",
-              "Acumula hasta 2 Millas por cada $1 en compras.*",
+              "Hasta 15,000 Millas de bienvenida solo por digital.",
+              "Acumula hasta 2 Millas por cada $1 en compras.",
               "Promociones exclusivas y canje de millas.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Priority Pass para titular + 4 invitados.",
@@ -583,9 +566,9 @@
           {
             "nombre": "&#128179; Visa Infinite Sapphire LATAM Pass",
             "codigo": "TCRBA7",
-            "descripcion": "Acumula millas rápidamente para canjear beneficios y viajes.",
+            "descripcion": "Ideal para acumular millas rápidamente para canjear beneficios y viajes.",
             "vinetas": [
-              "Hasta 10,000 Millas de bienvenida.",
+              "Hasta 10,000 Millas de bienvenida solo por digital.",
               "Acumula hasta 1.5 Millas por cada $1 de consumo.",
               "Promociones exclusivas y canje de millas.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -598,9 +581,9 @@
           {
             "nombre": "&#128179; Visa Signature LATAM Pass",
             "codigo": "TCRPL1",
-            "descripcion": "Obtén más valor por tus consumos diarios.",
+            "descripcion": "Ideal para obtener más millas y beneficios premium con cada compra.",
             "vinetas": [
-              "6,000 Millas de bienvenida",
+              "6,000 Millas de bienvenida solo por digital.",
               "Acumula hasta 1.25 Millas por cada $1 de consumo",
               "Promociones exclusivas y canje de millas.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -613,9 +596,9 @@
           {
             "nombre": "&#128179; American Express Platinum LATAM Pass",
             "codigo": "AMXPLL",
-            "descripcion": "Obtén más beneficios por tus consumos frecuentes.",
+            "descripcion": "Ideal para obtener más beneficios por tus consumos frecuentes.",
             "vinetas": [
-              "3,000 Millas de bienvenida",
+              "3,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1 de consumo.",
               "Descuentos en restaurantes, viajes y entretenimiento.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -626,9 +609,9 @@
           {
             "nombre": "&#128179; American Express Black LATAM Pass",
             "codigo": "AMXGRE",
-            "descripcion": "Acumulación acelerada y beneficios premium.",
+            "descripcion": "Ideal para disfrutar de beneficios exclusivos mientras acumulas millas más rápido.",
             "vinetas": [
-              "6,000 Millas de bienvenida",
+              "6,000 Millas de bienvenida solo por digital.",
               "Acumula hasta 1.5 Millas por cada $1 de consumo.",
               "Descuentos premium en restaurantes, viajes y entretenimiento.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -642,9 +625,9 @@
           {
             "nombre": "&#128179; Visa Infinite Qore",
             "codigo": "TCRLY1",
-            "descripcion": "Combina beneficios exclusivos y experiencia premium.",
+            "descripcion": "Ideal para disfrutar beneficios exclusivos y una experiencia superior al viajar.",
             "vinetas": [
-              "15,000 Puntos Qore de bienvenida.",
+              "15,000 Puntos Qore de bienvenida solo por digital.",
               "Acumula hasta 3 Puntos Qore por $1.",
               "Descuentos y experiencias exclusivas Qore.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -655,7 +638,7 @@
           {
             "nombre": "&#128179; Visa Signature Qore",
             "codigo": "TCRLY2",
-            "descripcion": "Mayor valor para consumo frecuente.",
+            "descripcion": "Ideal para maximizar tus recompensas con cada compra.",
             "vinetas": [
               "6,000 Puntos Qore de bienvenida.",
               "Acumula Hasta 2.5 Puntos Qore por $1.",
@@ -667,11 +650,11 @@
           },
           {
             "nombre": "&#128179; Visa Platinum Qore",
-            "codigo": null,
-            "descripcion": "Más promociones y beneficios para el día a día.",
+            "codigo": "TCRLY4",
+            "descripcion": "Ideal para quienes buscan más beneficios y una mayor acumulación de Puntos Qore.",
             "vinetas": [
               "3,000 Puntos Qore de bienvenida.",
-              "Acumua hasta 1.5 Puntos Qore por $1.",
+              "Acumula hasta 1.5 Puntos Qore por $1.",
               "Descuentos y experiencias exclusivas Qore.",
               "Cuotas Sin Intereses en comercios afiliados."
             ],
@@ -680,9 +663,9 @@
           {
             "nombre": "&#128179; Visa Platinum LATAM Pass",
             "codigo": "TCRPLL",
-            "descripcion": "Combina beneficios y acumulación para usuarios frecuentes.",
+            "descripcion": "Ideal para viajeros frecuentes que quieren obtener más millas con cada compra.",
             "vinetas": [
-              "3,000 millas de bienvenida",
+              "3,000 millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1 de consumo.",
               "Descuentos en restaurantes, viajes y entretenimiento.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -693,9 +676,9 @@
           {
             "nombre": "&#128179; American Express Oro LATAM Pass",
             "codigo": "AMXGLL",
-            "descripcion": "Para los que buscan viajar con más frecuencia.",
+            "descripcion": "Ideal para los que buscan viajar con más frecuencia.",
             "vinetas": [
-              "2,000 millas de bienvenida.",
+              "2,000 millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1.5 en consumo.",
               "Descuentos en viajes, entretenimiento y comercios afiliados.",
               "Cuotas Sin Intereses en comercios afiliados."
@@ -705,7 +688,7 @@
           {
             "nombre": "&#128179; Visa Oro Qore",
             "codigo": "TCRLY3",
-            "descripcion": "Acumulación de puntos para recompensas.",
+            "descripcion": "Ideal para obtener recompensas frecuentes con tus consumos diarios.",
             "vinetas": [
               "1 Punto Qore por cada $1 en compras.",
               "Descuentos y experiencias exclusivas Qore.",
@@ -716,9 +699,9 @@
           {
             "nombre": "&#128179; Visa Oro LATAM Pass",
             "codigo": "TCRORL",
-            "descripcion": "Mayor acumulación de millas sin incrementar el requisito de uso.",
+            "descripcion": "Ideal para viajeros frecuentes que buscan acumular más millas con facilidad.",
             "vinetas": [
-              "2,000 Millas de bienvenida.",
+              "2,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1.5 en compras.",
               "Promociones y campañas exclusivas LATAM Pass.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -729,9 +712,9 @@
           {
             "nombre": "&#128179; American Express Clásica LATAM Pass",
             "codigo": "AMXCLL",
-            "descripcion": "Acumula recompensas por tus compras diarias.",
+            "descripcion": "Ideal para comenzar a acumular millas con tus compras diarias.",
             "vinetas": [
-              "Hasta 1,000 Millas de bienvenida.",
+              "Hasta 1,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $2 en compras.",
               "Descuentos en viajes, entretenimiento y comercios afiliados.",
               "Cuotas Sin Intereses en comercios afiliados.",
@@ -743,7 +726,7 @@
           {
             "nombre": "&#128179; Visa Clásica Qore",
             "codigo": "TCRLY5",
-            "descripcion": "Es la puerta de entrada al ecosistema de beneficios Qore.",
+            "descripcion": "Ideal para comenzar a obtener recompensas con tus compras diarias.",
             "vinetas": [
               "1 Punto Qore por cada $2 en compras.",
               "Descuentos y beneficios exclusivos Qore.",
@@ -759,18 +742,19 @@
           {
             "nombre": "&#128179; Visa Oro LATAM Pass",
             "codigo": "TCRORL",
-            "descripcion": "Incrementa la acumulación de millas en compras frecuentes.",
+            "descripcion": "Ideal para viajeros frecuentes que buscan acumular más millas con facilidad.",
             "vinetas": [
-              "2,000 millas de bienvenida",
-              "Acumula 1 Milla por cada $1.5 de consumo.",
-              "Incluye Campañas multiplicadoras de millas."
+              "2,000 Millas de bienvenida solo por digital.",
+              "Acumula 1 Milla por cada $1.5 en compras.",
+              "Promociones y campañas exclusivas LATAM Pass.",
+              "Cuotas Sin Intereses en comercios afiliados."
             ],
             "cta": "Elegir tarjeta"
           },
           {
             "nombre": "&#128179; Visa Clásica LATAM Pass",
             "codigo": "TCRCLL",
-            "descripcion": "Empieza a acumular recompensas por tus compras.",
+            "descripcion": "Ideal para empezar a acumular recompensas por tus compras.",
             "vinetas": [
               "Acumula 1 Milla por cada $2 de consumo.",
               "Acceso al programa LATAM Pass con menores requisitos.",
@@ -781,9 +765,8 @@
           {
             "nombre": "&#128179; Visa Clásica",
             "codigo": null,
-            "_sin_descripcion": "El texto de Marco no dejaba linea en blanco tras el nombre: todo entro como viñeta.",
+            "descripcion": "Ideal para viajes y acumulación de millas.",
             "vinetas": [
-              "Tarjeta premium para viajes y acumulación de millas.",
               "Tarjeta básica para compras y financiamiento.",
               "Beneficios básicos para uso cotidiano."
             ],
@@ -792,11 +775,9 @@
           {
             "nombre": "&#128179; Visa Light",
             "codigo": "TCRMIN",
-            "_sin_descripcion": "El texto de Marco no dejaba linea en blanco tras el nombre: todo entro como viñeta.",
+            "descripcion": "Alternativa simple para realizar compras",
             "vinetas": [
               "Cuotas Sin Intereses en comercios afiliados.",
-              "Alternativa simple para compras y control financiero.",
-              "Pensada para simplicidad antes que para maximizar beneficios.",
               "Membresía S/0."
             ],
             "cta": "Elegir tarjeta"
@@ -828,44 +809,44 @@
       "entregado": "2026-09-09 por Marco, como texto plano. Sin captura.",
       "flujoMarco": "1.4 Experiencias exclusivas",
       "_advertencia": "El nodo lleva 'perfilador: \"experiencias\"' y no tiene texto ni tarjetas propias: resolvePerfilador elige caso y tarjetas en runtime. Las listas completas viven en config.perfilador.criterios.experiencias dentro de adobe-target/piloto/bot.html; esto es el espejo legible.",
-      "reglaDeCantidad": "Caso A: hasta 3 del orden mas la Visa Oro al final, y solo si el usuario la tiene. Caso B: hasta 4.",
+      "reglaDeCantidad": "Caso A: hasta 3 tarjetas del orden mas la DESTACADA al final. Caso B: hasta 4, y desde el 2026-09-21 TAMBIEN con destacada (Marco: 'tambien en verde'); ahi el corte baja a 3 solo cuando el usuario la tiene, para que el total siga siendo 4 y nadie pierda una tarjeta. En los dos casos la destacada va SOLO si el usuario la tiene: si no, el caso A muestra 3 y el caso B muestra 4, sin recuadro verde. La destacada es la Visa Oro Qore (TCRLY3) y su ficha vive en config.perfilador.destacada, no en la lista del criterio, por eso aparece igual en los cuatro. Implementado en recortarConDestacada, tieneDestacada y resolvePerfilador.",
       "casoA": {
         "intro": "¡Buena elección! &#128522; Estas son las mejores tarjetas aprobadas que mejor se adaptan a ti.",
         "tarjetas": [
           {
             "nombre": "&#128179; Visa Infinite Iridium LATAM Pass",
             "codigo": "TCRINF",
-            "descripcion": "Experiencia premium enfocada en viajes internacionales.",
+            "descripcion": "Ideal para quienes buscan experiencias únicas y privilegios exclusivos en cada viaje.",
             "vinetas": [
               "Acumula hasta 2 Millas por cada $1 de consumo.",
-              "Priority Pass + 4 invitados.",
+              "Priority Pass para titular + 4 invitados.",
               "Categoría LATAM Gold.",
               "Maleta adicional de 23 kg en LATAM.",
               "Check-in, embarque y equipaje prioritario.",
               "Acumulación de puntos calificables LATAM.",
-              "Beneficios y seguros Visa Infinite."
+              "Seguros Visa Infinite."
             ],
             "cta": "Elegir tarjeta"
           },
           {
             "nombre": "&#128179; Visa Infinite Sapphire LATAM Pass",
             "codigo": "TCRBA7",
-            "descripcion": "Experiencia premium enfocada en viajes y comodidad.",
+            "descripcion": "Ideal para quienes buscan experiencias exclusivas y beneficios únicos en cada viaje.",
             "vinetas": [
-              "Acumula hasta 1.25 Millas por cada $ 1 de consumo.",
+              "Acumula hasta 1.5 Millas por cada $1 de consumo.",
               "Acceso a salas VIP.",
-              "Priority Pass + 3 invitados",
+              "Priority Pass para titular + 3 invitados.",
               "Maleta adicional de 23 kg en LATAM.",
               "Check-in preferente.",
               "Acumulación adicional de millas en vuelos LATAM.",
-              "Beneficios y seguros Visa Infinite."
+              "Seguros Visa Infinite."
             ],
             "cta": "Elegir tarjeta"
           },
           {
             "nombre": "&#128179; American Express Black LATAM Pass",
             "codigo": "AMXGRE",
-            "descripcion": "Experiencia premium para viajeros frecuentes.",
+            "descripcion": "Ideal para quienes buscan una experiencia de viaje exclusiva y beneficios premium.",
             "vinetas": [
               "Acumula hasta 1.5 Millas por cada $1 de consumo.",
               "Priority Pass + 2 invitados.",
@@ -879,7 +860,7 @@
           {
             "nombre": "&#128179; American Express Platinum LATAM Pass",
             "codigo": "AMXPLL",
-            "descripcion": "Experiencia premium combinada con acumulación de millas.",
+            "descripcion": "Ideal para disfrutar experiencias únicas y beneficios exclusivos que acompañan cada viaje.",
             "vinetas": [
               "Acumula 1 Milla por cada $1 de consumo.",
               "Beneficios premium de viaje (Booking, Tablet Hotels, Hertz).",
@@ -892,7 +873,7 @@
           {
             "nombre": "&#128179; Visa Infinite Qore",
             "codigo": "TCRLY1",
-            "descripcion": "Orientada a experiencias exclusivas.",
+            "descripcion": "Ideal para quienes buscan experiencias exclusivas y el máximo nivel de beneficios Qore.",
             "vinetas": [
               "Hasta 3 Puntos Qore por $1 de consumo.",
               "Acceso a salas VIP.",
@@ -907,9 +888,9 @@
           {
             "nombre": "&#128179; Visa Signature LATAM Pass",
             "codigo": "TCRPL1",
-            "descripcion": "Excelente equilibrio entre exclusividad y acumulación de millas frecuentes.",
+            "descripcion": "Ideal para quienes buscan viajar con más beneficios y experiencias exclusivas.",
             "vinetas": [
-              "Acumula hasta 1.5 Millas por cada $1 de consumo.",
+              "Acumula hasta 1.25 Millas por cada $1 de consumo.",
               "Check-in preferente en LATAM.",
               "Acumulación adicional de millas en vuelos LATAM.",
               "Beneficios y seguros Visa Signature."
@@ -934,30 +915,26 @@
           {
             "nombre": "&#128179; Visa Platinum LATAM Pass",
             "codigo": "TCRPLL",
-            "descripcion": "Primer nivel premium dentro de LATAM Pass.",
+            "descripcion": "Ideal para quienes valoran experiencias exclusivas y más beneficios al viajar.",
             "vinetas": [
-              "Acumula 1 Milla por cada $1 de consumo.",
-              "Canje de millas por vuelos y productos LATAM.",
-              "Hasta S/150 de descuento en restaurantes.",
-              "Visa Airport Companion.",
-              "Visa Luxury Hotel Collection.",
               "Visa Concierge y Digital Concierge.",
-              "Seguros de viaje y protección de compras."
+              "Visa Luxury Hotel Collection.",
+              "Visa Airport Companion.",
+              "Seguros de viaje y protección de compras.",
+              "Acumula 1 Milla por cada $1 de consumo."
             ],
             "cta": "Elegir tarjeta"
           },
           {
             "nombre": "&#128179; Visa Platinum Qore",
-            "codigo": null,
+            "codigo": "TCRLY4",
             "descripcion": "Beneficios superiores para clientes con consumos frecuentes.",
             "vinetas": [
-              "Hasta 1.5 Puntos Qore por cada $1 e consumo.",
-              "Canje de puntos por experiencias y descuentos.",
-              "Visa Airport Companion.",
-              "Visa Luxury Hotel Collection.",
               "Visa Concierge y Digital Concierge.",
+              "Visa Luxury Hotel Collection.",
+              "Visa Airport Companion.",
               "Seguros y protección de compras.",
-              "Beneficios exclusivos Visa Platinum."
+              "Hasta 1.5 Puntos Qore por cada $1 de consumo."
             ],
             "cta": "Elegir tarjeta"
           },
@@ -970,7 +947,7 @@
               "Canjea millas por vuelos y experiencias LATAM.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Seguros y protecciones Visa Gold.",
-              "Campañas exclusivas para acumular más millas"
+              "Campañas exclusivas para acumular más millas."
             ],
             "cta": "Elegir tarjeta"
           }
@@ -1015,8 +992,7 @@
               "Acumula 1 Milla por cada $ 2 de consumo.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Protección de compras y asistencia Visa.",
-              "Campañas para acumular más millas.",
-              "Skybox gratis por 1 año."
+              "Campañas para acumular más millas."
             ],
             "cta": "Elegir tarjeta"
           },
@@ -1100,6 +1076,25 @@
   ],
   "notas": [
     "La opcion 'Ir al menu principal' de los cuatro stubs es temporal: existe solo para que validateGraph no reporte destinos colgados y el arbol siga siendo navegable.",
-    "A diferencia de q21-q24, estas pantallas no cierran con el bloque '¿Que deseas hacer ahora?' - todavia no hay definicion."
-  ]
+    "A diferencia de q21-q24, estas pantallas no cierran con el bloque '¿Que deseas hacer ahora?' - todavia no hay definicion.",
+    "2026-09-21: Marco cambio la tarjeta destacada de Visa Oro LATAM Pass (TCRORL) a Visa Oro Qore (TCRLY3) y entrego el mockup con una unica ficha para los cuatro criterios. El bloque 'destacada' de este archivo es ese espejo. En la misma sesion pidio que saliera en verde TAMBIEN en el caso B ('tambien en verde'), que hasta entonces no tenia destacada: con TCRORL eso no hacia falta, porque al estar en el caso A de los cuatro criterios forzaba el caso A para quien la tuviera, y con TCRLY3 dejo de cumplirse. El caso B baja su corte de 4 a 3 solo cuando el usuario tiene la destacada, asi que quien no la tiene sigue viendo 4 tarjetas exactamente como antes.",
+    "2026-09-21: Marco pidio unificar el estilo de membresia/exoneracion al de la ficha nueva de la destacada ('Membresía anual S/X **(GRATIS si consumes S/Y al mes).**', que es como lo escribe el catalogo publico de BCP). Se fusionaron 17 fichas, TODAS en el criterio 'ahorrar' salvo la destacada: 15 pasaron de dos vinetas a una, 1 (Visa Platinum Qore) ya estaba en una linea con punto y se le puso el formato, y 1 es la Visa Clasica sin codigo. De paso se unifico 'Membresía anual de' / 'Membresía anual:' y los puntos finales que faltaban. NO se toco ninguna cifra: se conservaron verbatim, incluidos dos datos que siguen pendientes de Marco (Visa Infinite Qore 'S/5,00', al que le falta un cero, y Visa Clasica 'S/1', que segun el catalogo y la propia tabla 2.3 del bot deberia ser S/50)."
+  ],
+  "destacada": {
+    "_que_es": "La cuarta tarjeta del perfilador: siempre al final, siempre en el recuadro verde, y SOLO si el usuario la tiene. Es la misma en los cuatro criterios y sale en los DOS casos (A y B).",
+    "enElHtml": "config.perfilador.destacada de adobe-target/piloto/bot.html. Desde el 2026-09-21 la ficha vive AHI y no en la lista de cada criterio.",
+    "codigo": "TCRLY3",
+    "badge": "La más usada",
+    "nombre": "&#128179; Visa Oro Qore",
+    "descripcion": "Orientada a beneficios cotidianos y promociones.",
+    "vinetas": [
+      "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
+      "1 punto Qore por cada $ consumido.",
+      "Cuotas Sin Intereses en comercios afiliados.",
+      "Acumulación de Puntos Qore para canjes."
+    ],
+    "cta": "Elegir tarjeta",
+    "negrita": "La primera vineta lleva **negrita**, tal como el mockup. Es la unica vineta con negrita del bot; para soportarla, createCardBoxMarkup pasó de escapeHtml a formatInlineRichText el 2026-09-21.",
+    "historial": "Hasta el 2026-09-21 la destacada era la Visa Oro LATAM Pass (TCRORL), con una ficha distinta en cada criterio. Marco la cambio por la Visa Oro Qore y entrego una sola ficha para los cuatro."
+  }
 }

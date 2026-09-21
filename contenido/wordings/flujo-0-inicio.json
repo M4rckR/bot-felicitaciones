@@ -35,7 +35,7 @@
       ],
       "pendientes": [],
       "notas": [
-        "El saludo va sin '¡' de apertura a proposito: Marco rechazo la correccion porque el mockup dice 'Hola!'. La burbuja del launcher si lleva '¡Hola!' (ver ui-fija.json).",
+        "El saludo va sin '¡' de apertura a proposito: Marco rechazo la correccion porque el mockup dice 'Hola!'. La burbuja del launcher usa el texto independiente '¡Hola! Te ayudaré a elegir una tarjeta' (ver ui-fija.json).",
         "Es el unico nodo con titulo no vacio del flujo conversacional."
       ]
     }

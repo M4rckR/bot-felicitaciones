@@ -558,9 +558,9 @@ efectivo"]`, and the miles line in `.card-option__benefits` — so a dynamic ver
 from the page instead of hardcoding them.
 
 **Marco's rule for the perfilador (2026-09-09):** show **at most 3** cards, and a **fourth that is always
-Visa Oro LATAM Pass (`TCRORL`) in the green recommendation box — but only if the user has it**. Note
-`TCRORL` is absent from the production snapshot, so that user would see no fourth card. The selection
-order for the three is undecided; Marco defines it screen by screen.
+the same card, in the green box — but only if the user has it**. Since **2026-09-21 that card is Visa Oro
+Qore (`TCRLY3`)**; it was `TCRORL` until then. The selection order for the three is undecided; Marco
+defines it screen by screen. See *The destacada lives outside the criterion lists* below.
 
 `contenido/tarjetas-catalogo.json` is the crosswalk: 17 cards × code, DOM name, name as written in the bot, affinity
 scores, membership, exoneration, miles and Priority Pass, plus the DOM selectors and the open questions.
@@ -948,9 +948,9 @@ whose content is not in the node.
   to the button's `name`). See *Lead detection* above.
 - **Case A vs case B is derived, not configured**: if any of the user's cards is in the case A list, case A
   wins; otherwise case B. The two intros live in `config.perfilador.criterios.viajar.casoA/casoB`.
-- **Cut rule** (`recortarConDestacada`): up to `maxSinDestacada` (3) cards from the order, plus
-  `destacada` (`TCRORL`, Visa Oro LATAM Pass) appended last **only if the user has it** — so a user without
-  the Oro sees 3, not 4. Case B has no destacada and simply cuts at `maxTarjetas` (4).
+- **Cut rule** (`recortarConDestacada(tarjetas, cfg, leads, tope)`): up to `tope` cards from the order,
+  plus `destacada` appended last **only if its code is in `leads`**. Both cases use it — see the table in
+  *The destacada lives outside the criterion lists* for how each one sets `tope`.
 - The badge is what makes a card green: `createCardsMarkup` applies `--destacada` when `badge` is present,
   and `recortarConDestacada` is the only thing that sets it.
 - **Resolution happens in `appendBotMessageForCurrent`, not at paint time.** The resolved intro and cards
@@ -974,6 +974,76 @@ sizes moved into `getTopeTarjetas(cfg)`, shared by this path and case B.
 bot declares (code, name, which case) and the codes currently detected. `preview/index.html` builds its
 casuistics panel from it, so **the panel grows on its own as perfilador screens are added** — nothing to
 keep in sync by hand.
+
+### The destacada lives outside the criterion lists (2026-09-21)
+
+Marco swapped the highlighted fourth card from **Visa Oro LATAM Pass (`TCRORL`)** to **Visa Oro Qore
+(`TCRLY3`)** and delivered **one** mockup for all four criteria, replacing the four per-criterion fichas.
+
+**It could not be done as a data-only swap, and that is the thing to understand here.**
+`recortarConDestacada` used to *extract* the destacada from the criterion's own case A list, which required
+the destacada to be in all four case A lists. `TCRORL` satisfied that by coincidence. `TCRLY3` is in case A
+of `ahorrar` and `beneficios` only — it sits in **case B** of `viajar` and `experiencias`. Adding it to
+those two case A lists would have broken case detection: `viajar`'s case A means *"the user holds a miles
+card"*, and the Oro Qore is not one, so every Oro Qore holder would have been told they have miles cards.
+
+So the ficha moved to `config.perfilador.destacada` (now `{codigo, badge, name, description, bullets}`) and
+`recortarConDestacada` takes `leads` as a third argument, appending the card when `leads` contains the code
+— **independently of any list**. Consequences:
+
+- The destacada's position in a criterion's list is now irrelevant; if a list contains it, it is dropped
+  from `resto` so it cannot appear twice.
+- `TCRORL` keeps its four per-criterion fichas and stays in the lists as an **ordinary** card. It lost the
+  fixed last slot and the green border, nothing else.
+- `window.tc0091Catalogo()` gained a `destacada` field and pushes the destacada into `tarjetas` when no
+  criterion lists it, so the preview panel keeps listing every card the bot can show.
+
+**Case B carries the destacada too, since 2026-09-21** (Marco: *"también en verde"*). It never did before,
+and with `TCRORL` that was invisible: being in all four case A lists forced case A for its leads, so they
+never saw case B. `TCRLY3` does not force it — a user holding **only Qore cards** lands in case B of
+`viajar` and `experiencias` — so case B had to learn the destacada or the green box would have vanished for
+exactly those users.
+
+**The two cases count differently, and that is deliberate.** `recortarConDestacada` no longer reads the cut
+size from `cfg`; the caller passes it as a fourth argument:
+
+| Case | Cut | Holder sees | Non-holder sees |
+| --- | --- | --- | --- |
+| A | `getTopeSinDestacada` (3) | 3 + destacada = **4** | **3**, no green box |
+| B | `getTopeTarjetas` (4), minus 1 only when `tieneDestacada` | 3 + destacada = **4** | **4**, no green box |
+
+Case B subtracts instead of reserving so that **a non-holder keeps the 4 cards they saw before the change**.
+Reserving the slot unconditionally, as case A does, would have silently cut them to 3. Case A's asymmetry
+(3 for a non-holder) is the older rule and was left alone.
+
+`tieneDestacada(cfg, leads)` is the single place that decides whether the user gets it, and both the cut and
+case B's tope go through it. `Bot.prototype.getTopeSinDestacada` mirrors the existing `getTopeTarjetas`.
+
+The `sinDeteccion` fallback still appends **no** destacada: with an empty DOM read there is no way to assert
+the user holds it.
+
+**Membership and exoneration are one bullet, not two** (Marco, 2026-09-21). Seeing the new destacada use a
+different shape from the rest, he asked to unify. **17 fichas** changed — all in `ahorrar`, the only
+criterion that mentions membership, plus the destacada itself:
+
+```
+- "Membresía anual de S/80."            →  "Membresía anual S/80 **(GRATIS si consumes S/1 al mes).**"
+- "Exoneración consumiendo S/1 al mes."
+```
+
+It also absorbed the variants that had drifted: `de` vs `:` after "Membresía anual" (10 vs 5), one
+`Exoneración:` with a colon, and 4 bullets with no final period. `TCRLY4` already had both in one line
+separated by a period and was given the same shape. **No figure was changed** — `S/5,00` and the Visa
+Clásica's `S/1` were carried over verbatim and remain under *Still open*.
+
+A trailing `*` survives the merge correctly: `**(…).**` + `*` renders as `<strong>(…).</strong>*`, because
+`formatInlineRichText`'s `/\*\*(.+?)\*\*/` is non-greedy and leaves the stray asterisk alone. Two fichas
+(`TCRLY1`, `TCRINF`) depend on that.
+
+**Card bullets now honour `**bold**`.** The mockup bolds *"(GRATIS si consumes S/1 al mes)."*, so
+`createCardBoxMarkup` switched its bullets from `escapeHtml` to the existing `formatInlineRichText`, which
+escapes first and then converts `**…**` to `<strong>`. `name` and `description` still go through
+`escapeHtml`. This is the only bolded bullet in the bot.
 
 ### The comparison tables are dynamic too (2026-09-09)
 
@@ -1048,17 +1118,25 @@ a Figma image — the design of the multi-card block included.
 
 Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version written for the UI team.
 
-**Blocked on Marco**
+**Estado de definiciones**
 
-- **The recommended card is hardcoded.** `q21`–`q23` recommend *Visa Oro LATAM Pass* unconditionally
-  (subject only to the lead rule). Marco asked to leave it **static as is** and will supply *condiciones*
-  later to pick the card per case (2026-09-09). **Do not change it on your own initiative.** `q24`'s
-  contradiction (recommending a card its own table lists without Priority Pass) was closed on 2026-09-14 by
-  removing that screen's recommendation block.
-- **`q23`'s two Qore rows still look like membership, not exoneration, amounts**: `Visa Clásica Qore S/80`
-  and `Visa Oro Qore S/170` are exactly their `q22` membership figures, while every other Qore row uses the
-  exoneration scale. Marco re-sent the screen on 2026-09-09 with the same two values, so it is reproduced
-  verbatim and still unanswered.
+- **The recommended card was updated on 2026-09-21.** `q21`–`q23` recommend *Visa Oro Qore* (`TCRLY3`),
+  subject to the lead rule. `q24` has no recommendation block.
+- **The five contradictions with the public product catalogue found on 2026-09-21 are corrected.** Marco
+  delivered the viabcp.com card catalogue DOM (`.bcp-catalogo-productos-tc`, *"Elige la Tarjeta de Crédito
+  que va contigo"*, 18 product cards) with the rule **"nada debe ir en contra de esta info"**. A full
+  cross-check followed: the `millas` and `priorityPass` tables match 100%, and so does `membresia`
+  wherever the catalogue states an amount. Sapphire and Signature use 1.5 and 1.25 miles respectively
+  in `experiencias`; Visa Platinum LATAM Pass no longer claims the American Express restaurant discount;
+  and the code-less Visa Clásica is prepared with S/50 exoneration and a cashback description.
+
+  > **Why the first audit missed these:** its regex matched `codigo: "([A-Z0-9]+)"`, which silently skips
+  > the four `codigo: null` fichas. **Any sweep over the perfilador must accept `null` codes too** — there
+  > are 4 such fichas (all Visa Clásica) and one of them carries figures.
+
+  Claims the catalogue simply does not mention are **not** contradictions and were left alone: welcome
+  miles on the Clásica/Oro tiers, the two low Qore membership amounts, Amex Oro's Cineplanet discount, and
+  the Visa perks (Airport Companion, Luxury Hotel Collection, Concierge).
 - Which `cards-felicitaciones-*` mbox delivers the offer.
 - **The official tag list has no "Visa Infinite Qore" and no plain "Visa Clásica".** Every other card maps
   one-to-one. Either they are not selectable on this page, or the list is partial — worth confirming.
@@ -1097,6 +1175,24 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 
 ### Facts worth not re-deriving
 
+- **The public product catalogue outranks the bot's tables on product facts** (Marco, 2026-09-21: *"nada
+  debe ir en contra de esta info"*). He delivered the viabcp.com catalogue DOM — `.bcp-catalogo-productos-tc`,
+  *"Elige la Tarjeta de Crédito que va contigo"*, 18 cards with bullets for membership, exoneration,
+  miles/points and Priority Pass. It is **public marketing, not `/felicitaciones`**, and it carries **no card
+  codes**, so it is the one source crossed **by product name** instead of by code. It is not saved in the
+  repo; its findings live in `contenido/tarjetas-catalogo.json` under `_meta.catalogo_publico_viabcp`.
+
+  This does not overturn *Marco's copy is the source of truth* — it settles **figures**, not wording. The
+  full cross-check of 2026-09-21 is recorded in that field: `millas` and `priorityPass` match 100%, so does
+  `membresia` wherever the catalogue states an amount. The five discrepancies found in the audit were
+  corrected on 2026-09-21; no product contradiction from that audit remains open.
+- **`q23`'s two Qore exoneration rows were a mis-copy, and are fixed** (2026-09-21). `Visa Clásica Qore`
+  and `Visa Oro Qore` read `S/80` and `S/170` — exactly their `q22` **membership** figures — where the
+  catalogue says both exonerate at **`S/1`** a month. Both rows now say `S/1`. This was the data doubt open
+  since 2026-09-09, and it also removed a contradiction inside the bot: the perfilador cards for those two
+  already said *"Exoneración consumiendo S/1 al mes"*, so the same user read a different number depending on
+  which branch they entered by. **Their membership amounts did not change** — only `config.comparador.exoneracion`
+  was touched, never `config.comparador.membresia`. Logged as correction 13 in `docs/correcciones-wording.md`.
 - **The affinity table does not order the comparison screens.** Marco pastes the card order per screen and
   it is to be used verbatim. `contenido/afinidad-tarjetas.json` feeds the *recommendation* branches (`q11`–`q14`)
   only. The 2.1 table happens to list the same 17 cards, which is a coincidence of catalogue, not a sort.

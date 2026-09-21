@@ -17,7 +17,7 @@
       "nombreEnAfinidad": "Clave con la que aparece en afinidad-tarjetas.json (sin tildes).",
       "afinidad": "Copiado de afinidad-tarjetas.json, tabla 'Relevancia - Afinidad' entregada por Marco el 2026-09-06.",
       "membresiaAnual": "Copiado VERBATIM de la tabla de q22.",
-      "exoneracion": "Copiado VERBATIM de la tabla de q23.",
+      "exoneracion": "Copiado VERBATIM de la tabla de q23, con UNA excepcion: Visa Clasica Qore y Visa Oro Qore, corregidas a S/1 el 2026-09-21 contra el catalogo publico de viabcp.com (ver catalogo_publico_viabcp). Hasta esa fecha la tabla repetia sus montos de membresia (S/80 y S/170).",
       "millas": "Copiado VERBATIM de la tabla de q21.",
       "priorityPass": "Copiado VERBATIM de la tabla de q24.",
       "ordenEnLaPagina": "Posicion en el slider de /felicitaciones. Se obtiene fusionando el orden de certi (13 tarjetas) con el de produccion (4): son compatibles entre si y van de mayor a menor categoria.",
@@ -29,24 +29,26 @@
       "Falta el codigo de UNA sola tarjeta: Visa Clasica (a secas). Sin codigo el bot no la detecta y no se muestra nunca, y Marco decidio el 2026-09-10 dejarla asi de momento: cuando le asignen codigo empezara a incluirse sola. Visa Platinum Qore ya tiene su codigo (TCRLY4), entregado ese mismo dia. La lista del 2026-09-10 trae 16 codigos y confirma TCRLY5 (Visa Clasica Qore), que hasta entonces se sostenia solo con la evidencia del snapshot de produccion.",
       "Los cuatro criterios ya tienen su orden entregado e implementado (2026-09-09). Lo que sigue sin confirmar es que pasa en el caso A cuando el usuario NO tiene la Visa Oro: hoy se muestran 3 tarjetas y no se rellena con una cuarta.",
       "DATO DE CONTRASTE: la pagina escribe la membresia de Visa Light como 'S/ 0'; la tabla q22 la escribe como '0' pelado. Los montos de las otras tres tarjetas de produccion (AMXCLL, TCRCLL, TCRLY5) coinciden exactamente con los de Marco: S/80. Informativo, NO se corrige sin su aprobacion.",
-      "DUDA DE DATO ya planteada a Marco y sin respuesta: la exoneracion de Visa Clasica Qore (S/80) y Visa Oro Qore (S/170) coincide con sus montos de MEMBRESIA, no con la escala de exoneracion que usan las demas Qore. Reproducido verbatim.",
       "Que significan data-lead-program ('LAN' en los dos entornos) y data-profit-type ('.' en produccion, 'GRUP20' en certi). Parecen segmentos, pero es una lectura de dos snapshots, no un dato confirmado.",
       "De afinidad-tarjetas.json siguen abiertos: si el 5 es tope duro o solo orden relativo, y que significan las 12 tarjetas en negrita del original.",
       "La lista oficial de 'tarjetaseleccionada' (Marco, 2026-09-11) trae 15 nombres y NO incluye Visa Infinite Qore (TCRLY1) ni la Visa Clasica pelada. Las otras 15 mapean una a una con nuestros codigos. Falta confirmar si esas dos no son seleccionables en esta pagina o si la lista esta incompleta."
     ],
-    "fuentes_de_nombre": "Cuatro grafias distintas del mismo producto, todas verificadas: nombreDom (lo que imprime la pagina), nombreEnElBot (lo que muestra el asistente), nombreEnAfinidad (la tabla que entrego Marco) y nombreEnTag (el valor del campo 'tarjetaseleccionada' en analytics, lista oficial del 2026-09-11: mete 'BCP' antes del programa y va sin tildes). Por eso el cruce SIEMPRE es por codigo."
+    "fuentes_de_nombre": "Cuatro grafias distintas del mismo producto, todas verificadas: nombreDom (lo que imprime la pagina), nombreEnElBot (lo que muestra el asistente), nombreEnAfinidad (la tabla que entrego Marco) y nombreEnTag (el valor del campo 'tarjetaseleccionada' en analytics, lista oficial del 2026-09-11: mete 'BCP' antes del programa y va sin tildes). Por eso el cruce SIEMPRE es por codigo.",
+    "catalogo_publico_viabcp": "Fuente de producto entregada por Marco el 2026-09-21 con la regla 'nada debe ir en contra de esta info': el DOM del catalogo publico de viabcp.com, seccion .bcp-catalogo-productos-tc ('Elige la Tarjeta de Credito que va contigo'), 18 fichas con bullets de membresia, exoneracion, millas/puntos y Priority Pass. Es marketing publico, NO la pagina /felicitaciones, y no trae codigos de tarjeta: se cruza por nombre de producto, que es el unico caso en que esta permitido. Cotejo completo del 2026-09-21: las tablas 2.1 (millas), 2.4 (Priority Pass) y 2.2 (membresia, donde el catalogo da monto) cuadran al 100%. Se corrigieron la exoneracion de las dos Qore bajas, el cero faltante de Visa Infinite Qore (S/5,000), las millas intercambiadas de Sapphire y Signature en experiencias, el descuento de restaurantes atribuido a Visa Platinum LATAM Pass y los dos datos de reserva de Visa Clasica sin codigo. No quedan contradicciones de producto detectadas en este cotejo."
   },
   "reglas": {
     "deteccionLead": "Si el codigo de la tarjeta esta presente en el DOM de /felicitaciones, el usuario es lead (candidato) de esa tarjeta. No hay que inferir nada mas.",
     "maximoTarjetas": 4,
     "comoSeLee": "Al usuario le pueden salir muchas tarjetas aprobadas en la pagina, pero el bot muestra COMO MAXIMO 4 (Marco, 2026-09-09). Las listas de casuisticasPorCriterio son el ORDEN de prioridad completo: el bot recorre esa lista, se queda con las que el usuario tiene y corta en 4.",
     "cuartaTarjeta": {
-      "codigo": "TCRORL",
-      "nombreEnElBot": "Visa Oro LATAM Pass",
-      "ubicacion": "va en la lista de tarjetas (createCardsMarkup) con badge 'La más usada', que es lo que le pone el borde verde. No usa el bloque createRecommendationMarkup de q21-q24, aunque se vea igual.",
-      "condicion": "solo se muestra si TCRORL esta presente en el DOM. Si el usuario no es lead de la Oro, no aparece.",
-      "evidencia": "TCRORL esta en los snapshots de certi pero NO en los de produccion: ese usuario no la tiene disponible. Es la casuistica exacta que describio Marco el 2026-09-09.",
-      "nombreEnTag": "Visa Oro BCP LATAM Pass"
+      "codigo": "TCRLY3",
+      "nombreEnElBot": "Visa Oro Qore",
+      "cambiado": "2026-09-21 por Marco. Antes era TCRORL (Visa Oro LATAM Pass), con una ficha distinta por criterio; ahora es una sola ficha para los cuatro, entregada como mockup.",
+      "ubicacion": "Su ficha vive en config.perfilador.destacada de adobe-target/piloto/bot.html, NO en la lista de cada criterio. Se renderiza con createCardsMarkup como una tarjeta mas, con badge 'La más usada', que es lo que le pone el borde verde. No usa createRecommendationMarkup, que es el bloque de q21-q23.",
+      "porQueFueraDeLasListas": "Antes recortarConDestacada la extraia de la lista del criterio, lo que obligaba a que estuviera en el caso A de los cuatro. TCRORL cumplia eso por casualidad; TCRLY3 no esta en el caso A de 'viajar' ni de 'experiencias'. Meterla ahi habria roto la deteccion de caso: el caso A de 'viajar' significa 'el usuario tiene una tarjeta de millas' y la Oro Qore no lo es. Por eso el 2026-09-21 la ficha se saco a config.perfilador.destacada y recortarConDestacada pasó a recibir los leads.",
+      "condicion": "Se anade SOLO si el codigo esta entre los leads detectados en el DOM. Si no, el usuario ve 3 tarjetas y ningun recuadro verde.",
+      "limite": "Va siempre la ultima. Caso A: aparte de las 3 primeras del orden (maxSinDestacada). Caso B: el corte baja de 4 a 3 solo cuando el usuario tiene la destacada, para que el total siga siendo maxTarjetas. Su posicion en la lista del criterio es irrelevante: si la lista la incluye, se descarta de ahi para no duplicarla.",
+      "enLosDosCasos": "Desde el 2026-09-21 la destacada sale en el caso A y en el caso B (Marco: 'tambien en verde'). Antes el caso B no tenia destacada. El cambio era necesario porque TCRORL salia siempre por un efecto lateral -estaba en el caso A de los cuatro criterios, lo que forzaba el caso A para sus leads- y TCRLY3 no hereda ese efecto: un usuario con solo tarjetas Qore cae en el caso B de 'viajar' y 'experiencias'."
     },
     "ordenDeSeleccion": "Lo entrega Marco pantalla por pantalla, como una lista ordenada. NO se calcula por afinidad ni por iniciativa propia. Ver casuisticasPorCriterio.",
     "fase": "Estatica primero: el contenido lo entrega Marco pantalla por pantalla con su mockup. La deteccion real de leads en runtime llega despues."
@@ -333,13 +335,13 @@
         "experiencias": 1
       },
       "membresiaAnual": "S/170",
-      "exoneracion": "S/170",
+      "exoneracion": "S/1",
       "millas": "No Aplica",
       "priorityPass": "No",
       "vistaEn": [
         "certi"
       ],
-      "nota": "Su exoneracion (S/170) coincide con su membresia, no con la escala de exoneracion de las demas Qore. Duda de dato abierta con Marco, reproducida verbatim.",
+      "nota": "Su exoneracion es S/1 al mes, confirmada el 2026-09-21 por el catalogo publico de viabcp.com que entrego Marco ('Consume S/ 1 al mes y no pagues membresia'). Hasta esa fecha la tabla q23 repetia su monto de MEMBRESIA (S/170), que era la duda de dato abierta desde el 2026-09-09. La membresia no cambia.",
       "nombreEnTag": "Visa Oro BCP Qore"
     },
     {
@@ -400,13 +402,13 @@
         "experiencias": 1
       },
       "membresiaAnual": "S/80",
-      "exoneracion": "S/80",
+      "exoneracion": "S/1",
       "millas": "No Aplica",
       "priorityPass": "No",
       "vistaEn": [
         "produccion"
       ],
-      "nota": "Unica tarjeta que aporta el snapshot de produccion y que certi no tiene. Su exoneracion (S/80) coincide con su membresia: misma duda de dato que Visa Oro Qore.",
+      "nota": "Su exoneracion es S/1 al mes, confirmada el 2026-09-21 por el catalogo publico de viabcp.com que entrego Marco ('Consume S/ 1 al mes y no pagues membresia'). Hasta esa fecha la tabla q23 repetia su monto de MEMBRESIA (S/80), que era la duda de dato abierta desde el 2026-09-09. La membresia no cambia.",
       "nombreEnTag": "Visa Clasica BCP Qore"
     },
     {

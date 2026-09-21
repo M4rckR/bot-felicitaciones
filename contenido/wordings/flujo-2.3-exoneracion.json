@@ -16,32 +16,32 @@
         "tabla": {
           "encabezado": [
             "Tarjeta",
-            "Exoneración de membresía"
+            "Exoneración de membresía por consumo mensual"
           ],
           "filas": [
             [
               "Visa Clásica LATAM Pass",
-              "S/1"
+              "S/1 al mes"
             ],
             [
               "Visa Oro LATAM Pass",
-              "S/1"
+              "S/1 al mes"
             ],
             [
               "Visa Platinum LATAM Pass",
-              "S/1,200"
+              "S/1,200 al mes"
             ],
             [
               "Visa Signature LATAM Pass",
-              "S/3,500"
+              "S/3,500 al mes"
             ],
             [
               "Visa Infinite Sapphire LATAM Pass",
-              "S/4,500"
+              "S/4,500 al mes"
             ],
             [
               "Visa Infinite Iridium LATAM Pass",
-              "S/5,000"
+              "S/5,000 al mes"
             ],
             [
               "Visa Light",
@@ -49,43 +49,43 @@
             ],
             [
               "Visa Clásica",
-              "S/50"
+              "S/50 al mes"
             ],
             [
               "American Express Clásica LATAM Pass",
-              "S/1"
+              "S/1 al mes"
             ],
             [
               "American Express Oro LATAM Pass",
-              "S/1"
+              "S/1 al mes"
             ],
             [
               "American Express Platinum LATAM Pass",
-              "S/1,200"
+              "S/1,200 al mes"
             ],
             [
               "American Express Black LATAM Pass",
-              "S/3,500"
+              "S/3,500 al mes"
             ],
             [
               "Visa Clásica Qore",
-              "S/80"
+              "S/1 al mes"
             ],
             [
               "Visa Oro Qore",
-              "S/170"
+              "S/1 al mes"
             ],
             [
               "Visa Platinum Qore",
-              "S/1,200"
+              "S/1,200 al mes"
             ],
             [
               "Visa Signature Qore",
-              "S/3,500"
+              "S/3,500 al mes"
             ],
             [
               "Visa Infinite Qore",
-              "S/5,000"
+              "S/5,000 al mes"
             ]
           ]
         }
@@ -93,14 +93,14 @@
       "recomendacion": {
         "title": "Te recomendamos esta tarjeta",
         "badge": "La más usada",
-        "card": "&#128179; Visa Oro LATAM Pass",
+        "card": "&#128179; Visa Oro Qore",
+        "codigo": "TCRLY3",
         "details": [
-          "Membresía: S/170",
-          "Exoneración: S/1 mensual en consumo."
+          "Membresía anual S/170 (GRATIS si consumes S/1 al mes)."
         ],
         "cta": {
           "label": "Elegir tarjeta",
-          "pendiente": "URL real sin definir"
+          "accion": "Activa el botón Seleccionar de TCRLY3 en la página"
         }
       },
       "menuText": "¿Qué deseas hacer ahora?",
@@ -116,11 +116,10 @@
         }
       ],
       "pendientes": [
-        "El bloque de tarjeta recomendada sigue FIJO en Visa Oro LATAM Pass y no se filtra. Con la tabla ya filtrada, un usuario que no tenga la Oro ve una recomendacion que ni siquiera aparece en su tabla.",
-        "DUDA DE DATO planteada a Marco, sin respuesta: 'Visa Clásica Qore S/80' y 'Visa Oro Qore S/170' son exactamente sus cifras de MEMBRESIA en 2.2, no montos de exoneracion. El resto de filas Qore si usa la escala de exoneracion (S/1,200 / S/3,500 / S/5,000). Reproducido verbatim.",
         "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir."
       ],
       "notas": [
+        "2026-09-21: la recomendación se alineó con Figma: Visa Oro Qore y el texto 'Membresía anual S/170 (GRATIS si consumes S/1 al mes).'. Solo se muestra cuando TCRLY3 está entre las tarjetas aprobadas.",
         "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.exoneracion de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"exoneracion\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
         "Bloque de recomendacion identico al de 2.2 (misma tarjeta, mismos details).",
         "Orden de tarjetas igual al de 2.1 (Visa Light y Visa Clasica antes de las American Express), distinto de 2.2.",
@@ -128,7 +127,8 @@
         "2026-09-09: se quito la clase tc0091-node-ancho. El ancho de burbuja ahora lo decide el contenido con techo del 100%, asi que la tabla llega al borde sola.",
         "2026-09-09: corregido 'los montos de para la exoneracion' -> 'los montos para la exoneracion'. Se elimino 'de'; la otra opcion era quitar 'para'. Aprobado por Marco. Ver docs/correcciones-wording.md.",
         "2026-09-09: el segundo boton paso de '✅ Elegir una tarjeta' (-> rating) a 'Cerrar', unificado en las cuatro pantallas de comparar. Correccion 7 en docs/correcciones-wording.md. CONSECUENCIA: la cadena de calificacion (mixed1, rating, rating_number, rating_thanks_auto, mixed100) quedo huerfana.",
-        "2026-09-09: Marco reenvio la pantalla y coincide 100% con lo implementado, incluida la correccion 5 ('para' en vez de 'de para'), que ya aparece en su texto. Las filas Visa Clasica Qore S/80 y Visa Oro Qore S/170 volvieron a llegar iguales: la duda de dato sigue abierta."
+        "2026-09-09: Marco reenvio la pantalla y coincide 100% con lo implementado, incluida la correccion 5 ('para' en vez de 'de para'), que ya aparece en su texto. Las filas Visa Clasica Qore S/80 y Visa Oro Qore S/170 volvieron a llegar iguales: la duda de dato sigue abierta.",
+        "2026-09-21: RESUELTA la duda de dato de las dos filas Qore. Marco entrego el catalogo publico de tarjetas de viabcp.com ('Elige la Tarjeta de Credito que va contigo') como fuente que nada puede contradecir. Ahi Visa Clasica Qore y Visa Oro Qore dicen ambas 'Consume S/ 1 al mes y no pagues membresia'. Las filas pasaron de S/80 y S/170 (que eran sus cifras de MEMBRESIA en 2.2) a S/1. Esto ademas alinea la tabla con la copy del perfilador, que ya decia 'Exoneracion consumiendo S/1 al mes' para ambas. Ver docs/correcciones-wording.md."
       ],
       "_advertencia": "La tabla de este archivo es el ESPEJO del orden completo. En pantalla nunca salen las 17 filas salvo que falle la deteccion: solo salen las tarjetas del usuario."
     }

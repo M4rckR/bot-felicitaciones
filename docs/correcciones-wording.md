@@ -239,6 +239,103 @@ porque no son de ese programa: eso no es una falta, es el nombre correcto.
 el bot ahora coinciden letra por letra con los que imprime la propia página** en las tarjetas de las que
 tenemos captura. Antes no era así.
 
+### 13. Exoneración de membresía — las dos filas Qore que repetían la membresía
+
+| | |
+| --- | --- |
+| **Decía** | Visa Clásica Qore **S/80** · Visa Oro Qore **S/170** |
+| **Dice** | Visa Clásica Qore **S/1** · Visa Oro Qore **S/1** |
+| **Regla** | El monto de exoneración lo fija el catálogo público de producto, que para estas dos tarjetas dice *"Consume S/ 1 al mes y no pagues membresía"*. |
+
+Este era el primer punto de "Datos que parecen inconsistentes" y estuvo abierto desde el 2026-09-09. Las
+dos cifras no eran montos de exoneración: **eran sus propios montos de membresía anual**, copiados de la
+pantalla de al lado. Las demás tarjetas Qore sí usaban la escala correcta (S/1,200 / S/3,500 / S/5,000).
+
+Se corrigió el **2026-09-21**, con el catálogo público de tarjetas de viabcp.com —*"Elige la Tarjeta de
+Crédito que va contigo"*— como fuente. Ahí las dos fichas dicen lo mismo: se exoneran consumiendo **S/1 al
+mes**, igual que la Visa Clásica LATAM Pass, la Visa Oro LATAM Pass y las American Express Clásica y Oro.
+
+**El bot ya se contradecía a sí mismo**, y esto lo resuelve: las pantallas del perfilador que presentan
+estas dos tarjetas siempre dijeron *"Exoneración consumiendo S/1 al mes"*. Quien entraba por el perfilador
+leía S/1 y quien entraba por la tabla de comparar leía S/80 o S/170, para la misma tarjeta.
+
+**La membresía anual no cambia:** la Visa Clásica Qore sigue costando S/80 al año y la Visa Oro Qore S/170.
+Lo que se corrigió es cuánto hay que consumir al mes para no pagarla.
+
+### 14. Ahorrar en costos — membresía y exoneración pasan a una sola línea
+
+| | |
+| --- | --- |
+| **Decía** | • Membresía anual de S/80.<br>• Exoneración consumiendo S/1 al mes. |
+| **Dice** | • Membresía anual S/80 **(GRATIS si consumes S/1 al mes).** |
+| **Regla** | Un solo dato, una sola viñeta, con el formato del catálogo público de BCP. Es el mismo estilo de la ficha nueva de la tarjeta destacada. |
+
+**Pedido por Marco el 2026-09-21**, al ver que la ficha nueva de la Visa Oro Qore usaba un formato y el
+resto otro. Son **17 fichas**, todas de la pantalla *Ahorrar en costos (1.2)* salvo la destacada: ninguna
+otra pantalla menciona la membresía.
+
+De paso se unificaron tres cosas que estaban a medias entre esas fichas:
+
+| Antes | Cuántas | Ahora |
+| --- | --- | --- |
+| "Membresía anual **de** S/80." | 10 | "Membresía anual S/80…" |
+| "Membresía anual**:** S/350." | 5 | igual, sin los dos puntos |
+| "Exoneración**:** consumiendo…" | 1 | "…(GRATIS si consumes…)" |
+| Sin punto final | 4 | con punto |
+
+Una de las 17 (Visa Platinum Qore) ya tenía los dos datos en una línea, separados por un punto; se le puso
+el mismo formato que a las demás.
+
+En esa unificación no se cambió ninguna cifra. Posteriormente, el punto 6 de la revisión contra Figma
+corrigió `S/5,00` a `S/5,000` para Visa Infinite Qore, respaldado también por el catálogo público. Queda
+pendiente la cifra de la Visa Clásica sin código, que no se muestra hoy.
+
+### 15. Ahorrar en costos — seis diferencias claras contra Figma
+
+Aplicado el **2026-09-21** por indicación de Marco:
+
+| Tarjeta | Cambio aplicado |
+| --- | --- |
+| Visa Light | Se añadió el punto final a «Membresía 0 sin consumo mínimo.» |
+| Visa Clásica LATAM Pass | «Acceso a descuentos y promociones BCP.» |
+| Visa Clásica Qore | «Acceso a descuentos y promociones BCP.» |
+| Visa Oro LATAM Pass | «Ideal para viajeros frecuentes que buscan acumular más millas con facilidad.» |
+| Visa Infinite Qore | Se corrigió `S/5,00` a `S/5,000` al mes. |
+| Visa Infinite Sapphire LATAM Pass | La viñeta de membresía termina con `.*`, igual que Figma. |
+
+**Regla de fuentes:** para wording se siguió Figma. Para cifras y beneficios manda el catálogo público de
+`viabcp.com`; por eso American Express Oro conserva S/170 aunque una ficha aislada del Figma diga S/80.
+
+### 16. Obtener más beneficios — alineación de los casos A y B
+
+Aplicado el **2026-09-21**: se actualizaron las 14 descripciones del caso A y las cuatro fichas del caso B
+según Figma. Visa Oro LATAM Pass recuperó la ficha completa; Visa Clásica y Visa Light ahora separan su
+descripción de las viñetas; se corrigió «Acumua» a «Acumula» y se quitó el asterisco de acumulación de
+Iridium. La errata «Ideal para acumula…» se corrigió después en la corrección 18.
+
+### 17. Burbuja del launcher — nuevo mensaje
+
+| | |
+| --- | --- |
+| **Decía** | ¡Hola! Soy Tarjetín. 👋 ¿En qué te puedo ayudar? |
+| **Dice** | ¡Hola! Te ayudaré a elegir una tarjeta |
+| **Regla** | Wording literal del Figma de `/felicitaciones`. No modifica el saludo conversacional de q0. |
+
+### 18. Experiencias exclusivas y erratas finales
+
+Se alineó q14 con el Figma en las siete descripciones verificadas, la redacción de Priority Pass y
+seguros, las fichas Platinum y la puntuación. Se quitó Skybox de Visa Clásica LATAM Pass. Los datos de
+producto se cotejaron con el catálogo público: Sapphire usa **1.5 millas**, Signature LATAM Pass
+**1.25 millas**, y Visa Platinum LATAM Pass ya no muestra el descuento de S/150 de American Express.
+
+También se corrigieron **«Puntos Qores» → «Puntos Qore»**, **«Ideal para acumula» → «Ideal para
+acumular»** y **«e consumo» → «de consumo»**. La Visa Clásica sin código queda preparada con
+exoneración de **S/50 al mes** y una descripción de cashback.
+
+Figma contiene dos variantes llamadas Visa Platinum Qore. La búsqueda interna confirmó que ambas usan
+la acumulación Platinum de 1.5 puntos; no son una ficha de Signature Qore. El proyecto conserva
+Signature con sus datos propios y usa para Platinum la variante «Beneficios superiores…».
+
 ### Nota sobre la corrección 4
 
 Al reenviar la pantalla de Acumulación de millas, el texto volvía a decir "**Estos** son las millas". Se
@@ -423,6 +520,7 @@ No son correcciones ni decisiones de diseño: son cambios de qué dice el bot, p
 | Resolver dudas | Pasó de **5 preguntas a 3**. Salieron "¿Qué beneficios tiene mi tarjeta?", "¿Cuánto cuesta la membresía?" y "¿Puedo exonerar la membresía?". Entró "¿Por qué me ofrecieron esa línea?". |
 | Ayúdame a elegir una tarjeta | "te recomendaré **solo la opción**" pasó a "te recomendaré **algunas opciones**". |
 | Viajar y acumular millas (1.1) | El segundo caso —el del usuario que no tiene tarjetas de millas— **sale sin la Visa Oro LATAM Pass**. Ver abajo. |
+| Las cuatro del perfilador (1.1–1.4) | La tarjeta destacada, la del recuadro verde con "La más usada", pasa de **Visa Oro LATAM Pass** a **Visa Oro Qore**. Ver abajo. |
 | Las cuatro pantallas del perfilador (1.1 a 1.4) | El botón de cierre pasó de **"Finalizar"** a **"Cerrar"**, como el resto del bot. Ver abajo. |
 | Priority Pass (2.4) | **Sale el recuadro "Te recomendamos esta tarjeta"**. Recomendaba la Visa Oro LATAM Pass, que en la tabla de esa misma pantalla figura sin Priority Pass. Ver abajo. |
 | Todo el bot | **Cerrar el bot con la X ya no conserva la conversación**: al volver a abrirlo empieza desde el inicio. Ver abajo. |
@@ -444,6 +542,51 @@ marcada como "La más usada".
 
 *Si UI pregunta:* no es un cambio de estilo ni de prioridad comercial. Es que la tarjeta que se recomendaba
 era exactamente la que el texto acababa de decir que el usuario no tenía.
+
+### La tarjeta destacada pasa a ser la Visa Oro Qore
+
+**Pedido por Marco el 2026-09-21, con mockup.** En las cuatro pantallas del perfilador (1.1 a 1.4) hay una
+**cuarta tarjeta que siempre va al final, dentro del recuadro verde y con la etiqueta "La más usada"**. Era
+la **Visa Oro LATAM Pass**. Ahora es la **Visa Oro Qore**.
+
+La ficha entregada, que es la misma para las cuatro pantallas:
+
+> **La más usada**
+> 💳 **Visa Oro Qore**
+> Orientada a beneficios cotidianos y promociones.
+> - Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**
+> - 1 punto Qore por cada $ consumido.
+> - Cuotas Sin Intereses en comercios afiliados.
+> - Acumulación de Puntos Qore para canjes.
+>
+> *[Elegir tarjeta]*
+
+Tres cosas que conviene saber:
+
+**1. Sigue mostrándose solo si el cliente tiene esa tarjeta aprobada.** No cambia la regla de siempre: quien
+no tenga la Visa Oro Qore ve 3 tarjetas y ningún recuadro verde. El botón *Elegir tarjeta* pulsa el botón
+"Seleccionar" de la Visa Oro Qore en la propia página.
+
+**2. Antes había cuatro fichas distintas y ahora hay una sola.** Cada pantalla describía la Visa Oro LATAM
+Pass con sus propias viñetas, enfocadas al criterio de esa pantalla. El mockup entregado trae una única
+ficha, y es la que se usa en las cuatro.
+
+**3. Es la primera viñeta del bot con negrita.** El mockup marca en negrita *"(GRATIS si consumes S/1 al
+mes)."*, igual que lo escribe el catálogo de producto. Hasta ahora ninguna viñeta de tarjeta llevaba
+formato, así que se habilitó la negrita en ese sitio. El resto de viñetas del bot no cambia.
+
+**La Visa Oro LATAM Pass no desaparece:** sigue en las listas de las cuatro pantallas como una tarjeta más.
+Lo que pierde es el puesto fijo al final y el recuadro verde.
+
+**4. Ahora también sale destacada en la segunda versión de cada pantalla.** Las pantallas del perfilador
+tienen dos versiones según las tarjetas del cliente. La segunda nunca había tenido tarjeta destacada, y con
+la Visa Oro LATAM Pass eso no se notaba, porque por cómo están armadas las listas sus clientes siempre
+entraban por la primera. La Visa Oro Qore sí puede caer en la segunda —le pasa a quien **solo tiene
+tarjetas Qore**—, así que **Marco pidió que ahí también salga en verde**.
+
+Para que nadie pierda nada, esa segunda versión sigue mostrando **4 tarjetas como máximo**: cuando el
+cliente tiene la Visa Oro Qore, se muestran 3 más la destacada; cuando no la tiene, se muestran las 4 de
+siempre y no hay recuadro verde. Antes y después, 4.
 
 ### Perfilador — el botón de cierre pasa de "Finalizar" a "Cerrar"
 
@@ -496,8 +639,23 @@ Nada de esto está decidido. Si UI pregunta, la respuesta es que se necesita def
 
 | Pantalla | Qué pasa |
 | --- | --- |
-| Exoneración de membresía | Dos filas de tarjetas Qore (`Visa Clásica Qore S/80` y `Visa Oro Qore S/170`) coinciden exactamente con sus montos de **membresía** de otra pantalla, no con montos de exoneración. Las demás filas Qore sí usan la escala de exoneración (S/1,200 / S/3,500 / S/5,000). **Puede ser un dato mal copiado.** |
 | Membresía anual | Visa Light figura como `0` a secas, mientras el resto usa formato `S/80`, `S/170`, etc. |
+
+> ✅ **Resuelto el 2026-09-21.** Las dos filas Qore de *Exoneración de membresía* (`Visa Clásica Qore S/80`
+> y `Visa Oro Qore S/170`) sí eran un dato mal copiado: repetían sus montos de membresía. Ahora dicen
+> **S/1**, según el catálogo público de producto. Ver la **corrección 13**.
+
+> ✅ **Resuelto el 2026-09-21.** El cotejo contra el catálogo público dejó cinco diferencias de producto.
+> Todas quedaron corregidas:
+
+| Pantalla | Qué pasa |
+| --- | --- |
+| Experiencias exclusivas (1.4) | Sapphire quedó en **1.5** y Signature LATAM Pass en **1.25** millas por $1. |
+| Experiencias exclusivas (1.4) | Se eliminó de Visa Platinum LATAM Pass el descuento de S/150 que corresponde a American Express. |
+| Ahorrar en costos (1.2) | Visa Clásica usa **S/50 al mes** para exonerar. |
+| Ahorrar en costos (1.2) | Visa Clásica se describe como tarjeta de cashback, sin atribuirle millas. |
+
+La Visa Clásica sigue sin código y no se muestra hoy, pero su contenido ya es correcto para cuando pueda detectarse.
 
 ### Qué tarjetas pueden aparecer hoy, y una que no
 
@@ -523,38 +681,20 @@ Pass) mostraban las 17 tarjetas del catálogo. Ahora muestran **únicamente las 
 aprobadas**, igual que el perfilador. El orden de cada tabla no cambia; solo se sacan las filas que no
 aplican.
 
-> ⚠️ **Esto dejó una contradicción a la vista.** El recuadro "Te recomendamos esta tarjeta" de esas cuatro
-> pantallas sigue fijo en **Visa Oro LATAM Pass** y no se filtra. Un usuario que no tenga esa tarjeta ahora
-> ve una tabla de, por ejemplo, cuatro filas donde la Visa Oro no está — y justo debajo, un recuadro que se
-> la recomienda. Antes del filtro era discutible; ahora la pantalla se contradice sola.
+> ✅ **Resuelto el 2026-09-21.** q21, q22 y q23 recomiendan **Visa Oro Qore** y el bloque se filtra por el
+> código `TCRLY3`: si el usuario no tiene esa tarjeta aprobada, la recomendación no aparece. q24 no tiene
+> bloque recomendado.
 
-### Erratas y contradicciones del perfilador (1.2, 1.3 y 1.4)
+### Erratas y contradicciones del perfilador
 
-Estas **se reprodujeron tal cual** y no se corrigieron, porque no hay aprobación. Todas son de los textos
-entregados el 2026-09-09.
+Las erratas «e consumo», «Ideal para acumula» y «Puntos Qores» están corregidas. Sapphire y Signature
+LATAM Pass ya muestran la misma acumulación en todos los criterios: 1.5 y 1.25 millas, respectivamente.
 
-| Pantalla | Dice | Qué pasa |
-| --- | --- | --- |
-| 1.2, caso sin tarjetas de ahorro | Visa Infinite Qore: "Exoneración consumiendo **S/5,00** al mes" | Le falta un cero. La Iridium, en la misma lista y con la misma membresía de S/500, dice S/5,000. |
-| 1.3 | Visa Platinum Qore: "**Acumua** hasta 1.5 Puntos Qore" | Errata de tipeo: "Acumula". |
-| 1.4 | Visa Platinum Qore: "por cada $1 **e** consumo" | Falta la "d": "de consumo". |
-| 1.3, caso sin tarjetas de beneficios | Visa Clásica: "**Tarjeta premium para viajes y acumulación de millas**" | Se contradice con sus propias viñetas, que dicen "Tarjeta básica para compras y financiamiento". Además es exactamente la frase que describe a la American Express Platinum en 1.2: parece un copiar-pegar. |
-
-**Dos tarjetas acumulan distinto según la pantalla:**
-
-| Tarjeta | En 1.1 y 1.3 | En 1.4 |
-| --- | --- | --- |
-| Visa Infinite Sapphire LATAM Pass | hasta **1.5** Millas por $1 | hasta **1.25** Millas por $1 |
-| Visa Signature LATAM Pass | hasta **1.25** Millas por $1 | hasta **1.5** Millas por $1 |
-
-Son datos de negocio, así que no se tocaron. Pero el mismo usuario puede ver las dos cifras entrando por
-dos caminos distintos del bot.
-
-**Siete tarjetas quedaron sin frase de presentación.** En el texto entregado, la mayoría de las tarjetas
+**Cinco tarjetas quedaron sin frase de presentación.** En el texto entregado, la mayoría de las tarjetas
 tiene una línea del tipo *"Ideal para quienes…"*, separada de las viñetas por un espacio en blanco. En
-siete casos ese espacio no venía, así que **todo el contenido entró como viñetas** y esas tarjetas no
-tienen frase de presentación: en 1.3 la Visa Clásica y la Visa Light; en 1.4 la Visa Clásica LATAM Pass, la
-American Express Clásica LATAM Pass, la Visa Clásica Qore, la Visa Clásica y la Visa Light.
+cinco casos ese espacio no venía, así que **todo el contenido entró como viñetas** y esas tarjetas no
+tienen frase de presentación: en 1.4 la Visa Clásica LATAM Pass, la American Express Clásica LATAM Pass,
+la Visa Clásica Qore, la Visa Clásica y la Visa Light.
 
 **Un emoji distinto:** en 1.3 la Visa Infinite Qore lleva 🥇 en vez del 💳 que llevan las otras 59
 tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mismo emoji.
@@ -578,11 +718,11 @@ tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mi
 
 ## Resumen en una frase
 
-Se corrigieron **10 errores de redacción en 8 pantallas** (concordancias, una tilde, un signo de apertura,
-una preposición duplicada y un nombre de tarjeta incompleto), sin reescribir ninguna frase. Se tomaron **2 unificaciones** (el botón de cierre y la grafía de la marca) y **5 decisiones de formato** que
+Se corrigieron las diferencias de wording aprobadas, las erratas detectadas y las contradicciones de
+producto encontradas en el cotejo. Se tomaron **2 unificaciones** (el botón de cierre y la grafía de la marca) y **5 decisiones de formato** que
 afectan a todo el chat. Hay **4 diferencias deliberadas** con el Figma que no son errores. Ya **no queda
 ninguna frase escrita por desarrollo**: todo el texto del bot lo escribió el equipo de contenido.
 
-Quedan abiertos: **datos de dos tablas** que parecen mal copiados, una decisión sobre **la encuesta de
-satisfacción, que quedó sin forma de aparecer**. El cierre ya usa **una sola etiqueta** ("Cerrar") en
-todo el bot desde el 2026-09-14.
+No quedan contradicciones abiertas con el catálogo público en esta revisión. Sigue abierta una decisión
+sobre **la encuesta de satisfacción, que quedó sin forma de aparecer**. El cierre ya
+usa **una sola etiqueta** ("Cerrar") en todo el bot desde el 2026-09-14.
