@@ -1,4 +1,4 @@
-# Tarjetín — bot de `/felicitaciones` (TC0091)
+# Tarjetín — bot de `/felicitaciones` (TC0096)
 
 Bot conversacional de árbol de decisión que se inserta en la página **post-aprobación** del BCP
 (`/felicitaciones`), donde el cliente ya fue aprobado y tiene que elegir una de sus tarjetas.
@@ -16,6 +16,12 @@ Un A/B test necesita los dos lados, y **son dos archivos distintos que se pegan 
 | --- | --- | --- | --- |
 | **Piloto** | `adobe-target/piloto/bot.html` | El bot completo | Los 7 eventos ` - P` |
 | **Control** | `adobe-target/control/control.html` | Sin bot. Solo el tag | 1 evento ` - C` |
+
+La variación visual `adobe-target/variantes/premium-black-infinite/bot.html` es una copia autónoma del
+piloto: conserva contenido, flujo y tageos, y aplica fondos premium inspirados en las tarjetas físicas a
+las familias Black, Infinite y Signature del perfilador. Se revisa en
+`http://localhost:8000/preview/?variante=premium-black-infinite`, y con el mismo parámetro en el preview
+publicado en Netlify.
 
 El control no pinta nada: es un `<script>` que empuja un único `trackPromotionView` a `digitalData`. Existe
 porque en el grupo de control **el bot no se inyecta**, así que ninguno de los siete eventos del piloto

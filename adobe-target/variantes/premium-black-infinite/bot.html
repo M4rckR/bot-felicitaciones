@@ -630,6 +630,97 @@
         color: var(--on-text, #202E44);
     }
 
+    /* Variante premium: las fichas Black, Infinite y Signature del perfilador
+       toman colores inspirados en la tarjeta fisica publicada por BCP. No afecta
+       las recomendaciones del comparador ni agrega copy nuevo. */
+    #tc0091-scope .tc0091-card.tc0091-card--premium {
+        border-color: #74777D;
+        background: linear-gradient(145deg, #111214 0%, #343638 58%, #17181A 100%);
+        /* La sombra exterior se recortaba contra la caja rectangular del
+           scroll horizontal y hacia parecer que habia otra ficha detras. El
+           relieve queda dentro de la misma silueta redondeada. */
+        box-shadow:
+            inset 0 1px 0 rgba(255, 255, 255, 0.12),
+            inset 0 -1px 0 rgba(8, 11, 17, 0.22);
+        overflow: hidden;
+        background-clip: padding-box;
+    }
+
+    /* Signature LATAM Pass: grafito y plata, como la onda metalica de la
+       tarjeta fisica. */
+    #tc0091-scope .tc0091-card.tc0091-card--premium-signature {
+        border-color: #A8ADB2;
+        background:
+            radial-gradient(ellipse at 94% 10%, rgba(231, 234, 237, 0.60) 0%, rgba(173, 178, 183, 0.26) 34%, transparent 62%),
+            radial-gradient(ellipse at 12% 92%, rgba(110, 115, 119, 0.44) 0%, transparent 58%),
+            linear-gradient(145deg, #151718 0%, #3F4346 54%, #1B1D1F 100%);
+    }
+
+    /* Signature Qore: la misma familia grafito, pero con el gran destello plata
+       que forma la Q en el plastico oficial. */
+    #tc0091-scope .tc0091-card.tc0091-card--premium-signature-qore {
+        border-color: #C2C6CA;
+        background:
+            radial-gradient(ellipse at 94% 18%, rgba(246, 247, 248, 0.72) 0%, rgba(180, 185, 190, 0.38) 32%, transparent 64%),
+            radial-gradient(ellipse at 18% 88%, rgba(101, 105, 109, 0.42) 0%, transparent 60%),
+            linear-gradient(145deg, #141516 0%, #414446 55%, #191B1C 100%);
+    }
+
+    /* Infinite Sapphire: azul zafiro dominante con facetas electricas. */
+    #tc0091-scope .tc0091-card.tc0091-card--premium-sapphire {
+        border-color: #6B8FFF;
+        background:
+            radial-gradient(circle at 92% 12%, rgba(88, 126, 255, 0.88) 0%, rgba(52, 86, 207, 0.48) 34%, transparent 64%),
+            radial-gradient(circle at 28% 88%, rgba(29, 72, 190, 0.78) 0%, rgba(20, 49, 130, 0.40) 38%, transparent 68%),
+            linear-gradient(145deg, #080D29 0%, #14275F 55%, #090E27 100%);
+    }
+
+    /* Infinite Iridium: facetas verdes, violetas y cobrizas sobre base oscura. */
+    #tc0091-scope .tc0091-card.tc0091-card--premium-iridium {
+        border-color: #669E99;
+        background:
+            radial-gradient(circle at 92% 8%, rgba(53, 190, 167, 0.80) 0%, rgba(37, 115, 115, 0.42) 34%, transparent 62%),
+            radial-gradient(circle at 58% 58%, rgba(124, 67, 165, 0.76) 0%, rgba(83, 51, 119, 0.40) 38%, transparent 68%),
+            radial-gradient(circle at 18% 94%, rgba(186, 82, 55, 0.72) 0%, rgba(123, 53, 43, 0.36) 36%, transparent 64%),
+            linear-gradient(145deg, #0B1618 0%, #222535 56%, #17191C 100%);
+    }
+
+    /* Amex Black: negro espacial con un halo azul amplio y claramente visible. */
+    #tc0091-scope .tc0091-card.tc0091-card--premium-black {
+        border-color: #59A9D4;
+        background:
+            radial-gradient(circle at 104% 50%, rgba(77, 188, 240, 0.92) 0 13%, rgba(28, 104, 145, 0.72) 25%, transparent 49%),
+            linear-gradient(145deg, #030405 0%, #1B2228 62%, #07090B 100%);
+    }
+
+    /* Infinite Qore: el centro iridiscente azul/violeta/champagne pasa a ser el
+       color dominante para que se distinga aun en el tarjetin pequeño. */
+    #tc0091-scope .tc0091-card.tc0091-card--premium-infinite-qore {
+        border-color: #8B84C7;
+        background:
+            radial-gradient(circle at 72% -4%, rgba(239, 185, 113, 0.78) 0%, rgba(166, 118, 96, 0.34) 30%, transparent 58%),
+            radial-gradient(circle at 94% 48%, rgba(69, 174, 219, 0.76) 0%, rgba(45, 103, 151, 0.38) 38%, transparent 66%),
+            radial-gradient(circle at 38% 94%, rgba(119, 85, 187, 0.74) 0%, rgba(78, 55, 130, 0.36) 38%, transparent 68%),
+            linear-gradient(145deg, #11152D 0%, #222B4C 56%, #211629 100%);
+    }
+
+    #tc0091-scope .tc0091-card--premium .tc0091-card-name {
+        color: #FFFFFF;
+    }
+
+    #tc0091-scope .tc0091-card--premium .tc0091-card-desc,
+    #tc0091-scope .tc0091-card--premium .tc0091-card-bullets li {
+        color: #F4F7FC;
+    }
+
+    #tc0091-scope .tc0091-card--premium .tc0091-card-bullets li::marker {
+        color: #9CC2FF;
+    }
+
+    #tc0091-scope .tc0091-card--premium .tc0091-card-cta {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+    }
+
     #tc0091-scope .tc0091-card-actions {
         display: flex;
         justify-content: flex-end;
@@ -699,13 +790,18 @@
         display: none;
     }
 
-    /* 82% del ancho del track deja ~18% de la siguiente tarjeta asomando. */
+    /* 90% del ancho del track prioriza la lectura y deja una franja de la
+       siguiente tarjeta como pista visual del carrusel. */
     #tc0091-scope .tc0091-carousel-slide {
-        flex: 0 0 82%;
+        flex: 0 0 90%;
         min-width: 0;
         scroll-snap-align: start;
         scroll-snap-stop: always;
         display: flex;
+        /* El wrapper sigue exactamente la silueta de la ficha. Esto evita que
+           el area rectangular del slide aparezca alrededor de sus esquinas. */
+        border-radius: 24px;
+        overflow: hidden;
     }
 
     #tc0091-scope .tc0091-carousel-slide > .tc0091-card {
@@ -4683,7 +4779,26 @@
             var self = this;
             var cfg = item || {};
             var claseDestacada = cfg.badge ? " tc0091-card--destacada" : "";
-            var html = '<div class="tc0091-card' + claseDestacada + '">';
+            var nombreTarjeta = String(cfg.name || "");
+            var clasePremium = "";
+
+            if (/\bIridium\b/i.test(nombreTarjeta)) {
+                clasePremium = " tc0091-card--premium tc0091-card--premium-iridium";
+            } else if (/\bSapphire\b/i.test(nombreTarjeta)) {
+                clasePremium = " tc0091-card--premium tc0091-card--premium-sapphire";
+            } else if (/\bInfinite\s+Qore\b/i.test(nombreTarjeta)) {
+                clasePremium = " tc0091-card--premium tc0091-card--premium-infinite-qore";
+            } else if (/\bBlack\b/i.test(nombreTarjeta)) {
+                clasePremium = " tc0091-card--premium tc0091-card--premium-black";
+            } else if (/\bSignature\s+Qore\b/i.test(nombreTarjeta)) {
+                clasePremium = " tc0091-card--premium tc0091-card--premium-signature-qore";
+            } else if (/\bSignature\b/i.test(nombreTarjeta)) {
+                clasePremium = " tc0091-card--premium tc0091-card--premium-signature";
+            } else if (/\bInfinite\b/i.test(nombreTarjeta)) {
+                clasePremium = " tc0091-card--premium";
+            }
+
+            var html = '<div class="tc0091-card' + claseDestacada + clasePremium + '">';
 
             if (cfg.badge) {
                 html += '<span class="tc0091-card-badge">' + self.escapeHtml(cfg.badge) + "</span>";

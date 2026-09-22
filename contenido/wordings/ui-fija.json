@@ -32,11 +32,11 @@
   },
   "analytics": {
     "ubicacion": "config.analytics y pushPromotionEvent",
-    "experimentCode": "TC0091",
+    "experimentCode": "TC0096",
     "prefijo_promotion_name": "Felicitaciones - Cards - Bot - ...",
     "pendientes": [
       "El prefijo es un placeholder: la convencion real para una pagina que no es home tiene que darla Marco.",
-      "TC0091 se reemplaza en un solo pase junto con el namespace tc0091-, #tc0091-scope, la clave tc0091_pending_transition y window.tc0091SetMode."
+      "El código de analítica es TC0096. El namespace técnico tc0091-, #tc0091-scope, la clave tc0091_pending_transition y los hooks window.tc0091* permanecen sin cambios para no romper el componente."
     ]
   },
   "pendientes_globales": [

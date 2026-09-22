@@ -19,7 +19,8 @@ existing bot is the working reference; the `referencia/paginas/` snapshots descr
 | --- | --- |
 | `adobe-target/piloto/bot.html` | **The file being built — this is what you edit.** The new `/felicitaciones` bot. Started as a byte-copy of `referencia/bot-actual.html`'s engine with the namespace swapped (a `tcxxxx` placeholder until 2026-09-11, `tc0091` since) and the home node tree replaced. See *State of the offer* below. |
 | `adobe-target/control/control.html` | **The control variant of the experiment.** Not a bot: a standalone `<script>` that pushes the single `- C` event and nothing else. The control group gets a page with no bot, so none of the pilot's seven events can fire there. See *Analytics*. |
-| `netlify.toml` | Deploy config for the preview. Builds a `publicado/` allow-list containing **only** `preview/` and the pilot offer. **`referencia/paginas/` is deliberately excluded: those snapshots carry real client names and credit lines.** |
+| `adobe-target/variantes/premium-black-infinite/bot.html` | **A visual variant of the pilot** (2026-09-22). A self-contained copy: same 15 nodes, same copy, same seven tags, same `TC0096`. It only adds premium backgrounds for the Black / Infinite / Signature cards of the perfilador and widens the carousel slide. See *The premium variant* below. |
+| `netlify.toml` | Deploy config for the preview. Builds a `publicado/` allow-list containing **only** `preview/`, the pilot offer and the variants. **`referencia/paginas/` is deliberately excluded: those snapshots carry real client names and credit lines.** |
 | `README.md` | Human-facing entry point: how to run the preview locally and on Netlify, what the directory holds, pilot vs control. |
 | `referencia/bot-actual.html` | **Read-only reference.** The live home snippet as authored: `<style>` (1–991), markup (993–1056), `<script>` IIFE (1058–4141). Do not edit — it is the working original we ported from. |
 | `referencia/bot-insertado.html` | Read-only snapshot of the **live home page in production with the bot inserted**. Shows the real injection context. Its `<style>` (5331–6321) and `<script>` (6397–9480) are byte-identical to `referencia/bot-actual.html` — only indentation and live-DOM attributes differ. Do not edit; it is evidence, not a build output. |
@@ -39,7 +40,8 @@ deliverables):
 adobe-target/      what gets pasted into Target — the only thing that ships
   piloto/bot.html
   control/control.html
-preview/           the harness. The only thing Netlify publishes
+  variantes/premium-black-infinite/bot.html   a visual variant of the pilot
+preview/           the harness. Netlify publishes it plus the offers it fetches
 contenido/         working material the snippet NEVER reads: wordings/ + the two card JSONs
 docs/              correcciones-wording.md, the UI-team deliverable
 referencia/        read-only evidence: bot-actual, bot-insertado, paginas/, pasos/
@@ -73,14 +75,19 @@ and no install step, just a copy into an allow-listed `publicado/`. To check wha
 run that same copy locally:
 
 ```bash
-rm -rf publicado && mkdir -p publicado/adobe-target/piloto &&
+rm -rf publicado &&
+  mkdir -p publicado/adobe-target/piloto publicado/adobe-target/variantes/premium-black-infinite &&
   cp -R preview publicado/preview &&
   cp adobe-target/piloto/bot.html publicado/adobe-target/piloto/bot.html &&
+  cp adobe-target/variantes/premium-black-infinite/bot.html publicado/adobe-target/variantes/premium-black-infinite/bot.html &&
   grep -rl 'data-client-name' publicado/ || echo "sin datos de cliente"
 ```
 
 `preview/index.html` is the dev harness for `adobe-target/piloto/bot.html`. It **fetches the snippet at runtime** — it
-never copies its content, so the two cannot drift. It gives: live re-injection when the file changes
+never copies its content, so the two cannot drift. **`?variante=premium-black-infinite` makes it fetch
+`adobe-target/variantes/premium-black-infinite/bot.html` instead** (2026-09-22); any other value, or none,
+falls back to the pilot. The switch is a single `URLSearchParams` read next to `ARCHIVO_BOT` — a new
+variant means a new folder plus a branch there, and a copy line in `netlify.toml`. It gives: live re-injection when the file changes
 (1 s poll), Desktop/Móvil-390px toggle via an iframe (so the bot's `matchMedia("(max-width: 768px)")`
 reacts to real width), a `digitalData` panel showing every analytics event the bot pushes, and a console
 panel where `validateGraph` errors surface. A `file://` open is detected and refused with instructions,
@@ -288,22 +295,21 @@ Events push onto `window.digitalData` (created as an array if absent) via `pushP
 `experimentCode: "TC0080"`. Tracked: bot open, final-response view, feedback click
 (`position: "<nodeId> - <1|0>"`), discover-card CTA view/click, rating view/click, close view/click.
 
-**In `adobe-target/piloto/bot.html` the tagging plan is Marco's spec of 2026-09-11 and it is closed**: exactly
-these **six** events, no more. Anything else that existed was deleted — do not re-add an event because the
-home bot has it.
+**In `adobe-target/piloto/bot.html` the tagging plan is Marco's confirmed spec of 2026-09-21 and it is
+closed**: exactly these **seven** event families, no more.
 
 | Method | name (after `Felicitaciones - Cards - Bot - `) | creative | position | Fires when |
 | --- | --- | --- | --- | --- |
-| `trackLauncherView` | `Inicio - TC0091 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `Bot.launcherViewSent` |
-| `trackOpenBotClick` | `Inicio - TC0091 - P` | Button | `Modal` | panel opened |
-| `trackFinalResponseView` | `Arbol - TC0091 - P` | Modal | `1 - 1.1` … `3 - 3.3` | every **respuesta** node |
-| `trackElegirTarjetaView` | `Arbol - TC - TC0091 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
-| `trackCloseView` | `TC0091 - P` | Button | `Cerrar` | node has an `isClose` option |
-| `trackCloseClick` | `TC0091 - P` | Button | `Cerrar` | `[data-close]` clicked |
+| `trackLauncherView` | `Inicio - TC0096 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `Bot.launcherViewSent` |
+| `trackOpenBotClick` | `Inicio - TC0096 - P` | Button | `Modal` | panel opened |
+| `trackFinalResponseView` | `Arbol - TC0096 - P` | Modal | `1 - 1.1` … `3 - 3.3` | every **respuesta** node |
+| `trackElegirTarjetaView` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
+| `trackElegirTarjetaClick` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | successful click on a bot card CTA, before the native page button is clicked |
+| `trackCloseView` | `TC0096 - P` | Button | `Cerrar` | node has an `isClose` option |
+| `trackCloseClick` | `TC0096 - P` | Button | `Cerrar` | `[data-close]` clicked |
 
-**The bot does not tag the "Elegir tarjeta" click** (Marco, 2026-09-11). Pressing the page's own button
-makes the page emit three events by itself, and those are the base — a seventh event of ours would count
-the same click twice:
+**The bot tags the "Elegir tarjeta" click** with the `trackPromotionClick` above. It then presses the
+page's own button, which additionally emits its native event families:
 
 ```json
 { "event": "trackAction", "action": { "category": "Opciones Tarjeta", "group": "Cards",
@@ -313,7 +319,7 @@ the same click twice:
 { "event": "trackPopup", "popup": { "name": "Cards - Edita tu linea de credito" } }
 ```
 
-The **View** stays, because only the bot knows it offered the card.
+The bot event measures its CTA; the native events describe the selected product and the page flow.
 
 **Attribution is not a problem, and `Flujo` does not need to change** (Marco, 2026-09-11). Analytics already
 knows which session ran the experiment — the Inicio View stamps `- P` or `- C` at the start of it — so
@@ -378,7 +384,7 @@ two post-removal checks were re-run and both come back clean — **zero orphan p
 
 **`adobe-target/control/control.html` is the other half of the experiment.** The control group gets a page with no bot, so
 none of the seven can fire there. That file is a standalone `<script>` that pushes the single `- C` event
-(`Inicio - TC0091 - C`, Button, `Inicio Tarjetin`) and nothing else: no markup, no styles, no DOM writes,
+(`Inicio - TC0096 - C`, Button, `Inicio Tarjetin`) and nothing else: no markup, no styles, no DOM writes,
 guarded by `window.__tc0091ControlViewSent` against Target re-injection. It pushes immediately rather than
 waiting for the page to create `digitalData` — a late control View unbalances the comparison against a
 pilot that pushes at once.
@@ -585,9 +591,10 @@ crosswalk stays honest. Its `nombreEnElBot` fields carry the full name.
   refactor on your own initiative; change the engine only when he asks for something that needs it.
 - **Marco supplies all content**, screen by screen, including the tree and copy. Do not invent flows,
   wording, card data, or CTA destinations — implement what he sends.
-- **Experiment code is `TC0091`** (Marco, 2026-09-11). The placeholder swap is **done**: `tc0091-` CSS
-  namespace, `#tc0091-scope`, `tc0091_pending_transition`, `window.tc0091Catalogo` and
-  `config.analytics.experimentCode: "TC0091"`. The analytics prefix `[[PAGINA]]` became `Felicitaciones`.
+- **Experiment code is `TC0096`** (confirmed by Marco, 2026-09-21). The technical namespace remains
+  `tc0091-`: `#tc0091-scope`, `tc0091_pending_transition` and `window.tc0091Catalogo` are internal
+  identifiers and were not renamed. `config.analytics.experimentCode` is `"TC0096"`. The analytics
+  prefix `[[PAGINA]]` became `Felicitaciones`.
   586 replacements in `adobe-target/piloto/bot.html`, plus `contenido/wordings/` and `preview/index.html`. Nothing in the
   working set still carries a placeholder.
 
@@ -624,7 +631,7 @@ A and a case B, all resolved at runtime from the user's approved cards. What rem
   is wording.
 
 15 nodes. Namespace is `tc0091-` / `#tc0091-scope` / `tc0091_pending_transition` /
-`window.tc0091Catalogo` / `experimentCode: "TC0091"`, and the analytics prefix is
+`window.tc0091Catalogo`; the analytics experiment code is `TC0096`, and the prefix is
 `"Felicitaciones - Cards - Bot - ..."`. Assigned and swapped on 2026-09-11 — no placeholders left.
 
 | Branch | Status |
@@ -636,7 +643,7 @@ A and a case B, all resolved at runtime from the user's approved cards. What rem
 | `q31` "¿Puedo cambiar mi línea de crédito?" | done — two tight lines + focus paragraph, plain text |
 | `q32` "¿Es seguro solicitarla por aquí?" | done — the only screen in the bot with bullets, so `richText: true` |
 | `q33` "¿Por qué me ofrecieron esa línea?" | done — four factor lines tight, **no bullets**, plain text |
-| `q21` "Acumulación de millas" | done — intro + 17-row table + recommendation card + menu. Marco sent the full screen on 2026-09-09 |
+| `q21` "Acumulación de millas / Puntos" | done — intro + recommendation card + menu. Since 2026-09-21 the table is **split by programme** (millas / Puntos Qore) and the option label that leads here is resolved at runtime; see *`q21` splits by accumulation programme* |
 | `q22` "Membresía Anual" | done — reconfirmed verbatim against Marco's 2026-09-09 text, zero changes needed. All in **one bubble** |
 | `q23` "Exoneración de membresía" | done — reconfirmed verbatim against Marco's 2026-09-09 text, zero changes needed |
 | `q24` "Priority Pass" | done — intro + table + menu. **No recommendation card** (Marco, 2026-09-14): it recommended Visa Oro LATAM Pass, which its own table lists without Priority Pass |
@@ -855,7 +862,9 @@ These are real deviations from `referencia/bot-actual.html`. Diffing the two eng
   - the box has a green border and a near-white `#F9F9FB` fill, `border-radius: 24px`, `padding: 16px`.
   - `badge` ("La más usada") is a solid-green chip **inside** the box, top-left, on its own line, with an
     almost square `border-radius: 2px` — deliberately not a pill.
-  - `details` render as a real `<ul>` with disc bullets, not paragraphs.
+  - `details` render as one `<p class="tc0091-rec-detail">` per line, **not** bullets (2026-09-21). They
+    used to be a real `<ul>` with disc markers; the `.tc0091-rec-details` rules are gone. The field is
+    still an array and today every recommendation carries exactly one line.
   - the CTA is right-aligned and **auto-width** (`.tc0091-rec-actions` is `justify-content: flex-end`),
     unlike `.tc0091-chat-item-option--cta` which is full-width.
 
@@ -1072,6 +1081,62 @@ being a lead cannot be asserted. Misses are logged as `RECOMENDACION_NO_ES_LEAD`
 Before this, the four screens recommended Visa Oro unconditionally. With the tables already filtered, a
 user without it got a recommendation absent from their own table, whose button — once the CTA started
 driving the page's native button — did nothing at all.
+
+### `q21` splits by accumulation programme (2026-09-21)
+
+**`millas` is no longer one table.** BCP has two accumulation programmes — LATAM Pass *millas* and *Puntos
+Qore* — and a single table mixed both into one column, so a user with only Qore cards read a heading about
+miles. `config.comparador.millas` now has:
+
+```
+{ intro, secciones: [{programa: "millas" | "puntos", encabezado, filas}], sinPrograma: {encabezado, filas} }
+```
+
+and the other three tables (`membresia`, `exoneracion`, `priorityPass`) keep the flat
+`{intro, encabezado, filas}` shape. `resolveComparador` branches on `tabla.secciones` and delegates to
+**`resolveAccumulationComparator`**, which:
+
+- keeps only the sections whose programme the user actually holds, via **`getAccumulationPrograms(leads)`**
+  — it walks the sections and reports `{millas, puntos}`. **No detection returns both**, the same reasoning
+  as every other `sinLeads` fallback;
+- filters each section's rows by lead, drops a section that ends up empty, and emits the surviving tables
+  into **one** markdown string separated by a blank line, so `formatRichText` renders both inside the same
+  bubble;
+- falls back to **`sinPrograma`** — the old "No Aplica" table — only when the user holds cards but none of
+  them is in either programme. Without that branch a Visa Light-only user would have seen an empty screen.
+
+**The `q2` option label is dynamic too.** The option carries `labelPorProgramasAcumulacion: true` instead
+of a `label`, and `resolveOptionLabel` swaps it for "Acumulación de millas", "Acumulación de puntos" or
+"Acumulación de millas / Puntos" depending on the same programme read. It resolves inside
+`appendBotMessageForCurrent`'s snapshot like everything else, so the **user bubble echoes the resolved
+label** — the click handler reads `data-user-label` / the button text, never the config.
+
+`intro` moved from the sections to the table itself: the greeting is one line for the whole screen, not one
+per programme.
+
+### The premium variant (2026-09-22)
+
+`adobe-target/variantes/premium-black-infinite/bot.html` is a **self-contained copy of the pilot**, not a
+patch and not a shared build: the repo has no build step, so a variant is a whole file. Verified against the
+pilot on 2026-09-22 — same 15 nodes, no dangling `next`, same `experimentCode: "TC0096"`, same seven tag
+families, zero template literals. The entire diff is visual:
+
+- seven `.tc0091-card--premium*` rules that paint the Black, Infinite (Sapphire / Iridium / Qore) and
+  Signature (LATAM Pass / Qore) cards with gradients taken from the physical plastic, plus white text and a
+  light `::marker`;
+- `createCardBoxMarkup` picks the class by **matching the card `name` with a regex** — `Infinite Qore` and
+  `Signature Qore` are tested before the bare `Infinite` / `Signature` so the more specific one wins. It is
+  the one place in either file that keys off a name rather than a code, which is exactly what
+  *cross by code, never by name* warns about: **rename a premium card and its background silently
+  disappears.** Worth converting to `codigo` if the variant ever ships;
+- the carousel slide goes from `82%` to `90%` of the track, and the slide wrapper gets
+  `border-radius: 24px` + `overflow: hidden` so the rectangular slide box stops showing around the card's
+  rounded corners.
+
+Open it in the harness with `?variante=premium-black-infinite`. It is published to Netlify too, so it can be
+compared against the pilot from a phone.
+
+**Not reviewed on screen yet** — the checks above are static.
 
 ### Testing casuistics in the preview
 

@@ -509,7 +509,10 @@
             // El preview vive en preview/, la oferta del piloto en adobe-target/.
             // La ruta es relativa a este archivo y funciona igual servida por
             // python3 -m http.server que publicada en Netlify.
-            var ARCHIVO_BOT = "../adobe-target/piloto/bot.html";
+            var variante = new URLSearchParams(window.location.search).get("variante");
+            var ARCHIVO_BOT = variante === "premium-black-infinite"
+                ? "../adobe-target/variantes/premium-black-infinite/bot.html"
+                : "../adobe-target/piloto/bot.html";
             var INTERVALO_POLL = 1000;
 
             // Design tokens exactamente como los define /felicitaciones.

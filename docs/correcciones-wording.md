@@ -336,11 +336,34 @@ Figma contiene dos variantes llamadas Visa Platinum Qore. La búsqueda interna c
 la acumulación Platinum de 1.5 puntos; no son una ficha de Signature Qore. El proyecto conserva
 Signature con sus datos propios y usa para Platinum la variante «Beneficios superiores…».
 
+### 19. Reauditoría visual y de producto de las fichas visibles
+
+Aplicado el **2026-09-21** tras una revisión directa de la página enlazada de Figma y de las fichas
+públicas de `viabcp.com`:
+
+- En *Viajar*, American Express Platinum adopta la descripción y las cuatro viñetas de Figma, incluidas
+  «solo por digital» y Cuotas Sin Intereses. Marco precisó que la ficha pública solo reemplaza a Figma
+  cuando existe una contradicción expresa; la ausencia de un dato en la ficha pública no basta para
+  eliminarlo.
+- En el caso B de *Experiencias exclusivas* se actualizaron American Express Oro, Visa Clásica LATAM
+  Pass, American Express Clásica LATAM Pass, Visa Clásica Qore y Visa Light. Figma define descripción,
+  jerarquía y selección de contenido; las fichas públicas respaldan acumulación, promociones, seguros,
+  descuentos, Qore y cuotas según corresponda.
+- Se eliminaron las viñetas heredadas que Figma ya no asigna a esas fichas. Las variantes ordinarias de
+  Visa Oro Qore no se tocaron en esta corrección porque el motor las sustituye por la destacada común
+  cuando `TCRLY3` es lead.
+- La variante de Signature Qore en Experiencias sigue siendo una excepción documentada: Figma contiene
+  dos fichas llamadas Platinum Qore y no ofrece una correspondencia inequívoca para Signature.
+
 ### Nota sobre la corrección 4
 
 Al reenviar la pantalla de Acumulación de millas, el texto volvía a decir "**Estos** son las millas". Se
 mantuvo la versión corregida ("**Estas**"), y la corrección quedó reconfirmada. Vale tenerlo presente: si
 el texto original sigue circulando en otros documentos, todavía tiene el error.
+
+**Actualización del 2026-09-21:** ese encabezado dejó de mostrarse. Marco aprobó sustituir los encabezados
+separados de millas y puntos por un solo texto: «¡Buena elección! 😊 Descubre cuántas millas y puntos
+podrías ganar mensualmente con tus compras.».
 
 ---
 
@@ -690,11 +713,10 @@ aplican.
 Las erratas «e consumo», «Ideal para acumula» y «Puntos Qores» están corregidas. Sapphire y Signature
 LATAM Pass ya muestran la misma acumulación en todos los criterios: 1.5 y 1.25 millas, respectivamente.
 
-**Cinco tarjetas quedaron sin frase de presentación.** En el texto entregado, la mayoría de las tarjetas
-tiene una línea del tipo *"Ideal para quienes…"*, separada de las viñetas por un espacio en blanco. En
-cinco casos ese espacio no venía, así que **todo el contenido entró como viñetas** y esas tarjetas no
-tienen frase de presentación: en 1.4 la Visa Clásica LATAM Pass, la American Express Clásica LATAM Pass,
-la Visa Clásica Qore, la Visa Clásica y la Visa Light.
+**Resuelto para las fichas visibles el 2026-09-21.** Visa Clásica LATAM Pass, American Express Clásica
+LATAM Pass, Visa Clásica Qore y Visa Light ya separan la descripción de sus viñetas según Figma. La
+Visa Clásica sin código continúa fuera del runtime; no se le copió la descripción contradictoria de
+Figma porque el catálogo público la clasifica como tarjeta de cashback, no como tarjeta de millas.
 
 **Un emoji distinto:** en 1.3 la Visa Infinite Qore lleva 🥇 en vez del 💳 que llevan las otras 59
 tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mismo emoji.
@@ -710,7 +732,7 @@ tarjetas. Se dejó tal cual, pero contradice lo acordado de que todas usan el mi
 | Qué | Detalle |
 | --- | --- |
 | Las tres preguntas retiradas | ¿Salen del bot definitivamente o reaparecen en otra pantalla? |
-| **El recuadro "Te recomendamos esta tarjeta" no siempre aparece** | Resuelto el 2026-09-11: ese recuadro **solo se muestra si el cliente tiene esa tarjeta aprobada**, igual que las tarjetas del perfilador. Es la misma regla en todo el bot: nunca se muestra una tarjeta que el cliente no pueda pedir.<br><br>Hoy las pantallas de millas, membresía y exoneración recomiendan la **Visa Oro LATAM Pass** (Priority Pass ya no lleva recuadro desde el 2026-09-14), así que quien no la tenga ve la tabla y el menú, pero sin el recuadro. Antes se le mostraba igual, con un botón que no llevaba a ningún lado.<br><br>Cuando se definan las condiciones para elegir la tarjeta recomendada según el caso, el recuadro pasará a mostrarse más seguido, porque la tarjeta será una que el cliente sí tiene. |
+| **El recuadro "Te recomendamos esta tarjeta" no siempre aparece** | Resuelto: las pantallas de millas, membresía y exoneración recomiendan la **Visa Oro Qore** y el recuadro solo se muestra si `TCRLY3` está entre las tarjetas aprobadas. Priority Pass no lleva recomendación. El beneficio se presenta como párrafo, sin viñeta. |
 | Última burbuja del flujo | Dice "¿Qué deseas hacer ahora?" con un único botón "Cerrar", y por la regla de ancho ocupa el 100%, lo que la deja con mucho espacio vacío. Falta decidir si se deja pareja con los demás menús o se hace una excepción. |
 | Priority Pass: el intro y la tabla no dicen lo mismo | El intro dice *"Estas son tus tarjetas aprobadas **que incluyen** el beneficio Priority Pass"*, lo que sugiere una lista filtrada, pero la tabla muestra las 17 tarjetas con Sí/No. Es menor, pero puede confundir. |
 

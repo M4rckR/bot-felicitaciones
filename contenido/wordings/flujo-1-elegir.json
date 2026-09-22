@@ -122,14 +122,15 @@
           },
           {
             "nombre": "&#128179; American Express Platinum LATAM Pass",
-            "descripcion": "Ideal para viajeros frecuentes que quieren beneficios premium.",
+            "descripcion": "Ideal para obtener más beneficios por tus consumos frecuentes.",
             "vinetas": [
               "3,000 Millas de bienvenida solo por digital.",
               "Acumula 1 Milla por cada $1 de consumo.",
-              "Combina beneficios de viaje y experiencia premium."
+              "Descuentos en restaurantes, viajes y entretenimiento.",
+              "Cuotas Sin Intereses en comercios afiliados."
             ],
             "cta": "Elegir tarjeta",
-            "nota": "Entregado como 'que quiere beneficios', que no concuerda con 'viajeros'. Marco aprobo 'quieren' el 2026-09-09."
+            "nota": "La ficha sigue Figma. Regla confirmada por Marco el 2026-09-21: la ficha pública solo reemplaza un dato cuando existe una contradicción expresa; si no menciona una condición o beneficio, se conserva el texto de Figma. Por eso permanecen 'solo por digital' y Cuotas Sin Intereses."
           },
           {
             "nombre": "&#128179; Visa Oro LATAM Pass",
@@ -972,24 +973,20 @@
           {
             "nombre": "&#128179; American Express Oro LATAM Pass",
             "codigo": "AMXGLL",
-            "descripcion": "Mayor acumulación y beneficios respecto a una tarjeta clásica.",
+            "descripcion": "Ideal para quienes quieren comenzar a disfrutar los beneficios LATAM Pass.",
             "vinetas": [
-              "Acumula 1 Milla por cada $ 1.5 de consumo.",
-              "Canjea millas por vuelos y experiencias LATAM.",
-              "Seguros de viaje y equipaje.",
-              "Descuentos en Booking.com y beneficios American Express.",
-              "50% de descuento en Cineplanet.",
-              "Campañas exclusivas para acumular más millas."
+              "Beneficios exclusivos American Express.",
+              "Promociones y experiencias especiales para clientes American Express.",
+              "Seguros y protección en compras.",
+              "Acceso a beneficios y campañas exclusivas de la red LATAM Pass."
             ],
             "cta": "Elegir tarjeta"
           },
           {
             "nombre": "&#128179; Visa Clásica LATAM Pass",
             "codigo": "TCRCLL",
-            "_sin_descripcion": "El texto de Marco no dejaba linea en blanco tras el nombre: todo entro como viñeta.",
+            "descripcion": "Ideal para quienes quieren empezar a acumular millas con sus compras diarias y acercarse a su próximo viaje.",
             "vinetas": [
-              "Canjea millas por vuelos y productos LATAM.",
-              "Acumula 1 Milla por cada $ 2 de consumo.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Protección de compras y asistencia Visa.",
               "Campañas para acumular más millas."
@@ -999,10 +996,8 @@
           {
             "nombre": "&#128179; American Express Clásica LATAM Pass",
             "codigo": "AMXCLL",
-            "_sin_descripcion": "El texto de Marco no dejaba linea en blanco tras el nombre: todo entro como viñeta.",
+            "descripcion": "Ideal para quienes quieren convertir sus compras cotidianas en millas.",
             "vinetas": [
-              "Acumula recompensas por tus compras diarias.",
-              "Acumula 1 Milla por cada $2 de consumo.",
               "Canjea millas por vuelos y productos LATAM.",
               "Seguros de viaje y equipaje.",
               "50% de descuento en Cineplanet.",
@@ -1028,7 +1023,7 @@
           {
             "nombre": "&#128179; Visa Clásica Qore",
             "codigo": "TCRLY5",
-            "_sin_descripcion": "El texto de Marco no dejaba linea en blanco tras el nombre: todo entro como viñeta.",
+            "descripcion": "Ideal para aprovechar beneficios cotidianos mientras acumulas puntos para futuras recompensas.",
             "vinetas": [
               "Alternativa de entrada al ecosistema Qore.",
               "Acceso al programa de beneficios Qore.",
@@ -1049,10 +1044,11 @@
           {
             "nombre": "&#128179; Visa Light",
             "codigo": "TCRMIN",
-            "_sin_descripcion": "El texto de Marco no dejaba linea en blanco tras el nombre: todo entro como viñeta.",
+            "descripcion": "Ideal para quienes buscan una tarjeta simple y práctica para el día a día.",
             "vinetas": [
-              "Diseñada para practicidad y control financiero.",
-              "Control de gastos y simplicidad."
+              "Acceso a promociones y beneficios exclusivos BCP.",
+              "Descuentos en establecimientos afiliados.",
+              "Compras en cuotas sin intereses en comercios participantes."
             ],
             "cta": "Elegir tarjeta"
           }

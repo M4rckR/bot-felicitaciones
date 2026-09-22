@@ -119,6 +119,7 @@
         "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir."
       ],
       "notas": [
+        "2026-09-21: el beneficio de la tarjeta recomendada se renderiza como párrafo, sin viñeta.",
         "2026-09-21: la recomendación se alineó con Figma: Visa Oro Qore y el texto 'Membresía anual S/170 (GRATIS si consumes S/1 al mes).'. Solo se muestra cuando TCRLY3 está entre las tarjetas aprobadas.",
         "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.exoneracion de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"exoneracion\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
         "Bloque de recomendacion identico al de 2.2 (misma tarjeta, mismos details).",

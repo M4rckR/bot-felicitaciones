@@ -1,5 +1,5 @@
 # ============================================================================
-# Netlify - preview de Tarjetin (TC0091)
+# Netlify - preview de Tarjetin (TC0096)
 # ============================================================================
 #
 # Este sitio existe para UNA cosa: que el preview del bot se pueda abrir desde
@@ -12,8 +12,10 @@
 # Se publica la carpeta "publicado/", que el script de abajo arma copiando
 # UNICAMENTE lo que el preview necesita:
 #
-#     preview/               el harness
-#     adobe-target/piloto/   la oferta, que el harness lee por fetch
+#     preview/                 el harness
+#     adobe-target/piloto/     la oferta, que el harness lee por fetch
+#     adobe-target/variantes/  las variaciones visuales del piloto, que el
+#                              harness abre con ?variante=<carpeta>
 #
 # >> LO QUE NO SE PUBLICA, Y POR QUE <<
 # referencia/paginas/*.html son capturas reales de /felicitaciones y contienen
@@ -32,9 +34,10 @@
   # archivos a medida que el repo crece.
   command = """
     rm -rf publicado &&
-    mkdir -p publicado/adobe-target/piloto &&
+    mkdir -p publicado/adobe-target/piloto publicado/adobe-target/variantes/premium-black-infinite &&
     cp -R preview publicado/preview &&
-    cp adobe-target/piloto/bot.html publicado/adobe-target/piloto/bot.html
+    cp adobe-target/piloto/bot.html publicado/adobe-target/piloto/bot.html &&
+    cp adobe-target/variantes/premium-black-infinite/bot.html publicado/adobe-target/variantes/premium-black-infinite/bot.html
   """
   publish = "publicado"
 
@@ -48,6 +51,11 @@
 # igual podria cachearla, asi que se le dice explicitamente que no.
 [[headers]]
   for = "/adobe-target/piloto/bot.html"
+  [headers.values]
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/adobe-target/variantes/premium-black-infinite/bot.html"
   [headers.values]
     Cache-Control = "no-store"
 

@@ -8,7 +8,7 @@
 
 **Actualización 3:** el contenido del comparador de acumulación aplica la misma regla. Muestra las tablas de millas y puntos cuando hay tarjetas de ambos programas, o únicamente la tabla correspondiente cuando solo existe uno. Cada tabla contiene solo las tarjetas aprobadas detectadas. El wording y los valores Qore se tomaron del Figma solicitado.
 
-**Actualización 4:** las recomendaciones de q21, q22 y q23 ahora usan Visa Oro Qore (`TCRLY3`). En q21 muestran «Acumula 1 Punto Qore por cada $1 de consumo.»; en q22 y q23 muestran «Membresía anual S/170 (GRATIS si consumes S/1 al mes).». También se ajustó la separación visual: 48 px efectivos entre la tabla de millas y «Estos son los puntos por consumo mensual», y 32 px antes de «Te recomendamos esta tarjeta».
+**Actualización 4:** las recomendaciones de q21, q22 y q23 ahora usan Visa Oro Qore (`TCRLY3`). En q21 muestran «Acumula 1 Punto Qore por cada $1 de consumo.»; en q22 y q23 muestran «Membresía anual S/170 (GRATIS si consumes S/1 al mes).». También se ajustó la separación visual antes de «Te recomendamos esta tarjeta». El encabezado separado que antes dividía ambas tablas quedó eliminado por la actualización 11.
 
 **Actualización 5:** el encabezado de q23 ahora dice «Exoneración de membresía por consumo mensual» y todos los importes de consumo añaden «al mes». Visa Light conserva «Gratis». Visa Clásica Qore y Visa Oro Qore mantienen el valor corregido de S/1 al mes, respaldado por el catálogo público, en lugar de copiar los montos de membresía contradictorios del Figma.
 
@@ -22,17 +22,29 @@
 
 **Actualización 10:** se corrigieron «Puntos Qores», «Ideal para acumula» y «e consumo». La Visa Clásica sin código quedó preparada con S/50 al mes y una descripción de cashback. Ya no quedan puntos de esta revisión pendientes de implementación.
 
+**Actualización 11:** q21 usa un único intro antes de las tablas: «¡Buena elección! 😊 Descubre cuántas millas y puntos podrías ganar mensualmente con tus compras.». Se eliminaron los encabezados separados «Estas son las millas por consumo mensual» y «Estos son los puntos por consumo mensual»; este último no estaba en la página enlazada de Figma.
+
+**Actualización 12:** el beneficio dentro del recuadro «Te recomendamos esta tarjeta» se presenta como párrafo, sin punto de viñeta. Aplica a las recomendaciones de Visa Oro Qore en q21, q22 y q23; la condición de mostrarla solo cuando `TCRLY3` es lead no cambia.
+
+**Actualización 13:** una reauditoría directa detectó seis fichas visibles que conservaban wording heredado pese a que este informe las marcaba como resueltas. Se corrigió American Express Platinum en *Viajar* y, en el caso B de *Experiencias exclusivas*, American Express Oro, Visa Clásica LATAM Pass, American Express Clásica LATAM Pass, Visa Clásica Qore y Visa Light. Figma define la descripción, la jerarquía y la selección visual; los beneficios y cifras se cotejaron con las fichas públicas de producto.
+
+**Actualización 14:** Marco precisó la regla de prioridad: la ficha pública reemplaza a Figma solo cuando ambos se contradicen expresamente. Si la ficha pública no menciona un dato, no se interpreta como contradicción y se conserva Figma. Por ello, American Express Platinum en *Viajar* mantiene «3,000 Millas de bienvenida solo por digital», «Descuentos en restaurantes, viajes y entretenimiento» y «Cuotas Sin Intereses en comercios afiliados».
+
 Referencia: [5.34.TC.BOT_web, enlace solicitado](https://www.figma.com/design/5M71uw8ny9baMkeQ3145Zm/5.34.TC.BOT_web?node-id=940-2642).
 Revisado desde Chrome: página Mobile de «UI - Inferfaz - Felicitaciones», sección `Handoff_mobile`, mensajes de los flujos de inicio, elección, comparación y dudas. Se leyeron las capas expandidas y se cotejaron visualmente los menús y las tablas. Comparación con el contenido actual de `adobe-target/piloto/bot.html`, incluyendo los cambios que ya estaban sin commit al iniciar la revisión.
 
-Alcance: textos del bot. No se evaluaron diseño, espaciado, colores ni funcionamiento. No se modificó el HTML ni los JSON de contenido. Esta revisión no certifica otras páginas del archivo Figma, como Desktop, MVP o TOBE. Las capas llamadas `Text`, `Tag` o `cell-programa` no se tomaron como contenido literal; se consultaron las pantallas para leer los textos correspondientes.
+Alcance: textos del bot y su jerarquía visual. Las correcciones se aplicaron al HTML y a sus JSON de contenido. Esta revisión no certifica otras páginas del archivo Figma, como Desktop, MVP o TOBE. Las capas llamadas `Text`, `Tag` o `cell-programa` no se tomaron como contenido literal; se consultaron las pantallas para leer los textos correspondientes.
 
 ## Diferencias principales
 
-| Ubicación | Proyecto actual | Figma actual |
+Las tablas y listas de esta sección conservan el registro de diferencias encontrado durante la
+revisión. No deben leerse como inventario del estado final: las actualizaciones 1 a 13 documentan qué
+se aplicó después y tienen prioridad.
+
+| Ubicación | Estado registrado del proyecto | Referencia Figma |
 | --- | --- | --- |
 | Menú de comparación, q2 | «Acumulación de millas por consumo» | «Acumulación de millas / Puntos» |
-| Comparador q21 | Una tabla de millas; las cinco Qore dicen «No Aplica». | Incluye el texto «Estos son los puntos por consumo mensual» y una tabla con acumulación Qore. |
+| Comparador q21 | Usa un único intro y muestra las tablas aplicables. | La página enlazada contiene la tabla Qore, pero no el encabezado independiente «Estos son los puntos por consumo mensual». |
 | Recomendación q21 | Visa Oro LATAM Pass; «Membresía: S/170» y «Exoneración: S/1 mensual en consumo.» | Visa Oro Qore; «Acumula 1 Punto Qore por cada $1 de consumo.» |
 | Recomendaciones q22 y q23 | Visa Oro LATAM Pass, con los dos textos anteriores. | Visa Oro Qore; «Membresía anual S/170 (GRATIS si consumes S/1 al mes).» |
 | Encabezado de exoneración | «Exoneración de membresía» | «Exoneración de membresía por consumo mensual» |
@@ -134,8 +146,8 @@ Cambios adicionales de contenido:
 - Figma muestra **dos fichas tituladas Visa Platinum Qore**: una comienza «Ideal para quienes buscan experiencias exclusivas y más beneficios al viajar», y otra «Beneficios superiores para clientes con consumos frecuentes». El proyecto tiene una Signature Qore y una Platinum Qore. La referencia no permite asignar de forma inequívoca esos dos textos a los productos del proyecto.
 - En la segunda ficha de Platinum Qore de Figma ya no aparecen «Canje de puntos por experiencias y descuentos» ni «Beneficios exclusivos Visa Platinum»; la frase de acumulación termina en «de consumo». En la otra ficha aún aparece «e consumo».
 - Visa Oro LATAM Pass, caso A: Figma añade punto final a «Campañas exclusivas para acumular más millas».
-- Caso B, Visa Clásica LATAM Pass: Figma no incluye «Skybox gratis por 1 año», que sí está en el proyecto.
-- El resto del contenido leído del caso B conserva el wording, salvo las normalizaciones de nombres ya acordadas y la sustitución de Oro Qore por la destacada común en runtime.
+- Caso B, Visa Clásica LATAM Pass: Figma no incluye «Skybox gratis por 1 año»; el texto ya fue retirado del proyecto.
+- La reauditoría de la actualización 13 sustituyó las variantes heredadas del caso B de American Express Oro, Visa Clásica LATAM Pass, American Express Clásica LATAM Pass, Visa Clásica Qore y Visa Light. La Visa Oro Qore ordinaria continúa sustituida por la destacada común en runtime.
 
 ## Coincidencias y diferencias deliberadas
 
@@ -146,7 +158,7 @@ Cambios adicionales de contenido:
 - Coinciden los mensajes introductorios de los casos A y B del perfilador leídos.
 - Los montos de la tabla de membresía leídos coinciden; las diferencias de nombres son «AMEX» frente a «American Express» y el «Pass» faltante en Black.
 - La tabla de Priority Pass conserva la misma distribución Sí/No observada y no incluye tarjeta recomendada. Se mantienen las diferencias de nombres anteriores.
-- Figma conserva «Estos son las millas»; el proyecto tiene «Estas son las millas», corrección registrada.
+- Figma conserva «Estos son las millas»; el proyecto lo corrigió históricamente a «Estas son las millas». Ambos encabezados fueron sustituidos después por el intro único registrado en la actualización 11.
 - Se mantienen como decisiones anteriores: «American Express» completo, «Sapphire», «LATAM», «Infinite», «quieren» en la descripción de viajeros, burbujas del usuario que repiten el botón completo y cierre unificado «Cerrar». Esta revisión no propone revertirlas para calcar una errata o un texto abreviado del mockup.
 
 ## Contradicciones y erratas de la referencia
@@ -161,3 +173,24 @@ Cambios adicionales de contenido:
 ## Estado de la revisión
 
 Los puntos 1 al 10 quedaron resueltos. Las erratas y contradicciones enumeradas arriba permanecen en la referencia de Figma, pero el proyecto aplica la redacción corregida y los datos del catálogo público.
+
+## Variación visual premium — Black, Infinite y Signature
+
+Se creó `adobe-target/variantes/premium-black-infinite/bot.html` como una copia autónoma del piloto.
+La variación conserva el contenido, el flujo y los tageos TC0096, y cambia únicamente la presentación
+de las fichas del perfilador cuyo nombre contiene **Black**, **Infinite** o **Signature**. Los fondos se
+basan en las tarjetas publicadas por BCP: grafito y plata para Signature, azul zafiro dominante para
+Sapphire, facetas verdes/violetas/cobrizas para Iridium, negro con halo azul para Amex Black y un centro
+azul/violeta/champagne para Infinite Qore. Signature Qore recibe además un destello plata más marcado.
+Todos los tratamientos usan luces radiales difuminadas, sin franjas ni cortes geométricos duros, para
+mantener el lenguaje visual del halo de Amex Black. Las demás tarjetas y el comparador mantienen el
+estilo original; no se agregó wording ni badge nuevo.
+
+En esta variación, cada tarjeta ocupa el **90%** del ancho del carrusel en lugar del 82% del piloto. El
+ancho adicional mejora la lectura y mantiene visible una franja de la tarjeta siguiente.
+El contenedor del slide comparte el radio de **24 px** de la ficha y recorta su contenido; además, las
+tarjetas premium usan relieve interior en vez de sombra exterior. Esto evita que el recorte del carrusel
+forme una caja rectangular visible alrededor de las esquinas redondeadas.
+
+La variación se revisa localmente en
+`http://localhost:8000/preview/?variante=premium-black-infinite`.

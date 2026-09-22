@@ -121,6 +121,7 @@
         "El CTA de la recomendacion no emite analytics: isDiscoverCardCtaOption solo matchea el label literal 'Descubrir si accedo a una tarjeta' y solo mira options. Bloqueado por el prefijo de promotion.name."
       ],
       "notas": [
+        "2026-09-21: el beneficio de la tarjeta recomendada se renderiza como párrafo, sin viñeta.",
         "2026-09-21: la recomendación se alineó con Figma: Visa Oro Qore y el texto 'Membresía anual S/170 (GRATIS si consumes S/1 al mes).'. Solo se muestra cuando TCRLY3 está entre las tarjetas aprobadas.",
         "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.membresia de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"membresia\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
         "Todo el contenido va en UNA sola burbuja: intro + tabla + tarjeta recomendada + menuText + botones.",
