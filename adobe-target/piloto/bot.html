@@ -1,4 +1,20 @@
-<style>
+<script>
+    (function () {
+        // ====================================================================
+        // La oferta es UNA sola etiqueta <script>.
+        //
+        // Antes este archivo eran tres bloques: <style>, el markup del bot y
+        // este script. Ahora el CSS y el markup viajan aqui dentro como strings
+        // y se inyectan por JS (inyectarEstilos / ensureScope), asi que Adobe
+        // Target entrega un unico nodo.
+        //
+        // Las dos plantillas usan template literal a proposito: es lo unico que
+        // permite pegar el CSS y el markup verbatim, sin escapar ni concatenar
+        // linea por linea. El resto del archivo sigue sin template literals, con
+        // strings armados con "+", como pidio Marco el 2026-09-09.
+        // ====================================================================
+
+        var CSS = `
     #tc0091-scope {
         font-family: var(--bcp-font-family-primary-regular), sans-serif;
     }
@@ -1294,9 +1310,9 @@
             transform: none !important;
         }
     }
-</style>
+`;
 
-<div class="tc0091-mask" aria-hidden="true"></div>
+        var MARKUP = `<div class="tc0091-mask" aria-hidden="true"></div>
 
 <div class="tc0091-launcher-welcome-wrap">
     <div class="tc0091-launcher-welcome-box">
@@ -1362,9 +1378,19 @@
     </div>
     <div class="tc0091-body"></div>
 </div>
+`;
 
-<script>
-    (function () {
+        function inyectarEstilos() {
+            // Guarda por id: si Target reinyecta la oferta, el <style> no se
+            // duplica.
+            if (document.getElementById("tc0091-estilos")) return;
+
+            var estilo = document.createElement("style");
+            estilo.id = "tc0091-estilos";
+            estilo.textContent = CSS;
+            (document.head || document.documentElement).appendChild(estilo);
+        }
+
         function Bot(root) {
             this.root = root;
             this.state = {
@@ -5131,33 +5157,29 @@
 
         var instance;
 
+        // Antes esto BUSCABA el markup que Target entregaba junto al script y lo
+        // movia a un scope propio. Ahora lo CONSTRUYE, porque la oferta es una
+        // sola etiqueta y no hay nada que buscar. Dos consecuencias:
+        //   - ya no depende de que Target entregue markup: si el SPA borra el
+        //     scope, el MutationObserver lo reconstruye entero, no solo
+        //     reinicializa sobre un markup que quiza ya no existe;
+        //   - el bot cuelga de <body> en vez de quedar dentro del
+        //     .mbox-container, asi que sus z-index 9998/9999 dejan de heredar el
+        //     contexto de apilamiento de ese contenedor.
         function ensureScope() {
             var scope = document.getElementById("tc0091-scope");
-            var welcome = document.querySelector(".tc0091-launcher-welcome-wrap");
+            if (scope && document.contains(scope)) return scope;
 
-            if (scope) {
-                if (welcome && welcome.parentNode !== scope) {
-                    scope.appendChild(welcome);
-                }
-                return scope;
-            }
+            // Quedo un scope huerfano (desprendido del documento): se descarta
+            // antes de crear el nuevo para no dejar dos con el mismo id.
+            if (scope && scope.parentNode) scope.parentNode.removeChild(scope);
 
-            var launcher = document.querySelector(".tc0091-launcher");
-            var panel = document.querySelector(".tc0091-panel");
-            var mask = document.querySelector(".tc0091-mask");
-
-            if (!launcher || !panel || !mask) return null;
+            if (!document.body) return null;
 
             scope = document.createElement("div");
             scope.id = "tc0091-scope";
-
-            launcher.parentNode.insertBefore(scope, launcher);
-            scope.appendChild(mask);
-            if (welcome) {
-                scope.appendChild(welcome);
-            }
-            scope.appendChild(launcher);
-            scope.appendChild(panel);
+            scope.innerHTML = MARKUP;
+            document.body.appendChild(scope);
 
             return scope;
         }
@@ -5234,30 +5256,19 @@
             };
         };
 
-        function waitForBotAndInit() {
-            var elapsed = 0;
-            var maxWait = 8000;
-            var pollInterval = 150;
+        // Ya no hay nada que esperar. El polling de 8s existia para darle tiempo
+        // a Target a entregar el markup; ahora lo crea ensureScope() y el unico
+        // requisito es que exista <body>, que el arranque de abajo garantiza.
+        function montarBot() {
+            inyectarEstilos();
 
-            var timer = setInterval(function () {
-                var scope = ensureScope();
-                if (
-                    scope &&
-                    scope.querySelector(".tc0091-launcher") &&
-                    scope.querySelector(".tc0091-panel") &&
-                    scope.querySelector(".tc0091-mask")
-                ) {
-                    clearInterval(timer);
-                    init(scope);
-                    return;
-                }
+            var scope = ensureScope();
+            if (!scope) {
+                console.warn("[tc0091] No se pudo montar el bot: falta document.body");
+                return;
+            }
 
-                elapsed += pollInterval;
-                if (elapsed >= maxWait) {
-                    clearInterval(timer);
-                    console.warn("[tc0091] Timeout esperando estructura del bot");
-                }
-            }, pollInterval);
+            init(scope);
         }
 
         function observeReinsertion() {
@@ -5266,7 +5277,7 @@
             var observer = new MutationObserver(function () {
                 var scope = document.getElementById("tc0091-scope");
                 if (!scope || !document.contains(scope)) {
-                    waitForBotAndInit();
+                    montarBot();
                 }
             });
 
@@ -5276,11 +5287,11 @@
 
         if (document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", function () {
-                waitForBotAndInit();
+                montarBot();
                 observeReinsertion();
             });
         } else {
-            waitForBotAndInit();
+            montarBot();
             observeReinsertion();
         }
     })();

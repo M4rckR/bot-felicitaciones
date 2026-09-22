@@ -1,36 +1,43 @@
-<!--
-    ============================================================================
-    TC0096 - Tarjetin - VARIANTE DE CONTROL
-    ============================================================================
-
-    Esto NO es el bot. Es la oferta que se entrega al grupo de control del
-    experimento: la pagina /felicitaciones tal cual esta hoy, sin bot.
-
-    Su unica razon de existir es emitir la mitad "- C" del unico evento que
-    ambas variantes pueden compartir:
-
-        Felicitaciones - Cards - Bot - Inicio - TC0096 - C
-
-    Los otros siete tageos son de piloto y viven en bot-nuevo.html. Aqui no
-    tienen equivalente posible: miden que el usuario abrio el bot, navego el
-    arbol, eligio una tarjeta o lo cerro, y en el control el bot no existe.
-    NO agregar ninguno de ellos a este archivo.
-
-    Que hace, en concreto:
-      - no pinta nada, no toca el DOM de la pagina, no trae estilos;
-      - empuja un unico trackPromotionView a digitalData;
-      - se protege de dispararse dos veces si Adobe Target reinyecta la oferta
-        (bandera en window, no variable local);
-      - empuja de inmediato, creando digitalData como array si no existe. Es
-        exactamente lo que hace pushPromotionEvent en el bot: misma cola, mismo
-        criterio. Se probo esperar a que la pagina creara la cola, y se descarto:
-        un View de control que llega tarde (o no llega, si el usuario ya se fue)
-        desbalancea la comparacion contra el piloto, que empuja al instante.
-
-    Convenciones heredadas del bot: IIFE, ES5, var, sin template literals.
-    ============================================================================
--->
 <script>
+    /*
+        ========================================================================
+        TC0096 - Tarjetin - VARIANTE DE CONTROL
+        ========================================================================
+
+        Esto NO es el bot. Es la oferta que se entrega al grupo de control del
+        experimento: la pagina /felicitaciones tal cual esta hoy, sin bot.
+
+        Su unica razon de existir es emitir la mitad "- C" del unico evento que
+        ambas variantes pueden compartir:
+
+            Felicitaciones - Cards - Bot - Inicio - TC0096 - C
+
+        Los otros siete tageos son del piloto y viven en
+        adobe-target/piloto/bot.html. Aqui no tienen equivalente posible: miden
+        que el usuario abrio el bot, navego el arbol, eligio una tarjeta o lo
+        cerro, y en el control el bot no existe. NO agregar ninguno de ellos a
+        este archivo.
+
+        Que hace, en concreto:
+          - no pinta nada, no toca el DOM de la pagina, no trae estilos;
+          - empuja un unico trackPromotionView a digitalData;
+          - se protege de dispararse dos veces si Adobe Target reinyecta la
+            oferta (bandera en window, no variable local);
+          - empuja de inmediato, creando digitalData como array si no existe. Es
+            exactamente lo que hace pushPromotionEvent en el bot: misma cola,
+            mismo criterio. Se probo esperar a que la pagina creara la cola, y se
+            descarto: un View de control que llega tarde (o no llega, si el
+            usuario ya se fue) desbalancea la comparacion contra el piloto, que
+            empuja al instante.
+
+        La oferta es UNA sola etiqueta <script>: esta nota vivia como comentario
+        HTML por fuera, y se movio aqui dentro para que asi sea. Es la misma
+        regla que siguen el piloto y la variante premium, que ademas inyectan su
+        CSS y su markup por JS.
+
+        Convenciones heredadas del bot: IIFE, ES5, var, sin template literals.
+        ========================================================================
+    */
     (function () {
         "use strict";
 

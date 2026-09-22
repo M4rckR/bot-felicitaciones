@@ -6,6 +6,9 @@ Bot conversacional de árbol de decisión que se inserta en la página **post-ap
 Se entrega como **oferta HTML de Adobe Target**: un único archivo que se pega entero en la herramienta.
 No hay build, ni gestor de paquetes, ni tests.
 
+Las tres ofertas de `adobe-target/` son **una sola etiqueta `<script>`** (Marco, 2026-09-22). El piloto y la
+variante premium llevan su CSS y su markup adentro, como strings, y los inyectan por JS al arrancar.
+
 ---
 
 ## El experimento tiene dos variantes

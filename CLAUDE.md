@@ -17,9 +17,9 @@ existing bot is the working reference; the `referencia/paginas/` snapshots descr
 
 | File | Role |
 | --- | --- |
-| `adobe-target/piloto/bot.html` | **The file being built — this is what you edit.** The new `/felicitaciones` bot. Started as a byte-copy of `referencia/bot-actual.html`'s engine with the namespace swapped (a `tcxxxx` placeholder until 2026-09-11, `tc0091` since) and the home node tree replaced. See *State of the offer* below. |
+| `adobe-target/piloto/bot.html` | **The file being built — this is what you edit.** The new `/felicitaciones` bot. Started as a byte-copy of `referencia/bot-actual.html`'s engine with the namespace swapped (a `tcxxxx` placeholder until 2026-09-11, `tc0091` since) and the home node tree replaced. **One `<script>` tag** since 2026-09-22: the CSS and the markup live inside it as the `CSS` / `MARKUP` plantillas. See *State of the offer* and *The offer is a single `<script>` tag* below. |
 | `adobe-target/control/control.html` | **The control variant of the experiment.** Not a bot: a standalone `<script>` that pushes the single `- C` event and nothing else. The control group gets a page with no bot, so none of the pilot's seven events can fire there. See *Analytics*. |
-| `adobe-target/variantes/premium-black-infinite/bot.html` | **A visual variant of the pilot** (2026-09-22). A self-contained copy: same 15 nodes, same copy, same seven tags, same `TC0096`. It only adds premium backgrounds for the Black / Infinite / Signature cards of the perfilador and widens the carousel slide. See *The premium variant* below. |
+| `adobe-target/variantes/premium-black-infinite/bot.html` | **A visual variant of the pilot** (2026-09-22). A self-contained copy: same 15 nodes, same copy, same seven tags, same `TC0096`, same single-`<script>` shape. It only adds premium backgrounds for the Black / Infinite / Signature cards of the perfilador and widens the carousel slide. See *The premium variant* below. |
 | `netlify.toml` | Deploy config for the preview. Builds a `publicado/` allow-list containing **only** `preview/`, the pilot offer and the variants. **`referencia/paginas/` is deliberately excluded: those snapshots carry real client names and credit lines.** |
 | `README.md` | Human-facing entry point: how to run the preview locally and on Netlify, what the directory holds, pilot vs control. |
 | `referencia/bot-actual.html` | **Read-only reference.** The live home snippet as authored: `<style>` (1–991), markup (993–1056), `<script>` IIFE (1058–4141). Do not edit — it is the working original we ported from. |
@@ -218,10 +218,21 @@ under `#<ns>-scope` — `tc0080` in `referencia/bot-actual.html`, `tc0091` in `a
 
 ### Bootstrap (bottom of the script)
 
-`ensureScope()` creates `#tc0080-scope` and moves the mask, welcome bubble, launcher, and panel into it.
+**In `referencia/bot-actual.html`:** `ensureScope()` creates `#tc0080-scope` and *moves* the mask, welcome
+bubble, launcher and panel into it — they arrive as markup next to the script.
 `waitForBotAndInit()` polls every 150 ms for up to 8 s until those four elements exist, then constructs one
-`Bot`. A `MutationObserver` on `document.body` re-runs the bootstrap if the scope disappears — the host is
-an Angular SPA that can wipe injected DOM. Re-init calls `destroy()` on the previous instance, which
+`Bot`.
+
+**In `adobe-target/piloto/bot.html` and the premium variant the markup is not delivered, it is built** —
+see *The offer is a single `<script>` tag* below. `ensureScope()` creates the scope, sets
+`scope.innerHTML = MARKUP` and appends it to `document.body`; `inyectarEstilos()` appends the `<style>` to
+`document.head`, guarded by `id="tc0091-estilos"` so a Target re-injection cannot duplicate it. The polling
+is gone: `waitForBotAndInit()` became **`montarBot()`**, which injects the styles, mounts the scope and
+calls `init()` in one pass, because the only thing left to wait for is `document.body`.
+
+In both engines a `MutationObserver` on `document.body` re-runs the bootstrap if the scope disappears — the
+host is an Angular SPA that can wipe injected DOM. In the offer that now rebuilds the whole bot rather than
+re-initialising over markup that may be gone. Re-init calls `destroy()` on the previous instance, which
 unlocks page scroll and clones-and-replaces bound elements to drop listeners.
 
 ### The `Bot` object
@@ -427,6 +438,42 @@ On the **home** (`referencia/bot-insertado.html`): parent `.node-content-parent-
 In the snapshot the bot's `<style>`/markup/`<script>` sit inside `.node-content-parent-otp` as siblings
 after the empty `cards-home` div. **Which specific mbox delivers TC0080 is not determinable from the
 snapshot** — don't guess it; confirm with whoever configures Target.
+
+### The offer is a single `<script>` tag (Marco, 2026-09-22)
+
+**All three files in `adobe-target/` are one `<script>` and nothing else.** The pilot and the premium
+variant used to be three top-level blocks — `<style>` (1296 lines), the bot's markup (66 lines) and the
+script. The CSS and the markup now travel *inside* the script as `CSS` and `MARKUP` template literals, and
+`inyectarEstilos()` / `ensureScope()` inject them. `adobe-target/control/control.html` was already pure
+script; its header note moved from an HTML comment into a JS block comment so it too is a single tag.
+
+The CSS and the markup are **byte-for-byte what they were** — they were lifted verbatim into the template
+literals, not reformatted. Neither block contains a backtick, a `${` or a `</script`, which is what makes
+that safe; re-check those three if you ever paste new content into them.
+
+Three things changed as a consequence, and they are the reason not to "restore" the old shape:
+
+- **`ensureScope()` builds instead of searching.** It no longer queries for `.tc0091-launcher` /
+  `-panel` / `-mask`; it creates the scope, fills it with `MARKUP` and appends it to `document.body`.
+  So the bot is **no longer inside the `.mbox-container`**, and its `z-index` 9998/9999 stop inheriting
+  that container's stacking context — which matters on `/felicitaciones`, where the Angular
+  `.app-section__header` sits at `99999`.
+- **`waitForBotAndInit()` is gone**, replaced by `montarBot()`. The 150 ms × 8 s polling existed only to
+  wait for Target to deliver markup.
+- **The `MutationObserver` now rebuilds the whole bot**, markup included, when the SPA wipes the scope.
+
+**This is the one sanctioned exception to *no template literals*** — see *Editing conventions*. Everything
+else in the file still concatenates with `+`.
+
+`preview/index.html` needed **no change**: it already extracted and re-created whatever `<script>` tags the
+fetched text contained, so one tag or three is the same to it.
+
+Verified on 2026-09-22 by mounting both files in a real DOM (jsdom) the same way the harness does: one
+`<script>` tag and zero loose markup nodes, the `<style>` lands in `<head>` (35 894 chars pilot / 40 820
+variant), the scope lands in `<body>` with mask + launcher + panel, the greeting and header render, `q0`
+paints its three options, lead detection returns the four seeded codes, both `- P` Inicio events fire, no
+`console.error`/`warn`, deleting the scope rebuilds it, and the `<style>` never duplicates. **The visual
+check in the harness is still Marco's** — there is no Chrome on this machine.
 
 ## Porting to /felicitaciones (current objective)
 
@@ -1119,7 +1166,8 @@ per programme.
 `adobe-target/variantes/premium-black-infinite/bot.html` is a **self-contained copy of the pilot**, not a
 patch and not a shared build: the repo has no build step, so a variant is a whole file. Verified against the
 pilot on 2026-09-22 — same 15 nodes, no dangling `next`, same `experimentCode: "TC0096"`, same seven tag
-families, zero template literals. The entire diff is visual:
+families, and the same single-`<script>` shape with the same two `CSS` / `MARKUP` plantillas and no other
+template literal. The entire diff is visual:
 
 - seven `.tc0091-card--premium*` rules that paint the Black, Infinite (Sapphire / Iridium / Qore) and
   Signature (LATAM Pass / Qore) cards with gradients taken from the physical plastic, plus white text and a
@@ -1326,8 +1374,11 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
   so an AI can read it cold and explain it. Log what it said, what it says now, and the rule applied.
   **If he approves a correction without mentioning the file, add it anyway and tell him you did** — he
   asked to be reminded rather than have it silently skipped.
-- **No template literals in the offer** (Marco, 2026-09-09). Build every string with `+` concatenation;
-  never a backtick string or `${}`. `adobe-target/piloto/bot.html` currently has **zero** of either — keep it that way.
+- **No template literals in the offer** (Marco, 2026-09-09), **with exactly one exception** (Marco,
+  2026-09-22): the `CSS` and `MARKUP` plantillas at the top of the IIFE, which exist so the stylesheet and
+  the markup can be pasted verbatim instead of concatenated line by line. Those two are the *only* backticks
+  allowed, and no `${}` interpolation is used in either. Everywhere else build strings with `+`; never a
+  backtick string or `${}`.
   Related ES6 that *is* still present and was inherited from `referencia/bot-actual.html`: five arrow functions in
   `validateGraph`/`getNode`, one `Array.prototype.find`, three `Number.isFinite`, one `Array.from`. Marco
   has not asked to remove those.
@@ -1336,8 +1387,9 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 - Adding a branch: append the node to `config.nodes`, follow the `qNNN` depth naming, wire `next` from the
   parent's `options`, and give every new leaf a temporary `[PENDIENTE]` stub with an "Ir al menú principal"
   option so `validateGraph` stays clean and the tree stays walkable.
-- Keep CSS, markup, and script in one file and the namespace intact — the snippet is injected into a page
-  it does not own.
+- Keep CSS, markup and script in **one file and one `<script>` tag**, and the namespace intact — the
+  snippet is injected into a page it does not own. New CSS goes inside the `CSS` plantilla, new markup
+  inside `MARKUP`; do not re-add a top-level `<style>` block.
 - **Marco's copy is the source of truth.** Reproduce it verbatim, including what look like typos, and
   raise them separately instead of silently fixing. He has approved corrections this way before
   (`una tarjetas` → `una tarjeta`, `Ayudame` → `Ayúdame`) and rejected others (the greeting stays `Hola!`

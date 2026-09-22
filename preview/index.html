@@ -883,8 +883,11 @@
                     };
                 });
 
-                // El fragmento trae <style>, markup y <script>. Los scripts insertados
-                // via innerHTML no se ejecutan, hay que recrearlos.
+                // La oferta es una sola etiqueta <script> (antes eran tres
+                // bloques: <style>, markup y script). Los scripts insertados via
+                // innerHTML no se ejecutan, hay que recrearlos. El bucle sobre
+                // el resto de nodos se deja igual: no cuesta nada y no depende
+                // de que la oferta traiga o no markup suelto.
                 var cont = doc.createElement("div");
                 cont.innerHTML = texto;
 
