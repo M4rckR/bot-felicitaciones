@@ -356,7 +356,7 @@ closed**: exactly these **seven** event families, no more.
 | --- | --- | --- | --- | --- |
 | `trackLauncherView` | `Inicio - TC0096 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `window.__tc0091LauncherViewSent` (it was `Bot.launcherViewSent`, which a Target re-injection reset — see *Bootstrap*) |
 | `trackOpenBotClick` | `Inicio - TC0096 - P` | Button | `Modal` | panel opened |
-| `trackFinalResponseView` | `Arbol - TC0096 - P` | Modal | `1 - 1.1` … `3 - 3.3` | every **respuesta** node |
+| `trackOpcionElegidaClick` | `Arbol - TC0096 - P` | Button | `1 - 1.1` … `3 - 3.3` | the user **picks** an option whose destination is a respuesta node |
 | `trackElegirTarjetaView` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
 | `trackElegirTarjetaClick` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | successful click on a bot card CTA, before the native page button is clicked |
 | `trackCloseView` | `TC0096 - P` | Button | `Cerrar` | node has an `isClose` option |
@@ -404,9 +404,18 @@ Three traps worth keeping:
 
 - **The close name has no section segment.** It goes from `Bot` straight to the code — the only one of the
   four families without one. That is how Marco specified it; do not "fix" it by adding `Cierre`.
+- **The Arbol funnel is a Click, not a View** (Marco, 2026-09-22). It used to be `trackFinalResponseView`
+  (`creative: "Modal"`), pushed from `appendBotMessageForCurrent` when a respuesta was **painted**. It is
+  now `trackOpcionElegidaClick` (`creative: "Button"`), pushed from the `[data-next]` handler when the user
+  **picks** the option that leads there. Same `name`, same `position`, same eleven screens — measured as a
+  deliberate action instead of an impression, so the number no longer counts screens nobody asked for.
+  It fires **before** `goTo`, on purpose: what is measured is the user's choice, not whether the navigation
+  succeeded.
 - **`isRespuestaNode` decides what counts as a respuesta**: `id.length > 2`, which excludes the four menus
-  (`q0`–`q3`) and includes the eleven answer screens. The old gate was `node.feedbackText`, which no node
-  has, so **the whole Arbol funnel was silently dead** until 2026-09-11.
+  (`q0`–`q3`) and includes the eleven answer screens. **The Click applies that gate to the *destination***,
+  so "↩️ Volver a las alternativas" (which leads to `q2`) emits nothing, exactly as the View did not fire
+  on menus. The old gate was `node.feedbackText`, which no node has, so **the whole Arbol funnel was
+  silently dead** until 2026-09-11.
 - **`position` uses the tree's own numbering, not the internal id** (Marco, 2026-09-11):
   `getPositionArbol` turns `q11` into `"1 - 1.1"` and `q33` into `"3 - 3.3"` — the same numbering the
   screens are delivered with and that the mockups and `docs/correcciones-wording.md` use. The `qNN` id

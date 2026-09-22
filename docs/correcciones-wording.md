@@ -656,6 +656,34 @@ texto que no existe.
 **Pedido por Marco el 2026-09-22.** No cambia ninguna cifra ni ninguna palabra: solo se borra el asterisco.
 La negrita de "(GRATIS si consumes…)" se conserva tal cual.
 
+### El bot ahora "llega" en vez de aparecer puesto
+
+Al abrir el bot, la primera pantalla aparecía **de golpe**: en unos 130 ms ya estaban el saludo, el texto y
+los tres botones. Se sentía seco, como si el bot ya hubiera estado ahí.
+
+**Desde el 2026-09-22 el bot llega:** primero se ven los puntitos de "está escribiendo" durante **0,9 s** y
+después aparece el saludo, igual que pasa con cualquier otra respuesta.
+
+Y **la pausa de las respuestas pasó de 1,2 s a 2,2 s**, a pedido de Marco. La pausa de la apertura es más
+corta a propósito: ahí el cliente todavía no preguntó nada, así que hacerlo esperar solo estorba.
+
+La animación de entrada de cada burbuja también se retocó: dura un poco más (de 0,32 s a 0,42 s), la
+burbuja sube mientras entra y se pasa apenas de su tamaño antes de asentarse. Ese rebote mínimo es lo que
+la hace sentir viva en vez de aparecer de un salto.
+
+### 1.2 Ahorrar — nueva descripción de la Visa Oro Qore
+
+Es la tarjeta que siempre aparece destacada en el recuadro verde.
+
+| | |
+| --- | --- |
+| **Decía** | Orientada a beneficios cotidianos y promociones. |
+| **Dice** | Ideal para disfrutar beneficios cotidianos y promociones |
+| **Motivo** | Texto nuevo entregado por Marco el 2026-09-22. No es una corrección. |
+
+> El texto nuevo **no lleva punto final**, y las otras 67 descripciones de tarjeta sí. Se reproduce tal como
+> llegó, como manda el criterio. Si se prefiere cerrarla con punto por consistencia, es un carácter.
+
 ### El saludo llama al cliente por su nombre
 
 El bot abría siempre igual:

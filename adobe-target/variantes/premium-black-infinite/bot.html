@@ -1019,15 +1019,25 @@
        La opacidad inicial vive solo en el keyframe: con prefers-reduced-motion
        la animacion se anula y la burbuja aparece visible, no en blanco. */
     /* Cada burbuja nace de su lado. Derecha: usuario. */
+    /* La entrada pasa por un paso intermedio y no va de A a B en linea recta
+       (Marco, 2026-09-22: "que entre mas animadamente y no todo seco"). La burbuja
+       sube un poco mientras entra y se pasa apenas de su tamano antes de asentarse;
+       ese rebote minimo es lo que la hace sentir viva. La opacidad se completa al
+       60% del recorrido para que el texto se lea mientras termina de acomodarse. */
     @keyframes tc0091-msg-in {
         from {
             opacity: 0;
-            transform: translateX(28px) scale(0.8);
+            transform: translate(28px, 10px) scale(0.8);
+        }
+
+        60% {
+            opacity: 1;
+            transform: translate(0, -2px) scale(1.02);
         }
 
         to {
             opacity: 1;
-            transform: translateX(0) scale(1);
+            transform: translate(0, 0) scale(1);
         }
     }
 
@@ -1035,19 +1045,26 @@
     @keyframes tc0091-msg-in-left {
         from {
             opacity: 0;
-            transform: translateX(-28px) scale(0.8);
+            transform: translate(-28px, 10px) scale(0.8);
+        }
+
+        60% {
+            opacity: 1;
+            transform: translate(0, -2px) scale(1.02);
         }
 
         to {
             opacity: 1;
-            transform: translateX(0) scale(1);
+            transform: translate(0, 0) scale(1);
         }
     }
 
     /* Va en la burbuja, no en la fila: la fila ocupa todo el ancho y
        escalarla no se percibe. La burbuja se ajusta al contenido. */
+    /* 420ms y no 320: con el rebote del keyframe, 320 lo dejaba apretado y se
+       percibia como un tiron en vez de un movimiento (Marco, 2026-09-22). */
     #tc0091-scope .tc0091-msg-enter {
-        animation: tc0091-msg-in 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+        animation: tc0091-msg-in 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
         transform-origin: 100% 100%;
     }
 
@@ -1532,7 +1549,15 @@
                 },
                 thinking: {
                     enabled: true,
-                    durationMs: 1200,
+                    // 2200 desde el 2026-09-22 (Marco: "agregale un segundo mas").
+                    // Era 1200. Es la pausa con los puntitos antes de cada respuesta.
+                    durationMs: 2200,
+                    // Pausa al ABRIR el bot, antes de la primera pantalla. Antes no
+                    // habia ninguna: q0 se pintaba de golpe, en unos 130ms, y por eso
+                    // el bot "entraba seco" -- aparecia ya puesto en vez de llegar.
+                    // Es mas corta que durationMs a proposito: aqui el usuario todavia
+                    // no pregunto nada, asi que una espera larga solo estorba.
+                    aperturaMs: 900,
                     showText: false,
                     text: "Pensando",
                 },
@@ -1686,7 +1711,7 @@
                         codigo: "TCRLY3",
                         badge: "La más usada",
                         name: "&#128179; Visa Oro Qore",
-                        description: "Orientada a beneficios cotidianos y promociones.",
+                        description: "Ideal para disfrutar beneficios cotidianos y promociones",
                         bullets: [
                             "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
                             "1 punto Qore por cada $ consumido.",
@@ -1864,7 +1889,7 @@
                                     {
                                         codigo: "TCRLY3",
                                         name: "&#128179; Visa Oro Qore",
-                                        description: "Orientada a beneficios cotidianos y promociones.",
+                                        description: "Ideal para disfrutar beneficios cotidianos y promociones",
                                         bullets: [
                                             "Acumulación de puntos para recompensas.",
                                         ],
@@ -3808,13 +3833,25 @@
             return rama + " - " + pantalla;
         };
 
-        Bot.prototype.trackFinalResponseView = function (node) {
-            if (!this.isRespuestaNode(node)) return;
+        // El embudo del arbol se mide por CLICK, no por View (Marco, 2026-09-22).
+        //
+        // Antes habia un trackPromotionView con creative "Modal" que se emitia al
+        // PINTAR cada respuesta. Se reemplazo por este Click, que se emite al
+        // SELECCIONAR la opcion que lleva a esa respuesta. Mide lo mismo -- que
+        // pantalla del arbol alcanzo el usuario -- pero como accion deliberada y no
+        // como impresion, asi que el numero ya no incluye pantallas que se pintaron
+        // sin que nadie las pidiera.
+        //
+        // El gate es el mismo de antes, aplicado al DESTINO: solo cuentan las once
+        // respuestas (q11-q14, q21-q24, q31-q33). Volver a un menu no emite nada.
+        Bot.prototype.trackOpcionElegidaClick = function (destinoId) {
+            var destino = this.getNode(destinoId);
+            if (!this.isRespuestaNode(destino)) return;
 
-            this.trackPromotionView({
+            this.trackPromotionClick({
                 name: "Felicitaciones - Cards - Bot - Arbol - " + this.getExperimentCode() + " - P",
-                creative: "Modal",
-                position: this.getPositionArbol(node.id),
+                creative: "Button",
+                position: this.getPositionArbol(destino.id),
             });
         };
 
@@ -3951,6 +3988,19 @@
             }
 
             this.checkPendingTransition();
+
+            // El bot LLEGA en vez de estar ya puesto (Marco, 2026-09-22: "que entre
+            // mas animadamente y no todo seco"). Antes q0 aparecia de golpe, en unos
+            // 130ms; ahora primero se ven los puntitos y despues el saludo, igual que
+            // con cualquier otra respuesta.
+            //
+            // Solo en una conversacion nueva: si hay hilo, o se esta recuperando de
+            // un error, o ya habia una espera en curso, se pinta lo que corresponda.
+            if (!this.state.chatLog.length && !this.state.errorRecovery && !this.isWaiting()) {
+                this.startWaitingTransition(this.state.current, "", this.getAperturaDuration());
+                return;
+            }
+
             this.render();
         };
 
@@ -4170,6 +4220,14 @@
             return Number.isFinite(value) && value >= 0 ? value : 1000;
         };
 
+        // La pausa de la primera pantalla. Cae en durationMs si no se configuro,
+        // asi que quitar aperturaMs no rompe nada: solo iguala las dos esperas.
+        Bot.prototype.getAperturaDuration = function () {
+            var cfg = this.config.thinking || {};
+            var value = Number(cfg.aperturaMs);
+            return Number.isFinite(value) && value >= 0 ? value : this.getThinkingDuration();
+        };
+
         Bot.prototype.getThinkingText = function () {
             var cfg = this.config.thinking || {};
             return cfg.text || "Pensando";
@@ -4332,7 +4390,9 @@
             this.applyTransition(id);
         };
 
-        Bot.prototype.startWaitingTransition = function (id, label) {
+        // duracionMs es opcional: solo lo pasa la apertura del bot, que usa su propia
+        // espera (mas corta). El resto de las transiciones usan durationMs.
+        Bot.prototype.startWaitingTransition = function (id, label, duracionMs) {
             if (!this.getNode(id)) {
                 this.handleMissingNextNodeError(id, "startWaitingTransition");
                 return;
@@ -4351,7 +4411,7 @@
                 self.cancelWaitingTransition();
                 if (!nextId) return;
                 self.applyTransition(nextId);
-            }, this.getThinkingDuration());
+            }, Number.isFinite(Number(duracionMs)) ? Number(duracionMs) : this.getThinkingDuration());
         };
 
         Bot.prototype.createUsageSupportMessage = function (node, linkedQuestionMessageId) {
@@ -4416,8 +4476,6 @@
             if (!node) return;
 
             var self = this;
-
-            this.trackFinalResponseView(node);
 
             if ((node.options || []).some(this.hasCloseOption)) {
                 this.trackCloseView();
@@ -5188,7 +5246,10 @@
 
         Bot.prototype.renderChat = function (node) {
             var self = this;
-            if (!this.state.chatLog.length) {
+            // Mientras el bot "piensa" no se pinta todavia la primera pantalla: si no,
+            // saldrian los puntitos Y el saludo a la vez. La pinta applyTransition
+            // cuando termina la espera.
+            if (!this.state.chatLog.length && !this.isWaiting()) {
                 this.appendBotMessageForCurrent();
             }
 
@@ -5362,10 +5423,13 @@
                     var selectedLabel =
                         this.getAttribute("data-user-label") ||
                         (this.textContent || "").trim();
-                    self.goTo(
-                        this.getAttribute("data-next"),
-                        selectedLabel,
-                    );
+                    var destino = this.getAttribute("data-next");
+
+                    // Antes que goTo: se mide la eleccion del usuario, no el
+                    // resultado de la navegacion, que puede fallar.
+                    self.trackOpcionElegidaClick(destino);
+
+                    self.goTo(destino, selectedLabel);
                 });
             });
 
