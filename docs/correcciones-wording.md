@@ -689,6 +689,12 @@ saludo.
 **El bot se retira recién cuando el cliente pasa a otra pantalla del flujo** (por ejemplo "Dónde
 recibirla"). Ahí sí desaparece del todo y no vuelve.
 
+**Y si el cliente reabre el bot con ese cuadro abierto, el cuadro se cierra.** Dos capas encimadas se leen
+como un error, y quien vuelve al bot es porque quiere seguir consultando, no editar su línea todavía. El bot
+pulsa el botón **"Cerrar"** del propio cuadro, no lo hace desaparecer por su cuenta: así corre la lógica
+normal de la página. Eso devuelve al cliente a la lista de tarjetas, sin la selección hecha — que es
+justamente lo que está pidiendo al volver al bot.
+
 ### 2.3 Exoneración de membresía — asterisco en las Infinite y llamada al pie
 
 Las tres tarjetas **Infinite** llevan ahora un asterisco al final del monto, y la tabla cierra con la

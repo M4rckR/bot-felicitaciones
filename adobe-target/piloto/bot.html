@@ -2891,6 +2891,56 @@
             return null;
         };
 
+        // El cuadro de linea de credito que la pagina abre al elegir una tarjeta.
+        //
+        // OJO: es el UNICO selector del bot que no se pudo verificar contra
+        // referencia/paginas/, y no por descuido: ese cuadro solo existe DESPUES de
+        // pulsar "Elegir tarjeta", asi que ninguna captura puede contenerlo. El
+        // nombre del elemento es el que Marco midio en certi el 2026-09-11. Si algun
+        // dia se consigue su DOM, se ajusta aqui y en getBotonCerrarModalLinea.
+        Bot.prototype.getModalLineaCredito = function () {
+            return document.querySelector("xt21-modify-credit-line-modal");
+        };
+
+        // Su boton "Cerrar". Se busca por TEXTO y no por selector porque el selector
+        // no se conoce; el cuadro tiene exactamente dos botones, "Cerrar" y
+        // "Continuar", asi que el texto alcanza para distinguirlos sin ambiguedad.
+        // El respaldo cubre una X de esquina sin texto.
+        Bot.prototype.getBotonCerrarModalLinea = function (modal) {
+            var botones = modal.querySelectorAll('button, [role="button"]');
+
+            for (var i = 0; i < botones.length; i++) {
+                var texto = String(botones[i].textContent || "").trim().toLowerCase();
+                if (texto === "cerrar") return botones[i];
+            }
+
+            return modal.querySelector('[aria-label*="errar"], [aria-label*="lose"]');
+        };
+
+        // Al reabrir el bot, ese cuadro se cierra (Marco, 2026-09-22): dos capas
+        // encimadas confunden, y si el usuario vuelve al bot es porque quiere seguir
+        // consultando, no editar la linea todavia.
+        //
+        // Se pulsa el boton propio del cuadro en vez de sacarlo del DOM, por lo mismo
+        // que "Elegir tarjeta" pulsa el boton nativo: asi corre la logica de la
+        // pagina y su estado no queda inconsistente. Cerrarlo deshace la seleccion y
+        // devuelve al usuario a la lista de tarjetas, que es justo lo que pide.
+        Bot.prototype.cerrarModalLineaCredito = function () {
+            var modal = this.getModalLineaCredito();
+            if (!modal) return false;
+
+            var boton = this.getBotonCerrarModalLinea(modal);
+            if (!boton) {
+                // No se cierra a la fuerza: el bot se abre igual y el usuario queda
+                // con las dos capas, que es feo pero no lo deja trabado.
+                this.debugError("MODAL_LINEA_SIN_BOTON_CERRAR", {});
+                return false;
+            }
+
+            boton.click();
+            return true;
+        };
+
         // Click en "Elegir tarjeta". Tagea el CTA del bot, cierra el panel y le
         // pasa el control al boton nativo de la pagina.
         Bot.prototype.elegirTarjeta = function (codigo) {
@@ -3751,6 +3801,10 @@
 
         Bot.prototype.open = function () {
             var isAlreadyOpen = this.isPanelVisible();
+
+            // Si la pagina tiene abierto el cuadro de linea de credito, se cierra
+            // antes de mostrar el panel: el bot no se encima a el.
+            this.cerrarModalLineaCredito();
 
             this.showPanel();
             this.el.mask.style.display = "block";

@@ -700,8 +700,28 @@ crédito", with the card name, the range and a *Cerrar* / *Continuar* pair. So c
 straight navigation to step 2: there is a credit-line modal in between. Anything that assumes the bot's CTA
 navigates away is wrong.
 
-**That modal is out of scope** (Marco, 2026-09-11): it is the page's own base behaviour on selecting a card.
-The bot's job ends at pressing the button. Do not style it, intercept it, or try to carry state into it.
+**That modal is the page's own base behaviour** (Marco, 2026-09-11). Do not style it or try to carry state
+into it — but since 2026-09-22 the bot does touch it in **exactly one** way: **reopening the bot closes it.**
+
+`open()` calls `cerrarModalLineaCredito()` before showing the panel. Two stacked layers read as broken, and
+a user who goes back to the bot wants to keep consulting, not to edit their line yet. It **presses the
+modal's own "Cerrar"**, it does not remove it from the DOM — same reasoning as "Elegir tarjeta" pressing the
+native button: the page's logic runs and its state stays consistent. Closing it undoes the selection and
+returns the user to the card list, which is precisely what they asked for by reopening the bot.
+
+> ⚠️ **`xt21-modify-credit-line-modal` is the only selector in the bot that could not be verified against
+> `referencia/paginas/`** — and not by omission: the modal only exists *after* "Elegir tarjeta" is pressed,
+> so no snapshot can ever contain it. The element name comes from what Marco measured in certi on
+> 2026-09-11. The close button is found **by text** (`"cerrar"`, lowercased and trimmed, across
+> `button, [role="button"]`) because its selector is unknown; the modal has exactly two buttons, *Cerrar*
+> and *Continuar*, so the text is unambiguous. There is an `[aria-label*="errar"]` fallback for a
+> text-less corner X.
+>
+> If the real DOM ever turns up, `getModalLineaCredito` and `getBotonCerrarModalLinea` are the two places to
+> adjust — and `abrirModalLineaSimulado` in the harness, which imitates it.
+>
+> **It never forces the issue**: if no close button is found it logs `MODAL_LINEA_SIN_BOTON_CERRAR` and the
+> bot opens anyway. Two overlapping layers are ugly; a bot that refuses to open is worse.
 
 **The click does fire the page's own event, and the bot must not add it.** Measured in certi on
 2026-09-11 (Marco):
@@ -759,9 +779,9 @@ navigation to "Dónde recibirla" or "Confirmación" would carry the bot along.
 >
 > That old note also justified itself with stacking: the launcher at `9999` would float over the modal's
 > `7001` backdrop. The launcher is now at `999999`, so it floats over that modal **more**, not less. Marco
-> asked for the launcher to stay anyway; if the overlap turns out to bother him on screen, the fix is to
-> hide the launcher while `<xt21-modify-credit-line-modal>` is in the DOM — **that element appears in none
-> of the four snapshots**, so such a selector cannot be verified here and was not written blind.
+> asked for the launcher to stay anyway — **and then closed the loop the same day**: reopening the bot now
+> dismisses the modal, so the two are never both on screen with the bot in front. See *That modal is the
+> page's own base behaviour* above.
 
 Consequences worth knowing:
 

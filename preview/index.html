@@ -707,7 +707,46 @@
                         eventosDeLaPagina(codigo).forEach(function (p) {
                             pintarEvento(p, "pagina");
                         });
+
+                        abrirModalLineaSimulado(doc, codigo);
                     });
+                });
+            }
+
+            // El cuadro "Edita tu linea de credito" que la pagina abre al elegir una
+            // tarjeta. Se simula para poder revisar dos cosas que si no serian
+            // invisibles aqui: que el bot NO se encima a el, y que al reabrir el bot
+            // este cuadro se cierra solo (Marco, 2026-09-22).
+            //
+            // Es una IMITACION del cuadro de la pagina, igual que las <xt21-card-option>.
+            // El bot no lo crea ni debe crearlo. Su estructura es la que Marco midio en
+            // certi el 2026-09-11: el elemento <xt21-modify-credit-line-modal> con el
+            // par de botones "Cerrar" / "Continuar". Si algun dia se consigue su DOM
+            // real, es aqui y en getBotonCerrarModalLinea donde se ajusta.
+            function abrirModalLineaSimulado(doc, codigo) {
+                var previo = doc.querySelector("xt21-modify-credit-line-modal");
+                if (previo) previo.parentNode.removeChild(previo);
+
+                var modal = doc.createElement("xt21-modify-credit-line-modal");
+                modal.setAttribute("style", [
+                    "position:fixed", "inset:0", "z-index:7001",
+                    "background:rgba(0,0,0,.45)", "display:flex",
+                    "align-items:center", "justify-content:center"
+                ].join(";"));
+                modal.innerHTML =
+                    '<div style="background:#fff;border-radius:16px;padding:24px;width:min(340px,86vw);' +
+                    'font-family:inherit;box-shadow:0 8px 30px rgba(0,0,0,.25)">' +
+                    '<p style="margin:0 0 8px;font-size:16px;font-weight:700">Ahora puedes editar tu línea de crédito</p>' +
+                    '<p style="margin:0 0 16px;font-size:13px;color:#527094">' + codigo + ' · simulación del preview</p>' +
+                    '<div style="display:flex;gap:8px;justify-content:flex-end">' +
+                    '<button type="button" data-cerrar-modal-simulado>Cerrar</button>' +
+                    '<button type="button">Continuar</button>' +
+                    "</div></div>";
+                doc.body.appendChild(modal);
+
+                modal.querySelector("[data-cerrar-modal-simulado]").addEventListener("click", function () {
+                    modal.parentNode.removeChild(modal);
+                    pintarLog("info", ["[preview] se cerro el modal de linea de credito"]);
                 });
             }
 
