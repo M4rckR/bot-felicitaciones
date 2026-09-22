@@ -826,6 +826,18 @@
     /* Aviso al pie de la lista de tarjetas: recuadro celeste con icono.
        Va entre las tarjetas y el "¿Que deseas hacer ahora?". Es el unico texto
        del hilo que no usa el tamaño 14/20 del resto. */
+    /* Llamada al pie de la tabla del comparador (Marco, 2026-09-22): 12/18, la
+       misma escala que el aviso azul. Es la unica otra excepcion a la regla de
+       14/20 que rige el resto del hilo. Los 12px de margen la dejan pegada a la
+       tabla, a diferencia de los 24 que separan al aviso. */
+    #tc0091-scope .tc0091-nota {
+        margin: 12px 0 0;
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        letter-spacing: 0;
+    }
+
     #tc0091-scope .tc0091-aviso {
         display: flex;
         align-items: center;
@@ -1521,13 +1533,18 @@
                     exoneracion: {
                         intro: "¡Buena elección! &#128522; Estos son los montos para la exoneración de membresía de tus tarjetas aprobadas.",
                         encabezado: ["Tarjeta", "Exoneración de membresía por consumo mensual"],
+                        // Llamada al pie de la tabla (Marco, 2026-09-22). Solo se
+                        // pinta si alguna fila con asterisco sobrevive al filtro por
+                        // lead: una nota sin su asterisco arriba es exactamente el
+                        // asterisco huerfano que se quito del perfilador ese mismo dia.
+                        nota: "*Sujeto a términos y condiciones",
                         filas: [
                             { codigo: "TCRCLL", nombre: "Visa Clásica LATAM Pass", valor: "S/1 al mes" },
                             { codigo: "TCRORL", nombre: "Visa Oro LATAM Pass", valor: "S/1 al mes" },
                             { codigo: "TCRPLL", nombre: "Visa Platinum LATAM Pass", valor: "S/1,200 al mes" },
                             { codigo: "TCRPL1", nombre: "Visa Signature LATAM Pass", valor: "S/3,500 al mes" },
-                            { codigo: "TCRBA7", nombre: "Visa Infinite Sapphire LATAM Pass", valor: "S/4,500 al mes" },
-                            { codigo: "TCRINF", nombre: "Visa Infinite Iridium LATAM Pass", valor: "S/5,000 al mes" },
+                            { codigo: "TCRBA7", nombre: "Visa Infinite Sapphire LATAM Pass", valor: "S/4,500 al mes*" },
+                            { codigo: "TCRINF", nombre: "Visa Infinite Iridium LATAM Pass", valor: "S/5,000 al mes*" },
                             { codigo: "TCRMIN", nombre: "Visa Light", valor: "Gratis" },
                             { codigo: null, nombre: "Visa Clásica", valor: "S/50 al mes" },
                             { codigo: "AMXCLL", nombre: "American Express Clásica LATAM Pass", valor: "S/1 al mes" },
@@ -1538,7 +1555,7 @@
                             { codigo: "TCRLY3", nombre: "Visa Oro Qore", valor: "S/1 al mes" },
                             { codigo: "TCRLY4", nombre: "Visa Platinum Qore", valor: "S/1,200 al mes" },
                             { codigo: "TCRLY2", nombre: "Visa Signature Qore", valor: "S/3,500 al mes" },
-                            { codigo: "TCRLY1", nombre: "Visa Infinite Qore", valor: "S/5,000 al mes" },
+                            { codigo: "TCRLY1", nombre: "Visa Infinite Qore", valor: "S/5,000 al mes*" },
                         ],
                     },
                     priorityPass: {
@@ -3126,7 +3143,19 @@
                 lineas.push("| " + f.nombre + " | " + f.valor + " |");
             });
 
-            return { text: lineas.join("\n"), filas: filas.length };
+            // La nota al pie solo acompaña a la tabla si alguna fila que quedo
+            // visible lleva el asterisco. Filtradas por lead, un usuario puede
+            // no tener ninguna de las tarjetas que lo llevan, y entonces la
+            // llamada no tendria a que referirse.
+            var nota = "";
+            if (tabla.nota) {
+                var conAsterisco = filas.some(function (f) {
+                    return String(f.valor || "").indexOf("*") !== -1;
+                });
+                if (conAsterisco) nota = tabla.nota;
+            }
+
+            return { text: lineas.join("\n"), filas: filas.length, nota: nota };
         };
 
         // Devuelve {intro, tarjetas, caso} ya resueltos para el nodo, o null si el
@@ -4246,6 +4275,10 @@
                 // al menu viajan en el snapshot como todo lo demas: el historial no se
                 // reescribe luego.
                 cards: perfilado ? perfilado.tarjetas : (node.cards || null),
+                // La llamada al pie de la tabla viaja congelada como todo lo
+                // demas: si manana cambian las tarjetas del DOM, el mensaje ya
+                // pintado no se reescribe.
+                nota: comparado ? comparado.nota : "",
                 recommendation: this.resolveRecommendation(node),
                 aviso: node.aviso || "",
                 menuText: node.menuText || "",
@@ -4496,6 +4529,13 @@
                     ? this.formatRichText(item.text || "")
                     : this.formatPlainText(text)) +
                 "</div>";
+
+            // Va pegada a la tabla y por encima del recuadro de la tarjeta
+            // recomendada, que es donde Marco la pidio (2026-09-22).
+            if (item.nota) {
+                messageHtml += this.createNotaMarkup(item.nota);
+            }
+
             if (item.cards) {
                 // El id del carrusel es el del mensaje: cada burbuja del hilo
                 // recuerda su propia tarjeta visible entre re-renders.
@@ -4895,6 +4935,15 @@
         };
 
         // Aviso con icono al pie de la lista de tarjetas.
+        // Llamada al pie de una tabla del comparador: 12/18, sin recuadro ni
+        // icono. No es el aviso azul, que comparte tamaño de letra pero es una
+        // caja con fondo; esto es solo la aclaracion del asterisco.
+        Bot.prototype.createNotaMarkup = function (texto) {
+            if (!texto) return "";
+
+            return '<p class="tc0091-nota">' + this.escapeHtml(texto) + "</p>";
+        };
+
         Bot.prototype.createAvisoMarkup = function (texto) {
             if (!texto) return "";
 

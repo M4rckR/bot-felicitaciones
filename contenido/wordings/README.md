@@ -47,6 +47,11 @@ Si se edita el HTML directo, hay que actualizar el JSON en el mismo paso. Si div
   va siempre la fila separadora `"| --- | --- |"`. El nodo necesita `richText: true` para que
   `formatRichText` la parsee, y `tc0091-node-ancho` en el `className` para que la burbuja ocupe el 100 %
   del panel.
+- **`texto.notaTabla`** → la llamada al pie de la tabla. **No va en el array `text`**: vive en
+  `config.comparador.<tabla>.nota` y el motor la pinta aparte, en un `<p class="tc0091-nota">` a 12/18,
+  entre la tabla y el recuadro "Te recomendamos esta tarjeta". Solo se pinta **si alguna fila visible
+  lleva `*`** en su valor; filtradas por lead, hay usuarios que no tienen ninguna de esas tarjetas y la
+  nota quedaría sin nada a que referirse.
 - **Emojis** → se guardan como entidad HTML (`&#128179;`), igual que en el snippet. Marco los manda como
   emoji literal; la conversión es parte del volcado, no del JSON.
 - **`lineas`** → es una pista para saltar directo en `adobe-target/piloto/bot.html`. **Se desactualiza en cuanto se
@@ -65,7 +70,7 @@ Cada archivo de flujo:
 | `nodos[].lineas` | Rango en `adobe-target/piloto/bot.html` (pista, ver arriba) |
 | `nodos[].tipo` | `question` · `auto` · `mixed` · `rating` |
 | `nodos[].titulo` | Campo `title` del nodo. `""` cuando la pantalla no lleva título |
-| `nodos[].texto` | La copy, desestructurada en `intro` / `parrafos` / `tabla` |
+| `nodos[].texto` | La copy, desestructurada en `intro` / `parrafos` / `tabla` / `notaTabla` |
 | `nodos[].recomendacion` | Bloque "Te recomendamos esta tarjeta", si existe |
 | `nodos[].menuText` | Copy entre la tarjeta recomendada y los botones |
 | `nodos[].opciones[]` | `label` + destino (`next`, o `href`/`isClose`) |

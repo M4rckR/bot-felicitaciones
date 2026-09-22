@@ -857,7 +857,8 @@ These are real deviations from `referencia/bot-actual.html`. Diffing the two eng
   option buttons, CTAs, the launcher greeting and the error text. Ratios like `1.2`/`1.3` are gone from
   those rules; use the pixel value when adding new 14px text.
 
-  The one exception is the `aviso` box, which Marco specified at 12/18 — see the `aviso` node field below.
+  Two exceptions, both at 12/18 and both specified by Marco: the `aviso` box (see the `aviso` node field
+  below) and `.tc0091-nota`, the comparador's footnote (2026-09-22).
 
   Two knock-ons worth knowing: **option buttons went from 34px to 37px tall** (the `padding: 7.5px 16px`
   Marco tuned earlier was aimed at 34px, and the taller line-height wins), and `.tc0091-card-name` **was
@@ -929,7 +930,22 @@ These are real deviations from `referencia/bot-actual.html`. Diffing the two eng
   mockup by eye and are still unconfirmed.
 - **`menuText` node field.** Copy rendered after the recommendation card and before the options, so
   "¿Qué deseas hacer ahora?" can close a single-bubble screen. Both fields travel in the chatLog snapshot
-  (`appendBotMessageForCurrent`) and are honoured in `renderSlides` too.
+  (`appendBotMessageForCurrent`).
+- **The comparador's footnote (2026-09-22).** `config.comparador.exoneracion` gained a `nota` field
+  (`"*Sujeto a términos y condiciones"`), rendered by `createNotaMarkup` as a bare
+  `<p class="tc0091-nota">` at **12/18** — no box, no icon, `margin-top: 12px`. It sits **between the table
+  and the recommendation block**, which is where Marco asked for it, so `renderBotItem` emits it right after
+  the text div and before `createCardsMarkup` / `createRecommendationMarkup`.
+
+  **It is not a node field**: it lives on the table, because it has to be decided together with the rows.
+  The three Infinite rows (`TCRBA7`, `TCRINF`, `TCRLY1`) carry a `*` on their `valor`, and
+  `resolveComparador` returns the `nota` **only if a surviving row still contains one** — the table is
+  filtered by lead, so plenty of users hold none of the three, and an unanchored footnote is exactly the
+  orphan asterisk Marco had removed from the perfilador the same day. It travels frozen in the chatLog
+  snapshot as `botMessage.nota`, like everything else.
+
+  Only `exoneracion` has a `nota` today. Any other table gets one by adding the field plus at least one
+  `*` in a `valor`; nothing else is needed.
 - **`cards` node field (2026-09-09), for the perfilador.** An array of card boxes rendered by
   `createCardsMarkup` between the text and `menuText`:
   `{badge?, name, description, bullets: [], cta: {label, href, target}}`. Visually it is the same box as
@@ -1113,11 +1129,12 @@ escapes first and then converts `**…**` to `<strong>`. `name` and `description
 Marco extended the lead rule to `q21`–`q24`: **the tables list only the cards the user actually has.**
 
 - The four tables moved out of the nodes into `config.comparador` (`millas`, `membresia`, `exoneracion`,
-  `priorityPass`), each `{intro, encabezado, filas: [{codigo, nombre, valor}]}`. The nodes now carry only
-  `comparador: "<id>"`.
+  `priorityPass`), each `{intro, encabezado, filas: [{codigo, nombre, valor}]}` — plus an optional `nota`,
+  which so far only `exoneracion` uses. The nodes now carry only `comparador: "<id>"`.
 - `resolveComparador` filters `filas` by `getLeadCardCodes()` and **rebuilds the markdown table as a
   string**, which then goes through the existing `formatRichText` — the same path the hand-written tables
-  used, so the rendering is unchanged. `richText` is forced on for any node with `comparador`.
+  used, so the rendering is unchanged. `richText` is forced on for any node with `comparador`. It returns
+  `{text, filas, nota}`; the `nota` is dropped unless a surviving row's `valor` still carries a `*`.
 - Each table keeps its own verbatim row order; filtering never reorders.
 - Empty detection → all 17 rows, logged as `COMPARADOR_SIN_LEADS`. Same reasoning as the perfilador.
 

@@ -656,6 +656,30 @@ texto que no existe.
 **Pedido por Marco el 2026-09-22.** No cambia ninguna cifra ni ninguna palabra: solo se borra el asterisco.
 La negrita de "(GRATIS si consumes…)" se conserva tal cual.
 
+### 2.3 Exoneración de membresía — asterisco en las Infinite y llamada al pie
+
+Las tres tarjetas **Infinite** llevan ahora un asterisco al final del monto, y la tabla cierra con la
+aclaración correspondiente:
+
+| Tarjeta | Decía | Dice |
+| --- | --- | --- |
+| Visa Infinite Sapphire LATAM Pass | `S/4,500 al mes` | `S/4,500 al mes*` |
+| Visa Infinite Iridium LATAM Pass | `S/5,000 al mes` | `S/5,000 al mes*` |
+| Visa Infinite Qore | `S/5,000 al mes` | `S/5,000 al mes*` |
+
+Debajo de la tabla, y **antes del recuadro "Te recomendamos esta tarjeta"**, aparece:
+
+> \*Sujeto a términos y condiciones
+
+**Tamaño 12px, interlineado 18px**, sin recuadro ni ícono. Es la segunda excepción a la regla de 14/20 que
+rige el resto del hilo; la primera es el aviso azul de 1.1, que usa esa misma escala.
+
+**Pedido por Marco el 2026-09-22.** Ninguna cifra cambió.
+
+**Una regla que va con esto:** la tabla se filtra por las tarjetas que el usuario tiene aprobadas, así que
+hay clientes a los que no les queda ninguna fila con asterisco. **En esos casos la nota no se muestra**, para
+no repetir el problema del asterisco sin nota al pie que se corrigió ese mismo día en el perfilador.
+
 ### Perfilador — la ficha pasa a ocupar el 90% del carrusel
 
 La tarjeta del carrusel ocupaba el **82%** del ancho, dejando asomar un ~18% de la siguiente. **Desde el

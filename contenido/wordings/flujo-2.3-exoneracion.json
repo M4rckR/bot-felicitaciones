@@ -37,11 +37,11 @@
             ],
             [
               "Visa Infinite Sapphire LATAM Pass",
-              "S/4,500 al mes"
+              "S/4,500 al mes*"
             ],
             [
               "Visa Infinite Iridium LATAM Pass",
-              "S/5,000 al mes"
+              "S/5,000 al mes*"
             ],
             [
               "Visa Light",
@@ -85,10 +85,11 @@
             ],
             [
               "Visa Infinite Qore",
-              "S/5,000 al mes"
+              "S/5,000 al mes*"
             ]
           ]
-        }
+        },
+        "notaTabla": "*Sujeto a términos y condiciones"
       },
       "recomendacion": {
         "title": "Te recomendamos esta tarjeta",
@@ -119,6 +120,7 @@
         "El CTA 'Elegir tarjeta' no navega (2026-09-11): le da click al boton 'Seleccionar' nativo de esa tarjeta en la pagina, identificada por su codigo. No hay URL que definir."
       ],
       "notas": [
+        "2026-09-22: Marco pidio marcar con * las tres filas Infinite (Sapphire, Iridium y Qore) y cerrar la tabla con la llamada \"*Sujeto a terminos y condiciones\" a 12px / line-height 18px, antes del recuadro \"Te recomendamos esta tarjeta\". La nota vive en config.comparador.exoneracion.nota y solo se pinta si alguna fila visible conserva el asterisco despues del filtro por lead. Ver docs/correcciones-wording.md.",
         "2026-09-21: el beneficio de la tarjeta recomendada se renderiza como párrafo, sin viñeta.",
         "2026-09-21: la recomendación se alineó con Figma: Visa Oro Qore y el texto 'Membresía anual S/170 (GRATIS si consumes S/1 al mes).'. Solo se muestra cuando TCRLY3 está entre las tarjetas aprobadas.",
         "2026-09-09: la tabla dejo de estar escrita en el nodo. Ahora vive en config.comparador.exoneracion de adobe-target/piloto/bot.html como filas con codigo, y el nodo solo lleva 'comparador: \"exoneracion\"'. resolveComparador filtra en runtime y deja SOLO las tarjetas de las que el usuario es lead; si la deteccion no devuelve nada, se muestran las 17. El orden de cada tabla se conserva verbatim.",
