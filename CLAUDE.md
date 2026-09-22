@@ -449,8 +449,11 @@ experiment **TC0037** (floating "Pide tu Tarjeta de Crédito BCP" button, `.m-bu
 
 `@media (max-width: 768px)` plus JS: `lockPageScroll`/`unlockPageScroll` freeze `html`/`body` overflow while
 the panel is open (with extra `unlockPageScroll` retries after mask-close, for mobile style-application
-lag), `bindScrollIsolation` keeps touch scrolling inside the panel, and `updateLauncherMobileOffset` toggles
-`tc0080-launcher--lifted` when the host page's `.boton--pulsante` scrolls off the top.
+lag), and `bindScrollIsolation` keeps touch scrolling inside the panel.
+
+**In `referencia/bot-actual.html` only**, `updateLauncherMobileOffset` also toggles
+`tc0080-launcher--lifted` when the host page's `.boton--pulsante` scrolls off the top. **That whole feature
+was deleted from the offer on 2026-09-22** — see *The launcher lift is gone*.
 
 ## How it reaches the page
 
@@ -517,6 +520,41 @@ Two things that look wrong in that output and are not:
 
 Which mbox Target actually uses is still unknown — and now it does not matter, since all eight work.
 
+**`referencia/paginas/` is the only reference for the destination page** (Marco, 2026-09-22).
+`referencia/bot-actual.html` and `referencia/bot-insertado.html` are **the home** — a different page. They
+are the reference for *the engine*, and nothing else: never infer what the destination DOM contains from
+them. The four snapshots are what the target page can be, and the offer has to work against any of them.
+
+### The launcher lift is gone (2026-09-22)
+
+Applying that rule found the one thing in the offer that still assumed the home. The bot reaches into the
+host page in exactly **four** places, and only three survive the crossing:
+
+| What the bot looks for | What for | certi | prod |
+| --- | --- | --- | --- |
+| `xt21-card-option` | which cards the user is a lead for | 13 | 4 |
+| `[name^="QA_Congratulations_BtnSeleccionar_"]` | press "Elegir tarjeta" | 13 | 4 |
+| `img[src*="/congratulations/img/"]` | read each card's code | 13 | 4 |
+| `.boton--pulsante` / `.boton-pulsante` | lift the launcher | **0** | **0** |
+
+That last one is the home's hero button (`<div id="dcAdobeBtnAdquirirBanner" class="… boton--pulsante">
+Pídela aquí</div>`). On the home, scrolling past it makes a floating button appear at the bottom, where the
+launcher also lives, so the launcher moved up to `bottom: 122px`. **On `/felicitaciones` neither element
+exists**: the only `position: fixed` rules with a `bottom` belong to the cookie banner, which shows
+pre-consent, before the bot is there. So the launcher has nothing to collide with.
+
+Marco chose to delete it rather than re-point the selector. Removed from **both** offers:
+`getLauncherLiftTriggerNode`, `shouldLiftLauncherOnMobile`, `updateLauncherMobileOffset`,
+`scheduleLauncherMobileOffsetUpdate`, `bindLauncherMobileOffset`, `unbindLauncherMobileOffset`, their calls
+in `bind()` and `destroy()`, `scrollState.launcherOffsetRafId`, and the two CSS rules
+`.tc0091-launcher--lifted` / `.tc0091-launcher-welcome-wrap--lifted`. That orphaned
+**`isMobileViewport`**, which went too — it had no other caller.
+
+Both post-removal sweeps come back clean: **99 prototype methods, zero orphans; zero unused `.tc0091-*`
+classes.** `document.querySelector` now appears in the offer only for `xt21-card-option`, so **nothing in
+the bot references the home any more**. If the page ever grows a floating bottom button, the behaviour
+comes back from `referencia/bot-actual.html`, with a new selector.
+
 ### The offer is a single `<script>` tag (Marco, 2026-09-22)
 
 **All three files in `adobe-target/` are one `<script>` and nothing else.** The pilot and the premium
@@ -568,10 +606,9 @@ Verified differences between the current home and `/felicitaciones`:
   port is visually safe. `--on-text`, `--on-white`, `--state-success` are defined on neither page and
   always fall back. `--bcp-font-family-primary-regular` (`"Flexo-Regular"`) exists on both and is the one
   var used **without** a fallback.
-- **The mobile launcher lift will never trigger.** `getLauncherLiftTriggerNode()` looks for
-  `.boton--pulsante` / `.boton-pulsante`. That element exists on the home (hero banner button) but appears
-  **zero times** in every `/felicitaciones` snapshot, so `shouldLiftLauncherOnMobile()` always returns
-  false. Pick a new trigger selector for the target page or drop the behaviour.
+- **The mobile launcher lift is gone (2026-09-22).** It looked for `.boton--pulsante` / `.boton-pulsante`,
+  the home's hero "Pídela aquí" button, which appears **zero times** in all four target snapshots. See
+  *The launcher lift is gone* below.
 - **Stacking context — fixed on 2026-09-22.** The bot now uses `z-index` **999998** (mask) / **999999**
   (launcher, welcome, panel). It was 9998/9999, which is what the home needs and no more: **the home has
   nothing at all between 9999 and the cookie banner**, and no `.app-section__header`.
@@ -1372,9 +1409,8 @@ Also tracked in `docs/correcciones-wording.md` (Parte 6), which is the version w
 - **The code for Visa Clásica (plain).** The only card left at `"codigo": null`. Marco chose on 2026-09-10
   to leave it that way: it simply does not render, and it will start appearing on its own once a code
   exists. Nothing to build — just the code.
-- **The mobile launcher lift has no trigger on this page.** `getLauncherLiftTriggerNode()` looks for
-  `.boton--pulsante` / `.boton-pulsante`, which appears **zero times** in every `/felicitaciones` snapshot,
-  so the behaviour is dead code today. Pick a new selector or drop it.
+- ~~The mobile launcher lift has no trigger on this page.~~ **Cerrado 2026-09-22: Marco pidió borrarlo.**
+  Ya no existe en ninguna de las dos ofertas — ver *The launcher lift is gone*. No re-raise.
 
 **Lower-stakes, unconfirmed**
 

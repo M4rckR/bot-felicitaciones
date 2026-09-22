@@ -1361,14 +1361,6 @@
             width: min(218px, calc(100vw - 132px));
         }
 
-        #tc0091-scope .tc0091-launcher.tc0091-launcher--lifted {
-            bottom: 122px;
-        }
-
-        #tc0091-scope .tc0091-launcher-welcome-wrap.tc0091-launcher-welcome-wrap--lifted {
-            bottom: 208px;
-        }
-
         #tc0091-scope .tc0091-launcher-welcome {
             font-size: 14px;
             line-height: 20px;
@@ -2868,7 +2860,6 @@
             this.scrollState = {
                 touchStartY: 0,
                 suppressAdjustOnce: false,
-                launcherOffsetRafId: null,
             };
 
             this.pageScrollState = {
@@ -3426,93 +3417,11 @@
             });
 
             this.bindScrollIsolation();
-            this.bindLauncherMobileOffset();
-            this.scheduleLauncherMobileOffsetUpdate();
         };
 
         Bot.prototype.toggleWelcome = function (isVisible) {
             if (!this.el.welcome) return;
             this.el.welcome.style.display = isVisible ? "flex" : "none";
-        };
-
-        Bot.prototype.isMobileViewport = function () {
-            return !!window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
-        };
-
-        Bot.prototype.getLauncherLiftTriggerNode = function () {
-            return document.querySelector(".boton--pulsante") || document.querySelector(".boton-pulsante");
-        };
-
-        Bot.prototype.shouldLiftLauncherOnMobile = function () {
-            var trigger = this.getLauncherLiftTriggerNode();
-            if (!trigger || !trigger.getBoundingClientRect) return false;
-            return trigger.getBoundingClientRect().y <= 0;
-        };
-
-        Bot.prototype.updateLauncherMobileOffset = function () {
-            if (!this.el.launcher) return;
-
-            var launcherLiftClass = "tc0091-launcher--lifted";
-            var welcomeLiftClass = "tc0091-launcher-welcome-wrap--lifted";
-
-            if (!this.isMobileViewport()) {
-                this.el.launcher.classList.remove(launcherLiftClass);
-                if (this.el.welcome) {
-                    this.el.welcome.classList.remove(welcomeLiftClass);
-                }
-                return;
-            }
-
-            var shouldLift = this.shouldLiftLauncherOnMobile();
-            this.el.launcher.classList.toggle(launcherLiftClass, shouldLift);
-            if (this.el.welcome) {
-                this.el.welcome.classList.toggle(welcomeLiftClass, shouldLift);
-            }
-        };
-
-        Bot.prototype.scheduleLauncherMobileOffsetUpdate = function () {
-            var self = this;
-            if (this.scrollState.launcherOffsetRafId !== null) return;
-
-            this.scrollState.launcherOffsetRafId = requestAnimationFrame(function () {
-                self.scrollState.launcherOffsetRafId = null;
-                self.updateLauncherMobileOffset();
-            });
-        };
-
-        Bot.prototype.bindLauncherMobileOffset = function () {
-            var self = this;
-            if (this._launcherOffsetBound) return;
-
-            this._onLauncherOffsetScroll = function () {
-                self.scheduleLauncherMobileOffsetUpdate();
-            };
-
-            this._onLauncherOffsetResize = function () {
-                self.scheduleLauncherMobileOffsetUpdate();
-            };
-
-            window.addEventListener("scroll", this._onLauncherOffsetScroll, { passive: true });
-            window.addEventListener("resize", this._onLauncherOffsetResize);
-            window.addEventListener("orientationchange", this._onLauncherOffsetResize);
-            this._launcherOffsetBound = true;
-        };
-
-        Bot.prototype.unbindLauncherMobileOffset = function () {
-            if (!this._launcherOffsetBound) return;
-
-            window.removeEventListener("scroll", this._onLauncherOffsetScroll);
-            window.removeEventListener("resize", this._onLauncherOffsetResize);
-            window.removeEventListener("orientationchange", this._onLauncherOffsetResize);
-
-            this._onLauncherOffsetScroll = null;
-            this._onLauncherOffsetResize = null;
-            this._launcherOffsetBound = false;
-
-            if (this.scrollState.launcherOffsetRafId !== null) {
-                cancelAnimationFrame(this.scrollState.launcherOffsetRafId);
-                this.scrollState.launcherOffsetRafId = null;
-            }
         };
 
         Bot.prototype.bindScrollIsolation = function () {
@@ -5326,7 +5235,6 @@
         Bot.prototype.destroy = function () {
             this.cancelWaitingTransition();
             this.close();
-            this.unbindLauncherMobileOffset();
             if (this.el.launcher)
                 this.el.launcher.replaceWith(this.el.launcher.cloneNode(true));
             if (this.el.close)
