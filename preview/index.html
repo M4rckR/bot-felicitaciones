@@ -477,6 +477,10 @@
             <span class="sep"></span>
         </span>
         <button id="btn-auto" aria-pressed="true">Auto-recarga</button>
+        <span class="sep"></span>
+        <!-- Simula la pantalla de sesion expirada de la pagina. Con ella puesta el
+             bot tiene que retirarse solo, y volver al quitarla. -->
+        <button id="btn-sesion" aria-pressed="false">Sesión expirada</button>
         <span id="status">esperando…</span>
     </header>
 
@@ -912,6 +916,12 @@
                     '</style></head><body></body></html>');
                 doc.close();
 
+                // El documento del iframe se rehace entero, asi que la pantalla de
+                // sesion expirada se fue con el: hay que devolver el boton a su sitio
+                // o quedaria marcado sin que la pantalla este puesta.
+                sesionCaida = false;
+                document.getElementById("btn-sesion").setAttribute("aria-pressed", "false");
+
                 // Las tarjetas del usuario tienen que existir ANTES de que corra el
                 // snippet, igual que en la pagina real.
                 pintarLeads(doc);
@@ -980,6 +990,39 @@
             };
             document.getElementById("btn-clear-ev").onclick = function () { elEventos.innerHTML = ""; };
             document.getElementById("btn-clear-log").onclick = function () { elConsola.innerHTML = ""; };
+
+            // Cuando la sesion caduca, /felicitaciones reemplaza su contenido por esta
+            // plantilla. El bot tiene que retirarse solo mientras este puesta, y volver
+            // al quitarla. Marco entrego el markup el 2026-09-22.
+            //
+            // NO aparece en ninguna captura de referencia/paginas/, justamente porque
+            // el DOM solo la tiene cuando esta ocurriendo. Por eso el bot la detecta
+            // por presencia.
+            var sesionCaida = false;
+            document.getElementById("btn-sesion").onclick = function () {
+                sesionCaida = !sesionCaida;
+                this.setAttribute("aria-pressed", String(sesionCaida));
+
+                var doc = frame.contentDocument;
+                if (!doc || !doc.body) return;
+
+                var previa = doc.querySelector(".error-template-section");
+                if (previa) previa.parentNode.removeChild(previa);
+
+                if (sesionCaida) {
+                    doc.body.insertAdjacentHTML("afterbegin",
+                        '<section class="error-template-section" style="padding:24px;font-family:inherit">' +
+                        '<p style="margin:0 0 16px;font-size:16px;font-weight:700">Tu sesión expiró</p>' +
+                        '<div class="error-template-section__actions">' +
+                        '<button type="button" class="bcp-ffw-btn bcp-ffw-btn-primary">' +
+                        "Puedes retomar tu sesión aquí</button></div></section>");
+                    pintarLog("info", ["[preview] sesión expirada: el bot debe retirarse"]);
+                } else {
+                    // Una mutacion cualquiera para que el observador del bot reaccione.
+                    doc.body.appendChild(doc.createElement("div"));
+                    pintarLog("info", ["[preview] sesión recuperada: el bot debe volver"]);
+                }
+            };
 
             document.getElementById("btn-desktop").onclick = function () {
                 frame.classList.remove("movil");

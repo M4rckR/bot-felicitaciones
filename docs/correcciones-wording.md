@@ -689,6 +689,11 @@ saludo.
 **El bot se retira recién cuando el cliente pasa a otra pantalla del flujo** (por ejemplo "Dónde
 recibirla"). Ahí sí desaparece del todo y no vuelve.
 
+**Si la sesión expira, el bot se retira.** Cuando la sesión caduca, la página reemplaza todo su contenido
+por la pantalla *"Puedes retomar tu sesión aquí"*, y ahí ya no hay tarjetas aprobadas que mostrar. El bot
+desaparece solo mientras esa pantalla esté puesta, y **vuelve si el cliente retoma la sesión** sin recargar.
+Si la sesión ya estaba caída cuando el bot iba a aparecer, directamente no aparece.
+
 **Y si el cliente reabre el bot con ese cuadro abierto, el cuadro se cierra.** Dos capas encimadas se leen
 como un error, y quien vuelve al bot es porque quiere seguir consultando, no editar su línea todavía. El bot
 pulsa el botón **"Cerrar"** del propio cuadro, no lo hace desaparecer por su cuenta: así corre la lógica

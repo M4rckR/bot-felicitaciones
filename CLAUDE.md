@@ -765,12 +765,34 @@ the crosswalk rule is *cross by code, never by name* — see `contenido/tarjetas
 does not come back (the user already chose — re-greeting them would be wrong). Reopening starts at `q0`,
 the same rule every other close follows since 2026-09-14.
 
-**The bot is removed only when the URL changes.** `desmontarSiCambioLaRuta()` compares
-`location.pathname` against `window.__tc0091Ruta`, recorded at the first mount; on a change it destroys the
-instance and removes both `#tc0091-scope` and `#tc0091-estilos`, and `montarBot()` then refuses to mount
-again. It runs from the same observer callback as the rebuild, plus `popstate` / `hashchange`. **This is not
-optional decoration**: the bot hangs off `<body>` and the observer rebuilds it, so without it an SPA
-navigation to "Dónde recibirla" or "Confirmación" would carry the bot along.
+**The bot is removed for two reasons, and they behave differently on purpose.** `motivoParaRetirarse()`
+returns `"ruta"`, `"sesion"` or `""`, and `desmontarSiHayQue()` acts on it. Both run from the same observer
+callback as the rebuild, plus `popstate` / `hashchange`, and `montarBot()` refuses to mount while either
+holds. **None of this is optional decoration**: the bot hangs off `<body>` and the observer rebuilds it, so
+without it an SPA navigation or a dead session would carry the bot along.
+
+| Reason | Detected by | Behaviour |
+| --- | --- | --- |
+| `"ruta"` | `location.pathname` ≠ `window.__tc0091Ruta`, recorded at first mount | **Permanent.** Scope *and* `#tc0091-estilos` removed; never mounts again |
+| `"sesion"` | `[class*="error-template-section"]` exists | **While it lasts.** Scope removed, **the `<style>` stays**; the bot returns if the page recovers |
+
+**Session expiry** (Marco, 2026-09-22). When the session dies the page replaces its content with a
+*"Puedes retomar tu sesión aquí"* template and the approved cards stop existing, so an assistant for
+choosing a card has nothing to do there. It is detected **by presence, not visibility**: the template
+appears in **none** of the four snapshots, which is precisely what proves the DOM only carries it while it
+is happening.
+
+The selector spans the block and its elements (`error-template-section`, `error-template-section__actions`),
+so the bot also withdraws on sibling error screens — **intended**: if the page is not showing the cards, the
+bot should not be there either.
+
+Two consequences worth keeping:
+
+- **An offer delivered into an already-expired page mounts nothing and emits nothing.** `trackLauncherView`
+  fires from `bind()`, which only runs on mount, so no `Inicio - TC0096 - P` View is pushed. That matters
+  for the experiment: a View with no visible bot would be a false positive against the control.
+- **The `<style>` is kept on session expiry** because the bot may come back; re-injecting it on every
+  recovery would buy nothing. Only the permanent teardown removes it.
 
 > **Reverted on 2026-09-22**, was: *"Choosing a card closes the bot for good (Marco, 2026-09-11).
 > `elegirTarjeta` calls `cerrarDefinitivo()` … Do not swap it back to `close()`."* Marco saw the bot vanish
@@ -1434,6 +1456,15 @@ real names and is never deployed; `preview/` *is* deployed to Netlify, so a real
 The side panel has a preset dropdown (with/without the Visa Oro, one miles card only, case B, no detection
 at all…) plus a checkbox per card for arbitrary combinations. Cards without a code render disabled and in
 amber, which is the fastest way to see the consequence of a missing code.
+
+Two page behaviours are simulated too, and both exist because the bot now reacts to them:
+
+- **`abrirModalLineaSimulado`** paints the credit-line modal when a card's native button is pressed, with
+  its `Cerrar` / `Continuar` pair and the real `z-index: 7001`. Without it there is no way to check locally
+  that reopening the bot dismisses it.
+- **The `Sesión expirada` button in the header** injects the `error-template-section` template. The bot must
+  withdraw while it is up and come back when it is removed. The toggle resets on every re-injection,
+  because the iframe document is rebuilt from scratch and the template goes with it.
 
 **There is deliberately no "producción" or "certi" preset** (Marco, 2026-09-10). Those two snapshots were
 delivered only to prove the DOM does not change between environments and that the detection holds up —

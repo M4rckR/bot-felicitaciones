@@ -5493,7 +5493,12 @@
         // cuanto el documento cambie. Devolver un booleano es lo que permite que
         // el arranque no dependa de acertar el momento.
         function montarBot() {
-            if (cambioLaRuta()) return false;
+            // No se monta si la pagina no es el sitio donde el bot debe estar: otra
+            // ruta del flujo, o la pantalla de sesion expirada. Esto cubre tambien el
+            // arranque, no solo el remontaje: si la oferta llega con la sesion ya
+            // caida, el bot no aparece y su View de Inicio no se emite, que es lo
+            // correcto -- al usuario no se le mostro nada.
+            if (motivoParaRetirarse()) return false;
 
             inyectarEstilos();
 
@@ -5516,17 +5521,48 @@
             return !!window.__tc0091Ruta && window.__tc0091Ruta !== rutaActual();
         }
 
-        // El bot vive mientras el usuario siga en la URL donde aparecio (Marco,
-        // 2026-09-22). Elegir una tarjeta ya NO lo hace desaparecer: abre el modal de
-        // linea de credito de la pagina y el launcher se queda, por si el usuario
-        // quiere volver a consultar antes de decidir. Lo que lo retira es salir de la
-        // ruta.
+        // La pantalla de sesion expirada. Cuando la sesion caduca, la pagina
+        // reemplaza su contenido por esta plantilla -- "Puedes retomar tu sesion
+        // aqui" -- y las tarjetas aprobadas dejan de existir.
+        //
+        // Se detecta por presencia y no por visibilidad porque NO es una plantilla
+        // oculta: no aparece en ninguna de las cuatro capturas de
+        // referencia/paginas/, o sea que el DOM solo la tiene cuando esta ocurriendo.
+        //
+        // El selector abarca el bloque y sus elementos ("error-template-section" y
+        // "error-template-section__actions"). Eso hace que el bot tambien se retire
+        // ante otras pantallas de error de la misma familia, y esta bien que asi sea:
+        // si la pagina no esta mostrando las tarjetas, un asistente para elegir
+        // tarjeta no tiene nada que hacer ahi.
+        function sesionExpirada() {
+            return !!document.querySelector('[class*="error-template-section"]');
+        }
+
+        // Por que el bot deberia retirarse, o "" si no hay motivo. Los dos motivos se
+        // comportan distinto a proposito:
+        //
+        //   ruta   -> DEFINITIVO. El usuario paso a otra pantalla del flujo y el bot
+        //             no vuelve.
+        //   sesion -> MIENTRAS DURE. Si la pagina se recupera (el usuario retoma la
+        //             sesion sin recargar), el observador lo vuelve a montar.
+        function motivoParaRetirarse() {
+            if (cambioLaRuta()) return "ruta";
+            if (sesionExpirada()) return "sesion";
+            return "";
+        }
+
+        // El bot vive mientras el usuario siga en la URL donde aparecio y la sesion
+        // siga viva (Marco, 2026-09-22). Elegir una tarjeta ya NO lo hace desaparecer:
+        // abre el modal de linea de credito de la pagina y el launcher se queda, por
+        // si el usuario quiere volver a consultar antes de decidir.
         //
         // Hace falta explicitamente porque el bot cuelga de <body> y el observador lo
         // reconstruye: sin esto, una navegacion del SPA a otra pantalla del flujo
-        // ("Donde recibirla", "Confirmacion") se lo llevaria puesto.
-        function desmontarSiCambioLaRuta() {
-            if (!cambioLaRuta()) return false;
+        // ("Donde recibirla", "Confirmacion") o una sesion caida se lo llevarian
+        // puesto igual.
+        function desmontarSiHayQue() {
+            var motivo = motivoParaRetirarse();
+            if (!motivo) return false;
 
             var bot = instanciaActual();
             if (bot) {
@@ -5538,15 +5574,19 @@
             var scope = document.getElementById("tc0091-scope");
             if (scope && scope.parentNode) scope.parentNode.removeChild(scope);
 
-            var estilo = document.getElementById("tc0091-estilos");
-            if (estilo && estilo.parentNode) estilo.parentNode.removeChild(estilo);
+            // El <style> se retira solo cuando el bot no vuelve. Con la sesion caida
+            // puede volver, y reinyectarlo en cada recuperacion no aporta nada.
+            if (motivo === "ruta") {
+                var estilo = document.getElementById("tc0091-estilos");
+                if (estilo && estilo.parentNode) estilo.parentNode.removeChild(estilo);
+            }
 
             return true;
         }
 
-        // El vigilante que garantiza que el bot este puesto, pase lo que pase con
-        // el DOM de la pagina. Cubre tres cosas, y las tres se comprobaron
-        // fallando antes de escribirlo asi:
+        // El vigilante. Decide, en cada cambio del DOM, si el bot tiene que estar
+        // puesto o retirado. Cubre cinco situaciones, y las cuatro primeras se
+        // comprobaron fallando antes de escribirlo asi:
         //
         //   1. el SPA borra el scope           -> lo reconstruye;
         //   2. el SPA reemplaza <body> entero  -> por eso observa <html> y no
@@ -5554,8 +5594,9 @@
         //      bot no vuelve nunca;
         //   3. la oferta llega antes de que exista <body> -> montarBot() devolvio
         //      false, y este observador lo reintenta cuando el body aparece;
-        //   4. el usuario navega a otra ruta del flujo -> se retira el bot y no se
-        //      vuelve a montar.
+        //   4. el usuario navega a otra ruta del flujo -> se retira y no vuelve;
+        //   5. la sesion expira -> se retira mientras dure esa pantalla, y vuelve
+        //      si la pagina se recupera.
         //
         // documentElement existe desde que empieza el parseo, asi que se puede
         // observar aunque no haya body todavia.
@@ -5566,8 +5607,10 @@
             if (!raiz) return;
 
             var revisar = function () {
-                // Primero la ruta: si cambio, el bot se retira y no se remonta.
-                if (desmontarSiCambioLaRuta() || cambioLaRuta()) return;
+                // Primero los motivos para NO estar: ruta distinta o sesion caida.
+                // desmontarSiHayQue() retira lo que haya quedado puesto, y la segunda
+                // condicion impide volver a montar mientras el motivo siga vigente.
+                if (desmontarSiHayQue() || motivoParaRetirarse()) return;
 
                 var scope = document.getElementById("tc0091-scope");
                 if (!scope || !document.contains(scope)) {
