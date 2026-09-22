@@ -230,10 +230,38 @@ see *The offer is a single `<script>` tag* below. `ensureScope()` creates the sc
 is gone: `waitForBotAndInit()` became **`montarBot()`**, which injects the styles, mounts the scope and
 calls `init()` in one pass, because the only thing left to wait for is `document.body`.
 
-In both engines a `MutationObserver` on `document.body` re-runs the bootstrap if the scope disappears — the
-host is an Angular SPA that can wipe injected DOM. In the offer that now rebuilds the whole bot rather than
-re-initialising over markup that may be gone. Re-init calls `destroy()` on the previous instance, which
-unlocks page scroll and clones-and-replaces bound elements to drop listeners.
+In both engines a `MutationObserver` re-runs the bootstrap if the scope disappears — the host is an Angular
+SPA that can wipe injected DOM. In the offer that now rebuilds the whole bot rather than re-initialising
+over markup that may be gone. Re-init calls `destroy()` on the previous instance, which unlocks page scroll
+and clones-and-replaces bound elements to drop listeners.
+
+**The offer's bootstrap was hardened on 2026-09-22** (Marco: make sure the script doesn't just inject
+itself, it actually builds the bot). Five scenarios were reproduced against a real DOM *before* writing the
+fix; three of them failed. Do not simplify any of the four points below back — each one is a scenario that
+was observed breaking:
+
+| Scenario | Before | Now |
+| --- | --- | --- |
+| Target re-injects the offer | **`Inicio Tarjetin` View fired twice** | once |
+| Target re-injects the offer | a second `Bot` stacked listeners on the same elements | previous instance destroyed |
+| The SPA replaces `<body>` wholesale | **bot never came back** | rebuilt |
+| The script runs before `<body>` exists | **gave up permanently** | mounts when `<body>` appears |
+
+- **`window.__tc0091LauncherViewSent`, not `Bot.launcherViewSent`.** The static only guarded against the
+  observer rebuilding the bot. A Target re-injection runs the script inside a *new* IIFE with a *new* `Bot`
+  function, so the static was back at zero and the View fired again — and that View is the event that
+  segments the experiment (`- P` against the control's `- C`), so duplicating it inflates the pilot. Same
+  technique `control.html` already used with `__tc0091ControlViewSent`.
+- **`window.__tc0091Instance`, not a local `instance`.** Same root cause: a re-injected copy could not see
+  the previous instance, so it never called `destroy()` and bound a second set of listeners.
+  `instanciaActual()` is the single reader; `window.tc0091Catalogo` goes through it too.
+- **The observer watches `document.documentElement`, not `document.body`.** An observer attached to a body
+  that Angular later replaces is orphaned, and nothing ever rebuilds the bot. `documentElement` exists from
+  the start of parsing, which is also what lets it run before there is a `<body>` at all.
+- **`montarBot()` returns a boolean and never gives up.** It used to `console.warn` and return when
+  `document.body` was missing, which was a dead end. Now the observer is armed **first and always**, so a
+  failed mount is retried on the next DOM mutation. The `DOMContentLoaded` listener is only a second net,
+  attached solely if the immediate attempt failed while still parsing.
 
 ### The `Bot` object
 
@@ -311,7 +339,7 @@ closed**: exactly these **seven** event families, no more.
 
 | Method | name (after `Felicitaciones - Cards - Bot - `) | creative | position | Fires when |
 | --- | --- | --- | --- | --- |
-| `trackLauncherView` | `Inicio - TC0096 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `Bot.launcherViewSent` |
+| `trackLauncherView` | `Inicio - TC0096 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `window.__tc0091LauncherViewSent` (it was `Bot.launcherViewSent`, which a Target re-injection reset — see *Bootstrap*) |
 | `trackOpenBotClick` | `Inicio - TC0096 - P` | Button | `Modal` | panel opened |
 | `trackFinalResponseView` | `Arbol - TC0096 - P` | Modal | `1 - 1.1` … `3 - 3.3` | every **respuesta** node |
 | `trackElegirTarjetaView` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
@@ -438,6 +466,30 @@ On the **home** (`referencia/bot-insertado.html`): parent `.node-content-parent-
 In the snapshot the bot's `<style>`/markup/`<script>` sit inside `.node-content-parent-otp` as siblings
 after the empty `cards-home` div. **Which specific mbox delivers TC0080 is not determinable from the
 snapshot** — don't guess it; confirm with whoever configures Target.
+
+**Every mbox container is empty in every snapshot** (checked 2026-09-22, all four `/felicitaciones` captures
+plus `referencia/bot-insertado.html`): 8 on `/felicitaciones`, 10 on the home, all
+`<div class="mbox-container …" data-mbox="…"></div>` with nothing inside. So **no capture in this repo shows
+a delivered offer**, and none of them can settle how Target injects one. Two things follow:
+
+- **Don't look for the bot inside an mbox.** On the home the direct children of `.node-content-parent-otp`
+  are, in order: the empty `cards-home` div, TC0037's `<style>` + `<script>`, TC0080's `<style>`,
+  **`<div id="tc0080-scope">`**, TC0080's `<script>`, TC0037's `.m-button-fixed`. The offers are *siblings*
+  of the empty container.
+- **The bot's script demonstrably executed.** `#tc0080-scope` exists and `ensureScope()` is the only thing
+  in the codebase that creates it. That is the strongest evidence available here that a `<script>` in that
+  position runs.
+
+What it still does **not** prove: that `applyPropositions` + `actionType: "replaceHtml"` executes scripts.
+`replaceHtml` is an `innerHTML` write, and **scripts inserted through `innerHTML` do not execute** unless
+the SDK re-creates them — which is exactly why `preview/index.html:891` has to re-create them by hand. The
+argument in favour is operational, not documentary: TC0080 runs in production on the home, delivered this
+way. If this ever needs settling, test in certi or ask whoever configures Target; don't re-derive it from
+the snapshots, which have already been checked and cannot answer it.
+
+Note that this risk **predates** the single-`<script>` conversion and was not introduced by it: markup
+without its script was never a working bot either. What changed is the symptom — nothing at all appears,
+instead of inert markup.
 
 ### The offer is a single `<script>` tag (Marco, 2026-09-22)
 

@@ -3570,13 +3570,20 @@
         };
 
         // "Se vio el bot": el launcher quedo pintado en la pagina. Es el unico
-        // evento que tiene equivalente en la variante de control (bot-control.html,
+        // evento que tiene equivalente en la variante de control (control.html,
         // mismo name y position pero con " - C"), asi que los dos tienen que medir
-        // lo mismo: al usuario se le mostro el experimento. Se emite una sola vez
-        // por sesion aunque el MutationObserver reconstruya el bot.
+        // lo mismo: al usuario se le mostro el experimento.
+        //
+        // La bandera vive en window, NO en Bot. Estaba en Bot.launcherViewSent, y
+        // eso solo protegia de que el MutationObserver reconstruyera el bot: si
+        // Adobe Target reinyecta la oferta, este script corre de nuevo dentro de
+        // otra IIFE, con otra funcion Bot y por lo tanto con la bandera en cero, y
+        // el View se emitia dos veces. Es justo el evento que segmenta el
+        // experimento, asi que duplicarlo infla el piloto contra el control. Misma
+        // tecnica que ya usaba control.html con __tc0091ControlViewSent.
         Bot.prototype.trackLauncherView = function () {
-            if (Bot.launcherViewSent) return;
-            Bot.launcherViewSent = true;
+            if (window.__tc0091LauncherViewSent) return;
+            window.__tc0091LauncherViewSent = true;
 
             this.trackPromotionView({
                 name: "Felicitaciones - Cards - Bot - Inicio - " + this.getExperimentCode() + " - P",
@@ -5206,7 +5213,15 @@
             if (this.el.mask) this.el.mask.replaceWith(this.el.mask.cloneNode(true));
         };
 
-        var instance;
+        // La instancia viva vive en window, no en una variable de esta IIFE. Si
+        // Adobe Target reinyecta la oferta, este script corre de nuevo en otra
+        // IIFE con su propio "instance" en undefined, y la copia nueva enlazaba un
+        // segundo juego de listeners sobre los mismos elementos sin destruir la
+        // anterior. Guardandola en window, init() siempre encuentra a su
+        // predecesora y la destruye.
+        function instanciaActual() {
+            return window.__tc0091Instance || null;
+        }
 
         // Antes esto BUSCABA el markup que Target entregaba junto al script y lo
         // movia a un scope propio. Ahora lo CONSTRUYE, porque la oferta es una
@@ -5238,12 +5253,15 @@
         function init(scope) {
             if (!scope) return;
 
-            if (instance) {
-                instance.unlockPageScroll();
-                instance.destroy();
+            var previa = instanciaActual();
+            if (previa) {
+                previa.unlockPageScroll();
+                previa.destroy();
             }
-            instance = new Bot(scope);
-            instance.init();
+
+            var bot = new Bot(scope);
+            window.__tc0091Instance = bot;
+            bot.init();
         }
 
         // Hook de desarrollo. Lo usa preview-local.html para armar el panel de
@@ -5251,6 +5269,7 @@
         // de config.perfilador, asi que crece solo a medida que se van agregando
         // pantallas del perfilador. No lo usa el bot.
         window.tc0091Catalogo = function () {
+            var instance = instanciaActual();
             if (!instance) return { criterios: [], tarjetas: [], leads: [] };
 
             var cfg = instance.config.perfilador || {};
@@ -5307,23 +5326,39 @@
             };
         };
 
-        // Ya no hay nada que esperar. El polling de 8s existia para darle tiempo
-        // a Target a entregar el markup; ahora lo crea ensureScope() y el unico
-        // requisito es que exista <body>, que el arranque de abajo garantiza.
+        // Ya no hay nada que esperar a que entregue Target: el markup lo crea
+        // ensureScope(). Lo unico que puede faltar es <body>, y en ese caso esto
+        // NO se rinde: devuelve false y el observador de abajo lo reintenta en
+        // cuanto el documento cambie. Devolver un booleano es lo que permite que
+        // el arranque no dependa de acertar el momento.
         function montarBot() {
             inyectarEstilos();
 
             var scope = ensureScope();
-            if (!scope) {
-                console.warn("[tc0091] No se pudo montar el bot: falta document.body");
-                return;
-            }
+            if (!scope) return false;
 
             init(scope);
+            return true;
         }
 
+        // El vigilante que garantiza que el bot este puesto, pase lo que pase con
+        // el DOM de la pagina. Cubre tres cosas, y las tres se comprobaron
+        // fallando antes de escribirlo asi:
+        //
+        //   1. el SPA borra el scope           -> lo reconstruye;
+        //   2. el SPA reemplaza <body> entero  -> por eso observa <html> y no
+        //      <body>: un observador colgado del body viejo queda huerfano y el
+        //      bot no vuelve nunca;
+        //   3. la oferta llega antes de que exista <body> -> montarBot() devolvio
+        //      false, y este observador lo reintenta cuando el body aparece.
+        //
+        // documentElement existe desde que empieza el parseo, asi que se puede
+        // observar aunque no haya body todavia.
         function observeReinsertion() {
             if (window.__tc0091Observed) return;
+
+            var raiz = document.documentElement;
+            if (!raiz) return;
 
             var observer = new MutationObserver(function () {
                 var scope = document.getElementById("tc0091-scope");
@@ -5332,18 +5367,18 @@
                 }
             });
 
-            observer.observe(document.body, { childList: true, subtree: true });
+            observer.observe(raiz, { childList: true, subtree: true });
             window.__tc0091Observed = true;
         }
 
-        if (document.readyState === "loading") {
+        // El observador se arma SIEMPRE y primero: es la red que atrapa todos los
+        // casos en los que montarBot() no puede hacer su trabajo todavia. El
+        // intento inmediato cubre el caso normal, en el que el body ya esta.
+        observeReinsertion();
+        if (!montarBot() && document.readyState === "loading") {
             document.addEventListener("DOMContentLoaded", function () {
                 montarBot();
-                observeReinsertion();
             });
-        } else {
-            montarBot();
-            observeReinsertion();
         }
     })();
 
