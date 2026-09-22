@@ -10,6 +10,7 @@
       "estado": "completo",
       "className": "tc0091-node-question tc0091-node-start",
       "titulo": "Hola! &#128075; Soy Tarjetín.",
+      "tituloConNombre": "Hola {nombre}! &#128075; Soy Tarjetín.",
       "texto": {
         "parrafos": [
           "Te ayudaré a elegir una tarjeta de crédito. ¿Qué necesitas hacer?",
@@ -35,6 +36,7 @@
       ],
       "pendientes": [],
       "notas": [
+        "2026-09-22: el saludo se personaliza con el nombre de pila del cliente. El bot lo lee de la pagina: primero del <h2> \"Felicidades, Marco! ...\", que es el nombre tal como la pagina ya se lo muestra al usuario, y si no del atributo data-client-name de #profitType, de donde toma el primer nombre y lo capitaliza. Si no se puede leer, o el valor no parece un nombre, se usa el \"titulo\" sin personalizar. Ver docs/correcciones-wording.md.",
         "El saludo va sin '¡' de apertura a proposito: Marco rechazo la correccion porque el mockup dice 'Hola!'. La burbuja del launcher usa el texto independiente '¡Hola! Te ayudaré a elegir una tarjeta' (ver ui-fija.json).",
         "Es el unico nodo con titulo no vacio del flujo conversacional."
       ]

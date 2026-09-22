@@ -47,11 +47,17 @@ docs/              correcciones-wording.md, the UI-team deliverable
 referencia/        read-only evidence: bot-actual, bot-insertado, paginas/, pasos/
 ```
 
-> ⚠️ **`referencia/paginas/` must never be deployed.** The four snapshots carry real client data —
-> `data-client-name` (`YESY MARIBEL GARCIA`, `OSCAR CARLOS IBANEZ`) and `data-credit-line`. `netlify.toml`
-> publishes an allow-list, not the repo root, precisely so nobody has to remember to exclude them. Do not
-> add them to that copy for any reason. This is also why the harness fabricates its own
-> `<xt21-card-option>` markup instead of loading a snapshot.
+> ⚠️ **`referencia/paginas/` must never be deployed.** The four snapshots carry real client data in
+> `data-client-name` and `data-credit-line`. `netlify.toml` publishes an allow-list, not the repo root,
+> precisely so nobody has to remember to exclude them. Do not add them to that copy for any reason. This is
+> also why the harness fabricates its own `<xt21-card-option>` markup instead of loading a snapshot.
+>
+> **The rule covers code comments, examples and docs too — not just the files.** On 2026-09-22 a real name
+> from a snapshot was pasted into a comment in both offers as an illustration of what
+> `data-client-name` looks like, and the offers *are* deployed. Caught by the allow-list check below and
+> replaced with an invented `MARCO ANTONIO PEREZ`. **Whenever you need an example of a client's data, make
+> one up.** The check that catches this is the second `grep` in *Commands*, so run it after any change that
+> touches client data — it greps the publishable copy for real names, not only for `data-client-name`.
 
 **What you may edit.** Only the references are off limits: `referencia/paginas/*.html`, `referencia/bot-actual.html` and
 `referencia/bot-insertado.html`. They are evidence, and altering them destroys what they exist to preserve — read and
@@ -80,7 +86,7 @@ rm -rf publicado &&
   cp -R preview publicado/preview &&
   cp adobe-target/piloto/bot.html publicado/adobe-target/piloto/bot.html &&
   cp adobe-target/variantes/premium-black-infinite/bot.html publicado/adobe-target/variantes/premium-black-infinite/bot.html &&
-  grep -rl 'data-client-name' publicado/ || echo "sin datos de cliente"
+  grep -rlie 'YESY\|MARIBEL\|OSCAR CARLOS\|IBANEZ' publicado/ || echo "sin nombres reales"
 ```
 
 `preview/index.html` is the dev harness for `adobe-target/piloto/bot.html`. It **fetches the snippet at runtime** — it
@@ -322,8 +328,11 @@ machinery (`back()`, `state.chatSnapshots`), not the per-message snapshot.
 lines as spacers, and — in `adobe-target/piloto/bot.html` only — `| pipe | tables |`. Long copy is written as a string
 array joined with `"\n"`. Emojis are HTML entities
 (`&#128179;`) and `escapeHtml` deliberately preserves existing entities while escaping everything else — so
-node text and labels are trusted content. Do not route user-influenced strings through it.
-`getUserBubbleLabel` strips leading emoji from an option label before echoing it as the user bubble.
+node text and labels are trusted content. Do not route user-influenced strings through it — **use
+`escaparDatoDePagina()`**, which escapes every `&` with no exceptions. Today the only page-sourced string
+the bot renders is the client's first name in the `q0` greeting; anything added later goes through the
+same function. `getUserBubbleLabel` strips leading emoji from an option label before echoing it as the
+user bubble.
 
 ### Analytics
 
@@ -525,6 +534,41 @@ Which mbox Target actually uses is still unknown — and now it does not matter,
 are the reference for *the engine*, and nothing else: never infer what the destination DOM contains from
 them. The four snapshots are what the target page can be, and the offer has to work against any of them.
 
+### The greeting carries the client's first name (2026-09-22)
+
+`q0` gained a second title. `title` is the old `"Hola! &#128075; Soy Tarjetín."`; `tituloConNombre` is
+`"Hola {nombre}! &#128075; Soy Tarjetín."`, and `resolveTitulo(node)` picks between them in
+`appendBotMessageForCurrent`, so the resolved greeting freezes into the chatLog like the perfilador and the
+comparador. **Both texts live in the config in full** — there is no string surgery on a single greeting, so
+a name-less page renders the original sentence, never `"Hola !"`.
+
+`getNombreCliente()` reads the page, in this order:
+
+1. **the `<h2>`** — `¡Felicidades, Yesy! Estas son tus tarjetas aprobadas`, matched with
+   `/felicidades[,\s]+([^!¡]{1,40})!/i` over every `h2`'s `textContent`. This is the **primary** source
+   because it is the name *the page is already showing the user*, with the page's own capitalisation and
+   its own choice of how much of the name to use;
+2. **`#profitType[data-client-name]`** — `"YESY MARIBEL GARCIA"`, first token, title-cased by us. It is the
+   fallback precisely because that derivation is ours and can diverge: a `"JOSE LUIS"` would become
+   `"Jose"` while the page might be saying `"Jose Luis"`.
+
+Both exist in all four snapshots. `normalizarNombre()` gates the result: 2–24 chars, letters (accents
+allowed) plus `'`, `-` and spaces, otherwise `""` and the plain greeting.
+
+**The name is escaped with `escaparDatoDePagina()`, never `escapeHtml()`.** The title is concatenated
+**raw** into the markup (`renderBotItem`) because config titles carry entities like `&#128075;`, and
+`escapeHtml` deliberately *preserves* existing entities — which is exactly what makes it unsafe for a value
+the bot does not control. `escaparDatoDePagina` escapes every `&` with no exceptions. This is the first
+page-sourced string the bot ever renders; **route any future one through it too.**
+
+Verified against the four snapshots (`Hola Yesy!` / `Hola Oscar!`) and against five degraded pages — no
+`h2` and no `#profitType`, an `h2` without the pattern, `#profitType` only, a name containing
+`<script>`, and a 40-character name. The last two are rejected and fall back to the plain greeting.
+
+`preview/index.html` now fabricates the `h2` and `#profitType` alongside the cards, **with an invented
+name** (`Marco`): the snapshots carry real client names and are never deployed, but the preview *is*
+published to Netlify, so no real datum may ever appear there.
+
 ### The launcher lift is gone (2026-09-22)
 
 Applying that rule found the one thing in the offer that still assumed the home. The bot reaches into the
@@ -696,11 +740,28 @@ data exists and is better sourced at the page.)
 where the DOM says "American Express Platinum LATAM Pass" and the bot now matches the DOM. One more reason
 the crosswalk rule is *cross by code, never by name* — see `contenido/tarjetas-catalogo.json`.
 
-**Choosing a card closes the bot for good** (Marco, 2026-09-11). `elegirTarjeta` calls `cerrarDefinitivo()`,
-not `close()`: panel, mask, welcome bubble **and launcher** all go, with no way back — the flow continues on
-the page. This is also what keeps the launcher from floating over the credit-line modal, whose backdrop is
-`z-index: 7001` against the launcher's `9999`. Do not swap it back to `close()`, which deliberately
-*restores* the launcher.
+**Choosing a card closes the panel, not the bot** (Marco, 2026-09-22). `elegirTarjeta` calls `close()` +
+`toggleWelcome(false)` + `restart()`: the panel and mask go, the **launcher stays**, and the welcome bubble
+does not come back (the user already chose — re-greeting them would be wrong). Reopening starts at `q0`,
+the same rule every other close follows since 2026-09-14.
+
+**The bot is removed only when the URL changes.** `desmontarSiCambioLaRuta()` compares
+`location.pathname` against `window.__tc0091Ruta`, recorded at the first mount; on a change it destroys the
+instance and removes both `#tc0091-scope` and `#tc0091-estilos`, and `montarBot()` then refuses to mount
+again. It runs from the same observer callback as the rebuild, plus `popstate` / `hashchange`. **This is not
+optional decoration**: the bot hangs off `<body>` and the observer rebuilds it, so without it an SPA
+navigation to "Dónde recibirla" or "Confirmación" would carry the bot along.
+
+> **Reverted on 2026-09-22**, was: *"Choosing a card closes the bot for good (Marco, 2026-09-11).
+> `elegirTarjeta` calls `cerrarDefinitivo()` … Do not swap it back to `close()`."* Marco saw the bot vanish
+> the moment the credit-line modal opened and asked for it to stay until the user leaves the URL.
+> **`cerrarDefinitivo` no longer exists** — it had no other caller and was deleted.
+>
+> That old note also justified itself with stacking: the launcher at `9999` would float over the modal's
+> `7001` backdrop. The launcher is now at `999999`, so it floats over that modal **more**, not less. Marco
+> asked for the launcher to stay anyway; if the overlap turns out to bother him on screen, the fix is to
+> hide the launcher while `<xt21-modify-credit-line-modal>` is in the DOM — **that element appears in none
+> of the four snapshots**, so such a selector cannot be verified here and was not written blind.
 
 Consequences worth knowing:
 
@@ -1342,9 +1403,13 @@ compared against the pilot from a phone.
 ### Testing casuistics in the preview
 
 The harness fabricates the page's own markup instead of patching the bot: one `<xt21-card-option>` per
-selected card, with the code in both the image `src` and the button `name`, injected **before** the snippet
-runs. So the real detection code path is what gets exercised. The fake `src` points at a local path that
-404s on purpose — nothing is fetched from the BCP CDN.
+selected card, with the code in both the image `src` and the button `name`, plus the `<h2>` and the
+`#profitType` that carry the client's name — all injected **before** the snippet runs. So the real
+detection code path is what gets exercised. The fake `src` points at a local path that 404s on purpose —
+nothing is fetched from the BCP CDN.
+
+**The fabricated client name is invented (`Marco`) and must stay that way.** `referencia/paginas/` holds
+real names and is never deployed; `preview/` *is* deployed to Netlify, so a real datum must never reach it.
 
 The side panel has a preset dropdown (with/without the Visa Oro, one miles card only, case B, no detection
 at all…) plus a checkbox per card for arbitrary combinations. Cards without a code render disabled and in

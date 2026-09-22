@@ -656,6 +656,39 @@ texto que no existe.
 **Pedido por Marco el 2026-09-22.** No cambia ninguna cifra ni ninguna palabra: solo se borra el asterisco.
 La negrita de "(GRATIS si consumes…)" se conserva tal cual.
 
+### El saludo llama al cliente por su nombre
+
+El bot abría siempre igual:
+
+> Hola! 👋 Soy Tarjetín.
+
+**Desde el 2026-09-22 saluda por el nombre**, a pedido de Marco:
+
+> Hola **Marco**! 👋 Soy Tarjetín.
+
+El nombre **no lo escribe nadie**: el bot lo lee de la propia página, que ya lo está mostrando arriba en
+*"¡Felicidades, Marco! Estas son tus tarjetas aprobadas"*. Por eso el bot llama al cliente exactamente igual
+que el resto de la pantalla, sin inventar una forma distinta de escribirlo.
+
+Si por lo que sea la página no lo expone, o el valor no parece un nombre, **el saludo vuelve al de siempre**,
+sin personalizar. Nunca queda un "Hola !" ni un hueco: son dos textos completos y se usa uno o el otro.
+
+Solo cambia esa línea. El resto de la pantalla de inicio queda igual, y la burbuja del launcher
+("¡Hola! Te ayudaré a elegir una tarjeta") tampoco se toca.
+
+### El bot ya no desaparece al elegir la tarjeta
+
+Al pulsar **"Elegir tarjeta"**, el bot se cerraba **por completo**: se iban el panel, la burbuja y también
+el botón flotante, sin manera de volver a abrirlo.
+
+**Desde el 2026-09-22 solo se cierra el panel.** Se abre el cuadro de la página para editar la línea de
+crédito, como siempre, pero **el botón del bot se queda**: el cliente sigue en la misma pantalla y puede
+querer volver a consultar algo antes de decidir. Si lo reabre, la conversación empieza de nuevo desde el
+saludo.
+
+**El bot se retira recién cuando el cliente pasa a otra pantalla del flujo** (por ejemplo "Dónde
+recibirla"). Ahí sí desaparece del todo y no vuelve.
+
 ### 2.3 Exoneración de membresía — asterisco en las Infinite y llamada al pie
 
 Las tres tarjetas **Infinite** llevan ahora un asterisco al final del monto, y la tabla cierra con la

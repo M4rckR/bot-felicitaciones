@@ -2457,6 +2457,9 @@
                     {
                         id: "q0",
                         title: "Hola! &#128075; Soy Tarjetín.",
+                        // Saludo personalizado (Marco, 2026-09-22). {nombre} sale de
+                        // la pagina; si no se puede leer, se usa el "title" de arriba.
+                        tituloConNombre: "Hola {nombre}! &#128075; Soy Tarjetín.",
                         text: "Te ayudaré a elegir una tarjeta de crédito. ¿Qué necesitas hacer?\n\nElige una opción:",
                         type: "question",
                         className: "tc0091-node-question tc0091-node-start",
@@ -2907,9 +2910,83 @@
             // que el boton nativo existe, para no medir intentos fallidos.
             this.trackElegirTarjetaClick();
 
-            // El bot se va del todo: elegida la tarjeta, el flujo sigue en la pagina.
-            this.cerrarDefinitivo();
+            // Se cierra el PANEL, no el bot (Marco, 2026-09-22). El flujo sigue en la
+            // pagina -- se abre el modal de linea de credito -- pero el usuario sigue
+            // en /felicitaciones y puede querer volver a consultar, asi que el
+            // launcher se queda. El bot recien se va cuando cambia la URL, y de eso
+            // se encarga desmontarSiCambioLaRuta().
+            //
+            // Antes se retiraba el bot entero aqui mismo (cerrarDefinitivo, que ya
+            // no existe): al elegir, desaparecian panel, burbuja y launcher.
+            this.close();
+            this.toggleWelcome(false);
+            this.restart();
             boton.click();
+        };
+
+        // El nombre de pila del cliente, leido de la pagina. "" si no se pudo.
+        //
+        // Dos fuentes, y el orden importa:
+        //   1. el <h2> "Felicidades, Marco! ...". Es el nombre TAL COMO la pagina se
+        //      lo esta mostrando al usuario, ya con sus mayusculas y su recorte, asi
+        //      que el bot lo llama igual que el resto de la pantalla;
+        //   2. #profitType[data-client-name], que trae el nombre completo en
+        //      mayusculas ("MARCO ANTONIO PEREZ"). De ahi hay que sacar el primer
+        //      nombre y capitalizarlo por cuenta propia, y eso puede no coincidir
+        //      con lo que la pagina muestra (un "JOSE LUIS" quedaria en "Jose").
+        //      Por eso es el respaldo y no la fuente principal.
+        //
+        // Ambas estan en las cuatro capturas de referencia/paginas/.
+        Bot.prototype.getNombreCliente = function () {
+            var h2s = document.querySelectorAll("h2");
+            for (var i = 0; i < h2s.length; i++) {
+                var texto = String(h2s[i].textContent || "");
+                var m = texto.match(/felicidades[,\s]+([^!¡]{1,40})!/i);
+                if (m) {
+                    var delH2 = this.normalizarNombre(m[1]);
+                    if (delH2) return delH2;
+                }
+            }
+
+            var nodo = document.getElementById("profitType");
+            var completo = nodo ? nodo.getAttribute("data-client-name") : "";
+            var primero = String(completo || "").trim().split(/\s+/)[0] || "";
+            return this.normalizarNombre(primero);
+        };
+
+        // Deja el nombre presentable, o devuelve "" si no parece un nombre.
+        // El filtro es deliberadamente estrecho: si llega cualquier cosa rara, el
+        // bot prefiere saludar sin nombre antes que saludar mal.
+        Bot.prototype.normalizarNombre = function (valor) {
+            var limpio = String(valor == null ? "" : valor).replace(/\s+/g, " ").trim();
+
+            if (limpio.length < 2 || limpio.length > 24) return "";
+            if (!/^[A-Za-zÁÉÍÓÚÜÑáéíóúüñ][A-Za-zÁÉÍÓÚÜÑáéíóúüñ'\- ]*$/.test(limpio)) return "";
+
+            // "MARCO" -> "Marco". Si ya viene bien escrito desde el <h2>, esto lo deja
+            // igual. Se capitaliza cada palabra por los nombres compuestos.
+            return limpio
+                .toLowerCase()
+                .split(" ")
+                .map(function (p) {
+                    return p ? p.charAt(0).toUpperCase() + p.slice(1) : p;
+                })
+                .join(" ");
+        };
+
+        // El titulo del nodo, personalizado con el nombre si el nodo lo admite y la
+        // pagina lo dio. tituloConNombre lleva el marcador {nombre}; si no hay
+        // nombre se usa el "title" de siempre, que es el saludo sin personalizar.
+        Bot.prototype.resolveTitulo = function (node) {
+            var base = (node || {}).title || "";
+            if (!node || !node.tituloConNombre) return base;
+
+            var nombre = this.getNombreCliente();
+            if (!nombre) return base;
+
+            // El titulo se inserta crudo en el HTML (lleva entidades como &#128075;),
+            // asi que el nombre va escapado a mano y en estricto.
+            return node.tituloConNombre.replace("{nombre}", this.escaparDatoDePagina(nombre));
         };
 
         Bot.prototype.getLeadCardCodes = function () {
@@ -3705,23 +3782,6 @@
             this.unlockPageScroll();
         };
 
-        // Cierre definitivo: se va el panel Y el launcher (Marco, 2026-09-11).
-        // Se usa al elegir tarjeta, donde el bot ya cumplio su funcion y le pasa el
-        // control a la pagina. Es lo que ademas evita que la burbuja quede flotando
-        // sobre el modal de linea de credito, que va en z-index 7001, muy por
-        // debajo del launcher. No hay vuelta atras: el flujo sigue en la pagina.
-        Bot.prototype.cerrarDefinitivo = function () {
-            this.cancelWaitingTransition();
-            this.clearPendingTransition();
-            this.hidePanel();
-            this.el.mask.style.display = "none";
-            if (this.el.launcher) {
-                this.el.launcher.style.display = "none";
-            }
-            this.toggleWelcome(false);
-            this.unlockPageScroll();
-        };
-
         Bot.prototype.closeFromMask = function () {
             var self = this;
             this.close();
@@ -4193,7 +4253,10 @@
                 allowOptionsWhileLinked: !!node.usageMenuOption,
                 linkedQuestionMessageId: null,
                 bubbleClass: node.className || "",
-                title: node.title || "",
+                // El saludo con el nombre del cliente se resuelve aqui, igual que el
+                // perfilador y el comparador: queda congelado en el snapshot y el
+                // historial no se reescribe si la pagina cambia despues.
+                title: this.resolveTitulo(node),
                 text: perfilado ? perfilado.intro : (comparado ? comparado.text : (node.text || "")),
                 // La lista de tarjetas, la tarjeta recomendada y el texto que precede
                 // al menu viajan en el snapshot como todo lo demas: el historial no se
@@ -4281,6 +4344,21 @@
         Bot.prototype.escapeHtml = function (value) {
             return String(value)
                 .replace(/&(?!#\d+;|#[xX][0-9a-fA-F]+;|[a-zA-Z]+;)/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/\"/g, "&quot;")
+                .replace(/'/g, "&#39;");
+        };
+
+        // Escapado ESTRICTO, para datos que vienen de la pagina y no de config.
+        //
+        // No usar escapeHtml para esto: aquel preserva a proposito las entidades ya
+        // escritas (&#128075; y demas), porque la copy del bot las trae a mano. Eso
+        // lo vuelve inseguro para un valor que no controlamos. Aqui se escapa TODO
+        // "&", sin excepciones, y el resultado se puede concatenar en el HTML.
+        Bot.prototype.escaparDatoDePagina = function (value) {
+            return String(value == null ? "" : value)
+                .replace(/&/g, "&amp;")
                 .replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;")
                 .replace(/\"/g, "&quot;")
@@ -5248,12 +5326,54 @@
         // cuanto el documento cambie. Devolver un booleano es lo que permite que
         // el arranque no dependa de acertar el momento.
         function montarBot() {
+            if (cambioLaRuta()) return false;
+
             inyectarEstilos();
 
             var scope = ensureScope();
             if (!scope) return false;
 
+            // La ruta en la que el bot vive. Se fija en el primer montaje y queda en
+            // window para que una reinyeccion de Target no la reinicie.
+            if (!window.__tc0091Ruta) window.__tc0091Ruta = rutaActual();
+
             init(scope);
+            return true;
+        }
+
+        function rutaActual() {
+            return String(window.location.pathname || "");
+        }
+
+        function cambioLaRuta() {
+            return !!window.__tc0091Ruta && window.__tc0091Ruta !== rutaActual();
+        }
+
+        // El bot vive mientras el usuario siga en la URL donde aparecio (Marco,
+        // 2026-09-22). Elegir una tarjeta ya NO lo hace desaparecer: abre el modal de
+        // linea de credito de la pagina y el launcher se queda, por si el usuario
+        // quiere volver a consultar antes de decidir. Lo que lo retira es salir de la
+        // ruta.
+        //
+        // Hace falta explicitamente porque el bot cuelga de <body> y el observador lo
+        // reconstruye: sin esto, una navegacion del SPA a otra pantalla del flujo
+        // ("Donde recibirla", "Confirmacion") se lo llevaria puesto.
+        function desmontarSiCambioLaRuta() {
+            if (!cambioLaRuta()) return false;
+
+            var bot = instanciaActual();
+            if (bot) {
+                bot.unlockPageScroll();
+                bot.destroy();
+                window.__tc0091Instance = null;
+            }
+
+            var scope = document.getElementById("tc0091-scope");
+            if (scope && scope.parentNode) scope.parentNode.removeChild(scope);
+
+            var estilo = document.getElementById("tc0091-estilos");
+            if (estilo && estilo.parentNode) estilo.parentNode.removeChild(estilo);
+
             return true;
         }
 
@@ -5266,7 +5386,9 @@
         //      <body>: un observador colgado del body viejo queda huerfano y el
         //      bot no vuelve nunca;
         //   3. la oferta llega antes de que exista <body> -> montarBot() devolvio
-        //      false, y este observador lo reintenta cuando el body aparece.
+        //      false, y este observador lo reintenta cuando el body aparece;
+        //   4. el usuario navega a otra ruta del flujo -> se retira el bot y no se
+        //      vuelve a montar.
         //
         // documentElement existe desde que empieza el parseo, asi que se puede
         // observar aunque no haya body todavia.
@@ -5276,14 +5398,24 @@
             var raiz = document.documentElement;
             if (!raiz) return;
 
-            var observer = new MutationObserver(function () {
+            var revisar = function () {
+                // Primero la ruta: si cambio, el bot se retira y no se remonta.
+                if (desmontarSiCambioLaRuta() || cambioLaRuta()) return;
+
                 var scope = document.getElementById("tc0091-scope");
                 if (!scope || !document.contains(scope)) {
                     montarBot();
                 }
-            });
+            };
 
-            observer.observe(raiz, { childList: true, subtree: true });
+            new MutationObserver(revisar).observe(raiz, { childList: true, subtree: true });
+
+            // El SPA navega sin recargar. El observador ya atrapa casi todo, porque
+            // una navegacion siempre mueve el DOM, pero popstate cubre el caso de que
+            // la URL cambie sin que se toque nada.
+            window.addEventListener("popstate", revisar);
+            window.addEventListener("hashchange", revisar);
+
             window.__tc0091Observed = true;
         }
 

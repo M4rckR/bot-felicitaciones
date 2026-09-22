@@ -661,11 +661,24 @@
                     doc.body.appendChild(cont);
                 }
 
+                // El saludo del bot lleva el nombre del cliente, que lee de la pagina
+                // (Marco, 2026-09-22). Sin esto el preview mostraria siempre el saludo
+                // sin personalizar y no habria forma de revisar la personalizacion.
+                //
+                // El nombre es INVENTADO a proposito. Los snapshots de
+                // referencia/paginas/ traen nombres de clientes reales y por eso no se
+                // publican; el preview si se publica en Netlify, asi que aqui nunca
+                // puede aparecer un dato real.
+                var nombreFalso = "Marco";
+                cont.innerHTML =
+                    '<h2>&iexcl;Felicidades, ' + nombreFalso + '! Estas son tus tarjetas aprobadas</h2>' +
+                    '<div id="profitType" data-client-name="' + nombreFalso.toUpperCase() + ' PRUEBA DEMO"></div>';
+
                 // El <button> de adentro replica la estructura real: en la pagina el
                 // <bcp-button> de Angular envuelve un <button> nativo. Hace falta
                 // porque el CTA "Elegir tarjeta" del bot NO navega: le da click a ese
                 // boton. Sin el no habria forma de comprobar aqui que funciona.
-                cont.innerHTML = seleccion.map(function (codigo) {
+                cont.innerHTML += seleccion.map(function (codigo) {
                     return '<xt21-card-option>' +
                         '<img alt="" src="/assets/images/congratulations/img/' + codigo + '.svg">' +
                         '<bcp-button name="QA_Congratulations_BtnSeleccionar_' + codigo + '">' +
