@@ -723,32 +723,46 @@
             // este cuadro se cierra solo (Marco, 2026-09-22).
             //
             // Es una IMITACION del cuadro de la pagina, igual que las <xt21-card-option>.
-            // El bot no lo crea ni debe crearlo. Su estructura es la que Marco midio en
-            // certi el 2026-09-11: el elemento <xt21-modify-credit-line-modal> con el
-            // par de botones "Cerrar" / "Continuar". Si algun dia se consigue su DOM
-            // real, es aqui y en getBotonCerrarModalLinea donde se ajusta.
+            // El bot no lo crea ni debe crearlo.
+            //
+            // La estructura reproduce el DOM REAL que Marco entrego el 2026-09-22, y
+            // los tres detalles que importan son:
+            //   - el host es <bcp-modal>, generico, con is-open y la clase "show":
+            //     Angular lo ALTERNA, no lo saca del DOM;
+            //   - lo que identifica a ESTE modal es <section class="modify-credit-line-modal">;
+            //   - los botones van en una section HERMANA, no dentro de ella, y
+            //     "Cerrar" es el tier="secondary".
+            // Si esto se simplifica, deja de probar lo que el bot realmente busca.
             function abrirModalLineaSimulado(doc, codigo) {
-                var previo = doc.querySelector("xt21-modify-credit-line-modal");
+                var previo = doc.querySelector("bcp-modal.simulado-linea");
                 if (previo) previo.parentNode.removeChild(previo);
 
-                var modal = doc.createElement("xt21-modify-credit-line-modal");
+                var modal = doc.createElement("bcp-modal");
+                modal.className = "simulado-linea dialog-backdrop bcp-ffw-fade hydrated show";
+                modal.setAttribute("is-open", "");
+                modal.setAttribute("tag", "tagPopup");
                 modal.setAttribute("style", [
                     "position:fixed", "inset:0", "z-index:7001",
                     "background:rgba(0,0,0,.45)", "display:flex",
                     "align-items:center", "justify-content:center"
                 ].join(";"));
                 modal.innerHTML =
-                    '<div style="background:#fff;border-radius:16px;padding:24px;width:min(340px,86vw);' +
-                    'font-family:inherit;box-shadow:0 8px 30px rgba(0,0,0,.25)">' +
-                    '<p style="margin:0 0 8px;font-size:16px;font-weight:700">Ahora puedes editar tu línea de crédito</p>' +
+                    '<div class="bcp-ffw-modal-content" style="background:#fff;border-radius:16px;' +
+                    'padding:24px;width:min(340px,86vw);font-family:inherit;box-shadow:0 8px 30px rgba(0,0,0,.25)">' +
+                    '<div class="body-content">' +
+                    '<section class="modify-credit-line-modal">' +
+                    '<h3 style="margin:0 0 8px;font-size:16px">Ahora puedes editar tu línea de crédito</h3>' +
                     '<p style="margin:0 0 16px;font-size:13px;color:#527094">' + codigo + ' · simulación del preview</p>' +
-                    '<div style="display:flex;gap:8px;justify-content:flex-end">' +
-                    '<button type="button" data-cerrar-modal-simulado>Cerrar</button>' +
-                    '<button type="button">Continuar</button>' +
-                    "</div></div>";
+                    "</section>" +
+                    '<section class="modify-credit-line-modal__buttons" style="display:flex;gap:8px;justify-content:flex-end">' +
+                    '<div><bcp-button tier="secondary"><button type="button">Cerrar</button></bcp-button></div>' +
+                    '<div><bcp-button tier="primary"><button type="button">Continuar</button></bcp-button></div>' +
+                    "</section></div></div>";
                 doc.body.appendChild(modal);
 
-                modal.querySelector("[data-cerrar-modal-simulado]").addEventListener("click", function () {
+                // La pagina real alterna el modal; aqui se saca del DOM, que es el
+                // caso que el bot tambien tiene que tolerar.
+                modal.querySelector('bcp-button[tier="secondary"] button').addEventListener("click", function () {
                     modal.parentNode.removeChild(modal);
                     pintarLog("info", ["[preview] se cerro el modal de linea de credito"]);
                 });

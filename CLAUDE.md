@@ -695,10 +695,14 @@ code through the existing `getCardCodeFromNode`, and returns the inner `<button>
 tracks the click, closes the panel and calls `.click()` on it.
 
 **Verified against certi on 2026-09-11** (Marco ran the click in the console): the programmatic `.click()`
-**does** drive the page. It opens `<xt21-modify-credit-line-modal>` — "Ahora puedes editar tu línea de
-crédito", with the card name, the range and a *Cerrar* / *Continuar* pair. So choosing a card is **not** a
-straight navigation to step 2: there is a credit-line modal in between. Anything that assumes the bot's CTA
-navigates away is wrong.
+**does** drive the page. It opens the credit-line modal — "Ahora puedes editar tu línea de crédito", with
+the card name, the range and a *Cerrar* / *Continuar* pair. So choosing a card is **not** a straight
+navigation to step 2: there is a modal in between. Anything that assumes the bot's CTA navigates away is
+wrong.
+
+> That 2026-09-11 note named the element `<xt21-modify-credit-line-modal>`. **It is not**: Marco's real DOM
+> of 2026-09-22 shows a generic `<bcp-modal>` wrapping `<section class="modify-credit-line-modal">`. The
+> name has been corrected everywhere — see the structure below.
 
 **That modal is the page's own base behaviour** (Marco, 2026-09-11). Do not style it or try to carry state
 into it — but since 2026-09-22 the bot does touch it in **exactly one** way: **reopening the bot closes it.**
@@ -709,19 +713,40 @@ modal's own "Cerrar"**, it does not remove it from the DOM — same reasoning as
 native button: the page's logic runs and its state stays consistent. Closing it undoes the selection and
 returns the user to the card list, which is precisely what they asked for by reopening the bot.
 
-> ⚠️ **`xt21-modify-credit-line-modal` is the only selector in the bot that could not be verified against
-> `referencia/paginas/`** — and not by omission: the modal only exists *after* "Elegir tarjeta" is pressed,
-> so no snapshot can ever contain it. The element name comes from what Marco measured in certi on
-> 2026-09-11. The close button is found **by text** (`"cerrar"`, lowercased and trimmed, across
-> `button, [role="button"]`) because its selector is unknown; the modal has exactly two buttons, *Cerrar*
-> and *Continuar*, so the text is unambiguous. There is an `[aria-label*="errar"]` fallback for a
-> text-less corner X.
->
-> If the real DOM ever turns up, `getModalLineaCredito` and `getBotonCerrarModalLinea` are the two places to
-> adjust — and `abrirModalLineaSimulado` in the harness, which imitates it.
->
-> **It never forces the issue**: if no close button is found it logs `MODAL_LINEA_SIN_BOTON_CERRAR` and the
-> bot opens anyway. Two overlapping layers are ugly; a bot that refuses to open is worse.
+**Marco delivered the modal's real DOM on 2026-09-22**, which corrected a guess. Its structure, and the
+three details the bot depends on:
+
+```html
+<bcp-modal tag="tagPopup" class="… dialog-backdrop … show" is-open="" style="display: flex;">
+  …<div class="body-content">
+      <section class="modify-credit-line-modal">…header, description, amount form…</section>
+      <section class="modify-credit-line-modal__buttons">
+        <div><bcp-button tier="secondary">…<button>Cerrar</button></bcp-button></div>
+        <div><bcp-button tier="primary">…<button>Continuar</button></bcp-button></div>
+```
+
+- **The host is a generic `<bcp-modal>`**, which the page uses for any modal — **not**
+  `xt21-modify-credit-line-modal`, which was the earlier guess and does not exist. What identifies *this*
+  modal is the inner `section.modify-credit-line-modal`.
+- **The host carries `is-open` and a `show` class, so Angular toggles it rather than removing it.**
+  `getModalLineaCredito` walks up to the `bcp-modal` ancestor and returns `null` unless it is open.
+  Presence alone is not enough: without that check the bot would try to close an already-closed modal on
+  every single open, logging an error each time. Both modes are covered — removed from the DOM *and*
+  merely hidden.
+- **The buttons live in a *sibling* section**, `modify-credit-line-modal__buttons`, not inside
+  `.modify-credit-line-modal`. BEM naming without real nesting, and exactly the kind of detail only the
+  real DOM reveals. *Cerrar* is the `tier="secondary"` one, *Continuar* the primary, so `tier`
+  distinguishes them; there is a text fallback (`"cerrar"`) in case that attribute changes, and the inner
+  `<button>` is preferred over the `<bcp-button>` host with the same fallback reasoning as
+  `getNativeCardButton`.
+
+**It never forces the issue**: if no close button is found it logs `MODAL_LINEA_SIN_BOTON_CERRAR` and the
+bot opens anyway. Two overlapping layers are ugly; a bot that refuses to open is worse.
+
+This modal still appears in **no** snapshot — it only exists *after* "Elegir tarjeta" is pressed, so no
+capture can contain it. The reference for it is Marco's pasted DOM, mirrored by `abrirModalLineaSimulado`
+in the harness; keep that imitation faithful, because simplifying it stops exercising what the bot
+actually looks for.
 
 **The click does fire the page's own event, and the bot must not add it.** Measured in certi on
 2026-09-11 (Marco):

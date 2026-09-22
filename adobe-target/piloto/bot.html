@@ -2899,22 +2899,60 @@
         // nombre del elemento es el que Marco midio en certi el 2026-09-11. Si algun
         // dia se consigue su DOM, se ajusta aqui y en getBotonCerrarModalLinea.
         Bot.prototype.getModalLineaCredito = function () {
-            return document.querySelector("xt21-modify-credit-line-modal");
-        };
+            var seccion = document.querySelector("section.modify-credit-line-modal");
+            if (!seccion) return null;
 
-        // Su boton "Cerrar". Se busca por TEXTO y no por selector porque el selector
-        // no se conoce; el cuadro tiene exactamente dos botones, "Cerrar" y
-        // "Continuar", asi que el texto alcanza para distinguirlos sin ambiguedad.
-        // El respaldo cubre una X de esquina sin texto.
-        Bot.prototype.getBotonCerrarModalLinea = function (modal) {
-            var botones = modal.querySelectorAll('button, [role="button"]');
-
-            for (var i = 0; i < botones.length; i++) {
-                var texto = String(botones[i].textContent || "").trim().toLowerCase();
-                if (texto === "cerrar") return botones[i];
+            // El host <bcp-modal> lleva is-open y la clase "show", o sea que Angular
+            // lo ALTERNA en vez de sacarlo del DOM. Por eso no alcanza con que la
+            // section exista: hay que comprobar que ademas este abierto, o el bot
+            // intentaria cerrar un modal ya cerrado en cada apertura.
+            var nodo = seccion.parentNode;
+            while (nodo && nodo.tagName) {
+                if (nodo.tagName.toLowerCase() === "bcp-modal") {
+                    var clases = " " + (nodo.className || "") + " ";
+                    var abierto = nodo.hasAttribute("is-open") || clases.indexOf(" show ") !== -1;
+                    return abierto ? seccion : null;
+                }
+                nodo = nodo.parentNode;
             }
 
-            return modal.querySelector('[aria-label*="errar"], [aria-label*="lose"]');
+            // Sin host reconocible se confia en la presencia.
+            return seccion;
+        };
+
+        // Su boton "Cerrar".
+        //
+        // Los dos botones NO viven dentro de .modify-credit-line-modal: van en una
+        // section HERMANA, .modify-credit-line-modal__buttons, dentro del mismo
+        // .body-content. Es nomenclatura BEM sin anidamiento real, y es la clase de
+        // detalle que solo se sabe mirando el DOM de verdad.
+        //
+        // "Cerrar" es el secundario y "Continuar" el primario, asi que tier los
+        // distingue sin ambiguedad. El respaldo por texto cubre que cambie el
+        // atributo.
+        Bot.prototype.getBotonCerrarModalLinea = function (seccion) {
+            var raiz = (seccion && seccion.parentNode) || document;
+            var zona = raiz.querySelector("section.modify-credit-line-modal__buttons") ||
+                document.querySelector("section.modify-credit-line-modal__buttons");
+
+            if (!zona) return null;
+
+            var secundario = zona.querySelector('bcp-button[tier="secondary"]');
+            if (secundario) {
+                // El <button> real vive dentro del <bcp-button>; si el componente no
+                // hidrato todavia, se le da click al host. Mismo criterio que
+                // getNativeCardButton.
+                return secundario.querySelector("button") || secundario;
+            }
+
+            var botones = zona.querySelectorAll("button");
+            for (var i = 0; i < botones.length; i++) {
+                if (String(botones[i].textContent || "").trim().toLowerCase() === "cerrar") {
+                    return botones[i];
+                }
+            }
+
+            return null;
         };
 
         // Al reabrir el bot, ese cuadro se cierra (Marco, 2026-09-22): dos capas
