@@ -28,7 +28,15 @@
         inset: 0;
         background: rgba(0, 0, 0, 0.4);
         display: none;
-        z-index: 9998;
+        /* 999998/999999 y no 9998/9999 (Marco, 2026-09-22). En la home alcanzaba:
+           ahi no hay nada entre 9999 y el banner de cookies. /felicitaciones mete
+           un <header class="app-section__header"> con z-index 99999, y como su
+           padre .app-section es display:flex, ese z-index SI aplica aunque el
+           header sea position:static -- un flex item crea contexto de apilamiento
+           con z-index distinto de auto. Con 9999 el header quedaba por encima de
+           la mascara, sin atenuar. Se queda por debajo del banner de cookies
+           (9999999999): el consentimiento va primero. */
+        z-index: 999998;
     }
 
     #tc0091-scope .tc0091-launcher {
@@ -45,7 +53,7 @@
         padding: 0;
         overflow: visible;
         cursor: pointer;
-        z-index: 9999;
+        z-index: 999999;
     }
 
     #tc0091-scope .tc0091-launcher-welcome-wrap {
@@ -55,7 +63,7 @@
         display: flex;
         flex-direction: column;
         align-items: flex-end;
-        z-index: 9999;
+        z-index: 999999;
         gap: 0;
     }
 
@@ -228,7 +236,7 @@
         flex-direction: column;
         overflow: hidden;
         overscroll-behavior: contain;
-        z-index: 9999;
+        z-index: 999999;
         box-shadow: 0 4px 5px 0 rgba(82, 112, 148, 0.14), 0 1px 10px 0 rgba(82, 112, 148, 0.12), 0 2px 4px 0 rgba(82, 112, 148, 0.20);
         /* Estado de entrada. Crece desde la esquina del launcher.
            En movil el media query lo pisa por un deslizamiento completo. */
@@ -3885,8 +3893,8 @@
         // Cierre definitivo: se va el panel Y el launcher (Marco, 2026-09-11).
         // Se usa al elegir tarjeta, donde el bot ya cumplio su funcion y le pasa el
         // control a la pagina. Es lo que ademas evita que la burbuja quede flotando
-        // sobre el modal de linea de credito, que va en z-index 7001 contra los
-        // 9999 del launcher. No hay vuelta atras: el flujo sigue en la pagina.
+        // sobre el modal de linea de credito, que va en z-index 7001, muy por
+        // debajo del launcher. No hay vuelta atras: el flujo sigue en la pagina.
         Bot.prototype.cerrarDefinitivo = function () {
             this.cancelWaitingTransition();
             this.clearPendingTransition();

@@ -491,6 +491,32 @@ Note that this risk **predates** the single-`<script>` conversion and was not in
 without its script was never a working bot either. What changed is the symptom — nothing at all appears,
 instead of inert markup.
 
+### The offer was tested against the four real snapshots (2026-09-22)
+
+Marco's requirement: *the code has to be injectable into any of these pages.* So it was — both offers, into
+each of the four `referencia/paginas/*.html`, loaded with `runScripts: "outside-only"` so **the page's own
+scripts stay inert and no BCP/Adobe beacon fires**, then the offer's JS executed by hand. That tests the bot
+against the real DOM without running the page.
+
+| Check | Result |
+| --- | --- |
+| Mounts in all **8** mboxes, in all 4 pages (32 combinations) | all pass |
+| Lead detection vs `<xt21-card-option>` actually in the page | 13/13 certi, 4/4 prod |
+| `#tc0091-scope` / `#tc0091-estilos` ids already taken | no — `tc0091` appears **0 times** in every page |
+| `q0` renders its three options | yes |
+| **"Elegir tarjeta" presses the right native button** | yes — `TCRINF` in certi, `TCRCLL` in prod, matching the CTA's `data-codigo` |
+| `console.error` / `warn` | none |
+
+Two things that look wrong in that output and are not:
+
+- **`Elegir Tarjeta` appears twice** in the event list. That is the View plus the Click, which share a
+  `position`. Correct per the tagging plan.
+- **The perfilador offers 2 cards in production and 4 in certi.** Production's four leads include only two
+  LATAM Pass miles cards, and the destacada `TCRLY3` is not among them, so no green box. Exactly the
+  documented rule.
+
+Which mbox Target actually uses is still unknown — and now it does not matter, since all eight work.
+
 ### The offer is a single `<script>` tag (Marco, 2026-09-22)
 
 **All three files in `adobe-target/` are one `<script>` and nothing else.** The pilot and the premium
@@ -546,10 +572,24 @@ Verified differences between the current home and `/felicitaciones`:
   `.boton--pulsante` / `.boton-pulsante`. That element exists on the home (hero banner button) but appears
   **zero times** in every `/felicitaciones` snapshot, so `shouldLiftLauncherOnMobile()` always returns
   false. Pick a new trigger selector for the target page or drop the behaviour.
-- **Stacking context.** The bot uses `z-index` 9998 (mask) / 9999 (launcher, panel). On `/felicitaciones`
-  the cookie-policy banner `.bcp_politica_uso_cookieAdobe.mostrar` uses `9999999999` and an Angular
-  `.app-section__header` uses `99999`. (`#tagbird-ui-root` at `2147483647` is a browser-extension overlay
-  in the capture, outside `</body>` — not real page content.)
+- **Stacking context — fixed on 2026-09-22.** The bot now uses `z-index` **999998** (mask) / **999999**
+  (launcher, welcome, panel). It was 9998/9999, which is what the home needs and no more: **the home has
+  nothing at all between 9999 and the cookie banner**, and no `.app-section__header`.
+
+  `/felicitaciones` does. `<header class="app-section__header">` carries `z-index: 99999`, and **that
+  z-index applies even though the header is `position: static`**, because its parent `.app-section` is
+  `display: flex` and a flex item with a `z-index` other than `auto` creates a stacking context regardless
+  of position (Flexbox spec §4.3). So at 9999 the page header painted **above the bot's mask** and stayed
+  bright over the dimmed page.
+
+  The new values sit above the header and **deliberately below the cookie banner**
+  `.bcp_politica_uso_cookieAdobe.mostrar` at `9999999999` — consent comes first. (In every snapshot that
+  element carries only `bcp_politica_uso_cookieAdobe`, without `.mostrar`, so the `9999999999` rules are
+  not active in the captured state.) `#tagbird-ui-root` at `2147483647` is a browser-extension overlay in
+  the capture, outside `</body>` — not real page content.
+
+  **Reasoned from the CSS, not seen on screen**: jsdom has no layout and there is no Chrome here. The
+  visual confirmation is Marco's.
 
 ### What the page actually is
 
