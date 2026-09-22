@@ -6,7 +6,6 @@
   "nodos": [
     {
       "id": "q1",
-      "lineas": "1336-1348",
       "tipo": "question",
       "estado": "completo",
       "className": "tc0091-node-question",
@@ -51,7 +50,6 @@
     },
     {
       "id": "q11",
-      "lineas": "1350-1359",
       "tipo": "question",
       "estado": "implementado",
       "_advertencia": "YA NO ES ESTATICO (2026-09-09). El nodo q11 no tiene texto ni tarjetas propias: lleva 'perfilador: viajar' y resolvePerfilador decide en runtime que caso y que tarjetas mostrar, leyendo del DOM cuales tiene aprobadas el usuario. El nodo q11b se elimino. Las 17 tarjetas de abajo estan COMPLETAS dentro del bot, en config.perfilador.criterios.viajar; este archivo es el espejo legible.",
@@ -302,7 +300,6 @@
     },
     {
       "id": "q12",
-      "lineas": "",
       "tipo": "question",
       "estado": "implementado-dinamico (casos A y B)",
       "className": "tc0091-node-question",
@@ -538,7 +535,6 @@
     },
     {
       "id": "q13",
-      "lineas": "",
       "tipo": "question",
       "estado": "implementado-dinamico (casos A y B)",
       "className": "tc0091-node-question",
@@ -802,7 +798,6 @@
     },
     {
       "id": "q14",
-      "lineas": "",
       "tipo": "question",
       "estado": "implementado-dinamico (casos A y B)",
       "className": "tc0091-node-question",

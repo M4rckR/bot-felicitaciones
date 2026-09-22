@@ -5,7 +5,6 @@
   "nodos": [
     {
       "id": "q2",
-      "lineas": "1392-1404",
       "tipo": "question",
       "estado": "completo",
       "className": "tc0091-node-question",

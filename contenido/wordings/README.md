@@ -54,8 +54,15 @@ Si se edita el HTML directo, hay que actualizar el JSON en el mismo paso. Si div
   nota quedaría sin nada a que referirse.
 - **Emojis** → se guardan como entidad HTML (`&#128179;`), igual que en el snippet. Marco los manda como
   emoji literal; la conversión es parte del volcado, no del JSON.
-- **`lineas`** → es una pista para saltar directo en `adobe-target/piloto/bot.html`. **Se desactualiza en cuanto se
-  agregan nodos.** Antes de editar, confirmar con `grep -n 'id: "q22"' adobe-target/piloto/bot.html`.
+- **Para ubicar un nodo en el HTML**, buscarlo por su `id`:
+  `grep -n 'id: "q22"' adobe-target/piloto/bot.html`. El `id` es la llave de correspondencia entre el JSON
+  y el snippet, y es la única que no se desactualiza.
+
+  > Existió un campo `lineas` con el rango de líneas de cada nodo. **Se eliminó el 2026-09-22**: las nueve
+  > pistas que quedaban estaban mal, entre 1086 y 1163 líneas corridas, y otros seis nodos ya las tenían
+  > vacías. No hay build ni script que las mantenga, así que agregar un nodo corre todas las de abajo y
+  > recalcularlas solo aguanta hasta la siguiente edición. Una pista que siempre miente cuesta más que no
+  > tenerla. No reintroducirlo.
 
 ## Esquema
 
@@ -67,7 +74,6 @@ Cada archivo de flujo:
 | `estado` | `completo` · `parcial` · `pendiente` |
 | `nodos[]` | Un objeto por nodo del grafo |
 | `nodos[].id` | Id en `config.nodes`. Es la llave de correspondencia con el HTML |
-| `nodos[].lineas` | Rango en `adobe-target/piloto/bot.html` (pista, ver arriba) |
 | `nodos[].tipo` | `question` · `auto` · `mixed` · `rating` |
 | `nodos[].titulo` | Campo `title` del nodo. `""` cuando la pantalla no lleva título |
 | `nodos[].texto` | La copy, desestructurada en `intro` / `parrafos` / `tabla` / `notaTabla` |

@@ -214,8 +214,14 @@ transition in `sessionStorage`; `"Pensando"` never renders at all while `config.
 `false`). Say so plainly instead of claiming a visual check that wasn't possible.
 
 `adobe-target/piloto/bot.html` is the source of truth; the JSON is a mirror and there is no script keeping them in sync.
-If you edit the HTML directly, update the JSON in the same pass. The `lineas` fields are jump hints that go
-stale as soon as nodes are added — confirm with `grep -n 'id: "q22"' adobe-target/piloto/bot.html` before editing.
+If you edit the HTML directly, update the JSON in the same pass. **Locate a node by its `id`** —
+`grep -n 'id: "q22"' adobe-target/piloto/bot.html` — which is the one key that cannot go stale.
+
+> A `lineas` field used to carry each node's line range. **Deleted on 2026-09-22** (Marco): all nine
+> surviving hints were wrong, off by 1086–1163 lines, and six more nodes had already been left empty. With
+> no build and no sync script, adding a node shifts every range below it, so recalculating only holds until
+> the next edit — and a hint that always lies costs more than no hint, because it sends you a thousand
+> lines away before you notice. Do not reintroduce it.
 
 ## Architecture of the snippet
 

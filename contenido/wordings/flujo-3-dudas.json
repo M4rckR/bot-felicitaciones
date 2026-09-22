@@ -5,7 +5,6 @@
   "nodos": [
     {
       "id": "q3",
-      "lineas": "1586-1599",
       "tipo": "question",
       "estado": "completo",
       "className": "tc0091-node-question",
@@ -37,7 +36,6 @@
     },
     {
       "id": "q31",
-      "lineas": "",
       "tipo": "question",
       "estado": "completo",
       "className": "tc0091-node-question",
@@ -73,7 +71,6 @@
     },
     {
       "id": "q32",
-      "lineas": "",
       "tipo": "question",
       "estado": "completo",
       "className": "tc0091-node-question",
@@ -112,7 +109,6 @@
     },
     {
       "id": "q33",
-      "lineas": "",
       "tipo": "question",
       "estado": "completo",
       "className": "tc0091-node-question",

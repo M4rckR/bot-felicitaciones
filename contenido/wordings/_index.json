@@ -16,8 +16,7 @@
       "estado": "completo",
       "nodos": [
         {
-          "id": "q0",
-          "lineas": "1346-1357"
+          "id": "q0"
         }
       ]
     },
@@ -28,27 +27,22 @@
       "nodos": [
         {
           "id": "q1",
-          "lineas": "1360-1372",
           "estado": "completo"
         },
         {
           "id": "q11",
-          "lineas": "1374-1383",
           "estado": "implementado-dinamico (casos A y B)"
         },
         {
           "id": "q12",
-          "lineas": "1384-1393",
           "estado": "implementado-dinamico (casos A y B)"
         },
         {
           "id": "q13",
-          "lineas": "1394-1403",
           "estado": "implementado-dinamico (casos A y B)"
         },
         {
           "id": "q14",
-          "lineas": "1404-1413",
           "estado": "implementado-dinamico (casos A y B)"
         }
       ]
@@ -59,8 +53,7 @@
       "estado": "completo",
       "nodos": [
         {
-          "id": "q2",
-          "lineas": "1416-1428"
+          "id": "q2"
         }
       ]
     },
@@ -70,8 +63,7 @@
       "estado": "completo",
       "nodos": [
         {
-          "id": "q21",
-          "lineas": "1432-1477"
+          "id": "q21"
         }
       ]
     },
@@ -82,8 +74,7 @@
       "nota": "Implementacion de referencia de una pantalla de comparacion terminada.",
       "nodos": [
         {
-          "id": "q22",
-          "lineas": "1480-1525"
+          "id": "q22"
         }
       ]
     },
@@ -93,8 +84,7 @@
       "estado": "completo",
       "nodos": [
         {
-          "id": "q23",
-          "lineas": "1526-1573"
+          "id": "q23"
         }
       ]
     },
@@ -104,8 +94,7 @@
       "estado": "completo",
       "nodos": [
         {
-          "id": "q24",
-          "lineas": "1574-1613"
+          "id": "q24"
         }
       ]
     },
@@ -116,22 +105,18 @@
       "nodos": [
         {
           "id": "q3",
-          "lineas": "1615-1626",
           "estado": "completo"
         },
         {
           "id": "q31",
-          "lineas": "1631-1651",
           "estado": "completo"
         },
         {
           "id": "q32",
-          "lineas": "1654-1674",
           "estado": "completo"
         },
         {
           "id": "q33",
-          "lineas": "1679-1700",
           "estado": "completo"
         }
       ]
