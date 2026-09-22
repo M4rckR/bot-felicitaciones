@@ -378,9 +378,10 @@ afectan a **todas** las pantallas.
 estaban apiladas una debajo de la otra. Con 3 o 4 tarjetas el bloque quedaba larguísimo: había que
 scrollear todo el panel y se perdía la comparación entre una tarjeta y la siguiente.
 
-**Ahora es un carrusel horizontal.** Se ve **una tarjeta a la vez**, ocupando el 82% del ancho, de modo que
-**asoma un ~18% de la siguiente** por el borde derecho para que se note que hay más. Se desliza con el dedo
-o con las flechas, y siempre queda calzada en una tarjeta: no hay scroll libre a medio camino.
+**Ahora es un carrusel horizontal.** Se ve **una tarjeta a la vez**, ocupando el 90% del ancho (era 82%
+hasta el 2026-09-22), de modo que **asoma un ~10% de la siguiente** por el borde derecho para que se note
+que hay más. Se desliza con el dedo o con las flechas, y siempre queda calzada en una tarjeta: no hay
+scroll libre a medio camino.
 
 Debajo del carrusel hay una fila de controles centrada:
 
@@ -638,6 +639,32 @@ seguía donde había quedado. El botón "Cerrar" del final de cada pantalla, en 
 **Desde el 2026-09-14 las dos formas de cerrar se comportan igual:** al volver a abrir el bot, arranca desde
 el saludo inicial. Consecuencia: el aviso "Error en el envío / Reintentar", que aparecía al reabrir si se
 había cerrado el panel mientras el bot "pensaba", ya no puede mostrarse por esa vía.
+
+### Perfilador — sale el asterisco final de cuatro viñetas
+
+Cuatro fichas del perfilador terminaban en un **asterisco de nota al pie que no tenía nota al pie**. El bot
+no muestra ninguna llamada aclaratoria al final de la tarjeta, así que el lector se quedaba buscando un
+texto que no existe.
+
+| Tarjeta | Pantalla | Decía | Dice |
+| --- | --- | --- | --- |
+| Visa Infinite Iridium LATAM Pass | 1.1 Viajar | `Acumula hasta 2 Millas por cada $1 de consumo.`**\*** | `…de consumo.` |
+| Visa Infinite Qore | 1.2 Ahorrar | `…(GRATIS si consumes S/5,000 al mes).`**\*** | `…al mes).` |
+| Visa Infinite Sapphire LATAM Pass | 1.2 Ahorrar | `…(GRATIS si consumes S/4,500 al mes).`**\*** | `…al mes).` |
+| Visa Infinite Iridium LATAM Pass | 1.2 Ahorrar | `…(GRATIS si consumes S/5,000 al mes).`**\*** | `…al mes).` |
+
+**Pedido por Marco el 2026-09-22.** No cambia ninguna cifra ni ninguna palabra: solo se borra el asterisco.
+La negrita de "(GRATIS si consumes…)" se conserva tal cual.
+
+### Perfilador — la ficha pasa a ocupar el 90% del carrusel
+
+La tarjeta del carrusel ocupaba el **82%** del ancho, dejando asomar un ~18% de la siguiente. **Desde el
+2026-09-22 ocupa el 90%**, a pedido de Marco: se prioriza la lectura de la ficha y queda una franja más
+angosta de la siguiente como pista visual de que el carrusel se desplaza.
+
+Es el mismo valor que ya usaba la variación premium, así que las dos versiones vuelven a coincidir en todo
+lo que no sea el fondo de las tarjetas. No cambia nada más del carrusel: las flechas, los puntos y el gesto
+de deslizar siguen igual.
 
 ---
 

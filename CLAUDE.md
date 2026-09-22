@@ -948,8 +948,10 @@ These are real deviations from `referencia/bot-actual.html`. Diffing the two eng
 
 - **The `cards` block is a horizontal carousel, not a stack** (Marco, 2026-09-10). Stacked vertically, 3–4
   cards made the bubble enormous: the user scrolled the whole panel and lost the comparison between cards.
-  One card is visible at a time at 82% of the track width, so ~18% of the next one peeks past the right
-  edge, and below it sits a centred control row — prev arrow, dots, next arrow. **An arrow's colour says
+  One card is visible at a time at **90% of the track width** (Marco, 2026-09-22; it was 82% until then),
+  so ~10% of the next one peeks past the right edge, and below it sits a centred control row — prev arrow,
+  dots, next arrow. **The pilot and the premium variant now share this value**, so the slide width is no
+  longer part of the variant's diff. **An arrow's colour says
   whether there are cards that way** (Marco, 2026-09-14): enabled is CTA orange, disabled is gray
   `#EFF0F2` at full opacity, in both directions. It used to be a fixed gray prev and orange next, dimmed
   when disabled, which on the last card read backwards. The colour keys off `[disabled]`, which
@@ -1092,9 +1094,14 @@ It also absorbed the variants that had drifted: `de` vs `:` after "Membresía an
 separated by a period and was given the same shape. **No figure was changed** — `S/5,00` and the Visa
 Clásica's `S/1` were carried over verbatim and remain under *Still open*.
 
-A trailing `*` survives the merge correctly: `**(…).**` + `*` renders as `<strong>(…).</strong>*`, because
-`formatInlineRichText`'s `/\*\*(.+?)\*\*/` is non-greedy and leaves the stray asterisk alone. Two fichas
-(`TCRLY1`, `TCRINF`) depend on that.
+**No bullet ends in `*` any more** (Marco, 2026-09-22). Four fichas carried a footnote asterisk with no
+footnote under it — `TCRINF` in `viajar` ("…por cada $1 de consumo.\*") and `TCRLY1` / `TCRBA7` / `TCRINF`
+in `ahorrar` (`…al mes).**\*`) — and all four were stripped. No figure and no word changed, and the
+`**(GRATIS si consumes…)**` bold stayed.
+
+The engine still tolerates one if it ever comes back: `**(…).**` + `*` renders as `<strong>(…).</strong>*`,
+because `formatInlineRichText`'s `/\*\*(.+?)\*\*/` is non-greedy and leaves the stray asterisk alone. That
+is now a property of the renderer, not something any ficha relies on.
 
 **Card bullets now honour `**bold**`.** The mockup bolds *"(GRATIS si consumes S/1 al mes)."*, so
 `createCardBoxMarkup` switched its bullets from `escapeHtml` to the existing `formatInlineRichText`, which
@@ -1177,9 +1184,9 @@ template literal. The entire diff is visual:
   the one place in either file that keys off a name rather than a code, which is exactly what
   *cross by code, never by name* warns about: **rename a premium card and its background silently
   disappears.** Worth converting to `codigo` if the variant ever ships;
-- the carousel slide goes from `82%` to `90%` of the track, and the slide wrapper gets
-  `border-radius: 24px` + `overflow: hidden` so the rectangular slide box stops showing around the card's
-  rounded corners.
+- the slide wrapper gets `border-radius: 24px` + `overflow: hidden` so the rectangular slide box stops
+  showing around the card's rounded corners. **The slide width is no longer part of the diff**: it was
+  `82%` in the pilot against the variant's `90%` until Marco moved the pilot to `90%` on 2026-09-22.
 
 Open it in the harness with `?variante=premium-black-infinite`. It is published to Netlify too, so it can be
 compared against the pilot from a phone.

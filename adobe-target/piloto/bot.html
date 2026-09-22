@@ -715,9 +715,11 @@
         display: none;
     }
 
-    /* 82% del ancho del track deja ~18% de la siguiente tarjeta asomando. */
+    /* 90% del ancho del track prioriza la lectura de la ficha y deja una franja
+       de la siguiente como pista visual del carrusel (Marco, 2026-09-22; antes
+       era 82%). */
     #tc0091-scope .tc0091-carousel-slide {
-        flex: 0 0 82%;
+        flex: 0 0 90%;
         min-width: 0;
         scroll-snap-align: start;
         scroll-snap-stop: always;
@@ -1605,7 +1607,7 @@
                                         bullets: [
                                             "Hasta 15,000 Millas de bienvenida solo por digital.",
                                             // El asterisco va sin nota al pie: confirmado por Marco.
-                                            "Acumula hasta 2 Millas por cada $1 de consumo.*",
+                                            "Acumula hasta 2 Millas por cada $1 de consumo.",
                                             "Priority Pass para titular + 4 invitados.",
                                             "Equipaje adicional LATAM.",
                                             "Embarque preferencial.",
@@ -1938,7 +1940,7 @@
                                 name: "&#128179; Visa Infinite Qore",
                                 description: "Máximo nivel de beneficios dentro del ecosistema Qore.",
                                 bullets: [
-                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
+                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
                                     "Beneficios premium.",
                                     "Cuotas Sin Intereses en comercios afiliados.",
                                     "Acceso a promociones y experiencias exclusivas.",
@@ -1959,7 +1961,7 @@
                                 name: "&#128179; Visa Infinite Sapphire LATAM Pass",
                                 description: "Experiencia premium con beneficios avanzados de viaje.",
                                 bullets: [
-                                    "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).***",
+                                    "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).**",
                                     "Beneficios premium en aeropuertos.",
                                     "Cuotas Sin Intereses y promociones exclusivas.",
                                 ],
@@ -1969,7 +1971,7 @@
                                 name: "&#128179; Visa Infinite Iridium LATAM Pass",
                                 description: "Máximo nivel de beneficios dentro de LATAM Pass.",
                                 bullets: [
-                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
+                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
                                     "Beneficios LATAM Elite Gold.",
                                     "Cuotas Sin Intereses y beneficios exclusivos.",
                                 ],

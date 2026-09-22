@@ -71,7 +71,7 @@
             "descripcion": "Ideal para acumular millas y canjearlas por viajes o beneficios LATAM.",
             "vinetas": [
               "Hasta 15,000 Millas de bienvenida solo por digital.",
-              "Acumula hasta 2 Millas por cada $1 de consumo.*",
+              "Acumula hasta 2 Millas por cada $1 de consumo.",
               "Priority Pass para titular + 4 invitados.",
               "Equipaje adicional LATAM.",
               "Embarque preferencial.",
@@ -479,7 +479,7 @@
             "codigo": "TCRLY1",
             "descripcion": "Máximo nivel de beneficios dentro del ecosistema Qore.",
             "vinetas": [
-              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
+              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
               "Beneficios premium.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Acceso a promociones y experiencias exclusivas."
@@ -502,7 +502,7 @@
             "codigo": "TCRBA7",
             "descripcion": "Experiencia premium con beneficios avanzados de viaje.",
             "vinetas": [
-              "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).***",
+              "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).**",
               "Beneficios premium en aeropuertos.",
               "Cuotas Sin Intereses y promociones exclusivas."
             ],
@@ -513,7 +513,7 @@
             "codigo": "TCRINF",
             "descripcion": "Máximo nivel de beneficios dentro de LATAM Pass.",
             "vinetas": [
-              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
+              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
               "Beneficios LATAM Elite Gold.",
               "Cuotas Sin Intereses y beneficios exclusivos."
             ],
