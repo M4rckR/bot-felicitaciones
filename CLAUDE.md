@@ -368,18 +368,21 @@ Events push onto `window.digitalData` (created as an array if absent) via `pushP
 `experimentCode: "TC0080"`. Tracked: bot open, final-response view, feedback click
 (`position: "<nodeId> - <1|0>"`), discover-card CTA view/click, rating view/click, close view/click.
 
-**In `adobe-target/piloto/bot.html` the tagging plan is Marco's confirmed spec of 2026-09-21 and it is
-closed**: exactly these **seven** event families, no more.
+**In `adobe-target/piloto/bot.html` the tagging plan is Marco's spec of 2026-09-21, extended on 2026-09-23**
+(Marco gave free rein to tag the remaining buttons "en base a los demás tageos"): these **nine** methods.
+Every clickable control in the bot now emits something except the unreachable `[data-main-restart]`.
 
 | Method | name (after `Felicitaciones - Cards - Bot - `) | creative | position | Fires when |
 | --- | --- | --- | --- | --- |
 | `trackLauncherView` | `Inicio - TC0096 - P` | Button | `Inicio Tarjetin` | `bind()` — bot mounted (the launcher itself appears 2 s later, see *Timings*). Once per page via `window.__tc0091LauncherViewSent` (it was `Bot.launcherViewSent`, which a Target re-injection reset — see *Bootstrap*) |
 | `trackOpenBotClick` | `Inicio - TC0096 - P` | Button | `Modal` | panel opened |
-| `trackOpcionElegidaClick` | `Arbol - TC0096 - P` | Button | `1 - 1.1` … `3 - 3.3` | the user **picks** an option whose destination is a respuesta node |
+| `trackOpcionElegidaClick` | `Arbol - TC0096 - P` | Button | `1` / `2` / `3`, `1 - 1.1` … `3 - 3.3`, `Volver a las alternativas` | the user **picks** a root-menu option in `q0` (position `1`–`3`), an option whose destination is a respuesta node, or "↩️ Volver a las alternativas" (the last two since 2026-09-23) |
 | `trackElegirTarjetaView` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |
 | `trackElegirTarjetaClick` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | successful click on a bot card CTA, before the native page button is clicked |
 | `trackCloseView` | `TC0096 - P` | Button | `Cerrar` | node has an `isClose` option |
-| `trackCloseClick` | `TC0096 - P` | Button | `Cerrar` | `[data-close]` clicked |
+| `trackCloseClick` | `TC0096 - P` | Button | `Cerrar` / `Cerrar - X` / `Cerrar - Fondo` | `[data-close]` clicked; the header X (`Cerrar - X`) or the mask (`Cerrar - Fondo`), since 2026-09-23. The X is tagged only in the `el.close` listener, because the panel listener also catches it by bubbling |
+| `trackCarruselClick` | `Arbol - TC - TC0096 - P` | Button | `Carrusel - Anterior` / `- Siguiente` / `- Punto` | a carousel arrow or dot (2026-09-23). Same family as `Elegir Tarjeta`: same piece, the perfilador cards. Swiping is native scroll and is **not** tagged |
+| `trackErrorClick` | `Error - TC0096 - P` | Button | the button's text (`Reintentar`, or the runtime-error button's label) | an error-screen button (2026-09-23). Almost never seen: `Reintentar` needs a pending transition, unreachable from a user close since 2026-09-14 |
 
 **The bot tags the "Elegir tarjeta" click** with the `trackPromotionClick` above. It then presses the
 page's own button, which additionally emits its native event families:
@@ -432,9 +435,16 @@ Three traps worth keeping:
   succeeded.
 - **`isRespuestaNode` decides what counts as a respuesta**: `id.length > 2`, which excludes the four menus
   (`q0`–`q3`) and includes the eleven answer screens. **The Click applies that gate to the *destination***,
-  so "↩️ Volver a las alternativas" (which leads to `q2`) emits nothing, exactly as the View did not fire
-  on menus. The old gate was `node.feedbackText`, which no node has, so **the whole Arbol funnel was
-  silently dead** until 2026-09-11.
+  so a respuesta is what earns the `N - N.N` position. The old gate was
+  `node.feedbackText`, which no node has, so **the whole Arbol funnel was silently dead** until 2026-09-11.
+- **The three root-menu options emit too** (Marco, 2026-09-23), with `position` `"1"`, `"2"` or `"3"` — the
+  menu's own digit, not `getPositionArbol`'s `"1 - 1"`. The handler passes `state.current` as the origin, and
+  a menu destination gets its digit only **when the origin is `q0`**.
+- **"↩️ Volver a las alternativas" emits too** (Marco, 2026-09-23), with the fixed `position`
+  `"Volver a las alternativas"`: a menu destination reached **from a respuesta node**. It says nothing about
+  which screen the user left — that is the previous Click in the session. Verified in jsdom on both
+  offers: Comparar → Priority Pass → Volver → Exoneración → Volver emits exactly
+  `2 | 2 - 2.4 | Volver a las alternativas | 2 - 2.3 | Volver a las alternativas`.
 - **`position` uses the tree's own numbering, not the internal id** (Marco, 2026-09-11):
   `getPositionArbol` turns `q11` into `"1 - 1.1"` and `q33` into `"3 - 3.3"` — the same numbering the
   screens are delivered with and that the mockups and `docs/correcciones-wording.md` use. The `qNN` id

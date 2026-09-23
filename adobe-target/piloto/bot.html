@@ -3533,7 +3533,10 @@
             });
             // Cerrar con la X o con la mascara no conserva el hilo: al reabrir se
             // empieza desde q0 (Marco, 2026-09-14), igual que con el boton "Cerrar".
+            // El tag de la X va solo aqui: el listener del panel de abajo tambien
+            // atrapa este clic por burbujeo, y taguear en los dos lo duplicaria.
             this.el.close.addEventListener("click", function () {
+                self.trackCloseClick("Cerrar - X");
                 self.close();
                 self.restart();
             });
@@ -3546,6 +3549,7 @@
             this.el.mask.addEventListener("click", function (e) {
                 if (e && e.preventDefault) e.preventDefault();
                 if (e && e.stopPropagation) e.stopPropagation();
+                self.trackCloseClick("Cerrar - Fondo");
                 self.closeFromMask();
                 self.restart();
             });
@@ -3811,16 +3815,30 @@
         // como impresion, asi que el numero ya no incluye pantallas que se pintaron
         // sin que nadie las pidiera.
         //
-        // El gate es el mismo de antes, aplicado al DESTINO: solo cuentan las once
-        // respuestas (q11-q14, q21-q24, q31-q33). Volver a un menu no emite nada.
-        Bot.prototype.trackOpcionElegidaClick = function (destinoId) {
+        // Cuentan las once respuestas (q11-q14, q21-q24, q31-q33), con position
+        // "1 - 1.2", y desde el 2026-09-23 tambien las tres opciones del menu
+        // inicial, con position "1", "2" o "3" (Marco). Estas ultimas solo cuando
+        // se eligen DESDE q0. "Volver a las alternativas" lleva a los mismos menus
+        // desde una respuesta, y emite con position fija "Volver a las
+        // alternativas" (Marco, 2026-09-23).
+        Bot.prototype.trackOpcionElegidaClick = function (destinoId, origenId) {
             var destino = this.getNode(destinoId);
-            if (!this.isRespuestaNode(destino)) return;
+            if (!destino) return;
+
+            var position = "";
+            if (this.isRespuestaNode(destino)) {
+                position = this.getPositionArbol(destino.id);
+            } else if (origenId === "q0") {
+                position = String(destino.id || "").replace(/\D/g, "");
+            } else if (this.isRespuestaNode(this.getNode(origenId))) {
+                position = "Volver a las alternativas";
+            }
+            if (!position) return;
 
             this.trackPromotionClick({
                 name: "Felicitaciones - Cards - Bot - Arbol - " + this.getExperimentCode() + " - P",
                 creative: "Button",
-                position: this.getPositionArbol(destino.id),
+                position: position,
             });
         };
 
@@ -3865,11 +3883,35 @@
             });
         };
 
-        Bot.prototype.trackCloseClick = function () {
+        // position opcional (2026-09-23): "Cerrar" es el boton de la conversacion;
+        // la X del encabezado y el clic en el fondo oscuro emiten el mismo evento
+        // con "Cerrar - X" y "Cerrar - Fondo", para distinguir por donde se fue.
+        Bot.prototype.trackCloseClick = function (position) {
             this.trackPromotionClick({
                 name: "Felicitaciones - Cards - Bot - " + this.getExperimentCode() + " - P",
                 creative: "Button",
-                position: "Cerrar",
+                position: position || "Cerrar",
+            });
+        };
+
+        // Flechas y puntos del carrusel de tarjetas (2026-09-23). Van en la familia
+        // de "Elegir Tarjeta" porque son la misma pieza: las tarjetas del
+        // perfilador. El deslizamiento con el dedo es scroll nativo y no se taguea.
+        Bot.prototype.trackCarruselClick = function (accion) {
+            this.trackPromotionClick({
+                name: "Felicitaciones - Cards - Bot - Arbol - TC - " + this.getExperimentCode() + " - P",
+                creative: "Button",
+                position: "Carrusel - " + accion,
+            });
+        };
+
+        // Botones de las pantallas de error (2026-09-23): "Reintentar" y el de la
+        // pantalla de error de navegacion. El position es el texto del boton.
+        Bot.prototype.trackErrorClick = function (etiqueta) {
+            this.trackPromotionClick({
+                name: "Felicitaciones - Cards - Bot - Error - " + this.getExperimentCode() + " - P",
+                creative: "Button",
+                position: etiqueta || "Error",
             });
         };
 
@@ -5119,18 +5161,21 @@
 
             if (prev) {
                 prev.addEventListener("click", function () {
+                    self.trackCarruselClick("Anterior");
                     irA(indiceActual() - 1, true);
                 });
             }
 
             if (next) {
                 next.addEventListener("click", function () {
+                    self.trackCarruselClick("Siguiente");
                     irA(indiceActual() + 1, true);
                 });
             }
 
             dots.forEach(function (dot) {
                 dot.addEventListener("click", function () {
+                    self.trackCarruselClick("Punto");
                     irA(Number(this.getAttribute("data-carousel-dot")) || 0, true);
                 });
             });
@@ -5348,6 +5393,7 @@
             var retryError = this.el.body.querySelector("[data-retry-error]");
             if (retryError) {
                 retryError.addEventListener("click", function () {
+                    self.trackErrorClick("Reintentar");
                     if (!self.state.errorRecovery) return;
                     var recovery = self.state.errorRecovery;
                     self.clearPendingTransition();
@@ -5358,6 +5404,7 @@
             this.el.body.querySelectorAll("[data-runtime-error-action]").forEach(function (btn) {
                 btn.addEventListener("click", function () {
                     var action = this.getAttribute("data-runtime-error-action") || "";
+                    self.trackErrorClick((this.textContent || "").trim());
 
                     if (action === "retry-missing-next") {
                         var runtimeError = self.state.runtimeError || {};
@@ -5388,7 +5435,7 @@
 
                     // Antes que goTo: se mide la eleccion del usuario, no el
                     // resultado de la navegacion, que puede fallar.
-                    self.trackOpcionElegidaClick(destino);
+                    self.trackOpcionElegidaClick(destino, self.state.current);
 
                     self.goTo(destino, selectedLabel);
                 });
