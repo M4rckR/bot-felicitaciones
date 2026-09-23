@@ -1549,9 +1549,11 @@
                 },
                 thinking: {
                     enabled: true,
-                    // 2200 desde el 2026-09-22 (Marco: "agregale un segundo mas").
-                    // Era 1200. Es la pausa con los puntitos antes de cada respuesta.
-                    durationMs: 2200,
+                    // Pausa con los puntitos antes de cada respuesta. El 2026-09-22
+                    // se subio por error a 2200: el "agregale un segundo mas" era para
+                    // la entrada del bot, no para las respuestas. Vuelve a 1200
+                    // (Marco, 2026-09-23). La entrada es aperturaMs, que no cambia.
+                    durationMs: 1200,
                     // Pausa al ABRIR el bot, antes de la primera pantalla. Antes no
                     // habia ninguna: q0 se pintaba de golpe, en unos 130ms, y por eso
                     // el bot "entraba seco" -- aparecia ya puesto en vez de llegar.

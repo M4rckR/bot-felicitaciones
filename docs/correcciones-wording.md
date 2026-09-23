@@ -682,8 +682,9 @@ los tres botones. Se sentía seco, como si el bot ya hubiera estado ahí.
 **Desde el 2026-09-22 el bot llega:** primero se ven los puntitos de "está escribiendo" durante **0,9 s** y
 después aparece el saludo, igual que pasa con cualquier otra respuesta.
 
-Y **la pausa de las respuestas pasó de 1,2 s a 2,2 s**, a pedido de Marco. La pausa de la apertura es más
-corta a propósito: ahí el cliente todavía no preguntó nada, así que hacerlo esperar solo estorba.
+**La pausa de las respuestas sigue en 1,2 s.** El 2026-09-22 se subió por error a 2,2 s: el "agrégale un
+segundo más" de Marco era para la entrada del bot, no para las respuestas. Se corrigió el 2026-09-23. La
+pausa de la apertura (0,9 s) no cambió.
 
 La animación de entrada de cada burbuja también se retocó: dura un poco más (de 0,32 s a 0,42 s), la
 burbuja sube mientras entra y se pasa apenas de su tamaño antes de asentarse. Ese rebote mínimo es lo que
