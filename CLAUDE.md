@@ -330,6 +330,25 @@ machinery (`back()`, `state.chatSnapshots`), not the per-message snapshot.
 `config.thinking`) → `applyTransition(id)`. Transitions are ignored while waiting unless
 `allowWhileWaiting` is passed.
 
+**Timings, as fixed on 2026-09-23 (Marco).** On 2026-09-22 (`a73dc21`) the request "entrada animada, un
+segundo más" was misapplied to the conversation: `thinking.durationMs` went 1200 → 2200 and a new
+`thinking.aperturaMs: 900` put dots before the `q0` greeting. The request was for **the launcher's arrival
+on the page**. Now:
+
+- `thinking.durationMs: 1200` — the wait before each answer, back to its original value.
+- `thinking.aperturaMs: 0` — the greeting paints instantly. `open()` skips `startWaitingTransition` when
+  `getAperturaDuration()` is 0, so there is not even a one-frame flash of dots. Setting it above 0 brings
+  the dots back.
+- **`config.retrasoLauncherMs: 2000`** — `bind()` calls `mostrarLauncherConRetraso()`, which hides the
+  launcher and the welcome bubble and shows them after 2 s. **Once per page**, guarded by
+  `window.__tc0091LauncherMostrado` (same reasoning as `__tc0091LauncherViewSent`): an SPA rebuild or a
+  Target re-injection shows the launcher at once. `destroy()` clears the pending timer.
+- **`trackLauncherView` still fires at mount, not after the delay** — deliberately, because
+  `control.html` pushes its `- C` immediately and both arms must measure from the same moment.
+
+Verified in jsdom on both offers: hidden at 1.9 s, visible at 2.1 s, one `Inicio` View at t=0, greeting
+with no dots on open, rebuild shows the launcher without waiting.
+
 **Rich text** — `richText: true` runs `text` through `formatRichText`: `**bold**`, `- ` bullets, blank
 lines as spacers, and — in `adobe-target/piloto/bot.html` only — `| pipe | tables |`. Long copy is written as a string
 array joined with `"\n"`. Emojis are HTML entities
@@ -354,7 +373,7 @@ closed**: exactly these **seven** event families, no more.
 
 | Method | name (after `Felicitaciones - Cards - Bot - `) | creative | position | Fires when |
 | --- | --- | --- | --- | --- |
-| `trackLauncherView` | `Inicio - TC0096 - P` | Button | `Inicio Tarjetin` | `bind()` — launcher painted. Once per page via `window.__tc0091LauncherViewSent` (it was `Bot.launcherViewSent`, which a Target re-injection reset — see *Bootstrap*) |
+| `trackLauncherView` | `Inicio - TC0096 - P` | Button | `Inicio Tarjetin` | `bind()` — bot mounted (the launcher itself appears 2 s later, see *Timings*). Once per page via `window.__tc0091LauncherViewSent` (it was `Bot.launcherViewSent`, which a Target re-injection reset — see *Bootstrap*) |
 | `trackOpenBotClick` | `Inicio - TC0096 - P` | Button | `Modal` | panel opened |
 | `trackOpcionElegidaClick` | `Arbol - TC0096 - P` | Button | `1 - 1.1` … `3 - 3.3` | the user **picks** an option whose destination is a respuesta node |
 | `trackElegirTarjetaView` | `Arbol - TC - TC0096 - P` | Button | `Elegir Tarjeta` | once per message carrying `cards` or `recommendation.cta` |

@@ -1460,15 +1460,20 @@
                     // la entrada del bot, no para las respuestas. Vuelve a 1200
                     // (Marco, 2026-09-23). La entrada es aperturaMs, que no cambia.
                     durationMs: 1200,
-                    // Pausa al ABRIR el bot, antes de la primera pantalla. Antes no
-                    // habia ninguna: q0 se pintaba de golpe, en unos 130ms, y por eso
-                    // el bot "entraba seco" -- aparecia ya puesto en vez de llegar.
-                    // Es mas corta que durationMs a proposito: aqui el usuario todavia
-                    // no pregunto nada, asi que una espera larga solo estorba.
-                    aperturaMs: 900,
+                    // Pausa al ABRIR el bot, antes de la primera pantalla. En 0 no hay
+                    // puntitos: el saludo sale al instante (Marco, 2026-09-23). El
+                    // 2026-09-22 se le habia puesto 900 por error: el pedido de
+                    // "entrada animada" era para el launcher al llegar a la pagina,
+                    // no para la conversacion.
+                    aperturaMs: 0,
                     showText: false,
                     text: "Pensando",
                 },
+                // Espera antes de que el launcher (y su globo de bienvenida) aparezca
+                // en la pagina (Marco, 2026-09-23: 2 segundos). Solo la primera vez
+                // por pagina: si el SPA o Target reconstruyen el bot, vuelve sin
+                // esperar. En 0, aparece al instante.
+                retrasoLauncherMs: 2000,
                 errorHandling: {
                     missingNextNodeMaxRetries: 3,
                     fallbackNodeId: "",
@@ -3498,9 +3503,11 @@
         Bot.prototype.bind = function () {
             var self = this;
 
-            this.toggleWelcome(true);
+            this.mostrarLauncherConRetraso();
 
-            // El launcher ya esta en la pagina y enlazado: el usuario ve el bot.
+            // El View sale al montar, no cuando termina el retraso del launcher:
+            // el control (control.html) empuja su "- C" de inmediato, y los dos
+            // tienen que medir desde el mismo momento o la comparacion se desbalancea.
             this.trackLauncherView();
 
             if (this.el.welcome) {
@@ -3544,6 +3551,31 @@
             });
 
             this.bindScrollIsolation();
+        };
+
+        // El launcher entra a la pagina con retraso (config.retrasoLauncherMs).
+        // Mientras espera, launcher y globo quedan ocultos. La bandera vive en
+        // window por lo mismo que __tc0091LauncherViewSent: una reinyeccion de
+        // Target o una reconstruccion del SPA no deben volver a hacer esperar.
+        Bot.prototype.mostrarLauncherConRetraso = function () {
+            var self = this;
+            var retraso = Number(this.config.retrasoLauncherMs);
+
+            if (window.__tc0091LauncherMostrado || !Number.isFinite(retraso) || retraso <= 0) {
+                window.__tc0091LauncherMostrado = true;
+                this.toggleWelcome(true);
+                return;
+            }
+
+            if (this.el.launcher) this.el.launcher.style.display = "none";
+            this.toggleWelcome(false);
+
+            this.launcherTimerId = setTimeout(function () {
+                self.launcherTimerId = null;
+                window.__tc0091LauncherMostrado = true;
+                if (self.el.launcher) self.el.launcher.style.display = "inline-flex";
+                self.toggleWelcome(true);
+            }, retraso);
         };
 
         Bot.prototype.toggleWelcome = function (isVisible) {
@@ -3933,7 +3965,10 @@
             //
             // Solo en una conversacion nueva: si hay hilo, o se esta recuperando de
             // un error, o ya habia una espera en curso, se pinta lo que corresponda.
-            if (!this.state.chatLog.length && !this.state.errorRecovery && !this.isWaiting()) {
+            // Con aperturaMs en 0 no se pasa por la espera: ni un parpadeo de
+            // puntitos, el saludo se pinta directo.
+            if (!this.state.chatLog.length && !this.state.errorRecovery && !this.isWaiting() &&
+                this.getAperturaDuration() > 0) {
                 this.startWaitingTransition(this.state.current, "", this.getAperturaDuration());
                 return;
             }
@@ -5393,6 +5428,10 @@
         };
 
         Bot.prototype.destroy = function () {
+            if (this.launcherTimerId) {
+                clearTimeout(this.launcherTimerId);
+                this.launcherTimerId = null;
+            }
             this.cancelWaitingTransition();
             this.close();
             if (this.el.launcher)

@@ -674,17 +674,22 @@ mostradas lleva el asterisco**, así que no se queda un asterisco sin nota ni un
 La viñeta de millas de la Iridium en 1.1 **no** recupera el asterisco: el pedido fue solo para la viñeta
 de membresía.
 
-### El bot ahora "llega" en vez de aparecer puesto
+### El bot llega a la página con 2 s de retraso; el chat responde sin espera extra
 
-Al abrir el bot, la primera pantalla aparecía **de golpe**: en unos 130 ms ya estaban el saludo, el texto y
-los tres botones. Se sentía seco, como si el bot ya hubiera estado ahí.
+**Corregido el 2026-09-23 (Marco).** El 2026-09-22 se pidió "que entre más animado y agrégale un segundo
+más", y se aplicó donde no era: se agregó una pausa de 0,9 s antes del saludo del chat y la pausa de cada
+respuesta subió de 1,2 s a 2,2 s. El pedido era para **la entrada del bot a la página**, no para la
+conversación. Quedó así:
 
-**Desde el 2026-09-22 el bot llega:** primero se ven los puntitos de "está escribiendo" durante **0,9 s** y
-después aparece el saludo, igual que pasa con cualquier otra respuesta.
+| | Antes del 2026-09-22 | 2026-09-22 (por error) | Desde el 2026-09-23 |
+| --- | --- | --- | --- |
+| Aparición del ícono del bot (y su globo) en la página | al instante | al instante | **2 s después** |
+| Saludo al abrir el chat | al instante | 0,9 s de puntitos | **al instante** |
+| Pausa antes de cada respuesta | 1,2 s | 2,2 s | **1,2 s** |
 
-**La pausa de las respuestas sigue en 1,2 s.** El 2026-09-22 se subió por error a 2,2 s: el "agrégale un
-segundo más" de Marco era para la entrada del bot, no para las respuestas. Se corrigió el 2026-09-23. La
-pausa de la apertura (0,9 s) no cambió.
+El retraso del ícono es solo la primera vez en la página: si la página rehace el bot, vuelve sin esperar.
+El evento de analítica "Inicio" sigue saliendo al cargar, no a los 2 s, para medir desde el mismo momento
+que el grupo de control.
 
 La animación de entrada de cada burbuja también se retocó: dura un poco más (de 0,32 s a 0,42 s), la
 burbuja sube mientras entra y se pasa apenas de su tamaño antes de asentarse. Ese rebote mínimo es lo que
