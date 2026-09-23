@@ -1382,14 +1382,26 @@ It also absorbed the variants that had drifted: `de` vs `:` after "Membresía an
 separated by a period and was given the same shape. **No figure was changed** — `S/5,00` and the Visa
 Clásica's `S/1` were carried over verbatim and remain under *Still open*.
 
-**No bullet ends in `*` any more** (Marco, 2026-09-22). Four fichas carried a footnote asterisk with no
-footnote under it — `TCRINF` in `viajar` ("…por cada $1 de consumo.\*") and `TCRLY1` / `TCRBA7` / `TCRINF`
-in `ahorrar` (`…al mes).**\*`) — and all four were stripped. No figure and no word changed, and the
-`**(GRATIS si consumes…)**` bold stayed.
+**The perfilador's asterisks came back, this time with a footnote** (Marco, 2026-09-23). On 2026-09-22 four
+orphan asterisks were stripped: `TCRINF` in `viajar` ("…por cada $1 de consumo.\*") and `TCRLY1` / `TCRBA7` /
+`TCRINF` in `ahorrar` (`…al mes).**\*`). A day later Marco asked for the three **`ahorrar` membership
+bullets** to carry it again — the first bullet only, the same three Infinite cards that carry it in the
+comparador's `exoneracion` table. The `viajar` miles bullet stays without one.
 
-The engine still tolerates one if it ever comes back: `**(…).**` + `*` renders as `<strong>(…).</strong>*`,
-because `formatInlineRichText`'s `/\*\*(.+?)\*\*/` is non-greedy and leaves the stray asterisk alone. That
-is now a property of the renderer, not something any ficha relies on.
+The footnote is **`config.perfilador.nota`** (`"*Sujeto a términos y condiciones"`), one value for all four
+criteria. `getNotaPerfilador(tarjetas, cfg)` returns it only if a **shown** card has a bullet with a `*`
+left after stripping `**…**` bold pairs — so the same "no orphan asterisk, no orphan note" rule as the
+comparador. All three exits of `resolvePerfilador` (case A, case B, `sinDeteccion`) return it as `nota`; it
+freezes into the chatLog as **`botMessage.notaPerfilador`**, a separate field from the comparador's `nota`
+because it paints somewhere else: **right above the `aviso` box**, via the same `createNotaMarkup`.
+
+In practice it only shows in `q12` case B: the Infinite cards are not in `ahorrar`'s case A, so a user who
+also holds a case A card (e.g. the Oro Qore) sees no asterisk and no note. Verified in jsdom on both offers
+2026-09-23: Infinite-only leads → 3 bullets with `*` and the note before the aviso; with `TCRLY3` added →
+case A, neither; `q11` with `TCRINF` → neither.
+
+The asterisk renders as `<strong>(…).</strong>*` because `formatInlineRichText`'s `/\*\*(.+?)\*\*/` is
+non-greedy and leaves the trailing asterisk alone — that property is now load-bearing.
 
 **Card bullets now honour `**bold**`.** The mockup bolds *"(GRATIS si consumes S/1 al mes)."*, so
 `createCardBoxMarkup` switched its bullets from `escapeHtml` to the existing `formatInlineRichText`, which
@@ -1456,6 +1468,13 @@ label** — the click handler reads `data-user-label` / the button text, never t
 
 `intro` moved from the sections to the table itself: the greeting is one line for the whole screen, not one
 per programme.
+
+**With both tables on screen, the first column names the programme** (Marco, 2026-09-23). Each section
+carries an `encabezadoConAmbos` next to its `encabezado`: `["LATAM", …]` for millas (**LATAM in capitals**)
+and `["Qore", …]` for puntos. `resolveAccumulationComparator` uses it only when more than one section
+survives — which can only mean millas + puntos, since `sinPrograma` is used alone. A single table, the
+`sinPrograma` fallback and the other three comparador tables keep `"Tarjeta"`. The second column is
+unchanged. Verified in jsdom on both offers.
 
 ### The premium variant (2026-09-22)
 

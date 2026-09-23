@@ -579,7 +579,7 @@ La ficha entregada, que es la misma para las cuatro pantallas:
 > 💳 **Visa Oro Qore**
 > Orientada a beneficios cotidianos y promociones.
 > - Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**
-> - 1 punto Qore por cada $ consumido.
+> - 1 Punto Qore por cada $1 en consumo. *(hasta 2026-09-23 decía "1 punto Qore por cada $ consumido.")*
 > - Cuotas Sin Intereses en comercios afiliados.
 > - Acumulación de Puntos Qore para canjes.
 >
@@ -656,6 +656,24 @@ texto que no existe.
 **Pedido por Marco el 2026-09-22.** No cambia ninguna cifra ni ninguna palabra: solo se borra el asterisco.
 La negrita de "(GRATIS si consumes…)" se conserva tal cual.
 
+### 1.2 Ahorrar — vuelve el asterisco a la membresía de las Infinite, ahora con llamada al pie
+
+**Pedido por Marco el 2026-09-23, con captura.** Las tres Infinite de 1.2 recuperan el asterisco en su
+**primera viñeta**, la de membresía, igual que en la tabla 2.3. Esta vez sí tiene su llamada al pie:
+
+| Tarjeta | Primera viñeta |
+| --- | --- |
+| Visa Infinite Qore | Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**\* |
+| Visa Infinite Sapphire LATAM Pass | Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).**\* |
+| Visa Infinite Iridium LATAM Pass | Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**\* |
+
+La nota **"\*Sujeto a términos y condiciones"** va **encima del recuadro azul** "Solo te mostraremos las
+tarjetas recomendadas", en 12px, igual que la del comparador. Aparece **solo si alguna de las tarjetas
+mostradas lleva el asterisco**, así que no se queda un asterisco sin nota ni una nota sin asterisco.
+
+La viñeta de millas de la Iridium en 1.1 **no** recupera el asterisco: el pedido fue solo para la viñeta
+de membresía.
+
 ### El bot ahora "llega" en vez de aparecer puesto
 
 Al abrir el bot, la primera pantalla aparecía **de golpe**: en unos 130 ms ya estaban el saludo, el texto y
@@ -677,12 +695,20 @@ Es la tarjeta que siempre aparece destacada en el recuadro verde.
 
 | | |
 | --- | --- |
-| **Decía** | Orientada a beneficios cotidianos y promociones. |
-| **Dice** | Ideal para disfrutar beneficios cotidianos y promociones |
-| **Motivo** | Texto nuevo entregado por Marco el 2026-09-22. No es una corrección. |
+| | Descripción | Segunda viñeta |
+| --- | --- | --- |
+| **Decía** (hasta 2026-09-22) | Orientada a beneficios cotidianos y promociones. | 1 punto Qore por cada $ consumido. |
+| **Dijo** (2026-09-22) | Ideal para disfrutar beneficios cotidianos y promociones | *(sin cambio)* |
+| **Dice** (desde 2026-09-23) | Orientada a beneficios cotidianos y promociones. | 1 Punto Qore por cada $1 en consumo. |
 
-> El texto nuevo **no lleva punto final**, y las otras 67 descripciones de tarjeta sí. Se reproduce tal como
-> llegó, como manda el criterio. Si se prefiere cerrarla con punto por consistencia, es un carácter.
+**Motivo.** El 2026-09-22 Marco entregó "Ideal para disfrutar…". El 2026-09-23 envió una captura de la ficha
+pidiendo dejarla "como en la foto": la descripción **vuelve** a la anterior y la segunda viñeta cambia.
+No es una corrección, es texto entregado.
+
+La viñeta nueva escribe **"Punto"** con mayúscula y **"$1"** con la cifra, como ya lo hacían las tablas de
+comparar (`1 Punto Qore por cada $1`). La ficha anterior, con "punto" en minúscula y "$" sin cifra, era la
+única que se apartaba. Se cambió en la ficha destacada y en las fichas de la misma tarjeta en 1.1 y 1.2,
+aunque esas dos no se muestran: la destacada las reemplaza para que no salga dos veces.
 
 ### El saludo llama al cliente por su nombre
 
@@ -727,6 +753,19 @@ como un error, y quien vuelve al bot es porque quiere seguir consultando, no edi
 pulsa el botón **"Cerrar"** del propio cuadro, no lo hace desaparecer por su cuenta: así corre la lógica
 normal de la página. Eso devuelve al cliente a la lista de tarjetas, sin la selección hecha — que es
 justamente lo que está pidiendo al volver al bot.
+
+### 2.1 Acumulación — con las dos tablas, la cabecera nombra el programa
+
+**Pedido por Marco el 2026-09-23, con captura.** Cuando el cliente tiene tarjetas LATAM Pass **y** Qore,
+la pantalla 2.1 muestra dos tablas. Solo en ese caso la primera columna deja de decir "Tarjeta":
+
+| Tabla | Decía | Dice |
+| --- | --- | --- |
+| Millas | Tarjeta | **LATAM** (en mayúsculas) |
+| Puntos | Tarjeta | **Qore** |
+
+La segunda columna no cambia. Si el cliente tiene solo un programa (una sola tabla), o ninguno, y en las
+tablas 2.2, 2.3 y 2.4, la columna sigue diciendo "Tarjeta".
 
 ### 2.3 Exoneración de membresía — asterisco en las Infinite y llamada al pie
 

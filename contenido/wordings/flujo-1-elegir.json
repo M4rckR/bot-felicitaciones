@@ -223,7 +223,7 @@
           },
           {
             "nombre": "&#128179; Visa Oro Qore",
-            "descripcion": "Ideal para disfrutar beneficios cotidianos y promociones",
+            "descripcion": "Orientada a beneficios cotidianos y promociones.",
             "vinetas": [
               "Acumulación de puntos para recompensas."
             ],
@@ -372,7 +372,7 @@
             "descripcion": "Ideal para quienes buscan Puntos Qore en sus compras frecuentes.",
             "vinetas": [
               "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
-              "1 punto Qore por cada $ consumido.",
+              "1 Punto Qore por cada $1 en consumo.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Acumulación de Puntos Qore para canjes."
             ],
@@ -476,7 +476,7 @@
             "codigo": "TCRLY1",
             "descripcion": "Máximo nivel de beneficios dentro del ecosistema Qore.",
             "vinetas": [
-              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
+              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
               "Beneficios premium.",
               "Cuotas Sin Intereses en comercios afiliados.",
               "Acceso a promociones y experiencias exclusivas."
@@ -499,7 +499,7 @@
             "codigo": "TCRBA7",
             "descripcion": "Experiencia premium con beneficios avanzados de viaje.",
             "vinetas": [
-              "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).**",
+              "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).***",
               "Beneficios premium en aeropuertos.",
               "Cuotas Sin Intereses y promociones exclusivas."
             ],
@@ -510,7 +510,7 @@
             "codigo": "TCRINF",
             "descripcion": "Máximo nivel de beneficios dentro de LATAM Pass.",
             "vinetas": [
-              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
+              "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
               "Beneficios LATAM Elite Gold.",
               "Cuotas Sin Intereses y beneficios exclusivos."
             ],
@@ -519,6 +519,8 @@
         ]
       },
       "cierre": {
+        "notaAntesDelAviso": "*Sujeto a términos y condiciones",
+        "notaAntesDelAviso_regla": "Marco, 2026-09-23. Va encima del aviso azul, 12px/18px, y solo si alguna tarjeta mostrada tiene una viñeta con asterisco: hoy la membresía de las tres Infinite de este caso B. Vive en config.perfilador.nota, así que vale para los cuatro criterios, pero solo este tiene asteriscos.",
         "aviso": "Solo te mostraremos las tarjetas recomendadas",
         "menuText": "¿Qué deseas hacer ahora?",
         "opciones": [
@@ -1077,10 +1079,10 @@
     "codigo": "TCRLY3",
     "badge": "La más usada",
     "nombre": "&#128179; Visa Oro Qore",
-    "descripcion": "Ideal para disfrutar beneficios cotidianos y promociones",
+    "descripcion": "Orientada a beneficios cotidianos y promociones.",
     "vinetas": [
       "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
-      "1 punto Qore por cada $ consumido.",
+      "1 Punto Qore por cada $1 en consumo.",
       "Cuotas Sin Intereses en comercios afiliados.",
       "Acumulación de Puntos Qore para canjes."
     ],

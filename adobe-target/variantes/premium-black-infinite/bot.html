@@ -1591,6 +1591,9 @@
                             {
                                 programa: "millas",
                                 encabezado: ["Tarjeta", "Acumulación por consumo mensual"],
+                                // Solo cuando salen las dos tablas (millas y puntos) la
+                                // primera columna nombra el programa (Marco, 2026-09-23).
+                                encabezadoConAmbos: ["LATAM", "Acumulación por consumo mensual"],
                                 filas: [
                                     { codigo: "TCRCLL", nombre: "Visa Clásica LATAM Pass", valor: "1 milla por $2" },
                                     { codigo: "TCRORL", nombre: "Visa Oro LATAM Pass", valor: "1 Milla por $1.5" },
@@ -1607,6 +1610,7 @@
                             {
                                 programa: "puntos",
                                 encabezado: ["Tarjeta", "Acumulación de puntos por consumo mensual"],
+                                encabezadoConAmbos: ["Qore", "Acumulación de puntos por consumo mensual"],
                                 filas: [
                                     { codigo: "TCRLY5", nombre: "Visa Clásica Qore", valor: "1 Punto Qore por cada $2" },
                                     { codigo: "TCRLY3", nombre: "Visa Oro Qore", valor: "1 Punto Qore por cada $1" },
@@ -1711,14 +1715,18 @@
                         codigo: "TCRLY3",
                         badge: "La más usada",
                         name: "&#128179; Visa Oro Qore",
-                        description: "Ideal para disfrutar beneficios cotidianos y promociones",
+                        description: "Orientada a beneficios cotidianos y promociones.",
                         bullets: [
                             "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
-                            "1 punto Qore por cada $ consumido.",
+                            "1 Punto Qore por cada $1 en consumo.",
                             "Cuotas Sin Intereses en comercios afiliados.",
                             "Acumulación de Puntos Qore para canjes.",
                         ],
                     },
+                    // Llamada al pie del perfilador (Marco, 2026-09-23). Va encima del
+                    // aviso azul y solo si alguna tarjeta mostrada lleva el asterisco:
+                    // hoy, la membresia de las tres Infinite en "ahorrar".
+                    nota: "*Sujeto a términos y condiciones",
                     maxSinDestacada: 3,
                     maxTarjetas: 4,
                     // CTA comun a todas las tarjetas. Se define una sola vez en vez de
@@ -1889,7 +1897,7 @@
                                     {
                                         codigo: "TCRLY3",
                                         name: "&#128179; Visa Oro Qore",
-                                        description: "Ideal para disfrutar beneficios cotidianos y promociones",
+                                        description: "Orientada a beneficios cotidianos y promociones.",
                                         bullets: [
                                             "Acumulación de puntos para recompensas.",
                                         ],
@@ -1981,7 +1989,7 @@
                                 description: "Ideal para quienes buscan Puntos Qore en sus compras frecuentes.",
                                 bullets: [
                                     "Membresía anual S/170 **(GRATIS si consumes S/1 al mes).**",
-                                    "1 punto Qore por cada $ consumido.",
+                                    "1 Punto Qore por cada $1 en consumo.",
                                     "Cuotas Sin Intereses en comercios afiliados.",
                                     "Acumulación de Puntos Qore para canjes.",
                                 ],
@@ -2076,7 +2084,7 @@
                                 name: "&#128179; Visa Infinite Qore",
                                 description: "Máximo nivel de beneficios dentro del ecosistema Qore.",
                                 bullets: [
-                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
+                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
                                     "Beneficios premium.",
                                     "Cuotas Sin Intereses en comercios afiliados.",
                                     "Acceso a promociones y experiencias exclusivas.",
@@ -2097,7 +2105,7 @@
                                 name: "&#128179; Visa Infinite Sapphire LATAM Pass",
                                 description: "Experiencia premium con beneficios avanzados de viaje.",
                                 bullets: [
-                                    "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).**",
+                                    "Membresía anual S/450 **(GRATIS si consumes S/4,500 al mes).***",
                                     "Beneficios premium en aeropuertos.",
                                     "Cuotas Sin Intereses y promociones exclusivas.",
                                 ],
@@ -2107,7 +2115,7 @@
                                 name: "&#128179; Visa Infinite Iridium LATAM Pass",
                                 description: "Máximo nivel de beneficios dentro de LATAM Pass.",
                                 bullets: [
-                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).**",
+                                    "Membresía anual S/500 **(GRATIS si consumes S/5,000 al mes).***",
                                     "Beneficios LATAM Elite Gold.",
                                     "Cuotas Sin Intereses y beneficios exclusivos.",
                                 ],
@@ -3353,6 +3361,7 @@
 
                 seccionesVisibles.push({
                     encabezado: seccion.encabezado || [],
+                    encabezadoConAmbos: seccion.encabezadoConAmbos || null,
                     filas: filas,
                 });
                 totalFilas += filas.length;
@@ -3373,9 +3382,16 @@
                 }
             }
 
+            // Con las dos tablas en pantalla, "Tarjeta" no dice cual es cual: la
+            // primera columna pasa a nombrar el programa (LATAM / Qore). Con una
+            // sola tabla se queda "Tarjeta" (Marco, 2026-09-23).
+            var ambosProgramas = seccionesVisibles.length > 1;
             var lineas = [tabla.intro || "", ""];
             seccionesVisibles.forEach(function (seccion, indice) {
-                lineas.push("| " + seccion.encabezado.join(" | ") + " |");
+                var encabezado = ambosProgramas && seccion.encabezadoConAmbos
+                    ? seccion.encabezadoConAmbos
+                    : seccion.encabezado;
+                lineas.push("| " + encabezado.join(" | ") + " |");
                 lineas.push("| --- | --- |");
                 seccion.filas.forEach(function (fila) {
                     lineas.push("| " + fila.nombre + " | " + fila.valor + " |");
@@ -3523,20 +3539,20 @@
                     detectado: false,
                     intro: porDefecto.intro || "",
                     tarjetas: this.conCta((porDefecto.tarjetas || []).slice(0, tope), cfg),
+                    nota: this.getNotaPerfilador((porDefecto.tarjetas || []).slice(0, tope), cfg),
                 };
             }
 
             var deCasoA = this.filtrarPorLeads(casoA.tarjetas, leads);
 
             if (deCasoA.length) {
+                var mostradasA = this.recortarConDestacada(deCasoA, cfg, leads, this.getTopeSinDestacada(cfg));
                 return {
                     caso: "A",
                     detectado: true,
                     intro: casoA.intro || "",
-                    tarjetas: this.conCta(
-                        this.recortarConDestacada(deCasoA, cfg, leads, this.getTopeSinDestacada(cfg)),
-                        cfg
-                    ),
+                    tarjetas: this.conCta(mostradasA, cfg),
+                    nota: this.getNotaPerfilador(mostradasA, cfg),
                 };
             }
 
@@ -3547,15 +3563,28 @@
             var topeCasoB = this.getTopeTarjetas(cfg);
             if (this.tieneDestacada(cfg, leads)) topeCasoB -= 1;
 
+            var mostradasB = this.recortarConDestacada(this.filtrarPorLeads(casoB.tarjetas, leads), cfg, leads, topeCasoB);
             return {
                 caso: "B",
                 detectado: true,
                 intro: casoB.intro || "",
-                tarjetas: this.conCta(
-                    this.recortarConDestacada(this.filtrarPorLeads(casoB.tarjetas, leads), cfg, leads, topeCasoB),
-                    cfg
-                ),
+                tarjetas: this.conCta(mostradasB, cfg),
+                nota: this.getNotaPerfilador(mostradasB, cfg),
             };
+        };
+
+        // La llamada al pie del perfilador solo sale si alguna tarjeta que se
+        // muestra lleva el asterisco en una viñeta. Se quitan antes las negritas
+        // (**…**) para que sus asteriscos no cuenten. Misma regla que la nota del
+        // comparador: sin asterisco arriba, la nota no tendria a que referirse.
+        Bot.prototype.getNotaPerfilador = function (tarjetas, cfg) {
+            if (!cfg || !cfg.nota) return "";
+            var conAsterisco = (tarjetas || []).some(function (t) {
+                return (t.bullets || []).some(function (b) {
+                    return String(b || "").replace(/\*\*(.+?)\*\*/g, "$1").indexOf("*") !== -1;
+                });
+            });
+            return conAsterisco ? cfg.nota : "";
         };
 
         Bot.prototype.bind = function () {
@@ -4510,6 +4539,9 @@
                 // demas: si manana cambian las tarjetas del DOM, el mensaje ya
                 // pintado no se reescribe.
                 nota: comparado ? comparado.nota : "",
+                // La del perfilador va en otro campo porque se pinta en otro sitio:
+                // encima del aviso azul, no pegada a la tabla.
+                notaPerfilador: perfilado ? perfilado.nota : "",
                 recommendation: this.resolveRecommendation(node),
                 aviso: node.aviso || "",
                 menuText: node.menuText || "",
@@ -4793,6 +4825,11 @@
             }
             if (item.recommendation) {
                 messageHtml += this.createRecommendationMarkup(item.recommendation, isActiveQuestion);
+            }
+
+            // Encima del aviso azul, que es donde Marco la pidio (2026-09-23).
+            if (item.notaPerfilador) {
+                messageHtml += this.createNotaMarkup(item.notaPerfilador);
             }
 
             if (item.aviso) {
